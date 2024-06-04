@@ -52,8 +52,7 @@ public static class OberoniaAureaYHDefOf
 
     public static TraderKindDef OA_RK_Caravan_TributeCollector; //物质征募队
     public static TraderKindDef OA_ResearchSummit_FairTrader; //科研峰会 - 集市商人
-
-
+    public static TraderKindDef OA_ResearchSummit_Traveller; //科研峰会 - 参会旅行者
 
     static OberoniaAureaYHDefOf()
     {
@@ -64,6 +63,7 @@ public static class OberoniaAureaYHDefOf
 [DefOf]
 public static class OA_WorldObjectDefOf
 {
+    public static WorldObjectDef OA_RK_ResearchSummit; //研究峰会
     public static WorldObjectDef OA_ResearchSummit_AcademicDispute; //学术约架
     public static WorldObjectDef OA_ResearchSummit_Fair;
     public static WorldObjectDef OA_ResearchSummit_MysteriousTrader;

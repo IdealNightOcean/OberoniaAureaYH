@@ -7,6 +7,21 @@ public class CompPowerEnergyComplex : CompPowerPlant
 {
     MapComponent_OberoniaAurea mc_OA;
     protected int ticksRemaining = 250;
+    public bool powerOutputDirt = true;
+    protected override float DesiredPowerOutput
+    {
+        get
+        {
+            if (!powerOutputDirt || mc_OA == null || mc_OA.AverageCircuitStability(PowerNet) < 0.1f)
+            {
+                return base.DesiredPowerOutput;
+            }
+            else
+            {
+                return base.DesiredPowerOutput * 1.2f;
+            }
+        }
+    }
     public override void SetUpPowerVars()
     {
         base.SetUpPowerVars();

@@ -7,7 +7,6 @@ namespace OberoniaAurea;
 //金鸢尾兰征募队到达事件
 public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_TraderCaravanArrival
 {
-
     protected override bool TryResolveParmsGeneral(IncidentParms parms)
     {
         if (!base.TryResolveParmsGeneral(parms))

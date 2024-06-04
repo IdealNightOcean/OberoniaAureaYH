@@ -18,7 +18,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             return;
         }
 
-        Dialog_SimpleNegotiation dialog_Negotiation = new(pawn, TraderNode(caravan,this), radioMode: true)
+        Dialog_SimpleNegotiation dialog_Negotiation = new(pawn, TraderNode(caravan, this), radioMode: true)
         {
             soundAmbient = SoundDefOf.RadioComms_Ambience
         };
@@ -30,12 +30,12 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         {
             yield return floatMenuOption;
         }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_VisitRSMysteriousTrader".Translate(this.Label)))
+        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
         {
             yield return floatMenuOption2;
         }
     }
-    protected static DiaNode TraderNode(Caravan caravan,WorldObject worldObject)
+    protected static DiaNode TraderNode(Caravan caravan, WorldObject worldObject)
     {
         DiaNode root = new("OA_ResearchSummit_MysteriousTrader".Translate());
         TaggedString taggedString = "OA_RSMysteriousTrader_BuyTech".Translate();
@@ -86,7 +86,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         };
         root.options.Add(buyTech);
         root.options.Add(reject);
-        root.options.Add(postpone);  
+        root.options.Add(postpone);
         return root;
     }
     protected static void BuyTech(Caravan caravan, List<ResearchProjectDef> availableResearch)

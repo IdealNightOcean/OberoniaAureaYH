@@ -48,6 +48,17 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
     {
         StartWork(caravan);
     }
+    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
+    {
+        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
+        {
+            yield return floatMenuOption;
+        }
+        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
+        {
+            yield return floatMenuOption2;
+        }
+    }
     public void StartWork(Caravan caravan)
     {
         FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)FixedCaravan.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);

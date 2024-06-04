@@ -66,8 +66,10 @@
     <Compile Include="Comps\CompOpticalResearchFacility.cs" />
     <Compile Include="Comps\CompCircuitRegulator.cs" />
     <Compile Include="Comps\CompPowerEnergyComplex.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
+    <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />

@@ -7,6 +7,17 @@ namespace OberoniaAurea;
 public abstract class WorldObject_InteractiveBase : WorldObject
 {
     protected WorldObject associateWorldObject;
+    public WorldObject AssociateWorldObject
+    {
+        get { return associateWorldObject; }
+        set
+        {
+            if (value != null)
+            {
+                associateWorldObject = value;
+            }
+        }
+    }
     private Material cachedMat;
     public override Material Material
     {
@@ -17,13 +28,6 @@ public abstract class WorldObject_InteractiveBase : WorldObject
                 cachedMat = MaterialPool.MatFrom(color: (base.Faction == null) ? Color.white : base.Faction.Color, texPath: def.texture, shader: ShaderDatabase.WorldOverlayTransparentLit, renderQueue: WorldMaterials.WorldObjectRenderQueue);
             }
             return cachedMat;
-        }
-    }
-    public void SetAssociateWorldObject(WorldObject worldObject)
-    {
-        if (worldObject != null)
-        {
-            associateWorldObject = worldObject;
         }
     }
     public virtual void Notify_CaravanArrived(Caravan caravan) { }

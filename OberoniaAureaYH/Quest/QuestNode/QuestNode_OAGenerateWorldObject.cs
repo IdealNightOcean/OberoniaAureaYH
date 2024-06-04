@@ -45,7 +45,7 @@ public class QuestNode_OAGenerateWorldObject : QuestNode_GenerateWorldObject
         }
         if (associateWorldObject.GetValue(slate) != null)
         {
-            worldObject.SetAssociateWorldObject(associateWorldObject.GetValue(slate));
+            worldObject.AssociateWorldObject = associateWorldObject.GetValue(slate);
         }
         return worldObject;
     }
