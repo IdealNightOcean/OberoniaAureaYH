@@ -1,0 +1,163 @@
+﻿using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Verse;
+
+namespace OberoniaAurea_Hyacinth;
+public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
+{
+    protected Faction calledFaction;
+
+    protected float biocodeChance;
+
+    protected ModExtension_RatkinGroup modEx_RG;
+    public ModExtension_RatkinGroup ModEx_RG => modEx_RG ??= def.GetModExtension<ModExtension_RatkinGroup>();
+
+    public override IEnumerable<FloatMenuOption> GetRoyalAidOptions(Map map, Pawn pawn, Faction faction)
+    {
+        if (AidDisabled(map, pawn, faction, out var reason))
+        {
+            yield return new FloatMenuOption(def.LabelCap + ": " + reason, null);
+            yield break;
+        }
+        if (NeutralGroupIncidentUtility.AnyBlockingHostileLord(pawn.MapHeld, faction))
+        {
+            yield return new FloatMenuOption(def.LabelCap + ": " + "HostileVisitorsPresent".Translate(), null);
+            yield break;
+        }
+        Action action = null;
+        string description = def.LabelCap + ": ";
+        if (FillAidOption(pawn, faction, ref description, out var free))
+        {
+            action = delegate
+            {
+                BeginCallAid(pawn, map, faction, free);
+            };
+        }
+        yield return new FloatMenuOption(description, action, faction.def.FactionIcon, faction.Color);
+    }
+
+    private void BeginCallAid(Pawn caller, Map map, Faction faction, bool free, float biocodeChance = 1f)
+    {
+        IEnumerable<Faction> source = from f in (from p in map.mapPawns.AllPawnsSpawned
+                                                 where p.Faction != null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
+                                                 select p.Faction).Distinct()
+                                      where f.HostileTo(Faction.OfPlayer) && !faction.HostileTo(f)
+                                      select f;
+        if (source.Any())
+        {
+            Find.WindowStack.Add(new Dialog_MessageBox("CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select((Faction f) => f.NameColored.Resolve()).ToCommaList()), "Confirm".Translate(), Call, "GoBack".Translate()));
+        }
+        else
+        {
+            Call();
+        }
+        void Call()
+        {
+            targetingParameters = new()
+            {
+                canTargetLocations = true,
+                canTargetSelf = false,
+                canTargetPawns = false,
+                canTargetFires = false,
+                canTargetBuildings = false,
+                canTargetItems = false,
+                validator = delegate (TargetInfo target)
+                {
+                    if (def.royalAid.targetingRange > 0f && target.Cell.DistanceTo(caller.Position) > def.royalAid.targetingRange)
+                    {
+                        return false;
+                    }
+                    if (target.Cell.Fogged(map) || !DropCellFinder.CanPhysicallyDropInto(target.Cell, map, canRoofPunch: true))
+                    {
+                        return false;
+                    }
+                    return target.Cell.GetEdifice(map) == null && !target.Cell.Impassable(map);
+                }
+            };
+            base.caller = caller;
+            base.map = map;
+            calledFaction = faction;
+            base.free = free;
+            this.biocodeChance = biocodeChance;
+            Find.Targeter.BeginTargeting(this);
+        }
+    }
+
+    public override void OrderForceTarget(LocalTargetInfo target)
+    {
+        CallAid(caller, map, target.Cell, calledFaction, free, biocodeChance);
+    }
+    protected void CallAid(Pawn caller, Map map, IntVec3 spawnPos, Faction faction, bool free, float biocodeChance = 1f)
+    {
+        bool callSuccess = false;
+        callSuccess = CallNormalAid(map, spawnPos, faction, biocodeChance) || callSuccess;
+        ModExtension_RatkinGroup modEx_RG = ModEx_RG;
+        if (modEx_RG != null)
+        {
+            foreach (RatkinGroup ratkinGroup in modEx_RG.extraGroups)
+            {
+                callSuccess = CallOAAid(ratkinGroup, map, spawnPos, faction, biocodeChance) || callSuccess;
+            }
+        }
+        if (callSuccess)
+        {
+            faction.lastMilitaryAidRequestTick = Find.TickManager.TicksGame;
+            if (!free)
+            {
+                caller.royalty.TryRemoveFavor(faction, def.royalAid.favorCost);
+            }
+            caller.royalty.GetPermit(def, faction).Notify_Used();
+        }
+        else
+        {
+            Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", faction));
+        }    
+    }
+    protected bool CallNormalAid(Map map, IntVec3 spawnPos, Faction faction, float biocodeChance=1f)
+    {
+        IncidentParms incidentParms = new()
+        {
+            target = map,
+            faction = faction,
+            raidArrivalModeForQuickMilitaryAid = true,
+            biocodeApparelChance = biocodeChance,
+            biocodeWeaponsChance = biocodeChance,
+            spawnCenter = spawnPos
+        };
+        if (def.royalAid.pawnKindDef != null)
+        {
+            incidentParms.pawnKind = def.royalAid.pawnKindDef;
+            incidentParms.pawnCount = def.royalAid.pawnCount;
+        }
+        else
+        {
+            incidentParms.points = def.royalAid.points;
+        }
+        return IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
+    }
+    protected bool CallOAAid(RatkinGroup ratkinGroup, Map map, IntVec3 spawnPos, Faction faction, float biocodeChance=1f)
+    {
+        IncidentParms incidentParms = new()
+        {
+            target = map,
+            faction = faction,
+            raidArrivalModeForQuickMilitaryAid = true,
+            sendLetter = false, //不提示信封
+            biocodeApparelChance = biocodeChance,
+            biocodeWeaponsChance = biocodeChance,
+            spawnCenter = spawnPos
+        };
+        if (ratkinGroup.pawnKindDef != null)
+        {
+            incidentParms.pawnKind = ratkinGroup.pawnKindDef;
+            incidentParms.pawnCount = ratkinGroup.pawnCount;
+        }
+        else
+        {
+            incidentParms.points = def.royalAid.points;
+        }
+        return IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
+    }
+}

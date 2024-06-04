@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FBA8E87B-924F-492A-BA0C-259981E8655D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OberoniaAureaYH_1._4</RootNamespace>
+    <AssemblyName>OberoniaAureaYH_1.4</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>12.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\..\Game\SteamLibrary\steamapps\common\RimWorld\Mods\Ratkin Faction Oberonia Aurea\1.4\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\RimWorld引用dll\1.4\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\RimWorld引用dll\1.4\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Comps\CompCircuitRegulator.cs" />
+    <Compile Include="Comps\HediffComp_GiveHediffWhenRemoved.cs" />
+    <Compile Include="HarmonyPatch\FactionDialogMaker_Patch.cs" />
+    <Compile Include="HarmonyPatch\Faction_Patch.cs" />
+    <Compile Include="HarmonyPatch\HarmonyPatch.cs" />
+    <Compile Include="HarmonyPatch\IncidentWorker_RaidEnemy_Patch.cs" />
+    <Compile Include="HarmonyPatch\MakeRecipeProducts_Patch.cs" />
+    <Compile Include="HarmonyPatch\MBW_TryStart_Patch.cs" />
+    <Compile Include="HarmonyPatch\ShortCircuitUtility_Patch.cs" />
+    <Compile Include="HarmonyPatch\TradeUtility_PricePatch.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_OALargeScaleTraderArrival.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_OASupplyShipShowConcern.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_OATributeCollectorArrival.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_OptionalDiplomaticOffices.cs" />
+    <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
+    <Compile Include="Misc\ChoiceLetter_AcceptQuest.cs" />
+    <Compile Include="Misc\DefOf.cs" />
+    <Compile Include="Misc\DiaBuyableTechPrintDef.cs" />
+    <Compile Include="Misc\GameComponent.cs" />
+    <Compile Include="Misc\JobDriver_CircuitRegulator.cs" />
+    <Compile Include="Misc\MapComponent.cs" />
+    <Compile Include="Misc\PawnGroupKindWorker_OALargeScaleTrader.cs" />
+    <Compile Include="Misc\PawnGroupKindWorker_ResearchRaid.cs" />
+    <Compile Include="Misc\PlaceWorker_ShowFacilityRadius.cs" />
+    <Compile Include="Misc\Utility.cs" />
+    <Compile Include="Misc\Verb_TargetCellAid.cs" />
+    <Compile Include="Misc\WorkGiver_CircuitRegulator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
+    <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
+    <Compile Include="Equipment\PortableCommsConsole.cs" />
+    <Compile Include="Equipment\ShotgunBullet.cs" />
+    <Compile Include="Equipment\ShotgunExtension.cs" />
+    <Compile Include="Equipment\Verb_BarrageEnhancedShoot.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_CopyFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetMapParent.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetMutiFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetNearbySettlementOfFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetNeighborTile.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetSpecificFactionLeader.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetWorldObjectTile.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_OAGenerateWorldObject.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_OAGetFaction.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_RefugeeBase.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_ResearcherVisit.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_OARefugeeInteractions.cs" />
+    <Compile Include="Thought\ThoughtWorker_Gene_ColdAdaptation.cs" />
+    <Compile Include="Thought\ThoughtWorker_Gene_HotAdaptation.cs" />
+    <Compile Include="Thought\ThoughtWorker_Precept_Snow.cs" />
+    <Compile Include="Thought\Thought_SituationalGiveHediff.cs" />
+    <Compile Include="WorldObject\CaravanArrivalAction_VisitInteractiveObjectBase.cs" />
+    <Compile Include="WorldObject\CaravanArrivalAction_VisitSettlement.cs" />
+    <Compile Include="WorldObject\GenStep_OABasicGenStep.cs" />
+    <Compile Include="WorldObject\GenStep_ResearcherCamp.cs" />
+    <Compile Include="WorldObject\SymbolResolver_ResearcherCamp.cs" />
+    <Compile Include="WorldObject\SymbolResolver_SingleResearcher.cs" />
+    <Compile Include="WorldObject\WorldObject\ResearcherCampComp.cs" />
+    <Compile Include="WorldObject\WorldObject\SettlementDipComp.cs" />
+    <Compile Include="WorldObject\WorldObject\ResearchSummit_AcademicDispute.cs" />
+    <Compile Include="WorldObject\WorldObject\WorldObject_DiplomaticOffices.cs" />
+    <Compile Include="WorldObject\WorldObject\WorldObject_InteractiveBase.cs" />
+    <Compile Include="WorldObject\WorldObject\WorldObject_MultiPartyTalks.cs" />
+    <Compile Include="WorldObject\WorldObject\WorldObject_ResearchSummit.cs" />
+    <Compile Include="WorldObject\WorldObject\WorldObject_WithMutiFactions.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
