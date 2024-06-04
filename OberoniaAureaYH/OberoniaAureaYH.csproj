@@ -71,6 +71,7 @@
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_ResearchSummitTravels.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_SettlementDip.cs" />

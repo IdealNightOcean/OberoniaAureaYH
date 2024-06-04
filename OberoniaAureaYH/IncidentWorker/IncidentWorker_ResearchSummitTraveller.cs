@@ -15,7 +15,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_TraderCarav
         }
         if (base.TryExecuteWorker(parms))
         {
-            Messages.Message("OA_Incident_RSTraveller".Translate(researchSummit.AssociateWorldObject.Named("SETTLEMENT")), MessageTypeDefOf.NeutralEvent);
+            Messages.Message("OA_Incident_RSTraveller".Translate(parms.faction.NameColored, researchSummit.AssociateWorldObject.Named("SETTLEMENT")), MessageTypeDefOf.NeutralEvent);
             return true;
         }
         return false;
