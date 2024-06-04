@@ -10,9 +10,16 @@ public class CompPowerEnergyComplex : CompPowerPlant
     public override void SetUpPowerVars()
     {
         base.SetUpPowerVars();
-        if (mc_OA != null && mc_OA.AverageCircuitStability(PowerNet) > 0.1f)
+        if (mc_OA == null)
         {
-            Log.Message("ooo");
+            Log.Message("Test_Null");
+            return;
+        }
+        float average = mc_OA.AverageCircuitStability(PowerNet);
+        Log.Message($"Average:{0}");
+        if (average > 0.1f)
+        {
+            Log.Message("Yes");
             PowerOutput *= 1.2f;
         }
     }
