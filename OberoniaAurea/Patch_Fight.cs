@@ -7,7 +7,7 @@ namespace OberoniaAurea;
 [HarmonyPatch(typeof(Pawn_InteractionsTracker), "SocialFightChance")]
 public static class Patch_Fight
 {
-	public static void Postfix(ref float __result, Pawn initiator)
+    public static void Postfix(ref float __result, Pawn initiator)
 	{
 		Ideo ideo = initiator.Ideo;
 		if (ideo != null)

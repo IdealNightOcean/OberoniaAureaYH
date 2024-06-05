@@ -24,7 +24,7 @@ public static class OADefOf
 
 	public static TraitDef Cannibal;
 
-	public static GeneDef RK_OA_gene_Social;
+    public static GeneDef RK_OA_gene_Social;
 
 	public static FactionDef OA_RK_Faction;
 }

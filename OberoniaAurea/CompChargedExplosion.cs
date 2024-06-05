@@ -61,11 +61,10 @@ public class CompChargedExplosion : ThingComp
 	{
 		ChargeProgress = 0;
 		compfuel?.ConsumeFuel(compfuel.Fuel);
-		GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.explosiveDamageType, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, new List<Thing>(1) { parent });
-        GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.requiredDamageTypeToExplode, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, new List<Thing>(1) { parent });
-    }
+		GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.explosiveDamageType, (Thing)parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, (ThingDef)null, (Thing)null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, (float?)null, [parent], (FloatRange?)null, true, 1f, 0f, true, (ThingDef)null, 1f);
+	}
 
-    public override void PostDraw()
+	public override void PostDraw()
 	{
 		base.PostDraw();
 		if (Find.Selector.IsSelected(parent) && ChargeProgress > 0 && ChargeProgress < Props.chargeTicks)
@@ -88,9 +87,12 @@ public class CompChargedExplosion : ThingComp
 			Command_Action command_Action = new()
 			{
 				defaultLabel = Props.detonateLabel,
-				icon = ContentFinder<Texture2D>.Get(Props.detonateIcon, reportFailure: false),
+				icon = (Texture)(object)ContentFinder<Texture2D>.Get(Props.detonateIcon, reportFailure: false),
 				defaultDesc = parent.DescriptionDetailed,
-				action = Explosion
+				action = delegate
+				{
+					Explosion();
+				}
 			};
 			if (comppower != null && !comppower.PowerOn)
 			{
