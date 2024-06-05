@@ -1,9 +1,4 @@
-﻿using RimWorld;
-using RimWorld.Planet;
-using System.Collections.Generic;
-using Verse;
-
-namespace OberoniaAurea;
+﻿namespace OberoniaAurea;
 
 /*
 public class CaravanArrivalAction_VisitSettlementDip : CaravanArrivalAction

@@ -65,7 +65,6 @@
     <Compile Include="Comps\CompExtremelyHiTechResearchBench.cs" />
     <Compile Include="Comps\CompOpticalResearchFacility.cs" />
     <Compile Include="Comps\CompCircuitRegulator.cs" />
-    <Compile Include="Comps\CompPowerEnergyComplex.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />

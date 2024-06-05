@@ -27,6 +27,10 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
     }
     public float AverageCircuitStability(PowerNet powerNet)
     {
+        if (powerNet == null)
+        {
+            return 0f;
+        }
         List<float> circuitStabilities = circuitRegulators.Where(c => c.PowerNet == powerNet).Select(s => s.CurCircuitStability).ToList();
         if (circuitStabilities.NullOrEmpty())
         {

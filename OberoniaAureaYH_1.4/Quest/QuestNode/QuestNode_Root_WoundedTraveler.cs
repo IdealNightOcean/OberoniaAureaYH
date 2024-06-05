@@ -47,7 +47,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         List<Pawn> pawns = GeneratePawns(lodgerCount, faction, quest, map, lodgerRecruitedSignal);
         Pawn wounded = pawns[1];
-        wounded.health.AddHediff(OberoniaAureaYHDefOf.OA_RK_SeriousInjuryII);
+        wounded.health.AddHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjuryII);
         NonLethalDamage(wounded, DamageDefOf.Blunt);
         Pawn asker = pawns.First();
 
@@ -112,7 +112,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         for (int i = 0; i < lodgerCount; i++)
         {
             DevelopmentalStage developmentalStages = DevelopmentalStage.Adult;
-            Pawn pawn = quest.GeneratePawn(OberoniaAureaYHDefOf.OA_RK_Traveller, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
+            Pawn pawn = quest.GeneratePawn(OA_PawnGenerateDefOf.OA_RK_Traveller, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
             pawns.Add(pawn);
             quest.PawnJoinOffer(pawn, "LetterJoinOfferLabel".Translate(pawn.Named("PAWN")), "LetterJoinOfferTitle".Translate(pawn.Named("PAWN")), "LetterJoinOfferText".Translate(pawn.Named("PAWN"), map.Parent.Named("MAP")), delegate
             {
@@ -171,6 +171,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         outSignalDestroyed_LeaveColony = QuestGen.GenerateNewSignal("LodgerDestroyed_LeaveColony"),
         outSignalArrested_LeaveColony = QuestGen.GenerateNewSignal("LodgerArrested_LeaveColony"),
         outSignalSurgeryViolation_LeaveColony = QuestGen.GenerateNewSignal("LodgerSurgeryViolation_LeaveColony"),
+        outSignalPsychicRitualTarget_LeaveColony = QuestGen.GenerateNewSignal("LodgerPsychicRitualTarget_LeaveColony"),
 
         outSignalLast_Destroyed = QuestGen.GenerateNewSignal("LastLodger_Destroyed"),
         outSignalLast_Arrested = QuestGen.GenerateNewSignal("LastLodger_Arrested"),
@@ -190,6 +191,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalDestroyed_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerDiedLeaveMapLetterText]", null, "[lodgerDiedLeaveMapLetterLabel]");
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalArrested_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerArrestedLeaveMapLetterText]", null, "[lodgerArrestedLeaveMapLetterLabel]");
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalSurgeryViolation_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerViolatedLeaveMapLetterText]", null, "[lodgerViolatedLeaveMapLetterLabel]");
+        quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalPsychicRitualTarget_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerPsychicRitualTargetLeaveMapLetterText]", null, "[lodgerPsychicRitualTargetLeaveMapLetterLabel]");
 
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalLast_Destroyed, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgersAllDiedLetterText]", null, "[lodgersAllDiedLetterLabel]");
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalLast_Arrested, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgersAllArrestedLetterText]", null, "[lodgersAllArrestedLetterLabel]");
@@ -204,6 +206,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         quest.End(QuestEndOutcome.Fail, -goodwillReward, faction, questPart_Interactions.outSignalDestroyed_LeaveColony, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
         quest.End(QuestEndOutcome.Fail, -goodwillReward, faction, questPart_Interactions.outSignalArrested_LeaveColony, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
         quest.End(QuestEndOutcome.Fail, -goodwillReward, faction, questPart_Interactions.outSignalSurgeryViolation_LeaveColony, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
+        quest.End(QuestEndOutcome.Fail, -goodwillReward, null, questPart_Interactions.outSignalPsychicRitualTarget_LeaveColony, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
 
         quest.End(QuestEndOutcome.Fail, -goodwillReward, faction, questPart_Interactions.outSignalLast_Kidnapped, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
         quest.End(QuestEndOutcome.Fail, -goodwillReward, faction, questPart_Interactions.outSignalLast_Banished, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
@@ -234,7 +237,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
             return;
         }
         p.health.forceDowned = true;
-        IEnumerable<BodyPartRecord> source = OberoniaAureaYHUtility.HittablePartsViolence(p);
+        IEnumerable<BodyPartRecord> source = HittablePartsViolence(p);
         int num = 0;
         while (num < InjuryCount.RandomInRange)
         {
@@ -271,4 +274,13 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         }
         p.health.forceDowned = false;
     }
+    protected static IEnumerable<BodyPartRecord> HittablePartsViolence(Pawn pawn)
+    {
+        HediffSet hediffSet = pawn.health.hediffSet;
+        return from x in hediffSet.GetNotMissingParts()
+               where x.depth == BodyPartDepth.Outside || (x.depth == BodyPartDepth.Inside && x.def.IsSolid(x, hediffSet.hediffs))
+               where !pawn.health.hediffSet.hediffs.Any((Hediff y) => y.Part == x && y.CurStage != null && y.CurStage.partEfficiencyOffset < 0f)
+               select x;
+    }
+
 }

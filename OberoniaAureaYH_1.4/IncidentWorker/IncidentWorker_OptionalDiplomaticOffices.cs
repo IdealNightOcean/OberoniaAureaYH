@@ -2,6 +2,8 @@
 using Verse;
 
 namespace OberoniaAurea;
+
+//外交斡旋确认
 public class IncidentWorker_OptionalDiplomaticOffices : IncidentWorker_GiveQuest
 {
     public string letterText = "OA_OptionalDiplomaticOffices".Translate(OberoniaAureaYHUtility.OAFaction.NameColored, OberoniaAureaYHUtility.OAFaction.leader);

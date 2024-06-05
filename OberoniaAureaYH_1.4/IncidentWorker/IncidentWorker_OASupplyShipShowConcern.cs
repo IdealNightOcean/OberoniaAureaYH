@@ -4,6 +4,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
+//金鸢尾兰慰问
 public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 {
     public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OberoniaAureaYHDefOf.OA_RK_Faction);

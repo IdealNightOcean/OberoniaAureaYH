@@ -28,7 +28,7 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
             }
             foreach (Pawn p in pawns)
             {
-                if (!OberoniaAureaYHUtility.HealthyPawn(p))
+                if (!HealthyPawn(p))
                 {
                     return false;
                 }
@@ -59,6 +59,31 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
                 Find.SignalManager.SendSignal(new Signal(outSignalFailed));
             }
         }
+    }
+    public static bool HealthyPawn(Pawn pawn) //判断一个Pawn是否健康
+    {
+        if (pawn.Destroyed || pawn.InMentalState)
+        {
+            return false;
+        }
+        HediffSet pawnHediffSet = pawn.health.hediffSet;
+        if (pawnHediffSet == null) //没有健康状态属性那肯定是健康的（确信）
+        {
+            return true;
+        }
+        if (pawnHediffSet.BleedRateTotal > 0.001f)
+        {
+            return false;
+        }
+        if (pawnHediffSet.HasHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjuryI) || pawnHediffSet.HasHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjuryII))
+        {
+            return false;
+        }
+        if (pawnHediffSet.HasNaturallyHealingInjury())
+        {
+            return false;
+        }
+        return true;
     }
 
     public override void ExposeData()

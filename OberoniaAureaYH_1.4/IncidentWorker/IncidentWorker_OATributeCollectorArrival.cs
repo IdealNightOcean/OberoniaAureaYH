@@ -7,7 +7,6 @@ namespace OberoniaAurea;
 //金鸢尾兰征募队到达事件
 public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_TraderCaravanArrival
 {
-
     protected override bool TryResolveParmsGeneral(IncidentParms parms)
     {
         if (!base.TryResolveParmsGeneral(parms))
@@ -20,7 +19,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
             return false;
         }
         parms.faction = OAFaction;
-        parms.traderKind = OberoniaAureaYHDefOf.OA_RK_Caravan_TributeCollector;
+        parms.traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector;
         return true;
     }
 

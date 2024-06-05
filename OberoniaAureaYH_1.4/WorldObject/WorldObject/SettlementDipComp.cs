@@ -8,13 +8,6 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public enum NegotiatingTeamLevel
-{
-    Beginner,
-    Standard,
-    Sophistication,
-    Excellence
-}
 public enum SettlementDipVisitType
 {
     None,
@@ -33,15 +26,12 @@ public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProper
 public class SettlementDipComp : WorldObjectComp
 {
     protected static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
+
     protected int diplomacyCoolingDays = 30;
-    protected bool tickActive = false;
+
     protected Settlement Settlement => parent as Settlement;
 
-    protected Caravan expectCaravan;
-    protected Pawn expectNegotiant;
-    protected SettlementDipVisitType curVisitType = SettlementDipVisitType.None;
-    protected NegotiatingTeamLevel curNegotiatingTeamLevel = NegotiatingTeamLevel.Standard;
-
+    protected bool workStart;
     protected int ticksRemaining = -1;
 
     protected int lastDiplomacyTick = -1;
@@ -57,7 +47,7 @@ public class SettlementDipComp : WorldObjectComp
         }
     }
 
-    protected static bool DiplomacyValid(WorldObject worldObject)
+    protected static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
     {
         if (worldObject == null)
         {
@@ -71,43 +61,9 @@ public class SettlementDipComp : WorldObjectComp
         return true;
     }
 
-    public override void CompTick()
-    {
-        if (tickActive)
-        {
-            ticksRemaining--;
-            if (ticksRemaining < 0)
-            {
-                CheckOutCome();
-                ResetCompTick();
-            }
-        }
-    }
-
-    protected void CheckOutCome()
-    {
-        switch (curVisitType)
-        {
-            case SettlementDipVisitType.DiplomaticSummit:
-                DiplomaticSummitOutcome();
-                break;
-            default: break;
-        }
-    }
-
-    protected void ResetCompTick()
-    {
-        tickActive = false;
-        ticksRemaining = -1;
-        curVisitType = SettlementDipVisitType.None;
-        curNegotiatingTeamLevel = NegotiatingTeamLevel.Standard;
-        expectCaravan = null;
-        expectNegotiant = null;
-    }
-
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
-        if (!DiplomacyValid(parent))
+        if (workStart || !DiplomacyValid(parent))
         {
             yield break;
         }
@@ -128,13 +84,13 @@ public class SettlementDipComp : WorldObjectComp
         }
         yield return command_DipAction;
     }
-    protected virtual void GizmoFloat_DipAction(Caravan caravan) //生成按钮行为：产品列表菜单
+    protected virtual void GizmoFloat_DipAction(Caravan caravan) //远行队到达时的按钮行为：交互类型菜单
     {
         List<FloatMenuOption> list = [];
         string actionStr;
         foreach (SettlementDipVisitType visitType in Enum.GetValues(typeof(SettlementDipVisitType)))
         {
-            if(visitType == SettlementDipVisitType.None)
+            if (visitType == SettlementDipVisitType.None)
             {
                 continue;
             }
@@ -155,47 +111,13 @@ public class SettlementDipComp : WorldObjectComp
                 }
                 else
                 {
-                    list.Add(new FloatMenuOption(actionStr + ": " + acceptanceReport.FailReason, null));          
+                    list.Add(new FloatMenuOption(actionStr + ": " + acceptanceReport.FailReason, null));
                 }
             }
         }
         Find.WindowStack.Add(new FloatMenu(list));
     }
-
-    /*
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
-    {
-        foreach (FloatMenuOption floatMenuOption1 in base.GetFloatMenuOptions(caravan))
-        {
-            yield return floatMenuOption1;
-        }
-        if (!DiplomacyValid(parent))
-        {
-            yield break;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in GetFloatMenuOptionsByType(caravan, SettlementDipVisitType.DeepExchange, "OA_SettlementDeepExchange".Translate()))
-        {
-            yield return floatMenuOption2;
-        }
-        foreach (FloatMenuOption floatMenuOption3 in GetFloatMenuOptionsByType(caravan, SettlementDipVisitType.DiplomaticSummit, "OA_SettlementDiplomaticSummit".Translate()))
-        {
-            yield return floatMenuOption3;
-        }
-
-    }
-    
-
-    public IEnumerable<FloatMenuOption> GetFloatMenuOptionsByType(Caravan caravan, SettlementDipVisitType SettlementDipVisitType, string label = null)
-    {
-        FloatMenuAcceptanceReport report = CanVisitNow(SettlementDipVisitType);
-        Settlement settlement = this.Settlement;
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitSettlementDip.GetFloatMenuOptions(caravan, settlement, report, label, SettlementDipVisitType))
-        {
-            yield return floatMenuOption2;
-        }
-    }
-    */
-    public void Notify_CaravanArrived(Caravan caravan, SettlementDipVisitType SettlementDipVisitType)
+    public void Notify_CaravanArrived(Caravan caravan, SettlementDipVisitType SettlementDipVisitType)//触发交互事件
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
         if (pawn == null)
@@ -215,27 +137,25 @@ public class SettlementDipComp : WorldObjectComp
             default: return;
         }
     }
-    private void DeepExchange(Caravan caravan, Pawn pawn)
+    private void DeepExchange(Caravan caravan, Pawn pawn) //触发深入交流
     {
         DeepExchangeUtility.ApplyEffect(caravan, this.Settlement, pawn);
         diplomacyCoolingDays = 30;
         lastDiplomacyTick = Find.TickManager.TicksGame;
     }
-    private void DiplomaticSummit(Caravan caravan, Pawn pawn)
+    private void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
         Settlement settlement = this.Settlement;
         Find.WindowStack.Add
         (
-            new Dialog_MessageBox
+            Dialog_MessageBox.CreateConfirmation
             (
                 "OA_ConfirmDiplomaticSummit".Translate(settlement.Named("SETTLEMENT")),
-                "Confirm".Translate(),
                 delegate
                 {
                     ConfirmDiplomaticSummit(caravan, pawn);
                 },
-                "GoBack".Translate(),
-                buttonADestructive: false
+                destructive: false
             )
         );
 
@@ -259,30 +179,22 @@ public class SettlementDipComp : WorldObjectComp
 
         void InitDiplomaticSummit(NegotiatingTeamLevel teamLevel)
         {
-            expectCaravan = caravan;
-            expectNegotiant = pawn;
-            curNegotiatingTeamLevel = teamLevel;
-            curVisitType = SettlementDipVisitType.DiplomaticSummit;
-            lastDiplomacyTick = Find.TickManager.TicksGame;
-            ticksRemaining = 5000;
-            tickActive = true;
+            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)FixedCaravan.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
+            fixedCaravan.negotiant = pawn;
+            fixedCaravan.associateSettlement = settlement;
+            fixedCaravan.curNegotiatingTeamLevel = teamLevel;
+            Find.WorldObjects.Add(fixedCaravan);
+            Find.WorldSelector.Select(fixedCaravan);
+            workStart = true;
         }
 
     }
-    private void DiplomaticSummitOutcome()
+    public void DiplomaticSummitEnd()
     {
-        if (expectCaravan == null || expectCaravan.Tile != this.parent.Tile)
-        {
-            DiplomaticSummitUtility.Outcome_LeaveHalfway(this.Settlement);
-        }
-        else
-        {
-            Pawn pawn = expectNegotiant ?? BestCaravanPawnUtility.FindBestDiplomat(expectCaravan);
-            DiplomaticSummitUtility.ApplyEffect(curNegotiatingTeamLevel, expectCaravan, this.Settlement, pawn);
-        }
+        lastDiplomacyTick = Find.TickManager.TicksGame;
         diplomacyCoolingDays = 30;
+        workStart = false;
     }
-
     public AcceptanceReport CanVisitNow()
     {
         if (parent.Faction.PlayerRelationKind != FactionRelationKind.Ally)
@@ -318,12 +230,8 @@ public class SettlementDipComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
+        Scribe_Values.Look(ref workStart, "workStart", defaultValue: false);
         Scribe_Values.Look(ref lastDiplomacyTick, "lastDiplomacyTick", -1);
-        Scribe_Values.Look(ref tickActive, "tickActive", defaultValue: false);
-        Scribe_References.Look(ref expectCaravan, "expectCaravan");
-        Scribe_References.Look(ref expectNegotiant, "expectNegotiant");
-        Scribe_Values.Look(ref curVisitType, "curVisitType", SettlementDipVisitType.None);
-        Scribe_Values.Look(ref curNegotiatingTeamLevel, "curNegotiatingTeamLevel", NegotiatingTeamLevel.Standard);
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", -1);
     }
 
@@ -342,7 +250,7 @@ public static class DeepExchangeUtility
     {
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(AddAssistPoints);
         pawn.skills.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
+        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -375,125 +283,4 @@ public static class DeepExchangeUtility
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDeepExchange".Translate(), text, LetterDefOf.PositiveEvent, caravan, settlement.Faction);
     }
-}
-
-public static class DiplomaticSummitUtility
-{
-
-
-    public static readonly Dictionary<NegotiatingTeamLevel, float> NegotiatingTeamLevelWeight = new()
-    {
-        {NegotiatingTeamLevel.Beginner,0.15f},
-        {NegotiatingTeamLevel.Standard,0.5f},
-        {NegotiatingTeamLevel.Sophistication,0.25f},
-        {NegotiatingTeamLevel.Excellence,0.1f}
-    };
-    private static readonly Dictionary<NegotiatingTeamLevel, float> NegotiatingLevelInfluenceFactor = new()
-    {
-        {NegotiatingTeamLevel.Beginner,1.3f},
-        {NegotiatingTeamLevel.Standard,1.0f},
-        {NegotiatingTeamLevel.Sophistication,0.65f},
-        {NegotiatingTeamLevel.Excellence,0.25f}
-    };
-
-    private static readonly int LeaveHalfwayGoodwill = -50;
-
-    private static readonly int DisasterGoodwill = -50;
-    private static readonly int DisasterStoppageDays = 30;
-
-    private static readonly int FlounderGoodwill = -15;
-    private static readonly int FlounderAssistPoints = 5;
-    private static readonly float FlounderXP = 3000f;
-
-    private static readonly int SuccessAssistPoints = 25;
-    private static readonly float SuccessXP = 6000f;
-
-    private static readonly int TriumphGoodwill = 10;
-    private static readonly int TriumphAssistPoints = 60;
-    private static readonly float TriumphXP = 8000f;
-
-    private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
-
-    public static void ApplyEffect(NegotiatingTeamLevel negotiatingTeamLevel, Caravan caravan, Settlement settlement, Pawn pawn)
-    {
-        float influenceFactor = NegotiatingLevelInfluenceFactor[negotiatingTeamLevel];
-        float negotiationAbility = pawn.GetStatValue(StatDefOf.NegotiationAbility);
-        tmpPossibleOutcomes.Clear();
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
-        {
-            Outcome_Disaster(settlement);
-        }, 40f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
-        {
-            Outcome_Flounder(settlement, pawn);
-        }, 40f + negotiationAbility * 20f * influenceFactor));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
-        {
-            Outcome_Success(settlement, pawn);
-        }, 10f + negotiationAbility * 40f * influenceFactor));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
-        {
-            Outcome_Triumph(caravan, settlement, pawn);
-        }, negotiationAbility * 20f * influenceFactor));
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
-    }
-    public static void Outcome_LeaveHalfway(Settlement settlement)
-    {
-        Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, LeaveHalfwayGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_LeaveHalfway);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_LeaveHalfway".Translate(), "OA_LetterDiplomaticSummit_LeaveHalfway".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, LeaveHalfwayGoodwill), LetterDefOf.NegativeEvent, settlement, faction);
-    }
-    private static void Outcome_Disaster(Settlement settlement)
-    {
-        Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, DisasterGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Disaster);
-        OberoniaAureaYHUtility.OA_GCOA.assistPointsStoppageDays = DisasterStoppageDays;
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Disaster".Translate(), "OA_LetterDiplomaticSummit_Disaster".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, DisasterGoodwill, DisasterStoppageDays), LetterDefOf.NegativeEvent, settlement, faction);
-    }
-    private static void Outcome_Flounder(Settlement settlement, Pawn pawn)
-    {
-        Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, FlounderGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Flounder);
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(FlounderAssistPoints);
-        TaggedString text = "OA_LetterDiplomaticSummit_Flounder".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, FlounderGoodwill, FlounderAssistPoints);
-        if (pawn != null)
-        {
-            pawn.skills.Learn(SkillDefOf.Intellectual, FlounderXP, direct: true);
-            text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, FlounderXP.ToString("F0"), pawn.Named("PAWN"));
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Flounder".Translate(), text, LetterDefOf.NeutralEvent, settlement, faction);
-    }
-    private static void Outcome_Success(Settlement settlement, Pawn pawn)
-    {
-        Faction faction = settlement.Faction;
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(SuccessAssistPoints);
-        TaggedString text = "OA_LetterDiplomaticSummit_Success".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, SuccessAssistPoints);
-        if (pawn != null)
-        {
-            pawn.skills.Learn(SkillDefOf.Intellectual, SuccessXP, direct: true);
-            text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, SuccessXP.ToString("F0"), pawn.Named("PAWN"));
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Success".Translate(), text, LetterDefOf.PositiveEvent, settlement, faction);
-
-    }
-    private static void Outcome_Triumph(Caravan caravan, Settlement settlement, Pawn pawn)
-    {
-        Faction faction = settlement.Faction;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, 1500);
-        foreach (Thing thing in things)
-        {
-            CaravanInventoryUtility.GiveThing(caravan, thing);
-        }
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(TriumphAssistPoints);
-        TaggedString text = "OA_LetterDiplomaticSummit_Triumph".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, TriumphGoodwill, TriumphAssistPoints, 1500);
-        if (pawn != null)
-        {
-            pawn.skills.Learn(SkillDefOf.Intellectual, TriumphXP, direct: true);
-            text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, TriumphXP.ToString("F0"), pawn.Named("PAWN"));
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Triumph".Translate(), text, LetterDefOf.PositiveEvent, settlement, faction);
-
-    }
-
 }

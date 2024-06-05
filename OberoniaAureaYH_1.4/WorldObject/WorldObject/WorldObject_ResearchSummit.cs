@@ -12,6 +12,7 @@ using Verse;
 namespace OberoniaAurea;
 
 //大地图事件点：科研峰会
+[StaticConstructorOnStartup]
 public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
 {
     private static readonly float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
@@ -24,8 +25,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
 
     private static readonly IntRange ScholarGiftValue = new(1000, 3000);
 
-    private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
-
+    private static readonly List<Pair<Action, float>> tmpPossibleOutcomesI = [];
+    private static readonly List<Pair<Action, float>> tmpPossibleOutcomesII = [];
     protected static ResearchManager Manager => Find.ResearchManager;
     private static readonly BindingFlags BindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
@@ -38,7 +39,22 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             return;
         }
         float researchSpeed = pawn.GetStatValue(StatDefOf.ResearchSpeed);
-
+        MainOutcome(researchSpeed, caravan);
+        EatChanwu(caravan);
+        AffectFactionGoodwill(base.Faction, participantFactions);
+        GetPossibleOutcomesI(researchSpeed, caravan);
+        GetPossibleOutcomesII();
+        pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
+        Fair(this.Tile);
+        if (Rand.Chance(AcademicDisputeFactor))
+        {
+            AcademicDispute(this.Tile);
+        }
+        QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
+        Destroy();
+    }
+    private void MainOutcome(float researchSpeed, Caravan caravan)
+    {
         if (researchSpeed > TriumphNeedSpeed)
         {
             Outcome_Triumph(caravan);
@@ -63,16 +79,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             Outcome_Disaster(caravan);
         }
-        EatChanwu(caravan);
-        GetPossibleOutcomes(researchSpeed, caravan);
-        AffectFactionGoodwill(base.Faction, participantFactions);
-        pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
-        if (Rand.Chance(AcademicDisputeFactor))
-        {
-            AcademicDispute(this.Tile);
-        }
-        QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
-        Destroy();
     }
     private static void EatChanwu(Caravan caravan) //补满饥饿，获得吃花糕心情
     {
@@ -82,7 +88,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         else
         {
-            ThoughtDef thoughtDef = OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
+            ThoughtDef thoughtDef = OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
             foreach (Pawn pawn in caravan.PawnsListForReading)
             {
                 if (pawn.needs.food != null)
@@ -93,54 +99,99 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
     }
-    private void GetPossibleOutcomes(float researchSpeed, Caravan caravan)
+    private static void Fair(int parentTile) //集市
     {
-        tmpPossibleOutcomes.Clear();
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        List<int> neighborTiles = [];
+        int tile = OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile);
+        if (tile == -1 && !TileFinder.TryFindNewSiteTile(out tile))
+        {
+            tile = parentTile;
+        }
+        ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_Fair);
+        worldObject.Tile = tile;
+        worldObject.innerTrader = ResearchSummit_Fair.GenerateFairTrader(tile);
+        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
+        timeComp?.StartTimeout(150000);
+        Find.WorldObjects.Add(worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Fair".Translate(), "OA_LetterResearchSummit_Fair".Translate(), LetterDefOf.PositiveEvent, worldObject);
+
+    }
+    private static void AcademicDispute(int parentTile) //学术约架
+    {
+        List<int> neighborTiles = [];
+        int tile = OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile);
+        if (tile == -1 && !TileFinder.TryFindNewSiteTile(out tile))
+        {
+            tile = parentTile;
+        }
+        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
+        worldObject.Tile = tile;
+        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
+        timeComp?.StartTimeout(120000);
+        Find.WorldObjects.Add(worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
+    }
+    private void GetPossibleOutcomesI(float researchSpeed, Caravan caravan)
+    {
+        tmpPossibleOutcomesI.Clear();
+        tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         { }, 60f));
         if (researchSpeed < BackfireNeedSpeed)
         {
             Faction fVar = participantFactions.RandomElement();
             if (fVar != null)
             {
-                tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+                tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
                     SamePeople(fVar);
                 }, 45f));
             }
         }
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
             Bonus(caravan, base.Faction);
         }, 20f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
             ResearcherGift(caravan, associateWorldObject, base.Faction);
         }, 30f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
             ResearcherSite(this.Tile);
         }, 20f));
         if (researchSpeed > NormalNeedSpeed)
         {
-            tmpPossibleOutcomes.Add(new Pair<Action, float>(ResearcherVisit, 30f));
+            tmpPossibleOutcomesI.Add(new Pair<Action, float>(ResearcherVisit, 30f));
         }
         if (researchSpeed > SuccessNeedSpeed)
         {
             Faction fVar = participantFactions.Where(f => f.HostileTo(Faction.OfPlayer)).RandomElementWithFallback(null);
             if (fVar != null)
             {
-                tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+                tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
                     ResearcherPeacetalk(fVar);
                 }, 30f));
             }
-            tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+            tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
             {
                 ScholarGift(caravan);
             }, 30f));
         }
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesI.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+    }
+    private void GetPossibleOutcomesII()
+    {
+        tmpPossibleOutcomesII.Clear();
+        tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
+        {
+            MysteriousTrader(this.Tile);
+        }, 35f));
+        tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
+        {
+            AssistWork(this.Tile);
+        }, 35f));
+        tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
     {
@@ -154,7 +205,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
@@ -165,8 +216,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB, 10);
-        things.Add(ThingMaker.MakeThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Tea));
+        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        things.Add(ThingMaker.MakeThing(OA_ThingDefOf.Oberonia_Aurea_Tea));
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -175,48 +226,22 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     }
     private static void ResearcherSite(int parentTile) //无势力学者们的住宿点
     {
-
-        int tile = GetTile(parentTile);
-        Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OberoniaAureaYHDefOf.OA_RK_ResearcherCamp, tile, faction);
+        WorldObjectsHolder worldObjects = Find.WorldObjects;
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
+        {
+            tile = parentTile;
+        }
+        //Faction faction = ResearcherCampComp.GenerateTempCampFaction();
+        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, null);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
-        Find.WorldObjects.Add(camp);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherSite".Translate(), "OA_LetterResearchSummit_ResearcherSite".Translate(), LetterDefOf.PositiveEvent, camp, faction);
+        worldObjects.Add(camp);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherSite".Translate(), "OA_LetterResearchSummit_ResearcherSite".Translate(), LetterDefOf.PositiveEvent, camp);
 
-        static int GetTile(int pTile)
+        bool NoObjectAtTile(int t)
         {
-            List<int> parentNeighborTiles = [];
-            List<int> neighborTiles = [];
-            List<int> validNeighborTiles = [];
-            Find.WorldGrid.GetTileNeighbors(pTile, neighborTiles);
-            if (neighborTiles.Any())
-            {
-                WorldObjectsHolder worldObjects = Find.WorldObjects;
-                foreach (int tile1 in neighborTiles)
-                {
-                    parentNeighborTiles.Clear();
-                    Find.WorldGrid.GetTileNeighbors(tile1, parentNeighborTiles);
-                    foreach (int tile2 in parentNeighborTiles)
-                    {
-                        if (!worldObjects.AnyWorldObjectAt(tile2))
-                        {
-                            return tile2;
-                        }
-                    }
-                    if (!worldObjects.AnyWorldObjectAt(tile1))
-                    {
-                        validNeighborTiles.Add(tile1);
-                    }
-                }
-
-                return validNeighborTiles.Any() ? validNeighborTiles.RandomElement() : pTile;
-            }
-            else
-            {
-                return pTile;
-            }
+            return !worldObjects.AnyWorldObjectAt(t);
         }
     }
     private static void ResearcherVisit() //无势力学者的访问
@@ -258,33 +283,33 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ScholarGift".Translate(), "OA_LetterResearchSummit_ScholarGift".Translate(), LetterDefOf.PositiveEvent, caravan);
     }
-    private static void AcademicDispute(int parentTile)
+    private static void MysteriousTrader(int parentTile) //神秘商人
     {
-        List<int> neighborTiles = [];
-        int tile = -1;
-        Find.WorldGrid.GetTileNeighbors(parentTile, neighborTiles);
-        if (neighborTiles.Any())
-        {
-            WorldObjectsHolder worldObjects = Find.WorldObjects;
-            foreach (int item in neighborTiles)
-            {
-                if (!worldObjects.AnyWorldObjectAt(item))
-                {
-                    tile = item;
-                    break;
-                }
-            }
-        }
-        if(tile == -1)
+        WorldObjectsHolder worldObjects = Find.WorldObjects;
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
         {
             tile = parentTile;
         }
-        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OberoniaAureaYHDefOf.OA_RK_AcademicDispute);
+        ResearchSummit_MysteriousTrader worldObject = (ResearchSummit_MysteriousTrader)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_MysteriousTrader);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
-        timeComp?.StartTimeout(120000);
+        timeComp?.StartTimeout(60000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelAcademicDispute".Translate(), "OA_LetterAcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
+
+        bool NoObjectAtTile(int t)
+        {
+            return !worldObjects.AnyWorldObjectAt(t);
+        }
+    }
+    private static void AssistWork(int tile) //协助者募集点
+    {
+        ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
+        worldObject.Tile = tile;
+        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
+        timeComp?.StartTimeout(180000);
+        Find.WorldObjects.Add(worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AssistWork".Translate(), "OA_LetterResearchSummit_AssistWork".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
     {
@@ -397,6 +422,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         SetProjectProgress(progress);
     }
+
     private string GetLetterText(string baseText, Caravan caravan, float amout, List<ResearchProjectDef> availableResearch)
     {
         StringBuilder sb = new(baseText);

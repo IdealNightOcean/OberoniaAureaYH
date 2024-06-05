@@ -25,7 +25,6 @@ public static class MakeRecipeProducts_Patch
         }
     }
 
-
     private static bool AffectedBySpecialFacility(ThingWithComps building)
     {
         CompAffectedByFacilities compABF = building?.GetComp<CompAffectedByFacilities>();
@@ -35,7 +34,7 @@ public static class MakeRecipeProducts_Patch
         }
         foreach (Thing facility in compABF.LinkedFacilitiesListForReading)
         {
-            if (facility.def == OberoniaAureaYHDefOf.OA_RK_Cloth_Processing_B)
+            if (facility.def == OA_ThingDefOf.OA_RK_Cloth_Processing_B)
             {
                 return true;
             }

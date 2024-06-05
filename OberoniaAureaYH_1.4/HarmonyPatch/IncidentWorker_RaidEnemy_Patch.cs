@@ -17,8 +17,7 @@ public static class TryExecuteWorker_Patch
         }
         if (parms.target is Map map && map.GameConditionManager.ConditionIsActive(OberoniaAureaYHDefOf.OA_MilitaryDeployment))
         {
-            Faction faction = Find.FactionManager.FirstFactionOfDef(OberoniaAureaYHDefOf.OA_RK_Faction);
-            OberoniaAureaYHUtility.CallForAidFixedPoints(map, faction, 4500f);
+            OberoniaAureaYHUtility.CallForAidFixedPoints(map, OberoniaAureaYHUtility.OAFaction, 4500f);
         }
     }
 }

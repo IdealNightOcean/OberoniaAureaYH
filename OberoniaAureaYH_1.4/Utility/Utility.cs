@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,16 +11,10 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public static class OberoniaAureaYHUtility
 {
-
     public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OberoniaAureaYHDefOf.OA_RK_Faction);
+
     public static GameComponent_OberoniaAurea OA_GCOA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
-    public static DiaOption OKToRoot(Faction faction, Pawn negotiator) //返回通讯台派系通讯初始界面
-    {
-        return new DiaOption("OK".Translate())
-        {
-            linkLateBind = FactionDialogMaker.ResetToRoot(faction, negotiator)
-        };
-    }
+
     public static List<Thing> TryGenerateThing(ThingDef def, int count)
     {
         List<Thing> list = [];
@@ -34,6 +29,7 @@ public static class OberoniaAureaYHUtility
         }
         return list;
     }
+
     public static List<List<Thing>> TryGengrateThingGroup(ThingDef def, int count)
     {
         List<List<Thing>> lists = [];
@@ -46,6 +42,7 @@ public static class OberoniaAureaYHUtility
         }
         return lists;
     }
+
     public static int AmountSendable(Map map, ThingDef def) //获取信标附近def物品数
     {
         return (from t in TradeUtility.AllLaunchableThingsForTrade(map)
@@ -93,39 +90,32 @@ public static class OberoniaAureaYHUtility
         }
     }
 
-    public static IEnumerable<BodyPartRecord> HittablePartsViolence(Pawn pawn)
+    public static int GetAvailableNeighborTile(int rootTile, bool exclusion = true)
     {
-        HediffSet hediffSet = pawn.health.hediffSet;
-        return from x in hediffSet.GetNotMissingParts()
-               where x.depth == BodyPartDepth.Outside || (x.depth == BodyPartDepth.Inside && x.def.IsSolid(x, hediffSet.hediffs))
-               where !pawn.health.hediffSet.hediffs.Any((Hediff y) => y.Part == x && y.CurStage != null && y.CurStage.partEfficiencyOffset < 0f)
-               select x;
-    }
-
-    public static bool HealthyPawn(Pawn pawn) //判断一个Pawn是否健康
-    {
-        if (pawn.Destroyed || pawn.InMentalState)
+        List<int> allNeighborTiles = [];
+        int tile = -1;
+        Find.WorldGrid.GetTileNeighbors(rootTile, allNeighborTiles);
+        var neighborTiles = allNeighborTiles.Where(t => !Find.World.Impassable(t));
+        if (neighborTiles.Any())
         {
-            return false;
+            if (exclusion)
+            {
+                WorldObjectsHolder worldObjects = Find.WorldObjects;
+                foreach (int item in neighborTiles)
+                {
+                    if (!worldObjects.AnyWorldObjectAt(item))
+                    {
+                        tile = item;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                tile = neighborTiles.RandomElement();
+            }
         }
-        HediffSet pawnHediffSet = pawn.health.hediffSet;
-        if (pawnHediffSet == null) //没有健康状态属性那肯定是健康的（确信）
-        {
-            return true;
-        }
-        if (pawnHediffSet.BleedRateTotal > 0.001f)
-        {
-            return false;
-        }
-        if (pawnHediffSet.HasHediff(OberoniaAureaYHDefOf.OA_RK_SeriousInjuryI) || pawnHediffSet.HasHediff(OberoniaAureaYHDefOf.OA_RK_SeriousInjuryII))
-        {
-            return false;
-        }
-        if (pawnHediffSet.HasNaturallyHealingInjury())
-        {
-            return false;
-        }
-        return true;
+        return tile;
     }
 }
 

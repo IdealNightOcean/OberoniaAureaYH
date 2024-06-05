@@ -5,6 +5,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
+//科研峰会 - 同道中人
 public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_SinglePawnJoin
 {
     private static readonly int TimeoutTicks = 60000;

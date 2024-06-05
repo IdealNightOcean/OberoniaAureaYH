@@ -22,7 +22,7 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelVisitAcademicDispute".Translate(), "OA_LetterVisitAcademicDispute".Translate(1000f, silverNum), LetterDefOf.PositiveEvent, caravan);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelVisit_RSAcademicDispute".Translate(), "OA_LetterVisit_RSAcademicDispute".Translate(1000f, silverNum), LetterDefOf.PositiveEvent, caravan);
         Destroy();
     }
 
@@ -32,7 +32,7 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
         {
             yield return floatMenuOption;
         }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_VisitAcademicDispute".Translate(this.Label)))
+        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSAcademicDispute".Translate(this.Label)))
         {
             yield return floatMenuOption2;
         }

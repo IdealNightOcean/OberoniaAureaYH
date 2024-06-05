@@ -7,6 +7,17 @@ namespace OberoniaAurea;
 public abstract class WorldObject_InteractiveBase : WorldObject
 {
     protected WorldObject associateWorldObject;
+    public WorldObject AssociateWorldObject
+    {
+        get { return associateWorldObject; }
+        set
+        {
+            if (value != null)
+            {
+                associateWorldObject = value;
+            }
+        }
+    }
     private Material cachedMat;
     public override Material Material
     {
@@ -19,15 +30,7 @@ public abstract class WorldObject_InteractiveBase : WorldObject
             return cachedMat;
         }
     }
-
-    public void SetAssociateWorldObject(WorldObject worldObject)
-    {
-        if (worldObject != null)
-        {
-            associateWorldObject = worldObject;
-        }
-    }
-    public abstract void Notify_CaravanArrived(Caravan caravan);
+    public virtual void Notify_CaravanArrived(Caravan caravan) { }
 
     public override void ExposeData()
     {

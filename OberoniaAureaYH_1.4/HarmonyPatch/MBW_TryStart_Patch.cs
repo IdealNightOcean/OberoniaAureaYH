@@ -38,14 +38,14 @@ public static class MBW_TryStart_Patch
         if (Rand.Bool)
         {
             //拥有责任感的心情修正的情况下再次崩溃不会触发判定
-            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OberoniaAureaYHDefOf.OA_RK_ResponsibilityConstraints);
+            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OA_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
             if (tm != null)
             {
                 return;
             }
             pawn.mindState.mentalStateHandler.Reset();
             Messages.Message("OA_ResponsibilityConstraints".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
-            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OberoniaAureaYHDefOf.OA_RK_ResponsibilityConstraints);
+            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OA_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
         }
     }
     private static void MentalBreakProbability_Atonement(Pawn pawn)
@@ -54,14 +54,14 @@ public static class MBW_TryStart_Patch
         if (Rand.Value < 0.8)
         {
             // 拥有赎罪的心情修正的情况下再次崩溃不会触发判定
-            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OberoniaAureaYHDefOf.OA_RK_Atonement);
+            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OA_PawnInfoDefOf.OA_RK_Atonement);
             if (tm != null)
             {
                 return;
             }
             pawn.mindState.mentalStateHandler.Reset();
             Messages.Message("OA_Atonement".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
-            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OberoniaAureaYHDefOf.OA_RK_Atonement);
+            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OA_PawnInfoDefOf.OA_RK_Atonement);
         }
 
     }
