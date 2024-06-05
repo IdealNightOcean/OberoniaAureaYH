@@ -72,7 +72,6 @@
     <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_ResearchSummitTravels.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
@@ -101,7 +100,7 @@
     <Compile Include="Misc\WorkGiver_CircuitRegulator.cs" />
     <Compile Include="Misc\Gizmo_CircuitRegulator.cs" />
     <Compile Include="Misc\MapComponent.cs" />
-    <Compile Include="Misc\DefOf.cs" />
+    <Compile Include="Utility\DefOf.cs" />
     <Compile Include="Misc\DiaBuyableTechPrintDef.cs" />
     <Compile Include="Misc\GameComponent.cs" />
     <Compile Include="Comps\HediffComp_GiveHediffWhenRemoved.cs" />

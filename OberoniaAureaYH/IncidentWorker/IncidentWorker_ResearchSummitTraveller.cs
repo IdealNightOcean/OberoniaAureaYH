@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -9,7 +10,6 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGroup
 {
-    protected override PawnGroupKindDef PawnGroupKindDef => base.PawnGroupKindDef;
     protected static readonly TraderKindDef TraderKindDef = OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
     protected static readonly StandalonePawnGroupMakerDef PawnGroupMakerDef = OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker;
 
@@ -23,12 +23,30 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         new CurvePoint(500f, 0f)
     ];
 
-    protected virtual LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
+    protected LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
     {
         RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out var result);
         return new LordJob_VisitColony(parms.faction, result);
     }
+    protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+    {
+        if (f.IsPlayer || f.defeated || f.temporary || f.Hidden)
+        {
+            return false;
+        }
 
+        if (f.HostileTo(Faction.OfPlayer))
+        {
+            return false;
+        }
+
+        if (!desperate && (!f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) || !f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp)))
+        {
+            return false;
+        }
+
+        return !NeutralGroupIncidentUtility.AnyBlockingHostileLord(map, f);
+    }
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
         Map map = (Map)parms.target;
@@ -36,6 +54,11 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         {
             return false;
         }
+        if (!TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit))
+        {
+            return false;
+        }
+        Settlement settlement = (Settlement)researchSummit.AssociateWorldObject;
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
         if (!PawnGroupUtility.TryGetRandomPawnGroupMaker(groupMakerParms, PawnGroupMakerDef, out PawnGroupMaker groupMaker))
         {
@@ -47,38 +70,11 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
             return false;
         }
         LordMaker.MakeNewLord(parms.faction, CreateLordJob(parms, list), map, list);
-        bool traderExists = false;
-        if (Rand.Value < 0.75f)
-        {
-            traderExists = TryConvertOnePawnToSmallTrader(list, map, parms);
-        }
+        bool traderExists = TryConvertOnePawnToSmallTrader(list, map, parms);
         Pawn leader = list.Find((Pawn x) => parms.faction.leader == x);
-        SendLetter(parms, list, leader, traderExists);
+        Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), MessageTypeDefOf.NeutralEvent);
         return true;
     }
-
-    protected virtual void SendLetter(IncidentParms parms, List<Pawn> pawns, Pawn leader, bool traderExists)
-    {
-        TaggedString letterLabel;
-        TaggedString letterText;
-        if (pawns.Count == 1)
-        {
-            TaggedString taggedString = (traderExists ? ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0])) : ((TaggedString)""));
-            TaggedString taggedString2 = ((leader != null) ? ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0])) : ((TaggedString)""));
-            letterLabel = "LetterLabelSingleVisitorArrives".Translate();
-            letterText = "SingleVisitorArrives".Translate(pawns[0].story.Title, parms.faction.NameColored, pawns[0].Name.ToStringFull, taggedString, taggedString2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
-        }
-        else
-        {
-            TaggedString taggedString3 = (traderExists ? ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate()) : TaggedString.Empty);
-            TaggedString taggedString4 = ((leader != null) ? ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader)) : TaggedString.Empty);
-            letterLabel = "LetterLabelGroupVisitorsArrive".Translate();
-            letterText = "GroupVisitorsArrive".Translate(parms.faction.NameColored, taggedString3, taggedString4);
-        }
-        PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref letterLabel, ref letterText, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), informEvenIfSeenBefore: true);
-        SendStandardLetter(letterLabel, letterText, LetterDefOf.NeutralEvent, parms, pawns[0]);
-    }
-
     protected override void ResolveParmsPoints(IncidentParms parms)
     {
         if (!(parms.points >= 0f))

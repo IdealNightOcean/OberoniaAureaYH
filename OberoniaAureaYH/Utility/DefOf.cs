@@ -22,8 +22,8 @@ public static class OberoniaAureaYHDefOf
 
     public static QuestScriptDef OA_OpportunitySite_MultiPartyTalks; //多方会谈
     public static QuestScriptDef OA_OpportunitySite_PunishmentExecutor; //惩戒的执行者
-    public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //研究峰会 - 同道中人
-    public static QuestScriptDef OA_ResearcherVisit;  //研究峰会 - 无势力学者的访问
+    public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //科研峰会：同道中人
+    public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
 
     //public static RaidStrategyDef OA_RK_DropAttack;
 
@@ -75,13 +75,12 @@ public static class OA_PawnGenerateDefOf
     public static PawnKindDef OA_RK_Traveller;
 
     public static PawnGroupKindDef OA_Rk_LargeScaleTrader;
-    public static PawnGroupKindDef OA_ResearchSummit_TravellerGroup;
 
     public static StandalonePawnGroupMakerDef OA_ResearchSummit_TravellerMaker;
 
     public static TraderKindDef OA_RK_Caravan_TributeCollector; //物质征募队
-    public static TraderKindDef OA_ResearchSummit_FairTrader; //科研峰会 - 集市商人
-    public static TraderKindDef OA_ResearchSummit_TravellerTrader; //科研峰会 - 参会旅行者
+    public static TraderKindDef OA_ResearchSummit_FairTrader; //科研峰会：集市商人
+    public static TraderKindDef OA_ResearchSummit_TravellerTrader; //科研峰会：参会旅行者
 
     static OA_PawnGenerateDefOf()
     {
@@ -89,14 +88,13 @@ public static class OA_PawnGenerateDefOf
     }
 }
 
-
 [DefOf]
 public static class OA_WorldObjectDefOf
 {
-    public static SitePartDef OA_RK_ResearcherCamp; //研究者据点Comp
+    public static SitePartDef OA_RK_ResearcherCamp; //科研峰会：落脚点
 
-    public static WorldObjectDef OA_RK_ResearchSummit; //研究峰会
-    public static WorldObjectDef OA_ResearchSummit_AcademicDispute; //学术约架
+    public static WorldObjectDef OA_RK_ResearchSummit; //科研峰会
+    public static WorldObjectDef OA_ResearchSummit_AcademicDispute; //科研峰会：约架
     public static WorldObjectDef OA_ResearchSummit_Fair;
     public static WorldObjectDef OA_ResearchSummit_MysteriousTrader;
     public static WorldObjectDef OA_ResearchSummit_AssistWork;
