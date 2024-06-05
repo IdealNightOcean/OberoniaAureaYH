@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Comps\CompCircuitRegulator.cs" />
     <Compile Include="Comps\HediffComp_GiveHediffWhenRemoved.cs" />
+    <Compile Include="Comps\HeiffComp_ExtraStun.cs" />
     <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
     <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Equipment\PortableCommsConsole.cs" />
