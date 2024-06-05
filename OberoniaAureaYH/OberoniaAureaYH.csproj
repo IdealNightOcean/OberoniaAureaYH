@@ -68,6 +68,7 @@
     <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
+    <Compile Include="Comps\HeiffComp_ExtraStun.cs" />
     <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
