@@ -15,7 +15,10 @@ public class PatchMain
 	{
 		get
 		{
-			harmonyInstance ??= new Harmony("OberoniaAurea_Harmony");
+			if (harmonyInstance == null)
+			{
+				harmonyInstance = new Harmony("OberoniaAurea_Harmony");
+			}
 			return harmonyInstance;
 		}
 	}

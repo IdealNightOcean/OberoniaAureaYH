@@ -15,7 +15,7 @@ public class Verb_Static : Verb
 
 	protected override bool TryCastShot()
 	{
-		if (base.ReloadableCompSource != null && base.ReloadableCompSource.CanBeUsed(out string _) && CastShot())
+		if (base.ReloadableCompSource != null && base.ReloadableCompSource.CanBeUsed(out var _) && CastShot())
 		{
 			base.ReloadableCompSource.UsedOnce();
 			return true;

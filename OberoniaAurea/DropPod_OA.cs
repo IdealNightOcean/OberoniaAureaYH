@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -40,7 +39,7 @@ public class DropPod_OA : Skyfaller, IActiveDropPod, IThingHolder
 		}
 		FleckMaker.ThrowLightningGlow(base.Position.ToVector3Shifted(), base.Map, 2f);
 		GenClamor.DoClamor(this, 15f, ClamorDefOf.Impact);
-		GenExplosion.DoExplosion(base.Position, base.Map, 2.9f, DamageDefOf.Smoke, (Thing)null, -1, -1f, (SoundDef)null, (ThingDef)null, (ThingDef)null, (Thing)null, (ThingDef)null, 0f, 1, (GasType?)GasType.BlindSmoke, false, (ThingDef)null, 0f, 1, 0f, false, (float?)null, (List<Thing>)null, (FloatRange?)null, true, 1f, 0f, true, (ThingDef)null, 1f);
+		GenExplosion.DoExplosion(base.Position, base.Map, 2.9f, DamageDefOf.Smoke, null, -1, -1f, null, null, null, null, null, 0f, 1, GasType.BlindSmoke);
 		base.Impact();
 	}
 }

@@ -7,10 +7,10 @@ public class ThoughtWorker_TraitOpinion_D : ThoughtWorker
 {
 	protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
 	{
-		if(!ModsConfig.IdeologyActive)
+		if (!ModsConfig.IdeologyActive)
 		{
-            return false;
-        }
+			return false;
+		}
 		if (other.RaceProps.Humanlike && RelationsUtility.PawnsKnowEachOther(pawn, other))
 		{
 			Ideo ideo = pawn.Ideo;

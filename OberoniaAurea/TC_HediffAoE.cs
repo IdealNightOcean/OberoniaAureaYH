@@ -57,8 +57,6 @@ public class TC_HediffAoE : ThingComp
 
 	public override void PostDraw()
 	{
-		//IL_004f: Unknown result type (might be due to invalid IL or missing references)
-		//IL_005a: Unknown result type (might be due to invalid IL or missing references)
 		if (!Find.Selector.SelectedObjectsListForReading.Contains(parent))
 		{
 			return;

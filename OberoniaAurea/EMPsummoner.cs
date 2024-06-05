@@ -12,11 +12,11 @@ public class EMPsummoner : Apparel
 		Thing launcher = impactData.bullet.Launcher;
 		if (wearer != null && !wearer.Dead && launcher != null && launcher.HostileTo(base.Wearer) && !wearer.IsColonist && wearer.Spawned && (launcher is Building || (launcher is Pawn pawn && pawn.RaceProps.IsMechanoid)))
 		{
-			Verb verb = ((Thing)this).TryGetComp<CompApparelReloadable>().AllVerbs[0];
+			Verb verb = this.TryGetComp<CompApparelReloadable>().AllVerbs[0];
 			if (verb != null && verb.Available() && verb.ValidateTarget(launcher))
 			{
 				Job job = JobMaker.MakeJob(JobDefOf.UseVerbOnThingStatic, launcher);
-				job.verbToUse = ((Thing)this).TryGetComp<CompApparelReloadable>().AllVerbs[0];
+				job.verbToUse = this.TryGetComp<CompApparelReloadable>().AllVerbs[0];
 				wearer.jobs.TryTakeOrderedJob(job, JobTag.Misc);
 			}
 		}
