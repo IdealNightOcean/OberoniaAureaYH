@@ -10,7 +10,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public static SimpleTrader GenerateFairTrader(int tile)
     {
-        SimpleTrader trader = new(OberoniaAureaYHDefOf.OA_ResearchSummit_FairTrader)
+        SimpleTrader trader = new(OA_PawnGenerateDefOf.OA_ResearchSummit_FairTrader)
         {
             WasAnnounced = false
         };

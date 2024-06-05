@@ -69,7 +69,7 @@ public static class FactionDialogFor_Patch
         diaOption.action = CallTrader;
         diaOption.link = new DiaNode("OA_CallForLargeScaleTradeConfirm".Translate(faction.leader).CapitalizeFirst())
         {
-            options = { OberoniaAureaYHUtility.OKToRoot(faction, negotiator) }
+            options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
         };
 
         return diaOption;
@@ -103,7 +103,7 @@ public static class FactionDialogFor_Patch
             string cdConfirmStr = "OA_SponsorThanksAgain".Translate(faction.leader).CapitalizeFirst();
             diaOption.link = new DiaNode(cdConfirmStr)
             {
-                options = { OberoniaAureaYHUtility.OKToRoot(faction, negotiator) }
+                options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
             };
             return diaOption;
         }
@@ -144,7 +144,7 @@ public static class FactionDialogFor_Patch
                 },
                 link = new DiaNode(confirmSb.ToString())
                 {
-                    options = { OberoniaAureaYHUtility.OKToRoot(faction, negotiator) }
+                    options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
             if (OberoniaAureaYHUtility.AmountSendable(map, RimWorld.ThingDefOf.Silver) < needSilver)
@@ -219,7 +219,7 @@ public static class FactionDialogFor_Patch
                 },
                 link = new DiaNode(confirmStr)
                 {
-                    options = { OberoniaAureaYHUtility.OKToRoot(faction, negotiator) }
+                    options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
             if (OberoniaAureaYHUtility.AmountSendable(map, RimWorld.ThingDefOf.Silver) < dbtpDef.price)
@@ -377,7 +377,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
                 action = diaAaction,
                 link = new DiaNode(confirmsStr.Translate(faction.leader).CapitalizeFirst())
                 {
-                    options = { OberoniaAureaYHUtility.OKToRoot(faction, negotiator) }
+                    options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
             if (allianceDuration < needAD)
@@ -397,8 +397,8 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int count = Mathf.Min(pawnNum * preCount, maxCount);
         if (count > 0)
         {
-            List<Thing> dropThings = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.MealSurvivalPack, count);
-            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, RimWorld.ThingDefOf.MealSurvivalPack.size);
+            List<Thing> dropThings = OberoniaAureaYHUtility.TryGenerateThing(ThingDefOf.MealSurvivalPack, count);
+            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.MealSurvivalPack.size);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
@@ -406,9 +406,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     private static void CallEmergencyMedicine(Map map, Faction faction)
     {
         List<List<Thing>> dropThings = [];
-        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_F, 10));
-        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_G, 10));
-        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.MedicineIndustrial, 20));
+        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
+        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
+        dropThings.Add(OberoniaAureaYHUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, new IntVec2(2, 2));
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named("FACTION")), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
@@ -417,8 +417,8 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         if (count > 0)
         {
-            List<Thing> dropThings = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, count);
-            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, RimWorld.ThingDefOf.Silver.size);
+            List<Thing> dropThings = OberoniaAureaYHUtility.TryGenerateThing(ThingDefOf.Silver, count);
+            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.Silver.size);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
@@ -452,7 +452,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         {
             target = map,
             faction = faction,
-            traderKind = OberoniaAureaYHDefOf.OA_RK_Caravan_TributeCollector,
+            traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
             forced = true
         };
         Find.Storyteller.incidentQueue.Add(incidentDef, Find.TickManager.TicksGame + 120000, parms, 240000);

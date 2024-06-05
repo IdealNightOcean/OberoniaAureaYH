@@ -55,6 +55,7 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     }
 }
 
+[StaticConstructorOnStartup]
 public static class DiplomaticSummitUtility
 {
     public static readonly Dictionary<NegotiatingTeamLevel, float> NegotiatingTeamLevelWeight = new()

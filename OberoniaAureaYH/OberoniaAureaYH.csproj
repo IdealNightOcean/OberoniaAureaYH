@@ -69,9 +69,13 @@
     <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
+    <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_ResearchSummitTravels.cs" />
+    <Compile Include="Utility\FactionDialogUtility.cs" />
+    <Compile Include="Utility\PawnGroupUtility.cs" />
+    <Compile Include="Utility\Utility.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_SettlementDip.cs" />
@@ -105,7 +109,6 @@
     <Compile Include="Misc\PawnGroupKindWorker_ResearchRaid.cs" />
     <Compile Include="Misc\PlaceWorker_ShowFacilityRadius.cs" />
     <Compile Include="Equipment\PortableCommsConsole.cs" />
-    <Compile Include="Misc\Utility.cs" />
     <Compile Include="Misc\Verb_TargetCellAid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARefugeeInteractions.cs" />

@@ -128,7 +128,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     protected static void SupplyFood(FixedCaravan_ResearchSummitAssistWork assistWorkCaravan) //给予当天的食物
     {
-        ThingDef foodDef = Rand.Bool ? RimWorld.ThingDefOf.MealFine : OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB;
+        ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
         List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         foreach (Thing t in things)
         {

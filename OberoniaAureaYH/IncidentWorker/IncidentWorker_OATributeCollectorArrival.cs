@@ -19,7 +19,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
             return false;
         }
         parms.faction = OAFaction;
-        parms.traderKind = OberoniaAureaYHDefOf.OA_RK_Caravan_TributeCollector;
+        parms.traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector;
         return true;
     }
 

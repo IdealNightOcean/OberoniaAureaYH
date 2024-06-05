@@ -13,7 +13,7 @@ public class ThoughtWorker_Gene_ColdAdaptation : ThoughtWorker
             return ThoughtState.Inactive;
         }
 
-        if (p.genes.HasGene(OberoniaAureaYHDefOf.OA_RK_Gene_ColdAdaptation))
+        if (p.genes.HasGene(OA_PawnInfoDefOf.OA_RK_Gene_ColdAdaptation))
         {
             float statValue = p.GetStatValue(StatDefOf.ComfyTemperatureMin);
             float ambientTemperature = p.AmbientTemperature;

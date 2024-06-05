@@ -31,7 +31,6 @@ public class QuestNode_ResearchSummitTravels : QuestNode_Incident
             target = target,
             points = points,
             faction = Find.FactionManager.RandomNonHostileFaction(allowNonHumanlike: false),
-            traderKind = OberoniaAureaYHDefOf.OA_ResearchSummit_Traveller,
         };
         if (!customLetterLabel.GetValue(slate).NullOrEmpty() || customLetterLabelRules.GetValue(slate) != null)
         {

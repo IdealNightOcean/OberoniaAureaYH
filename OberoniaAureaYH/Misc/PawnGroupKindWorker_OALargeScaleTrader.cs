@@ -73,7 +73,6 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         }
     }
 
-
     //下面三个不重要，是因为泰南用了private才复制过来的
     protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {

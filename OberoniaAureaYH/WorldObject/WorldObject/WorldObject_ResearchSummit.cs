@@ -11,6 +11,7 @@ using Verse;
 namespace OberoniaAurea;
 
 //大地图事件点：科研峰会
+[StaticConstructorOnStartup]
 public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
 {
     private static readonly float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
@@ -84,7 +85,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         else
         {
-            ThoughtDef thoughtDef = OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
+            ThoughtDef thoughtDef = OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
             foreach (Pawn pawn in caravan.PawnsListForReading)
             {
                 if (pawn.needs.food != null)
@@ -201,7 +202,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
@@ -219,8 +220,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Chanwu_AB, 10);
-        things.Add(ThingMaker.MakeThing(OberoniaAureaYHDefOf.Oberonia_Aurea_Tea));
+        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        things.Add(ThingMaker.MakeThing(OA_ThingDefOf.Oberonia_Aurea_Tea));
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -235,7 +236,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             tile = parentTile;
         }
         //Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OberoniaAureaYHDefOf.OA_RK_ResearcherCamp, tile, null);
+        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, null);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
