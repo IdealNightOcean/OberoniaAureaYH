@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -91,10 +92,9 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
     }
     protected static void BuyTech(Caravan caravan, List<ResearchProjectDef> availableResearch)
     {
-        ResearchManager researchManager = Find.ResearchManager;
         foreach (ResearchProjectDef projectDef in availableResearch)
         {
-            researchManager.FinishProject(projectDef, doCompletionDialog: true);
+            FinishProjectOnly(projectDef, doCompletionDialog: true);
         }
         int remaining = NeedSilver;
         List<Thing> list = CaravanInventoryUtility.TakeThings(caravan, delegate (Thing thing)
@@ -123,5 +123,87 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             return false;
         }
         return true;
+    }
+    private static void FinishProjectOnly(ResearchProjectDef proj, bool doCompletionDialog = false, Pawn researcher = null, bool doCompletionLetter = true)
+    {
+        ResearchManager researchManager = Find.ResearchManager;
+        int num = researchManager.GetTechprints(proj);
+        if (num < proj.TechprintCount)
+        {
+            researchManager.AddTechprints(proj, proj.TechprintCount - num);
+        }
+
+        if (proj.RequiredStudiedThingCount > 0)
+        {
+            for (int j = 0; j < proj.requiredStudied.Count; j++)
+            {
+                Find.StudyManager.SetStudied(proj.requiredStudied[j], 1f);
+            }
+        }
+
+        Dictionary<ResearchProjectDef, float> progress = ResearchUtility.GetProjectProgress();
+        progress[proj] = proj.baseCost;
+        ResearchUtility.SetProjectProgress(progress);
+        if (researcher != null)
+        {
+            TaleRecorder.RecordTale(TaleDefOf.FinishedResearchProject, researcher, proj);
+        }
+
+        researchManager.ReapplyAllMods();
+        if (proj.recalculatePower)
+        {
+            try
+            {
+                foreach (Map map in Find.Maps)
+                {
+                    foreach (Thing item in map.listerThings.ThingsInGroup(ThingRequestGroup.PowerTrader))
+                    {
+                        CompPowerTrader compPowerTrader;
+                        if ((compPowerTrader = item.TryGetComp<CompPowerTrader>()) != null)
+                        {
+                            compPowerTrader.SetUpPowerVars();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+            }
+        }
+
+        if (doCompletionDialog)
+        {
+            DiaNode diaNode = new((string)("ResearchFinished".Translate(proj.LabelCap) + "\n\n" + proj.description));
+            diaNode.options.Add(DiaOption.DefaultOK);
+            DiaOption diaOption = new("ResearchScreen".Translate())
+            {
+                resolveTree = true,
+                action = delegate
+                {
+                    Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Research);
+                }
+            };
+            diaNode.options.Add(diaOption);
+            Find.WindowStack.Add(new Dialog_NodeTree(diaNode, delayInteractivity: true));
+        }
+
+        if (doCompletionLetter && !proj.discoveredLetterTitle.NullOrEmpty() && Find.Storyteller.difficulty.AllowedBy(proj.discoveredLetterDisabledWhen))
+        {
+            Find.LetterStack.ReceiveLetter(proj.discoveredLetterTitle, proj.discoveredLetterText, LetterDefOf.NeutralEvent);
+        }
+
+        if (researchManager.currentProj == proj)
+        {
+            researchManager.currentProj = null;
+        }
+
+        foreach (Def unlockedDef in proj.UnlockedDefs)
+        {
+            if (unlockedDef is ThingDef thingDef)
+            {
+                thingDef.Notify_UnlockedByResearch();
+            }
+        }
     }
 }

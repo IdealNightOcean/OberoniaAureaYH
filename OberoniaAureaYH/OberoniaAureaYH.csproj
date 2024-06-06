@@ -75,6 +75,8 @@
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
+    <Compile Include="Utility\ReflectionUtility.cs" />
+    <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />

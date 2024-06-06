@@ -228,15 +228,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherSite(int parentTile) //无势力学者们的住宿点
+    private static void ResearcherSite(int parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
         if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
         {
             tile = parentTile;
         }
-        //Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, null);
+        Faction faction = ResearcherCampComp.GenerateTempCampFaction();
+        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);

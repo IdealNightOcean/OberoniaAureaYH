@@ -224,15 +224,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherSite(int parentTile) //无势力学者们的住宿点
+    private static void ResearcherSite(int parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
         if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
         {
             tile = parentTile;
         }
-        //Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, null);
+        Faction faction = ResearcherCampComp.GenerateTempCampFaction();
+        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
@@ -373,33 +373,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static List<ResearchProjectDef> AddResearchProgress(int conut, float amount)
     {
         List<ResearchProjectDef> availableResearch = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.baseCost > 0f && x.CanStartNow).Take(conut).ToList();
-        Dictionary<ResearchProjectDef, float> progress = GetProjectProgress();
+        Dictionary<ResearchProjectDef, float> progress = ResearchUtility.GetProjectProgress();
         foreach (ResearchProjectDef projectDef in availableResearch)
         {
             AddProgress(progress, projectDef, amount);
         }
-        SetProjectProgress(progress);
+        ResearchUtility.SetProjectProgress(progress);
         return availableResearch;
     }
-    public static Dictionary<ResearchProjectDef, float> GetProjectProgress()
-    {
-        ResearchManager manager = Manager;
-        object obj = manager?.GetType().GetField("progress", BindingAttr)?.GetValue(manager);
-        if (obj != null)
-        {
-            return obj as Dictionary<ResearchProjectDef, float>;
-        }
-        return null;
-    }
-    public static void SetProjectProgress(Dictionary<ResearchProjectDef, float> progress)
-    {
-        if (progress.NullOrEmpty())
-        {
-            return;
-        }
-        ResearchManager manager = Manager;
-        manager?.GetType().GetField("progress", BindingAttr)?.SetValue(manager, progress);
-    }
+
     public static void AddProgress(Dictionary<ResearchProjectDef, float> progress, ResearchProjectDef proj, float amount, Pawn source = null)
     {
         if (progress == null)
@@ -420,7 +402,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             Manager.FinishProject(proj, doCompletionDialog: true, source);
         }
-        SetProjectProgress(progress);
+        ResearchUtility.SetProjectProgress(progress);
     }
 
     private string GetLetterText(string baseText, Caravan caravan, float amout, List<ResearchProjectDef> availableResearch)
