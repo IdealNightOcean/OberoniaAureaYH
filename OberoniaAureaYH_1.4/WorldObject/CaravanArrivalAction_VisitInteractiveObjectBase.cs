@@ -47,7 +47,10 @@ public class CaravanArrivalAction_VisitInteractiveObject : CaravanArrivalAction
     {
         return CaravanArrivalActionUtility.GetFloatMenuOptions(() => CanVisit(worldObject), () => new CaravanArrivalAction_VisitInteractiveObject(worldObject), (label ?? "OA_VisitInteractiveObject").Translate(worldObject.Label), caravan, worldObject.Tile, worldObject);
     }
-
+    public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan, WorldObject_InteractiveBase worldObject, FloatMenuAcceptanceReport acceptanceReport, string label = null)
+    {
+        return CaravanArrivalActionUtility.GetFloatMenuOptions(() => acceptanceReport, () => new CaravanArrivalAction_VisitInteractiveObject(worldObject), (label ?? "OA_VisitInteractiveObject").Translate(worldObject.Label), caravan, worldObject.Tile, worldObject);
+    }
     public override void ExposeData()
     {
         base.ExposeData();
@@ -97,6 +100,10 @@ public class CaravanArrivalAction_VisitInteractiveObject_Muti : CaravanArrivalAc
     public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan, WorldObject_MutiInteractiveBase worldObject, int visitTypeInt, string label = null)
     {
         return CaravanArrivalActionUtility.GetFloatMenuOptions(() => CanVisit(worldObject), () => new CaravanArrivalAction_VisitInteractiveObject_Muti(worldObject, visitTypeInt), label ?? "OA_VisitInteractiveObject".Translate(worldObject.Label), caravan, worldObject.Tile, worldObject);
+    }
+    public static IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan, WorldObject_MutiInteractiveBase worldObject, int visitTypeInt, FloatMenuAcceptanceReport acceptanceReport, string label = null)
+    {
+        return CaravanArrivalActionUtility.GetFloatMenuOptions(() => acceptanceReport, () => new CaravanArrivalAction_VisitInteractiveObject_Muti(worldObject, visitTypeInt), label ?? "OA_VisitInteractiveObject".Translate(worldObject.Label), caravan, worldObject.Tile, worldObject);
     }
 
     public override void ExposeData()

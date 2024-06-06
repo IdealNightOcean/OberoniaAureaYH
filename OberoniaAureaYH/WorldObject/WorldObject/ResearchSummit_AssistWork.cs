@@ -48,13 +48,27 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
     {
         StartWork(caravan);
     }
+    private FloatMenuAcceptanceReport CanVisit()
+    {
+        if (!Spawned)
+        {
+            return false;
+        }
+        int remainingCoolingTick = RemainingCoolingTick;
+        if (remainingCoolingTick > 0)
+        {
+            return FloatMenuAcceptanceReport.WithFailReason("WaitTime".Translate(remainingCoolingTick.ToStringTicksToPeriod()));
+        }
+        return true;
+    }
+
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
     {
         foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
         {
             yield return floatMenuOption;
         }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
+        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, CanVisit()))
         {
             yield return floatMenuOption2;
         }

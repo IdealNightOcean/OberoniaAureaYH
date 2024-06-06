@@ -174,8 +174,9 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
         }
         Command_Action command_Convert = new()
         {
-            defaultLabel = "OA_CommmandConvertToCaravan".Translate(),
-            defaultDesc = "OA_CommmandConvertToCaravanDesc".Translate(),
+            defaultLabel = "CommandReformCaravan".Translate(),
+            defaultDesc = "CommandReformCaravanDesc".Translate(),
+            icon = FormCaravanComp.FormCaravanCommand,
             Disabled = (occupants.Count == 0),
             action = delegate
             {

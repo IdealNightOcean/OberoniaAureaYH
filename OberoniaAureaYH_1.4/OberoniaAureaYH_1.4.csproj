@@ -71,6 +71,7 @@
     <Compile Include="Equipment\ShotgunBullet.cs" />
     <Compile Include="Equipment\ShotgunExtension.cs" />
     <Compile Include="Equipment\Verb_BarrageEnhancedShoot.cs" />
+    <Compile Include="HarmonyPatch\CompBreakdownable_Patch.cs" />
     <Compile Include="HarmonyPatch\FactionDialogMaker_Patch.cs" />
     <Compile Include="HarmonyPatch\Faction_Patch.cs" />
     <Compile Include="HarmonyPatch\HarmonyPatch.cs" />

@@ -70,9 +70,10 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
             return false;
         }
         LordMaker.MakeNewLord(parms.faction, CreateLordJob(parms, list), map, list);
-        bool traderExists = TryConvertOnePawnToSmallTrader(list, map, parms);
-        Pawn leader = list.Find((Pawn x) => parms.faction.leader == x);
-        Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), MessageTypeDefOf.NeutralEvent);
+        if (TryConvertOnePawnToSmallTrader(list, map, parms, out Pawn trader))
+        {
+            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
+        }
         return true;
     }
     protected override void ResolveParmsPoints(IncidentParms parms)
@@ -94,12 +95,13 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         }
         return list;
     }
-    private bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Map map, IncidentParms parms)
+    private bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Map map, IncidentParms parms, out Pawn trader)
     {
         Faction faction = parms.faction;
         IEnumerable<Pawn> source = pawns.Where((Pawn p) => p.DevelopmentalStage.Adult());
         if (!source.Any())
         {
+            trader = null;
             return false;
         }
         Pawn pawn = source.RandomElement();
@@ -108,6 +110,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned: true);
         pawn.trader.traderKind = TraderKindDef;
         pawn.inventory.DestroyAll();
+        trader = pawn;
 
         ThingSetMakerParams parms2 = default;
         parms2.traderDef = TraderKindDef;
