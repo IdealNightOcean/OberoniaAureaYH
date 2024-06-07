@@ -62,11 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comps\CompCircuitRegulator.cs" />
-    <Compile Include="Comps\HediffComp_GiveHediffWhenRemoved.cs" />
-    <Compile Include="Comps\HeiffComp_ExtraStun.cs" />
+    <Compile Include="MiscComps\CompCircuitRegulator.cs" />
+    <Compile Include="MiscComps\HediffComp_GiveHediffWhenRemoved.cs" />
+    <Compile Include="MiscComps\HeiffComp_ExtraStun.cs" />
     <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
     <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
+    <Compile Include="Equipment\CompExtraAllDamageRelief.cs" />
+    <Compile Include="Equipment\CompIgnoreDamage.cs" />
     <Compile Include="Equipment\PortableCommsConsole.cs" />
     <Compile Include="Equipment\ShotgunBullet.cs" />
     <Compile Include="Equipment\ShotgunExtension.cs" />

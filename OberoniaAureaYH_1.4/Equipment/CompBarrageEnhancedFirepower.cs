@@ -12,7 +12,6 @@ public class CompProperties_BarrageEnhancedFirepower : CompProperties
     {
         compClass = typeof(CompBarrageEnhancedFirepower);
     }
-
 }
 
 public class CompBarrageEnhancedFirepower : ThingComp
