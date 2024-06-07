@@ -14,9 +14,10 @@ public class CompProperties_ExtraAllDamageRelief : CompProperties
 public class CompExtraAllDamageRelief : ThingComp
 {
     public CompProperties_ExtraAllDamageRelief Props => props as CompProperties_ExtraAllDamageRelief;
-    public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+
+    public override void PostPreApplyDamage(DamageInfo dinfo, out bool absorbed)
     {
-        base.PostPreApplyDamage(ref dinfo, out absorbed);
+        base.PostPreApplyDamage(dinfo, out absorbed);
         float damageAmount = dinfo.Amount * Props.DamageFactor;
         dinfo.SetAmount(damageAmount);
     }
