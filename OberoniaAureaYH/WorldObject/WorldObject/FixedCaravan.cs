@@ -137,6 +137,7 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     }
     public void ConvertToFixCaravan(Caravan caravan)
     {
+        /*
         List<Thing> allInventoryItems = CaravanInventoryUtility.AllInventoryItems(caravan);
         foreach (Thing item in allInventoryItems)
         {
@@ -144,6 +145,7 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
             containedItems.Add(item);
             ownerOf.inventory.innerContainer.Remove(item);
         }
+        */
         List<Pawn> caravanPawns = caravan.PawnsListForReading.ListFullCopy();
         foreach(Pawn pawn in caravanPawns)
         {
