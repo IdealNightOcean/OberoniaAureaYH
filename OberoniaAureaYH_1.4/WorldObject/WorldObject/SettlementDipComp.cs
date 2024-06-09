@@ -145,6 +145,10 @@ public class SettlementDipComp : WorldObjectComp
     }
     private void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
+        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
+        {
+            return;
+        }
         Settlement settlement = this.Settlement;
         Find.WindowStack.Add
         (
@@ -179,7 +183,7 @@ public class SettlementDipComp : WorldObjectComp
 
         void InitDiplomaticSummit(NegotiatingTeamLevel teamLevel)
         {
-            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)FixedCaravan.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
+            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)FixedCaravanUtility.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
             fixedCaravan.negotiant = pawn;
             fixedCaravan.associateSettlement = settlement;
             fixedCaravan.curNegotiatingTeamLevel = teamLevel;

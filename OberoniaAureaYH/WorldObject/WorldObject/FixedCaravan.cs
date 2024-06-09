@@ -38,7 +38,6 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     }
     public string BaseLabel => def.label;
     public string InspectLabel => RenamableLabel;
-
     public ThingOwner GetDirectlyHeldThings()
     {
         return null;
@@ -60,6 +59,10 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
 
     public int ticksRemaining;
 
+    public FixedCaravan()
+    {
+        pawns = new ThingOwner<Pawn>(this, oneStackOnly: false, LookMode.Reference);
+    }
     public void AddPawn(Pawn pawn, bool addCarriedPawnToWorldPawnsIfAny = true)
     {
         if (pawn == null)
@@ -105,6 +108,10 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     public void RemovePawn(Pawn pawn)
     {
         pawns.Remove(pawn);
+    }
+    public void RemoveAllPawns()
+    {
+        pawns.Clear();
     }
     public void AddItem(Thing thing)
     {

@@ -36,7 +36,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     protected void CheckWork()
     {
-        ConsumptionNeeds(occupants);
+        ConsumptionNeeds(PawnsListForReading);
         if (checkRemaining == 3)
         {
             SupplyFood(this);
@@ -51,7 +51,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected void GetPossibleOutcomes()
     {
         tmpPossibleOutcomes.Clear();
-        int capableCount = occupants.Where(p => p.ageTracker.AgeBiologicalYears > 13).Count();
+        int capableCount = PawnsListForReading.Where(p => p.ageTracker.AgeBiologicalYears > 13).Count();
 
         float weight = 50f;
         tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
@@ -65,7 +65,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
             Outcome_FriendlyCollaboration(capableCount);
         }, weight));
 
-        weight = TradeDisputesSuccessWeight(occupants);
+        weight = TradeDisputesSuccessWeight(PawnsListForReading);
         tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
         {
             Outcome_TradeDisputesSuccess(capableCount);
@@ -77,7 +77,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
             Outcome_TradeDisputesFail(capableCount);
         }, weight));
 
-        weight = CausingArgumentWeight(occupants);
+        weight = CausingArgumentWeight(PawnsListForReading);
         tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
         {
             Outcome_CausingArgument(capableCount);
@@ -102,7 +102,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
         Find.LetterStack.ReceiveLetter(label.Translate(), letterText, letterDef, assistWork, assistWork?.Faction);
     }
-    protected override void Notify_ConvertToCaravan()
+    public override void Notify_ConvertToCaravan()
     {
         assistWork?.EndWork();
     }
@@ -134,7 +134,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         {
             assistWorkCaravan.AddItem(t);
         }
-        foreach (Pawn pawn in assistWorkCaravan.occupants)
+        foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
             Need_Food need_Food = pawn.needs?.food;
             if (need_Food != null)
@@ -156,13 +156,13 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     public void FinishedWork()
     {
         GetReward("OA_LetterLabelRSAssistWork_FinishedWork", "OA_LetterRSAssistWork_FinishedWork", LetterDefOf.PositiveEvent);
-        ConvertToCaravan();
+        FixedCaravanUtility.ConvertToCaravan(this);
     }
     protected void Outcome_CausingArgument(int capableCount)
     {
         workPoints += capableCount;
         GetReward("OA_LetterLabelRSAssistWork_CausingArgument", "OA_LetterRSAssistWork_CausingArgument", LetterDefOf.NegativeEvent);
-        ConvertToCaravan();
+        FixedCaravanUtility.ConvertToCaravan(this);
     }
 
     protected void Outcome_SmoothWork(int capableCount)

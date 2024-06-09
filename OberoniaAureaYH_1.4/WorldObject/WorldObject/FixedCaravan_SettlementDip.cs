@@ -37,14 +37,14 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     {
         DiplomaticSummitUtility.Outcome_LeaveHalfway(associateSettlement);
     }
-    protected override void Notify_ConvertToCaravan()
+    public override void Notify_ConvertToCaravan()
     {
         AssociateSettlementComp?.DiplomaticSummitEnd();
     }
     private void DiplomaticSummitOutcome()
     {
         DiplomaticSummitUtility.ApplyEffect(curNegotiatingTeamLevel, this, associateSettlement, negotiant);
-        ConvertToCaravan();
+        FixedCaravanUtility.ConvertToCaravan(this);
     }
     public override void ExposeData()
     {

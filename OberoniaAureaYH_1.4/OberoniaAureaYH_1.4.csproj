@@ -129,6 +129,7 @@
     <Compile Include="Thought\Thought_SituationalGiveHediff.cs" />
     <Compile Include="Utility\DefOf.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
+    <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
     <Compile Include="Utility\ReflectionUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />

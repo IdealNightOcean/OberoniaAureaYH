@@ -145,7 +145,7 @@ public class SettlementDipComp : WorldObjectComp
     }
     protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
-        if (!OberoniaAureaYHUtility.IsExactTypeCaravan(caravan))
+        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }

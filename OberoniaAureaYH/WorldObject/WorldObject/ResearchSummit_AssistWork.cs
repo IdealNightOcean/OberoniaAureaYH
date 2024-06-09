@@ -75,7 +75,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
     }
     public void StartWork(Caravan caravan)
     {
-        if (!OberoniaAureaYHUtility.IsExactTypeCaravan(caravan))
+        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
