@@ -143,7 +143,7 @@ public class SettlementDipComp : WorldObjectComp
         diplomacyCoolingDays = 30;
         lastDiplomacyTick = Find.TickManager.TicksGame;
     }
-    private void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
+    protected virtual void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
         Settlement settlement = this.Settlement;
         Find.WindowStack.Add

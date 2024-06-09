@@ -73,7 +73,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
             yield return floatMenuOption2;
         }
     }
-    public void StartWork(Caravan caravan)
+    public virtual void StartWork(Caravan caravan)
     {
         FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)FixedCaravan.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);
         fixedCaravan.assistWork = this;
