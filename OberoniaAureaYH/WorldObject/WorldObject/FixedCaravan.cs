@@ -71,12 +71,7 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
         Caravan caravan = pawn.GetCaravan();
         if (caravan != null)
         {
-            foreach (Thing item in from item in CaravanInventoryUtility.AllInventoryItems(caravan)
-                                   where CaravanInventoryUtility.GetOwnerOf(caravan, item) == pawn
-                                   select item)
-            {
-                CaravanInventoryUtility.MoveInventoryToSomeoneElse(pawn, item, caravan.PawnsListForReading, new List<Pawn> { pawn }, item.stackCount);
-            }
+            CaravanInventoryUtility.MoveAllInventoryToSomeoneElse(pawn, caravan.PawnsListForReading, [pawn]);  
             if (!caravan.PawnsListForReading.Except(pawn).Any((Pawn p) => p.RaceProps.Humanlike))
             {
                 foreach (Thing item2 in CaravanInventoryUtility.AllInventoryItems(caravan).ToList())
@@ -130,13 +125,41 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
         fixedCaravan.Tile = caravan.Tile;
         fixedCaravan.ticksRemaining = initTicks;
         fixedCaravan.SetFaction(caravan.Faction);
+        fixedCaravan.ConvertToFixCaravan(caravan);
+        /*
         List<Pawn> caravanPawns = caravan.PawnsListForReading.ListFullCopy();
         foreach (Pawn pawn in caravanPawns)
         {
             fixedCaravan.AddPawn(pawn);
         }
-
+        */
         return fixedCaravan;
+    }
+    public void ConvertToFixCaravan(Caravan caravan)
+    {
+        List<Thing> allInventoryItems = CaravanInventoryUtility.AllInventoryItems(caravan);
+        foreach (Thing item in allInventoryItems)
+        {
+            Pawn ownerOf = CaravanInventoryUtility.GetOwnerOf(caravan, item);
+            containedItems.Add(item);
+            ownerOf.inventory.innerContainer.Remove(item);
+        }
+        List<Pawn> caravanPawns = caravan.PawnsListForReading.ListFullCopy();
+        foreach(Pawn pawn in caravanPawns)
+        {
+            pawn.ownership.UnclaimAll();
+            caravan.RemovePawn(pawn);
+            if (Find.WorldPawns.Contains(pawn))
+            {
+                Find.WorldPawns.RemovePawn(pawn);
+            }
+            if (!occupants.Contains(pawn))
+            {
+                occupants.Add(pawn);
+            }
+        }
+        containedItems.AddRange(caravan.AllThings);
+        caravan.Destroy();
     }
 
     public override void SpawnSetup()

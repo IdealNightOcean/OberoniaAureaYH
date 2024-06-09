@@ -18,7 +18,7 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
 
     private bool wasAnnounced;
 
-    private static List<string> tmpExtantNames = [];
+    private static  readonly List<string> TempExtantNames = [];
 
     public override string FullTitle => name + " (" + def.label + ")";
 
@@ -71,13 +71,13 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
     {
         this.def = def;
         things = new ThingOwner<Thing>(this);
-        tmpExtantNames.Clear();
+        TempExtantNames.Clear();
         List<Map> maps = Find.Maps;
         for (int i = 0; i < maps.Count; i++)
         {
-            tmpExtantNames.AddRange(maps[i].passingShipManager.passingShips.Select((PassingShip x) => x.name));
+            TempExtantNames.AddRange(maps[i].passingShipManager.passingShips.Select((PassingShip x) => x.name));
         }
-        name = NameGenerator.GenerateName(RulePackDefOf.NamerTraderGeneral, tmpExtantNames);
+        name = NameGenerator.GenerateName(RulePackDefOf.NamerTraderGeneral, TempExtantNames);
         if (faction != null)
         {
             name = string.Format("{0} {1} {2}", name, "OfLower".Translate(), faction.Name);
@@ -113,7 +113,11 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
 
     public override void PassingShipTick()
     {
-        base.PassingShipTick();
+        ticksUntilDeparture--;
+        if (Departed)
+        {
+            Depart();
+        }
         for (int num = things.Count - 1; num >= 0; num--)
         {
             if (things[num] is Pawn pawn)
@@ -126,7 +130,6 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
             }
         }
     }
-
     public override void ExposeData()
     {
         base.ExposeData();
@@ -146,15 +149,12 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         if (CanTradeNow)
         {
             Find.WindowStack.Add(new Dialog_Trade(negotiator, this));
-            LessonAutoActivator.TeachOpportunity(ConceptDefOf.BuildOrbitalTradeBeacon, OpportunityType.Critical);
-            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter_Send(Goods.OfType<Pawn>(), "LetterRelatedPawnsTradeShip".Translate(Faction.OfPlayer.def.pawnsPlural), LetterDefOf.NeutralEvent);
-            TutorUtility.DoModalDialogIfNotKnown(ConceptDefOf.TradeGoodsMustBeNearBeacon);
+            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter_Send(Goods.OfType<Pawn>(), "LetterRelatedPawnsTradeShip".Translate(Faction.OfPlayer.def.pawnsPlural), LetterDefOf.NeutralEvent);;
         }
     }
 
     public override void Depart()
     {
-        base.Depart();
         things.ClearAndDestroyContentsOrPassToWorld();
         soldPrisoners.Clear();
     }
