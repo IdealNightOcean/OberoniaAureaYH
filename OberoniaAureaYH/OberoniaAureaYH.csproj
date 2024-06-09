@@ -76,6 +76,7 @@
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
+    <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
     <Compile Include="Utility\ReflectionUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />

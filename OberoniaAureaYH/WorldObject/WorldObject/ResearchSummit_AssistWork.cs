@@ -73,9 +73,13 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
             yield return floatMenuOption2;
         }
     }
-    public virtual void StartWork(Caravan caravan)
+    public void StartWork(Caravan caravan)
     {
-        FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)FixedCaravan.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);
+        if (!OberoniaAureaYHUtility.IsExactTypeCaravan(caravan))
+        {
+            return;
+        }
+        FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);
         fixedCaravan.assistWork = this;
         Find.WorldObjects.Add(fixedCaravan);
         Find.WorldSelector.Select(fixedCaravan);

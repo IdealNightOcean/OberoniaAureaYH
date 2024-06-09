@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
+using RimWorld.QuestGen;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,150 +47,91 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     {
         ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
     }
+    public ThingOwner<Pawn> pawns;
+    public List<Pawn> PawnsListForReading => pawns.InnerListForReading;
+    public int PawnsCount => pawns.Count;
 
-    protected List<Pawn> occupants = [];
-    public List<Pawn> AllPawns => occupants;
-    public int PawnsCount => occupants.Count;
-    protected List<Thing> containedItems = [];
-
+    protected List<Thing> newItems = [];
+    public List<Thing> NewItemsForReading => newItems;
+    protected IEnumerable<Thing> AllItems => FixedCaravanUtility.OriginInventoryItems(this).Concat(newItems);
 
     protected bool skillsDirty = true;
     protected readonly Dictionary<SkillDef, int> totalSkills = [];
 
-    protected int ticksRemaining;
+    public int ticksRemaining;
 
-    public void AddItem(Thing thing)
+    public void AddPawn(Pawn pawn, bool addCarriedPawnToWorldPawnsIfAny = true)
     {
-        containedItems.Add(thing);
-    }
-    public void RemoveItem(Thing thing)
-    {
-        containedItems.Remove(thing);
-    }
-    public bool AddPawn(Pawn pawn)
-    {
-        Caravan caravan = pawn.GetCaravan();
-        if (caravan != null)
+        if (pawn == null)
         {
-            CaravanInventoryUtility.MoveAllInventoryToSomeoneElse(pawn, caravan.PawnsListForReading, [pawn]);  
-            if (!caravan.PawnsListForReading.Except(pawn).Any((Pawn p) => p.RaceProps.Humanlike))
+            Log.Warning("Tried to add a null pawn to " + this);
+            return;
+        }
+        if (pawn.Dead)
+        {
+            Log.Warning(string.Concat("Tried to add ", pawn, " to ", this, ", but this pawn is dead."));
+            return;
+        }
+        Pawn carriedPawn = pawn.carryTracker.CarriedThing as Pawn;
+        if (carriedPawn != null)
+        {
+            pawn.carryTracker.innerContainer.Remove(carriedPawn);
+        }
+        pawn.DeSpawnOrDeselect();
+        if (pawns.TryAdd(pawn))
+        {
+            if (CaravanUtility.ShouldAutoCapture(pawn, base.Faction))
             {
-                foreach (Thing item2 in CaravanInventoryUtility.AllInventoryItems(caravan).ToList())
+                pawn.guest.CapturedBy(base.Faction);
+            }
+            if (carriedPawn != null)
+            {
+                if (CaravanUtility.ShouldAutoCapture(carriedPawn, base.Faction))
                 {
-                    Pawn ownerOf = CaravanInventoryUtility.GetOwnerOf(caravan, item2);
-                    containedItems.Add(item2);
-                    ownerOf.inventory.innerContainer.Remove(item2);
+                    carriedPawn.guest.CapturedBy(base.Faction, pawn);
+                }
+                AddPawn(carriedPawn, addCarriedPawnToWorldPawnsIfAny);
+                if (addCarriedPawnToWorldPawnsIfAny)
+                {
+                    Find.WorldPawns.PassToWorld(carriedPawn);
                 }
             }
-            pawn.ownership.UnclaimAll();
-            caravan.RemovePawn(pawn);
-            if (!caravan.PawnsListForReading.Any((Pawn p) => p.RaceProps.Humanlike))
-            {
-                containedItems.AddRange(caravan.AllThings);
-                caravan.Destroy();
-            }
         }
-        pawn.holdingOwner?.Remove(pawn);
-        if (Find.WorldPawns.Contains(pawn))
+        else
         {
-            Find.WorldPawns.RemovePawn(pawn);
+            Log.Error(string.Concat("Couldn't add pawn ", pawn, " to caravan."));
         }
-        if (!occupants.Contains(pawn))
-        {
-            occupants.Add(pawn);
-        }
-        RecachePawn();
-        return true;
     }
     public void RemovePawn(Pawn pawn)
     {
-        pawn.GetCaravan()?.RemovePawn(pawn);
-        pawn.holdingOwner?.Remove(pawn);
-        occupants.Remove(pawn);
-        RecachePawn();
+        pawns.Remove(pawn);
     }
-    public virtual void RecachePawn()
+    public void AddItem(Thing thing)
     {
-        skillsDirty = true;
-        foreach (Pawn pawn in containedItems.OfType<Pawn>().ToList())
+        newItems.Add(thing);
+    }
+    public void RemoveItem(Thing thing)
+    {
+        newItems.Remove(thing);
+    }
+
+    protected void UpdateOccupants()
+    {
+        foreach (Pawn pawn in newItems.OfType<Pawn>().ToList())
         {
-            containedItems.Remove(pawn);
-            pawn.GetCaravan()?.RemovePawn(pawn);
+            RemoveItem(pawn);
             AddPawn(pawn);
         }
     }
-    public static FixedCaravan CreateFixedCaravan(Caravan caravan, WorldObjectDef def, int initTicks = 0)
-    {
-        FixedCaravan fixedCaravan = (FixedCaravan)WorldObjectMaker.MakeWorldObject(def);
-        fixedCaravan.curName = caravan.Name;
-        fixedCaravan.Tile = caravan.Tile;
-        fixedCaravan.ticksRemaining = initTicks;
-        fixedCaravan.SetFaction(caravan.Faction);
-        fixedCaravan.ConvertToFixCaravan(caravan);
-        /*
-        List<Pawn> caravanPawns = caravan.PawnsListForReading.ListFullCopy();
-        foreach (Pawn pawn in caravanPawns)
-        {
-            fixedCaravan.AddPawn(pawn);
-        }
-        */
-        return fixedCaravan;
-    }
-    public void ConvertToFixCaravan(Caravan caravan)
-    {
-        /*
-        List<Thing> allInventoryItems = CaravanInventoryUtility.AllInventoryItems(caravan);
-        foreach (Thing item in allInventoryItems)
-        {
-            Pawn ownerOf = CaravanInventoryUtility.GetOwnerOf(caravan, item);
-            containedItems.Add(item);
-            ownerOf.inventory.innerContainer.Remove(item);
-        }
-        */
-        List<Pawn> caravanPawns = caravan.PawnsListForReading.ListFullCopy();
-        foreach(Pawn pawn in caravanPawns)
-        {
-            pawn.ownership.UnclaimAll();
-            caravan.RemovePawn(pawn);
-            if (Find.WorldPawns.Contains(pawn))
-            {
-                Find.WorldPawns.RemovePawn(pawn);
-            }
-            if (!occupants.Contains(pawn))
-            {
-                occupants.Add(pawn);
-            }
-        }
-        containedItems.AddRange(caravan.AllThings);
-        caravan.Destroy();
-    }
-
     public override void SpawnSetup()
     {
         base.SpawnSetup();
-        RecachePawn();
-
+        UpdateOccupants();
     }
     protected virtual void PreConvertToCaravanByPlayer()
     { }
-    protected abstract void Notify_ConvertToCaravan();
-    public void ConvertToCaravan()
-    {
-        Caravan caravan = CaravanMaker.MakeCaravan(occupants, base.Faction, base.Tile, addToWorldPawnsIfNotAlready: true);
-        if (containedItems != null)
-        {
-            foreach (Thing item in containedItems.Except(caravan.AllThings))
-            {
-                caravan.AddPawnOrItem(item, addCarriedPawnToWorldPawnsIfAny: true);
-            }
-        }
-        if (Find.WorldSelector.IsSelected(this))
-        {
-            Find.WorldSelector.Select(caravan, playSound: false);
-        }
-        Notify_ConvertToCaravan();
-        Destroy();
-    }
+    public abstract void Notify_ConvertToCaravan();
+
 
     public override IEnumerable<Gizmo> GetGizmos()
     {
@@ -202,11 +144,11 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
             defaultLabel = "CommandReformCaravan".Translate(),
             defaultDesc = "CommandReformCaravanDesc".Translate(),
             icon = FormCaravanComp.FormCaravanCommand,
-            Disabled = (occupants.Count == 0),
+            Disabled = (PawnsCount == 0),
             action = delegate
             {
                 PreConvertToCaravanByPlayer();
-                ConvertToCaravan();
+                FixedCaravanUtility.ConvertToCaravan(this);
             }
         };
         yield return command_Convert;
@@ -216,10 +158,10 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Collections.Look(ref containedItems, "containedItems", LookMode.Deep);
-        Scribe_Collections.Look(ref occupants, "occupants", LookMode.Deep);
+        Scribe_Collections.Look(ref newItems, "newItems", LookMode.Deep);
+        Scribe_Deep.Look(ref pawns, "pawns", this);
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
         Scribe_Values.Look(ref curName, "curName");
-        RecachePawn();
+        UpdateOccupants();
     }
 }

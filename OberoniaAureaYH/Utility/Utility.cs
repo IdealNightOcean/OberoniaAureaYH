@@ -117,6 +117,21 @@ public static class OberoniaAureaYHUtility
         }
         return tile;
     }
+
+    public static bool IsExactTypeCaravan(object caravan)
+    {
+        if (caravan == null)
+        {
+            return false;
+        }
+        if(caravan.GetType() == typeof(Caravan))
+        {
+            return true;
+        }
+        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("OA_WaringAbnormalCaravan".Translate(), null, destructive: false,title:"OA_WaringAbnormalCaravanTitle".Translate()));
+        return false;
+    }
+
 }
 
 
