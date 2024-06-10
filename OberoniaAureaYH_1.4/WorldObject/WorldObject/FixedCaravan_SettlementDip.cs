@@ -159,7 +159,7 @@ public static class DiplomaticSummitUtility
         List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, 1500);
         foreach (Thing thing in things)
         {
-            fixedCaravan.AddItem(thing);
+            FixedCaravanUtility.GiveThing(fixedCaravan,thing);
         }
         Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(TriumphAssistPoints);

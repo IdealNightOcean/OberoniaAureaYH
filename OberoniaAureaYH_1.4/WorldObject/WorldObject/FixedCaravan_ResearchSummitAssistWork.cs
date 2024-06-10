@@ -97,7 +97,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
-            AddItem(t);
+            FixedCaravanUtility.GiveThing(this, t);
         }
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
         Find.LetterStack.ReceiveLetter(label.Translate(), letterText, letterDef, assistWork, assistWork?.Faction);
@@ -132,7 +132,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         foreach (Thing t in things)
         {
-            assistWorkCaravan.AddItem(t);
+            FixedCaravanUtility.GiveThing(assistWorkCaravan, t);
         }
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {

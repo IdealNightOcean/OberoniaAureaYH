@@ -40,7 +40,7 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     public string InspectLabel => RenamableLabel;
     public ThingOwner GetDirectlyHeldThings()
     {
-        return null;
+        return pawns;
     }
     public virtual void GetChildHolders(List<IThingHolder> outChildren)
     {
@@ -49,10 +49,7 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     public ThingOwner<Pawn> pawns;
     public List<Pawn> PawnsListForReading => pawns.InnerListForReading;
     public int PawnsCount => pawns.Count;
-
-    protected List<Thing> newItems = [];
-    public List<Thing> NewItemsForReading => newItems;
-    protected IEnumerable<Thing> AllItems => FixedCaravanUtility.OriginInventoryItems(this).Concat(newItems);
+    protected IEnumerable<Thing> AllItems => FixedCaravanUtility.AllInventoryItems(this);
 
     protected bool skillsDirty = true;
     protected readonly Dictionary<SkillDef, int> totalSkills = [];
@@ -113,32 +110,25 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     {
         pawns.Clear();
     }
-    public void AddItem(Thing thing)
+    public void AddPawnOrItem(Thing thing, bool addCarriedPawnToWorldPawnsIfAny = true)
     {
-        newItems.Add(thing);
-    }
-    public void RemoveItem(Thing thing)
-    {
-        newItems.Remove(thing);
-    }
-
-    protected void UpdateOccupants()
-    {
-        foreach (Pawn pawn in newItems.OfType<Pawn>().ToList())
+        if (thing == null)
         {
-            RemoveItem(pawn);
-            AddPawn(pawn);
+            Log.Warning("Tried to add a null thing to " + this);
+        }
+        else if (thing is Pawn p)
+        {
+            AddPawn(p, addCarriedPawnToWorldPawnsIfAny);
+        }
+        else
+        {
+            FixedCaravanUtility.GiveThing(this, thing);
         }
     }
-    public override void SpawnSetup()
-    {
-        base.SpawnSetup();
-        UpdateOccupants();
-    }
+
     protected virtual void PreConvertToCaravanByPlayer()
     { }
     public abstract void Notify_ConvertToCaravan();
-
 
     public override IEnumerable<Gizmo> GetGizmos()
     {
@@ -165,10 +155,8 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Collections.Look(ref newItems, "newItems", LookMode.Deep);
         Scribe_Deep.Look(ref pawns, "pawns", this);
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
         Scribe_Values.Look(ref curName, "curName");
-        UpdateOccupants();
     }
 }
