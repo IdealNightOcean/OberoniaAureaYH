@@ -1,8 +1,7 @@
-﻿using System;
+﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace OberoniaAurea;
@@ -89,7 +88,7 @@ public static class FixedCaravanUtility
     {
         TempAddedItems.Clear();
         TempAddedItems.AddRange(things);
-        foreach (Thing thing in TempAddedItems) 
+        foreach (Thing thing in TempAddedItems)
         {
             fixedCaravan.AddPawnOrItem(thing);
         }

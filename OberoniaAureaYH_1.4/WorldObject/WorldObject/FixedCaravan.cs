@@ -1,8 +1,6 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
-using RimWorld.QuestGen;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -147,7 +145,7 @@ public abstract class FixedCaravan : WorldObject, IThingHolder
                 FixedCaravanUtility.ConvertToCaravan(this);
             }
         };
-        if(PawnsCount==0)
+        if (PawnsCount == 0)
         {
             command_Convert.Disable();
         }

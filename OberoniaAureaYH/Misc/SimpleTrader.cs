@@ -18,7 +18,7 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
 
     private bool wasAnnounced;
 
-    private static  readonly List<string> TempExtantNames = [];
+    private static readonly List<string> TempExtantNames = [];
 
     public override string FullTitle => name + " (" + def.label + ")";
 
@@ -149,7 +149,7 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         if (CanTradeNow)
         {
             Find.WindowStack.Add(new Dialog_Trade(negotiator, this));
-            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter_Send(Goods.OfType<Pawn>(), "LetterRelatedPawnsTradeShip".Translate(Faction.OfPlayer.def.pawnsPlural), LetterDefOf.NeutralEvent);;
+            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter_Send(Goods.OfType<Pawn>(), "LetterRelatedPawnsTradeShip".Translate(Faction.OfPlayer.def.pawnsPlural), LetterDefOf.NeutralEvent); ;
         }
     }
 

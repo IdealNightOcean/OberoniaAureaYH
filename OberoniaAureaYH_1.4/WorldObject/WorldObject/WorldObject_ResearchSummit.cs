@@ -4,7 +4,6 @@ using RimWorld.QuestGen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using UnityEngine;
 using Verse;
@@ -28,7 +27,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesI = [];
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesII = [];
     protected static ResearchManager Manager => Find.ResearchManager;
-   
+
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
         Pawn pawn = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed);

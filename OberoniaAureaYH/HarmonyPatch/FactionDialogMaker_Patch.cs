@@ -358,8 +358,8 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         AddDiaOption("OA_WeNeedMilitaryDeployment", delegate
         {
             CallForMilitaryDeployment(map, faction);
-            gc_OA.UseAssistPoints(240);
-        }, needAD: 360, needAP: 240);
+            gc_OA.UseAssistPoints(200);
+        }, needAD: 360, needAP: 200);
         //返回按钮
         diaNode.options.Add(new DiaOption("GoBack".Translate())
         {

@@ -30,7 +30,7 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     public int assistPointsStoppageDays = 0;
     protected static readonly int BaseAssistPointsCap = 40;
-    protected static readonly int MaxAssistPointsCap = 260;
+    protected static readonly int MaxAssistPointsCap = 300;
 
     public GameComponent_OberoniaAurea(Game game)
     {

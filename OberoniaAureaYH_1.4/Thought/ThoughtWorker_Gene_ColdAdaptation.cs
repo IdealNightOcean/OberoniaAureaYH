@@ -1,5 +1,4 @@
 ﻿using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -15,10 +14,8 @@ public class ThoughtWorker_Gene_ColdAdaptation : ThoughtWorker
 
         if (p.genes.HasGene(OA_PawnInfoDefOf.OA_RK_Gene_ColdAdaptation))
         {
-            float statValue = p.GetStatValue(StatDefOf.ComfyTemperatureMin);
             float ambientTemperature = p.AmbientTemperature;
-            float adaptationTemperature = Mathf.Max(-30f, Mathf.Min(statValue + 20f, 0f));
-            if (ambientTemperature < adaptationTemperature)
+            if (ambientTemperature < -15f)
             {
                 return ThoughtState.ActiveDefault;
             }
