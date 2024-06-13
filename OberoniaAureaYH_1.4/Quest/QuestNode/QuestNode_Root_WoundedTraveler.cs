@@ -222,8 +222,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             if (ModsConfig.RoyaltyActive)
             {
-                float num3 = (float)(lodgerCount * QuestDurationDays) * 0.55f;
-                FloatRange marketValueRange = new FloatRange(0.7f, 1.3f) * num3 * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor;
+                FloatRange marketValueRange = new FloatRange(1200f, 1800f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor;
                 quest.AddQuestRefugeeDelayedReward(quest.AccepterPawn, faction, pawns, marketValueRange);
             }
             quest.End(QuestEndOutcome.Success, goodwillReward, faction, null, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
