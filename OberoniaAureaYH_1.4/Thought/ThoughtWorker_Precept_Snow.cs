@@ -7,7 +7,7 @@ public class ThoughtWorker_Precept_Snow : ThoughtWorker_Precept
 {
     protected override ThoughtState ShouldHaveThought(Pawn p)
     {
-        if (!p.Spawned)
+        if (!ModsConfig.IdeologyActive || !p.Spawned)
         {
             return ThoughtState.Inactive;
         }
