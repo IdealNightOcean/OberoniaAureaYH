@@ -19,7 +19,6 @@ public class HediffComp_TemperatureAdaptation : HediffComp
 
     public override void CompPostTick(ref float severityAdjustment)
     {
-        base.CompPostTick(ref severityAdjustment);
         if (Pawn.IsHashIntervalTick(2500))
         {
             CheckTemperature();
