@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="MiscComps\CompCircuitRegulator.cs" />
     <Compile Include="MiscComps\HediffComp_GiveHediffWhenRemoved.cs" />
+    <Compile Include="MiscComps\HediffComp_TemperatureAdaptation.cs" />
     <Compile Include="MiscComps\HeiffComp_ExtraStun.cs" />
     <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
     <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
