@@ -62,6 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
+    <Compile Include="HarmonyPatch\PriceTypeFor_Patch.cs" />
     <Compile Include="MiscComps\CompExtremelyHiTechResearchBench.cs" />
     <Compile Include="MiscComps\CompOpticalResearchFacility.cs" />
     <Compile Include="MiscComps\CompCircuitRegulator.cs" />

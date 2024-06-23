@@ -48,18 +48,16 @@ public static class TradeUtility_PricePatch
         {
             return prePrice;
         }
-        cachedSpecialtyPriceFactors = thingDef.GetModExtension<SpecialtyPriceExtension>()?.SpecialtyPriceFactors;
-        if (cachedSpecialtyPriceFactors.NullOrEmpty())
-        {
-            return prePrice;
-        }
-
         FactionDef tradeFaction = TradeSession.trader.Faction?.def;
         if (tradeFaction == null)
         {
             return prePrice;
         }
-
+        cachedSpecialtyPriceFactors = thingDef.GetModExtension<SpecialtyPriceExtension>()?.SpecialtyPriceFactors;
+        if (cachedSpecialtyPriceFactors.NullOrEmpty())
+        {
+            return prePrice;
+        }
         float priceFactor = 1f;
         foreach (SpecialtyPriceFactor specialtyPriceFactor in cachedSpecialtyPriceFactors)
         {

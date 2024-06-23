@@ -7,20 +7,15 @@ public class ThoughtWorker_Gene_HotAdaptation : ThoughtWorker
 {
     protected override ThoughtState CurrentStateInternal(Pawn p)
     {
-        if (!ModsConfig.BiotechActive || p.genes == null)
+        if (!ModsConfig.BiotechActive)
         {
             return ThoughtState.Inactive;
         }
-
-        if (p.genes.HasGene(OA_PawnInfoDefOf.OA_RK_Gene_HotAdaptation))
+        float ambientTemperature = p.AmbientTemperature;
+        if (ambientTemperature > 45f)
         {
-            float ambientTemperature = p.AmbientTemperature;
-            if (ambientTemperature > 45f)
-            {
-                return ThoughtState.ActiveDefault;
-            }
+            return ThoughtState.ActiveDefault;
         }
-
         return ThoughtState.Inactive;
     }
 }

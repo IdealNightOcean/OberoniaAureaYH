@@ -62,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
+    <Compile Include="HarmonyPatch\PriceTypeFor_Patch.cs" />
+    <Compile Include="HarmonyPatch\TradeUtility_PricePatch.cs" />
     <Compile Include="MiscComps\CompCircuitRegulator.cs" />
     <Compile Include="MiscComps\HediffComp_GiveHediffWhenRemoved.cs" />
     <Compile Include="MiscComps\HediffComp_TemperatureAdaptation.cs" />
@@ -82,7 +85,6 @@
     <Compile Include="HarmonyPatch\MakeRecipeProducts_Patch.cs" />
     <Compile Include="HarmonyPatch\MBW_TryStart_Patch.cs" />
     <Compile Include="HarmonyPatch\ShortCircuitUtility_Patch.cs" />
-    <Compile Include="HarmonyPatch\TradeUtility_PricePatch.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_OALargeScaleTraderArrival.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_OASupplyShipShowConcern.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_OATributeCollectorArrival.cs" />
