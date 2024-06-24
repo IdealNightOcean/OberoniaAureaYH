@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿/*
+using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
 using Verse;
@@ -38,4 +39,4 @@ public static class PriceTypeFor_Patch
         }
     }
 }
-
+*/
