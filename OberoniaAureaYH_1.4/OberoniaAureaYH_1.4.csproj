@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
-    <Compile Include="HarmonyPatch\PriceTypeFor_Patch.cs" />
     <Compile Include="HarmonyPatch\TradeUtility_PricePatch.cs" />
     <Compile Include="MiscComps\CompCircuitRegulator.cs" />
     <Compile Include="MiscComps\HediffComp_GiveHediffWhenRemoved.cs" />

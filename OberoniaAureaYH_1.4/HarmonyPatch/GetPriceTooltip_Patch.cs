@@ -39,7 +39,7 @@ public static class GetPriceTooltip_Patch
             if (tradeFaction == specialtyPriceFactor.factionDef)
             {
                 float factor = action == TradeAction.PlayerSells ? specialtyPriceFactor.sellPriceFactor : specialtyPriceFactor.buyPriceFactor;
-                __result += "\n" + "OA_SpecialtyFactor".Translate() + ": x" + factor.ToStringPercent();
+                __result += "\n" + "OA_SpecialtyFactor".Translate() + ": x " + factor.ToStringPercent();
                 return;
             }
         }
