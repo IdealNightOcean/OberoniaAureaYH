@@ -50,14 +50,15 @@ public static class OberoniaAureaYHUtility
                 select t).Sum((Thing t) => t.stackCount);
     }
 
-    public static void CallForAidFixedPoints(Map map, Faction faction, float points) //呼叫固定点数支援
+    public static void CallForAidFixedPoints(Map map, Faction faction, float points, PawnsArrivalModeDef raidArrivalMode = null) //呼叫固定点数支援，固定方式的工作支援
     {
         IncidentParms incidentParms = new()
         {
             target = map,
             faction = faction,
             raidArrivalModeForQuickMilitaryAid = true,
-            points = points
+            points = points,
+            raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
         IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
     }

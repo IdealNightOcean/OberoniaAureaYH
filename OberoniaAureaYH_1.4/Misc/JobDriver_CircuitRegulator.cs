@@ -36,23 +36,30 @@ public class JobDriver_CircuitRegulator : JobDriver
         PathEndMode pathEndMode = PathEndMode.Touch;
         yield return Toils_Goto.GotoThing(TargetIndex.A, pathEndMode);
         Toil repair = ToilMaker.MakeToil("MakeNewToils");
-        RepairSpeed = repair.actor.GetStatValue(StatDefOf.ConstructionSpeed);
-        jobEndInterval = Mathf.FloorToInt(BaseJobEndInterval / repairSpeed);
-        ticksRemaining = jobEndInterval;
+        repair.initAction = delegate
+        {
+            RepairSpeed = repair.actor.GetStatValue(StatDefOf.ConstructionSpeed);
+            jobEndInterval = Mathf.FloorToInt(BaseJobEndInterval / repairSpeed);
+            ticksRemaining = jobEndInterval;
+        };
         repair.tickAction = delegate
         {
             Pawn actor = repair.actor;
             ticksRemaining--;
             actor.skills.Learn(SkillDefOf.Construction, 0.1f);
+            if (ticksRemaining <= 0f)
+            {
+                JobEffect();
+                actor.records.Increment(RecordDefOf.ThingsRepaired);
+                actor.jobs.EndCurrentJob(JobCondition.Succeeded);
+            }
         };
         repair.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
         repair.WithEffect(EffecterDefOf.ConstructMetal, TargetIndex.A);
         repair.WithProgressBar(TargetIndex.A, () => Mathf.InverseLerp(jobEndInterval, 0f, ticksRemaining));
-        repair.defaultCompleteMode = ToilCompleteMode.Delay;
-        repair.defaultDuration = jobEndInterval;
+        repair.defaultCompleteMode = ToilCompleteMode.Never;
         repair.activeSkill = () => SkillDefOf.Construction;
         yield return repair;
-        yield return Toils_General.Do(JobEffect);
     }
     private void JobEffect()
     {
