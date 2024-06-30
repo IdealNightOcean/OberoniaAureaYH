@@ -15,12 +15,8 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
 
     private static readonly SimpleCurve PointsCurve =
     [
-        new CurvePoint(45f, 0f),
-        new CurvePoint(50f, 1f),
-        new CurvePoint(100f, 1f),
-        new CurvePoint(200f, 0.25f),
-        new CurvePoint(300f, 0.1f),
-        new CurvePoint(500f, 0f)
+        new CurvePoint(0f, 200f),
+        new CurvePoint(10000f, 500f)
     ];
 
     protected LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
@@ -78,10 +74,11 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     }
     protected override void ResolveParmsPoints(IncidentParms parms)
     {
-        if (!(parms.points >= 0f))
+        if (parms.points < 0f)
         {
-            parms.points = Rand.ByCurve(PointsCurve);
+            parms.points = 5000f;
         }
+        parms.points = PointsCurve.Evaluate(parms.points);
     }
     protected List<Pawn> SpawnPawns(IncidentParms parms, PawnGroupMakerParms groupMakerParms, PawnGroupMaker groupMaker)
     {
