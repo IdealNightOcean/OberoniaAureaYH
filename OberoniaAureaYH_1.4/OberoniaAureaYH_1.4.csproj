@@ -110,7 +110,7 @@
     <Compile Include="Quest\QuestNode\QuestNode_GetMapParent.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetMutiFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetNearbySettlementOfFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetNeighborTile.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetNearTile.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetSpecificFactionLeader.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetWorldObjectTile.cs" />

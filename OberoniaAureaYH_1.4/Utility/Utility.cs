@@ -63,11 +63,6 @@ public static class OberoniaAureaYHUtility
         IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
     }
 
-    public static bool AnyEnemiesOfFactionOnMap(Map map) //map上是否有玩家的敌人
-    {
-        return AnyEnemiesOfFactionOnMap(map, Faction.OfPlayer);
-    }
-
     public static bool AnyEnemiesOfFactionOnMap(Map map, Faction faction) //map上是否有faction派系的敌人
     {
         var potentiallyDangerous = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && !p.Downed && !p.InContainerEnclosed).ToArray();
@@ -75,26 +70,10 @@ public static class OberoniaAureaYHUtility
         return hostileFactions.Any();
     }
 
-    public static void GetPawnsInRadius(IntVec3 ctrPosition, Map map, float radius, List<Pawn> targetPawns) //获取以ctrPosition为圆心半径radius内的pawn
-    {
-        targetPawns.Clear();
-        foreach (IntVec3 cell in GenRadial.RadialCellsAround(ctrPosition, radius, useCenter: true).ToList())
-        {
-            List<Thing> thingList = map.thingGrid.ThingsListAt(cell);
-            for (int i = 0; i < thingList.Count; i++)
-            {
-                if (thingList[i] is Pawn pawn)
-                {
-                    targetPawns.Add(pawn);
-                }
-            }
-        }
-    }
-
-    public static int GetAvailableNeighborTile(int rootTile, bool exclusion = true)
+    public static bool GetAvailableNeighborTile(int rootTile, out int tile, bool exclusion = true)
     {
         List<int> allNeighborTiles = [];
-        int tile = -1;
+        tile = -1;
         Find.WorldGrid.GetTileNeighbors(rootTile, allNeighborTiles);
         var neighborTiles = allNeighborTiles.Where(t => !Find.World.Impassable(t));
         if (neighborTiles.Any())
@@ -107,15 +86,18 @@ public static class OberoniaAureaYHUtility
                     if (!worldObjects.AnyWorldObjectAt(item))
                     {
                         tile = item;
-                        break;
+                        return true;
                     }
                 }
+                return false;
             }
             else
             {
                 tile = neighborTiles.RandomElement();
+                return true;
             }
         }
-        return tile;
+        return false;
     }
+
 }

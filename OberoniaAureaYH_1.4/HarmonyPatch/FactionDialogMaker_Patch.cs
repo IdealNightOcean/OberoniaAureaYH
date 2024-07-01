@@ -460,7 +460,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)
     {
-        if (OberoniaAureaYHUtility.AnyEnemiesOfFactionOnMap(map))
+        if (OberoniaAureaYHUtility.AnyEnemiesOfFactionOnMap(map, Faction.OfPlayer))
         {
             OberoniaAureaYHUtility.CallForAidFixedPoints(map, faction, 4500);
         }

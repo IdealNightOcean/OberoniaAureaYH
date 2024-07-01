@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -96,7 +97,7 @@ public class ShotgunBullet : Bullet
             if (splashRadius > 0)
             {
                 List<Pawn> splashPawns = [];
-                OberoniaAureaYHUtility.GetPawnsInRadius(hitPos, hitMap, splashRadius, splashPawns);
+                GetPawnsInRadius(hitPos, hitMap, splashRadius, splashPawns);
                 if (splashPawns.Any())
                 {
                     int preSplashCount;
@@ -140,6 +141,21 @@ public class ShotgunBullet : Bullet
         splashRadius = 0;
         return IntRange.zero;
 
+    }
+    public static void GetPawnsInRadius(IntVec3 ctrPosition, Map map, float radius, List<Pawn> targetPawns) //获取以ctrPosition为圆心半径radius内的pawn
+    {
+        targetPawns.Clear();
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(ctrPosition, radius, useCenter: true).ToList())
+        {
+            List<Thing> thingList = map.thingGrid.ThingsListAt(cell);
+            for (int i = 0; i < thingList.Count; i++)
+            {
+                if (thingList[i] is Pawn pawn)
+                {
+                    targetPawns.Add(pawn);
+                }
+            }
+        }
     }
 
     //祖父类Projectile的Impact方法

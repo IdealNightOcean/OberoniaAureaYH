@@ -100,8 +100,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Fair(int parentTile) //集市
     {
         List<int> neighborTiles = [];
-        int tile = OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile);
-        if (tile == -1 && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -117,8 +116,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void AcademicDispute(int parentTile) //学术约架
     {
         List<int> neighborTiles = [];
-        int tile = OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile);
-        if (tile == -1 && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -225,7 +223,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherSite(int parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -236,11 +234,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         timeComp?.StartTimeout(60000);
         worldObjects.Add(camp);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherSite".Translate(), "OA_LetterResearchSummit_ResearcherSite".Translate(), LetterDefOf.PositiveEvent, camp);
-
-        bool NoObjectAtTile(int t)
-        {
-            return !worldObjects.AnyWorldObjectAt(t);
-        }
     }
     private static void ResearcherVisit() //无势力学者的访问
     {
@@ -284,7 +277,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void MysteriousTrader(int parentTile) //神秘商人
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, NoObjectAtTile))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -294,11 +287,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         timeComp?.StartTimeout(60000);
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
-
-        bool NoObjectAtTile(int t)
-        {
-            return !worldObjects.AnyWorldObjectAt(t);
-        }
     }
     private static void AssistWork(int tile) //协助者募集点
     {

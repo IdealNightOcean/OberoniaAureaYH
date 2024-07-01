@@ -124,7 +124,7 @@
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetWorldObjectTile.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetNearbySettlementOfFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetNeighborTile.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_GetNearTile.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
