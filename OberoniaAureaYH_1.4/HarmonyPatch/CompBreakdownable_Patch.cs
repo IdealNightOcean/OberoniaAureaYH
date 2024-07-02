@@ -21,7 +21,7 @@ public static class CompBreakdownable_Patch
         {
             return true;
         }
-        if (Rand.Chance(0.85f))
+        if (Rand.Chance(0.95f))
         {
             return false;
         }
