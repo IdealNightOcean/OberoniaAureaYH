@@ -109,6 +109,13 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         parms.traderDef = def;
         parms.tile = tile;
         things.TryAddRangeOrTransfer(ThingSetMakerDefOf.TraderStock.root.Generate(parms));
+        for (int i = 0; i < things.Count; i++)
+        {
+            if (things[i] is Pawn pawn)
+            {
+                Find.WorldPawns.PassToWorld(pawn);
+            }
+        }
     }
 
     public override void PassingShipTick()
@@ -181,20 +188,33 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
 
     public void GiveSoldThingToTrader(Thing toGive, int countToGive, Pawn playerNegotiator)
     {
+        Caravan caravan = playerNegotiator.GetCaravan();
         Thing thing = toGive.SplitOff(countToGive);
         thing.PreTraded(TradeAction.PlayerSells, playerNegotiator, this);
-        Thing thing2 = TradeUtility.ThingFromStockToMergeWith(this, thing);
-        if (thing2 != null)
+        if (thing is Pawn pawn)
         {
-            if (!thing2.TryAbsorbStack(thing, respectStackLimit: false))
+            CaravanInventoryUtility.MoveAllInventoryToSomeoneElse(pawn, caravan.PawnsListForReading);
+            caravan.RemovePawn(pawn);
+            if(!pawn.IsWorldPawn())
             {
-                thing.Destroy();
+                Find.WorldPawns.PassToWorld(pawn);
             }
-            return;
+            if (pawn.RaceProps.Humanlike)
+            {
+                soldPrisoners.Add(pawn);
+            }
         }
-        if (thing is Pawn pawn && pawn.RaceProps.Humanlike)
+        else
         {
-            soldPrisoners.Add(pawn);
+            Thing thing2 = TradeUtility.ThingFromStockToMergeWith(this, thing);
+            if (thing2 != null)
+            {
+                if (!thing2.TryAbsorbStack(thing, respectStackLimit: false))
+                {
+                    thing.Destroy();
+                }
+                return;
+            }
         }
         things.TryAdd(thing, canMergeWithExistingStacks: false);
     }
@@ -204,19 +224,21 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         Caravan caravan = playerNegotiator.GetCaravan();
         Thing thing = toGive.SplitOff(countToGive);
         thing.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this);
-        if (thing is Pawn item)
+        if (thing is Pawn p)
         {
-            soldPrisoners.Remove(item);
+            soldPrisoners.Remove(p);
+            caravan.AddPawn(p, addCarriedPawnToWorldPawnsIfAny: true);
+            return;
         }
-        Pawn pawn2 = CaravanInventoryUtility.FindPawnToMoveInventoryTo(thing, caravan.PawnsListForReading, null);
-        if (pawn2 == null)
+        Pawn pawn = CaravanInventoryUtility.FindPawnToMoveInventoryTo(thing, caravan.PawnsListForReading, null);
+        if (pawn == null)
         {
-            Log.Error("Could not find pawn to move bought thing to (bought by player). thing=" + thing);
+            Log.Error("Could not find any pawn to give sold thing to.");
             thing.Destroy();
         }
-        else if (!pawn2.inventory.innerContainer.TryAdd(thing))
+        else if (!pawn.inventory.innerContainer.TryAdd(thing))
         {
-            Log.Error("Could not add item to inventory.");
+            Log.Error("Could not add sold thing to inventory.");
             thing.Destroy();
         }
     }
