@@ -12,7 +12,7 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
 
     private ThingOwner things;
 
-    private List<Pawn> soldPrisoners = [];
+    private List<Pawn> tmpSavedPawns = [];
 
     private int randomPriceFactorSeed = -1;
 
@@ -56,16 +56,12 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         {
             for (int i = 0; i < things.Count; i++)
             {
-                if (things[i] is not Pawn item || !soldPrisoners.Contains(item))
-                {
-                    yield return things[i];
-                }
+                yield return things[i];
             }
         }
     }
 
-    public SimpleTrader()
-    { }
+    public SimpleTrader() { }
 
     public SimpleTrader(TraderKindDef def, Faction faction = null) : base(faction)
     {
@@ -137,19 +133,6 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
             }
         }
     }
-    public override void ExposeData()
-    {
-        base.ExposeData();
-        Scribe_Defs.Look(ref def, "def");
-        Scribe_Deep.Look(ref things, "things", this);
-        Scribe_Collections.Look(ref soldPrisoners, "soldPrisoners", LookMode.Reference);
-        Scribe_Values.Look(ref randomPriceFactorSeed, "randomPriceFactorSeed", 0);
-        Scribe_Values.Look(ref wasAnnounced, "wasAnnounced", defaultValue: true);
-        if (Scribe.mode == LoadSaveMode.PostLoadInit)
-        {
-            soldPrisoners.RemoveAll((Pawn x) => x == null);
-        }
-    }
 
     public override void TryOpenComms(Pawn negotiator)
     {
@@ -163,7 +146,7 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
     public override void Depart()
     {
         things.ClearAndDestroyContentsOrPassToWorld();
-        soldPrisoners.Clear();
+        tmpSavedPawns.Clear();
     }
 
     public override string GetCallLabel()
@@ -191,32 +174,15 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         Caravan caravan = playerNegotiator.GetCaravan();
         Thing thing = toGive.SplitOff(countToGive);
         thing.PreTraded(TradeAction.PlayerSells, playerNegotiator, this);
-        if (thing is Pawn pawn)
+        if (toGive is Pawn pawn)
         {
             CaravanInventoryUtility.MoveAllInventoryToSomeoneElse(pawn, caravan.PawnsListForReading);
             caravan.RemovePawn(pawn);
-            if(!pawn.IsWorldPawn())
-            {
-                Find.WorldPawns.PassToWorld(pawn);
-            }
-            if (pawn.RaceProps.Humanlike)
-            {
-                soldPrisoners.Add(pawn);
-            }
         }
-        else
+        if (!things.TryAdd(thing, canMergeWithExistingStacks: false))
         {
-            Thing thing2 = TradeUtility.ThingFromStockToMergeWith(this, thing);
-            if (thing2 != null)
-            {
-                if (!thing2.TryAbsorbStack(thing, respectStackLimit: false))
-                {
-                    thing.Destroy();
-                }
-                return;
-            }
+            thing.Destroy();
         }
-        things.TryAdd(thing, canMergeWithExistingStacks: false);
     }
 
     public void GiveSoldThingToPlayer(Thing toGive, int countToGive, Pawn playerNegotiator)
@@ -226,7 +192,6 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
         thing.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this);
         if (thing is Pawn p)
         {
-            soldPrisoners.Remove(p);
             caravan.AddPawn(p, addCarriedPawnToWorldPawnsIfAny: true);
             return;
         }
@@ -278,5 +243,39 @@ public class SimpleTrader : PassingShip, ITrader, IThingHolder
     public void GetChildHolders(List<IThingHolder> outChildren)
     {
         ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        if (Scribe.mode == LoadSaveMode.Saving)
+        {
+            tmpSavedPawns.Clear();
+            if (things != null)
+            {
+                for (int num = things.Count - 1; num >= 0; num--)
+                {
+                    if (things[num] is Pawn item)
+                    {
+                        things.Remove(item);
+                        tmpSavedPawns.Add(item);
+                    }
+                }
+            }
+        }
+        Scribe_Defs.Look(ref def, "def");
+        Scribe_Deep.Look(ref things, "things", this);
+        Scribe_Collections.Look(ref tmpSavedPawns, "tmpSavedPawns", LookMode.Reference);
+        Scribe_Values.Look(ref randomPriceFactorSeed, "randomPriceFactorSeed", 0);
+        Scribe_Values.Look(ref wasAnnounced, "wasAnnounced", defaultValue: true);
+        if (Scribe.mode == LoadSaveMode.PostLoadInit || Scribe.mode == LoadSaveMode.Saving)
+        {
+            tmpSavedPawns.RemoveAll((Pawn x) => x == null);
+            for (int i = 0; i < tmpSavedPawns.Count; i++)
+            {
+                things.TryAdd(tmpSavedPawns[i], canMergeWithExistingStacks: false);
+            }
+            tmpSavedPawns.Clear();
+        }
     }
 }

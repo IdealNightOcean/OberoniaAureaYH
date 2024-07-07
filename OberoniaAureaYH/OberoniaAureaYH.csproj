@@ -74,9 +74,9 @@
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
     <Compile Include="MiscComps\HeiffComp_ExtraStun.cs" />
+    <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
-    <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />

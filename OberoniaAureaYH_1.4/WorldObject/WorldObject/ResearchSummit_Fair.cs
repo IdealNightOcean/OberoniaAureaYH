@@ -37,6 +37,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public override void PostRemove()
     {
+        innerTrader?.Depart();
         innerTrader = null;
         base.PostRemove();
     }
