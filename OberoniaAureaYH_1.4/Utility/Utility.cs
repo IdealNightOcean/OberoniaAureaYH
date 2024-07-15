@@ -2,6 +2,7 @@
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 using Verse;
 
@@ -100,4 +101,34 @@ public static class OberoniaAureaYHUtility
         return false;
     }
 
+    public static Hediff GetOrAddHediff(Pawn pawn, HediffDef hediffDef)
+    {
+        Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDef);
+        if (hediff == null)
+        {
+            return pawn.health.AddHediff(hediffDef);
+        }
+        return hediff;
+    }
+    public static void AddHediff(Pawn pawn, HediffDef hediffDef, float severity = -1, int overrideDisappearTicks = -1)
+    {
+        Hediff hediff = GetOrAddHediff(pawn, hediffDef);
+        if (hediff == null)
+        {
+            return;
+        }
+        if (severity > 0)
+        {
+            hediff.Severity = severity;
+        }
+        if (overrideDisappearTicks > 0)
+        {
+            HediffComp_Disappears comp = hediff.TryGetComp<HediffComp_Disappears>();
+            if (comp != null)
+            {
+                comp.ticksToDisappear = overrideDisappearTicks;
+            }
+        }
+
+    }
 }

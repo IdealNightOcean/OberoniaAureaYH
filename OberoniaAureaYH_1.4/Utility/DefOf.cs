@@ -54,9 +54,8 @@ public static class OA_ThingDefOf
 [DefOf]
 public static class OA_PawnInfoDefOf
 {
-    public static GeneDef OA_RK_Gene_ColdAdaptation;
-    public static GeneDef OA_RK_Gene_HotAdaptation;
-
+    public static HediffDef OA_RK_Hediff_ColdAdaptation;
+    public static HediffDef OA_RK_Hediff_HotAdaptation;
     public static HediffDef OA_RK_SeriousInjuryI;
     public static HediffDef OA_RK_SeriousInjuryII;
 

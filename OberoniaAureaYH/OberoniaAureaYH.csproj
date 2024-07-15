@@ -77,6 +77,8 @@
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
+    <Compile Include="Misc\Gene_HotAdaptation.cs" />
+    <Compile Include="Misc\Gene_ColdAdaptation.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
@@ -138,10 +140,8 @@
     <Compile Include="Quest\QuestNode\QuestNode_OAGetFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
-    <Compile Include="Thought\ThoughtWorker_Gene_ColdAdaptation.cs" />
-    <Compile Include="Thought\ThoughtWorker_Gene_HotAdaptation.cs" />
-    <Compile Include="Thought\ThoughtWorker_Precept_Snow.cs" />
-    <Compile Include="Thought\Thought_SituationalGiveHediff.cs" />
+    <Compile Include="Misc\ThoughtWorker_Precept_Snow.cs" />
+    <Compile Include="Misc\Thought_SituationalGiveHediff.cs" />
     <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
     <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Equipment\ShotgunBullet.cs" />

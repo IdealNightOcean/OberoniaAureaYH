@@ -94,6 +94,9 @@
     <Compile Include="Misc\DiaBuyableTechPrintDef.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
     <Compile Include="Misc\GameComponent.cs" />
+    <Compile Include="Misc\Gene_ColdAdaptation.cs" />
+    <Compile Include="Misc\Gene_HotAdaptation.cs" />
+    <Compile Include="Misc\Gene_TemperatureAdaptation.cs" />
     <Compile Include="Misc\JobDriver_CircuitRegulator.cs" />
     <Compile Include="Misc\MapComponent.cs" />
     <Compile Include="Misc\PawnGroupKindWorker_OALargeScaleTrader.cs" />
@@ -102,6 +105,8 @@
     <Compile Include="Misc\SimpleTrader.cs" />
     <Compile Include="Misc\StandalonePawnGroupMakerDef.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
+    <Compile Include="Misc\ThoughtWorker_Precept_Snow.cs" />
+    <Compile Include="Misc\Thought_SituationalGiveHediff.cs" />
     <Compile Include="Misc\Verb_TargetCellAid.cs" />
     <Compile Include="Misc\WorkGiver_CircuitRegulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,10 +130,6 @@
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARefugeeInteractions.cs" />
-    <Compile Include="Thought\ThoughtWorker_Gene_ColdAdaptation.cs" />
-    <Compile Include="Thought\ThoughtWorker_Gene_HotAdaptation.cs" />
-    <Compile Include="Thought\ThoughtWorker_Precept_Snow.cs" />
-    <Compile Include="Thought\Thought_SituationalGiveHediff.cs" />
     <Compile Include="Utility\DefOf.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\FixedCaravanUtility.cs" />
