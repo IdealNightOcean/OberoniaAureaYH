@@ -1,21 +1,23 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
+﻿using Verse;
 
 namespace OberoniaAurea;
 
 public class Gene_ColdAdaptation : Gene
 {
+    private int tickRemaining;
     public override void Tick()
     {
-        if (pawn.IsHashIntervalTick(250))
+        tickRemaining--;
+        if (tickRemaining < 0)
         {
             TryAddHediff(pawn);
+            tickRemaining = 250;
         }
+    }
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Values.Look(ref tickRemaining, "tickRemaining", 0);
     }
     private static void TryAddHediff(Pawn pawn)
     {
