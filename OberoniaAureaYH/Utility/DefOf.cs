@@ -116,6 +116,8 @@ public static class OA_HistoryEventDefOf
     public static HistoryEventDef OA_DiplomaticSummit_Flounder;
     public static HistoryEventDef OA_DiplomaticSummit_Triumph;
 
+    public static HistoryEventDef OA_PsychicSlaughter;
+
     static OA_HistoryEventDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OA_HistoryEventDefOf));
