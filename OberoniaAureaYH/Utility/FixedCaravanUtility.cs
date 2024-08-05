@@ -45,7 +45,7 @@ public static class FixedCaravanUtility
         ConvertToFixedCaravan(caravan, fixedCaravan);
         return fixedCaravan;
     }
-    public static void ConvertToFixedCaravan(Caravan caravan, FixedCaravan fixedCaravan,bool addToWorldPawnsIfNotAlready=true)
+    public static void ConvertToFixedCaravan(Caravan caravan, FixedCaravan fixedCaravan, bool addToWorldPawnsIfNotAlready = true)
     {
         TempPawns.Clear();
         TempPawns.AddRange(caravan.PawnsListForReading);
@@ -110,7 +110,7 @@ public static class FixedCaravanUtility
     {
         TempAddedItems.Clear();
         TempAddedItems.AddRange(things);
-        for(int i=0;i<TempAddedItems.Count;i++)
+        for (int i = 0; i < TempAddedItems.Count; i++)
         {
             fixedCaravan.AddPawnOrItem(TempAddedItems[i]);
         }
