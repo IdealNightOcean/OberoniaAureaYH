@@ -108,6 +108,10 @@ public abstract class FixedCaravan : WorldObject, IRenameable, IThingHolder
     {
         pawns.Clear();
     }
+    public bool ContainsPawn(Pawn pawn)
+    {
+        return pawns.Contains(pawn);
+    }
     public void AddPawnOrItem(Thing thing, bool addCarriedPawnToWorldPawnsIfAny = true)
     {
         if (thing == null)
