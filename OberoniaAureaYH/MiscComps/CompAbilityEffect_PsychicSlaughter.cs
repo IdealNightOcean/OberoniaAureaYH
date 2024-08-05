@@ -16,12 +16,12 @@ public class CompAbilityEffect_PsychicSlaughter : RimWorld.CompAbilityEffect_Psy
         Faction oaFaction = OberoniaAureaYHUtility.OAFaction;
         foreach (LocalTargetInfo localTarget in targets)
         {
-            if (localTarget.HasThing && localTarget.Thing is Pawn)
+            if (localTarget.HasThing && localTarget.Thing is Pawn pawn && pawn.RaceProps.Humanlike)
             {
                 Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, -200, canSendMessage: false, canSendHostilityLetter: true, OA_HistoryEventDefOf.OA_PsychicSlaughter);
                 if (Faction.OfPlayer.RelationKindWith(oaFaction) != FactionRelationKind.Hostile)
                 {
-                    Faction.OfPlayer.SetRelationDirect(oaFaction, FactionRelationKind.Ally, canSendHostilityLetter: true, reason: "OA_PsychicSlaughter");
+                    Faction.OfPlayer.SetRelationDirect(oaFaction, FactionRelationKind.Hostile, canSendHostilityLetter: true, reason: "OA_PsychicSlaughter".Translate());
                 }
                 break;
             }
