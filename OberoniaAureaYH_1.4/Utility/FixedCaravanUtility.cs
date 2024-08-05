@@ -11,6 +11,15 @@ public static class FixedCaravanUtility
     private static readonly List<Thing> TempInventoryItems = [];
     private static readonly List<Thing> TempAddedItems = [];
     private static readonly List<Pawn> TempPawns = [];
+
+    public static bool IsFixedCaravanMember(this Pawn pawn)
+    {
+        return pawn.GetFixedCaravan() != null;
+    }
+    public static FixedCaravan GetFixedCaravan(this Pawn pawn)
+    {
+        return pawn.ParentHolder as FixedCaravan;
+    }
     public static List<Thing> AllInventoryItems(FixedCaravan fixedCaravan)
     {
         TempInventoryItems.Clear();
@@ -36,14 +45,27 @@ public static class FixedCaravanUtility
         ConvertToFixedCaravan(caravan, fixedCaravan);
         return fixedCaravan;
     }
-    public static void ConvertToFixedCaravan(Caravan caravan, FixedCaravan fixedCaravan)
+    public static void ConvertToFixedCaravan(Caravan caravan, FixedCaravan fixedCaravan, bool addToWorldPawnsIfNotAlready = true)
     {
         TempPawns.Clear();
         TempPawns.AddRange(caravan.PawnsListForReading);
-        foreach (Pawn pawn in TempPawns)
+        for (int i = 0; i < TempPawns.Count; i++)
         {
-            caravan.RemovePawn(pawn);
-            fixedCaravan.AddPawn(pawn);
+            Pawn pawn = TempPawns[i];
+            if (pawn.Dead)
+            {
+                Log.Warning("Tried to form a caravan with a dead pawn " + pawn);
+                continue;
+            }
+            if (!fixedCaravan.ContainsPawn(pawn))
+            {
+                caravan.RemovePawn(pawn);
+                fixedCaravan.AddPawn(pawn, addToWorldPawnsIfNotAlready);
+            }
+            if (addToWorldPawnsIfNotAlready && !pawn.IsWorldPawn())
+            {
+                Find.WorldPawns.PassToWorld(pawn);
+            }
         }
         TempPawns.Clear();
 
@@ -88,9 +110,9 @@ public static class FixedCaravanUtility
     {
         TempAddedItems.Clear();
         TempAddedItems.AddRange(things);
-        foreach (Thing thing in TempAddedItems)
+        for (int i = 0; i < TempAddedItems.Count; i++)
         {
-            fixedCaravan.AddPawnOrItem(thing);
+            fixedCaravan.AddPawnOrItem(TempAddedItems[i]);
         }
         TempAddedItems.Clear();
     }

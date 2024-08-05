@@ -104,6 +104,10 @@ public abstract class FixedCaravan : WorldObject, IThingHolder
     {
         pawns.Remove(pawn);
     }
+    public bool ContainsPawn(Pawn pawn)
+    {
+        return pawns.Contains(pawn);
+    }
     public void RemoveAllPawns()
     {
         pawns.Clear();
