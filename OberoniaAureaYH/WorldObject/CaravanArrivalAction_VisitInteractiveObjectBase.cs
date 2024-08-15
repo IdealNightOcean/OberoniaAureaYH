@@ -13,8 +13,7 @@ public class CaravanArrivalAction_VisitInteractiveObject : CaravanArrivalAction
     public override string Label => "OA_VisitInteractiveObject".Translate(worldObject.Label);
     public override string ReportString => "CaravanVisiting".Translate(worldObject.Label);
     public CaravanArrivalAction_VisitInteractiveObject()
-    {
-    }
+    { }
 
     public CaravanArrivalAction_VisitInteractiveObject(WorldObject_InteractiveBase worldObject)
     {
@@ -64,7 +63,6 @@ public class CaravanArrivalAction_VisitInteractiveObject_Muti : CaravanArrivalAc
     protected int visitType;
     public override string Label => "OA_VisitInteractiveObject".Translate(worldObject.Label);
     public override string ReportString => "CaravanVisiting".Translate(worldObject.Label);
-
 
     public CaravanArrivalAction_VisitInteractiveObject_Muti()
     { }

@@ -150,7 +150,6 @@
     <Compile Include="Equipment\ShotgunExtension.cs" />
     <Compile Include="Equipment\Verb_BarrageEnhancedShoot.cs" />
     <Compile Include="WorldObject\CaravanArrivalAction_VisitInteractiveObjectBase.cs" />
-    <Compile Include="WorldObject\CaravanArrivalAction_VisitSettlement.cs" />
     <Compile Include="WorldObject\SymbolResolver_SingleResearcher.cs" />
     <Compile Include="WorldObject\GenStep_ResearcherCamp.cs" />
     <Compile Include="WorldObject\GenStep_OABasicGenStep.cs" />

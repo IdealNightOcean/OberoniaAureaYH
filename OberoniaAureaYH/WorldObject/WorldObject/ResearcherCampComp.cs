@@ -155,7 +155,7 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_References.Look(ref site, "target");
+        Scribe_References.Look(ref site, "site");
     }
 
     public static FloatMenuAcceptanceReport CanVisit(WorldObject site)
