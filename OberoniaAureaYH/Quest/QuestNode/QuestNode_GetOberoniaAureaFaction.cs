@@ -10,15 +10,14 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
     [NoTranslate]
     public SlateRef<string> storeAs;
 
-    public SlateRef<bool> mustAlly;
-    public SlateRef<bool> mustNotAlly;
-    public SlateRef<bool> mustHostile;
-    public SlateRef<bool> mustNotHostile = true;
+    public SlateRef<bool> allowAlly = true;
+    public SlateRef<bool> allowNeutral = true;
+    public SlateRef<bool> allowHostile;
 
     protected override void RunInt()
     {
         Slate slate = QuestGen.slate;
-        if (OAFactionValid(slate))
+        if (SetVars(slate))
         {
             slate.Set(storeAs.GetValue(slate), OberoniaAureaYHUtility.OAFaction);
         }
@@ -26,9 +25,9 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
 
     protected override bool TestRunInt(Slate slate)
     {
-        return OAFactionValid(slate);
+        return SetVars(slate);
     }
-    private bool OAFactionValid(Slate slate)
+    private bool SetVars(Slate slate)
     {
         Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
         if (OAFaction == null)
@@ -36,33 +35,12 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
             return false;
         }
         FactionRelationKind playerRelationKind = OAFaction.PlayerRelationKind;
-        switch (playerRelationKind)
+        return playerRelationKind switch
         {
-            case FactionRelationKind.Ally:
-                {
-                    if (mustNotAlly.GetValue(slate) || mustHostile.GetValue(slate))
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-            case FactionRelationKind.Neutral:
-                {
-                    if (mustAlly.GetValue(slate) || mustHostile.GetValue(slate))
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-            case FactionRelationKind.Hostile:
-                {
-                    if (mustAlly.GetValue(slate) || mustNotHostile.GetValue(slate))
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-            default: return false;
-        }
+            FactionRelationKind.Ally => allowAlly.GetValue(slate),
+            FactionRelationKind.Neutral => allowNeutral.GetValue(slate),
+            FactionRelationKind.Hostile => allowHostile.GetValue(slate),
+            _ => false,
+        };
     }
 }

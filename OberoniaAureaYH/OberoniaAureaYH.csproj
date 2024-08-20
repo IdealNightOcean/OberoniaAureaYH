@@ -40,6 +40,9 @@
       <HintPath>..\..\..\RimWorld引用dll\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="OberoniaAurea_Frame">
+      <HintPath>..\..\OberoniaAurea_Frame\release\OberoniaAurea_Frame.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -84,7 +87,6 @@
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
-    <Compile Include="Utility\ReflectionUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
@@ -126,19 +128,14 @@
     <Compile Include="Quest\QuestNode\QuestNode_Root_RefugeeBase.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearcherVisit.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetWorldObjectTile.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetNearbySettlementOfFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetNearTile.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetMapParent.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_CopyFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OAGenerateWorldObject.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetMutiFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetSpecificFactionLeader.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OAGetFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
