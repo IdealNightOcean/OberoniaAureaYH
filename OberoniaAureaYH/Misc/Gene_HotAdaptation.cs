@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using OberoniaAurea_Frame;
+using Verse;
 
 namespace OberoniaAurea;
 
@@ -28,7 +29,7 @@ public class Gene_HotAdaptation : Gene
         float ambientTemperature = pawn.AmbientTemperature;
         if (ambientTemperature > 45f)
         {
-            OberoniaAureaYHUtility.AddHediff(pawn, OA_PawnInfoDefOf.OA_RK_Hediff_HotAdaptation, -1, 500);
+            OberoniaAureaFrameUtility.AdjustOrAddHediff(pawn, OA_PawnInfoDefOf.OA_RK_Hediff_HotAdaptation, -1, 500);
         }
     }
 }

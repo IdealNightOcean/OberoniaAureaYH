@@ -1,4 +1,5 @@
 ﻿using LudeonTK;
+using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -99,7 +100,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Fair(int parentTile) //集市
     {
         List<int> neighborTiles = [];
-        if (!OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OberoniaAureaFrameUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -115,7 +116,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void AcademicDispute(int parentTile) //学术约架
     {
         List<int> neighborTiles = [];
-        if (!OberoniaAureaYHUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OberoniaAureaFrameUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -200,7 +201,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
@@ -218,7 +219,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
         things.Add(ThingMaker.MakeThing(OA_ThingDefOf.Oberonia_Aurea_Tea));
         foreach (Thing thing in things)
         {

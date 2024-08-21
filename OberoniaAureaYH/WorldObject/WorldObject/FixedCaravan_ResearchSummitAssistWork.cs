@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +95,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(APpoints);
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
             FixedCaravanUtility.GiveThing(this, t);
@@ -129,7 +130,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected static void SupplyFood(FixedCaravan_ResearchSummitAssistWork assistWorkCaravan) //给予当天的食物
     {
         ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         foreach (Thing t in things)
         {
             FixedCaravanUtility.GiveThing(assistWorkCaravan, t);

@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -156,7 +157,7 @@ public static class DiplomaticSummitUtility
     private static void Outcome_Triumph(FixedCaravan_DiplomaticSummit fixedCaravan, Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, 1500);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, 1500);
         foreach (Thing thing in things)
         {
             FixedCaravanUtility.GiveThing(fixedCaravan, thing);

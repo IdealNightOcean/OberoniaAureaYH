@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System;
@@ -254,7 +255,7 @@ public static class DeepExchangeUtility
     {
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(AddAssistPoints);
         pawn.skills.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);

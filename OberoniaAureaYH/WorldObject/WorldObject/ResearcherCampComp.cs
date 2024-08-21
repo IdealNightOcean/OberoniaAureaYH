@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,7 +144,7 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     }
     private static void Robbery(Caravan caravan, WorldObject worldObject)
     {
-        List<Thing> things = OberoniaAureaYHUtility.TryGenerateThing(ThingDefOf.Silver, SilverNum);
+        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.Silver, SilverNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
