@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using OberoniaAurea_Frame;
 
 namespace OberoniaAurea;
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions

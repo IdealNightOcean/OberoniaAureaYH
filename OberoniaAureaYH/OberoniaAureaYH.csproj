@@ -86,7 +86,6 @@
     <Compile Include="Misc\Gene_HotAdaptation.cs" />
     <Compile Include="Misc\Gene_ColdAdaptation.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
-    <Compile Include="Utility\FixedCaravanUtility.cs" />
     <Compile Include="Utility\PawnGroupUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="WorldObject\WorldObject\FixedCaravan_SettlementDip.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitAssistWork.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_AssistWork.cs" />
-    <Compile Include="WorldObject\WorldObject\FixedCaravan.cs" />
     <Compile Include="WorldObject\WorldObject\ResearcherCampComp.cs" />
     <Compile Include="HarmonyPatch\FactionDialogMaker_Patch.cs" />
     <Compile Include="HarmonyPatch\Faction_Patch.cs" />
@@ -144,7 +142,6 @@
     <Compile Include="Equipment\ShotgunBullet.cs" />
     <Compile Include="Equipment\ShotgunExtension.cs" />
     <Compile Include="Equipment\Verb_BarrageEnhancedShoot.cs" />
-    <Compile Include="WorldObject\CaravanArrivalAction_VisitInteractiveObjectBase.cs" />
     <Compile Include="WorldObject\SymbolResolver_SingleResearcher.cs" />
     <Compile Include="WorldObject\GenStep_ResearcherCamp.cs" />
     <Compile Include="WorldObject\GenStep_OABasicGenStep.cs" />
@@ -153,8 +150,6 @@
     <Compile Include="WorldObject\WorldObject\WorldObject_ResearchSummit.cs" />
     <Compile Include="WorldObject\WorldObject\WorldObject_DiplomaticOffices.cs" />
     <Compile Include="WorldObject\WorldObject\WorldObject_MultiPartyTalks.cs" />
-    <Compile Include="WorldObject\WorldObject\WorldObject_WithMutiFactions.cs" />
-    <Compile Include="WorldObject\WorldObject\WorldObject_InteractiveBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

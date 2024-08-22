@@ -2,6 +2,7 @@
 using RimWorld.Planet;
 using System.Collections.Generic;
 using Verse;
+using OberoniaAurea_Frame;
 
 namespace OberoniaAurea;
 public class ResearchSummit_Fair : WorldObject_InteractiveBase
