@@ -25,11 +25,15 @@ public class QuestNode_GetDiplomaticOfficesFaction : OberoniaAurea_Frame.QuestNo
 
     protected override bool IsGoodFaction(Faction faction, Slate slate)
     {
-        if (faction.RelationKindWith(OberoniaAureaYHUtility.OAFaction) == FactionRelationKind.Hostile)
+        if (!base.IsGoodFaction(faction, slate))
         {
             return false;
         }
-        return base.IsGoodFaction(faction, slate);
+        if (faction.HostileTo(OberoniaAureaYHUtility.OAFaction))
+        {
+            return false;
+        }
+        return true;
     }
 
 }
