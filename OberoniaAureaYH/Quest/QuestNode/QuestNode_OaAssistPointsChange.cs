@@ -18,6 +18,10 @@ public class QuestNode_OaAssistPointsChange : QuestNode
     }
     protected override void RunInt()
     {
+        if(OberoniaAureaYHUtility.OAFaction == null)
+        {
+            return;
+        }
         Slate slate = QuestGen.slate;
         QuestPart_OaAssistPointsChange questPart_OaAssistPointsChange = new()
         {

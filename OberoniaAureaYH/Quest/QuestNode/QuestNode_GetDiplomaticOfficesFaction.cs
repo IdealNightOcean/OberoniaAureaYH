@@ -1,41 +1,35 @@
 ﻿using RimWorld;
 using RimWorld.QuestGen;
-using System.Linq;
-using Verse;
 
 namespace OberoniaAurea;
 
 //QuestNode：获取被斡旋派系
-public class QuestNode_GetDiplomaticOfficesFaction : QuestNode_OAGetFaction
+public class QuestNode_GetDiplomaticOfficesFaction : OberoniaAurea_Frame.QuestNode_GetFaction
 {
-    public SlateRef<bool> diplomaticOfficesCantExist;
-
-    protected override bool TryFindFaction(out Faction faction, Slate slate)
+    protected override bool TestRunInt(Slate slate)
     {
-        return (from x in Find.FactionManager.GetFactions(allowHidden: false)
-                where IsGoodFaction(x, slate)
-                select x).TryRandomElement(out faction);
+        if (OberoniaAureaYHUtility.OAFaction == null)
+        {
+            return false;
+        }
+        return base.TestRunInt(slate);
+    }
+    protected override void RunInt()
+    {
+        if (OberoniaAureaYHUtility.OAFaction == null)
+        {
+            return;
+        }
+        base.RunInt();
     }
 
     protected override bool IsGoodFaction(Faction faction, Slate slate)
     {
-        if (faction == OberoniaAureaYHUtility.OAFaction)
-        {
-            return false;
-        }
         if (faction.RelationKindWith(OberoniaAureaYHUtility.OAFaction) == FactionRelationKind.Hostile)
         {
             return false;
         }
-        if (!base.IsGoodFaction(faction, slate))
-        {
-            return false;
-        }
-        if (WorldObjectContainFaction(faction, slate))
-        {
-            return false;
-        }
-        return true;
+        return base.IsGoodFaction(faction, slate);
     }
 
 }

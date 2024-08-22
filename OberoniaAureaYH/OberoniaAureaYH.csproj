@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
       <HintPath>..\..\OberoniaAurea_Frame\release\OberoniaAurea_Frame.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -131,12 +132,9 @@
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_CopyFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OAGenerateWorldObject.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_GetMutiFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_OAGetFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
     <Compile Include="Misc\ThoughtWorker_Precept_Snow.cs" />
