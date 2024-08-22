@@ -24,6 +24,7 @@ public static class OberoniaAureaYHDefOf
     public static QuestScriptDef OA_OpportunitySite_PunishmentExecutor; //惩戒的执行者
     public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //科研峰会：同道中人
     public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
+    public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
 
     //public static RaidStrategyDef OA_RK_DropAttack;
 

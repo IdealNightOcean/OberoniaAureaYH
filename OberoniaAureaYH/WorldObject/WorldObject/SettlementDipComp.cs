@@ -249,7 +249,7 @@ public static class DeepExchangeUtility
     private static readonly int ChanwuNum = 10;
     private static readonly int AddAssistPoints = 5;
 
-    private readonly static List<QuestScriptDef> tmpPossibleOutcomes = [];
+    private readonly static List<Pair<QuestScriptDef, float>>tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
@@ -267,17 +267,27 @@ public static class DeepExchangeUtility
             Slate slate = new();
             if (OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks.CanRun(slate))
             {
-                tmpPossibleOutcomes.Add(OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks);
+                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef,float> (OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks,35f));
             }
             slate = new();
             if (OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor.CanRun(slate))
             {
-                tmpPossibleOutcomes.Add(OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor);
+                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor,25f));
+            }
+            slate = new();
+            slate.Set("settlement", settlement);
+            if (OberoniaAureaYHDefOf.OA_UrbanConstruction.CanRun(slate))
+            {
+                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(OberoniaAureaYHDefOf.OA_UrbanConstruction, 40f));
             }
             if (tmpPossibleOutcomes.Any())
             {
                 slate = new();
-                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElement();
+                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight((Pair<QuestScriptDef, float> x) => x.Second).First;
+                if(questScript == OberoniaAureaYHDefOf.OA_UrbanConstruction)
+                {
+                    slate.Set("settlement", settlement);
+                }
                 Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questScript, slate);
                 if (!quest.hidden && quest.root.sendAvailableLetter)
                 {
