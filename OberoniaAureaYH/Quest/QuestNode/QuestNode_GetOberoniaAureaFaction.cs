@@ -27,7 +27,7 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
     protected bool SetVars(Slate slate)
     {
         Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
-        if(ValidFaction(OAFaction,slate))
+        if (ValidFaction(OAFaction, slate))
         {
             slate.Set(storeAs.GetValue(slate), OberoniaAureaYHUtility.OAFaction);
             return true;

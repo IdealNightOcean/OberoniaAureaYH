@@ -18,7 +18,7 @@ public class QuestNode_OaAssistPointsChange : QuestNode
     }
     protected override void RunInt()
     {
-        if(OberoniaAureaYHUtility.OAFaction == null)
+        if (OberoniaAureaYHUtility.OAFaction == null)
         {
             return;
         }

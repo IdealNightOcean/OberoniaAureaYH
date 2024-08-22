@@ -75,6 +75,7 @@
     <Compile Include="HarmonyPatch\CompBreakdownable_Patch.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="MiscComps\CompAbilityEffect_PsychicSlaughter.cs" />
+    <Compile Include="MiscComps\CompGiveHediffsInRange.cs" />
     <Compile Include="MiscComps\HediffComp_TemperatureAdaptation.cs" />
     <Compile Include="Misc\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
