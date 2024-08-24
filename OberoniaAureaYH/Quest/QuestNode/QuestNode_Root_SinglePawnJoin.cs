@@ -32,12 +32,12 @@ public abstract class QuestNode_Root_SinglePawnJoin : QuestNode
     {
         Quest quest = QuestGen.quest;
         Slate slate = QuestGen.slate;
-        if (!slate.TryGet<Map>("map", out var var))
+        if (!slate.TryGet<Map>("map", out Map map))
         {
-            var = QuestGen_Get.GetMap();
+            map = QuestGen_Get.GetMap();
         }
         Pawn pawn = GeneratePawn();
-        AddSpawnPawnQuestParts(quest, var, pawn);
+        AddSpawnPawnQuestParts(quest, map, pawn);
         slate.Set("pawn", pawn);
         SendLetter(quest, pawn);
         string inSignal1 = QuestGenUtility.HardcodedSignalWithQuestID("pawn.Killed");

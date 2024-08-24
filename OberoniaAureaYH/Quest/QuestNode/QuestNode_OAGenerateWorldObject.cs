@@ -33,7 +33,7 @@ public class QuestNode_OAGenerateWorldObject : QuestNode_GenerateWorldObject
         WorldObject_InteractiveBase worldObject = InitInteractiveBase(slate);
         if (storeAs.GetValue(slate) != null)
         {
-            QuestGen.slate.Set(storeAs.GetValue(slate), worldObject);
+            slate.Set(storeAs.GetValue(slate), worldObject);
         }
     }
     protected WorldObject_InteractiveBase InitInteractiveBase(Slate slate)
@@ -69,7 +69,7 @@ public class QuestNode_GenerateWorldObjectWithMutiFactions : QuestNode_OAGenerat
         WorldObject_WithMutiFactions worldObject = InitWorldObject(slate);
         if (storeAs.GetValue(slate) != null)
         {
-            QuestGen.slate.Set(storeAs.GetValue(slate), worldObject);
+            slate.Set(storeAs.GetValue(slate), worldObject);
         }
     }
 

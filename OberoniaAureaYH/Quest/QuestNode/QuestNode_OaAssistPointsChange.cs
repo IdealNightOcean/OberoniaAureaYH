@@ -23,13 +23,12 @@ public class QuestNode_OaAssistPointsChange : QuestNode
             return;
         }
         Slate slate = QuestGen.slate;
+        slate.Set(storeAs.GetValue(slate), changePoints.GetValue(slate));
         QuestPart_OaAssistPointsChange questPart_OaAssistPointsChange = new()
         {
-            inSignal = QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? QuestGen.slate.Get<string>("inSignal"),
+            inSignal = QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
             changePoints = changePoints.GetValue(slate)
         };
         QuestGen.quest.AddPart(questPart_OaAssistPointsChange);
-        QuestGen.slate.Set(storeAs.GetValue(slate), changePoints.GetValue(slate));
-
     }
 }
