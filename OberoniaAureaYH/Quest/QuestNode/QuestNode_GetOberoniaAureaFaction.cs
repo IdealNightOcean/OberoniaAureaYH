@@ -16,20 +16,26 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
 
     protected override void RunInt()
     {
-        SetVars(QuestGen.slate);
+        Slate slate = QuestGen.slate;
+        Faction faction = OberoniaAureaYHUtility.OAFaction;
+        if (ValidFaction(faction, slate))
+        {
+            slate.Set(storeAs.GetValue(slate), faction);
+            if (!faction.Hidden)
+            {
+                QuestPart_InvolvedFactions questPart_InvolvedFactions = new();
+                questPart_InvolvedFactions.factions.Add(faction);
+                QuestGen.quest.AddPart(questPart_InvolvedFactions);
+            }
+        }
     }
 
     protected override bool TestRunInt(Slate slate)
     {
-        return SetVars(slate);
-    }
-
-    protected bool SetVars(Slate slate)
-    {
-        Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
-        if (ValidFaction(OAFaction, slate))
+        Faction faction = OberoniaAureaYHUtility.OAFaction;
+        if (ValidFaction(faction, slate))
         {
-            slate.Set(storeAs.GetValue(slate), OberoniaAureaYHUtility.OAFaction);
+            slate.Set(storeAs.GetValue(slate), faction);
             return true;
         }
         else
