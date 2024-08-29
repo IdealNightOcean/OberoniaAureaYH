@@ -139,8 +139,8 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             rewards =
             {
-                (Reward)new Reward_VisitorsHelp(),
-                (Reward)reward_Goodwill
+                new Reward_VisitorsHelp(),
+                reward_Goodwill
             }
         };
         if (ModsConfig.RoyaltyActive)
