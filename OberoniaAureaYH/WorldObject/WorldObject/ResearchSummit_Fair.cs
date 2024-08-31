@@ -7,40 +7,34 @@ using Verse;
 namespace OberoniaAurea;
 public class ResearchSummit_Fair : WorldObject_InteractiveBase
 {
-    public SimpleTrader innerTrader;
+    protected SiteTrader innerTrader;
 
-    public static SimpleTrader GenerateFairTrader(int tile)
+    public void InitInnerTrader()
     {
-        SimpleTrader trader = new(OA_PawnGenerateDefOf.OA_ResearchSummit_FairTrader)
-        {
-            WasAnnounced = false
-        };
-        trader.GenerateThings(tile);
-        return trader;
+        innerTrader = new(OA_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
+        innerTrader.GenerateThings(this.Tile);
     }
-    protected static void GenerateThings(ThingOwner things, TraderKindDef def, int tile)
+    public override void Tick()
     {
-        ThingSetMakerParams parms = default;
-        parms.traderDef = def;
-        parms.tile = tile;
-        things.TryAddRangeOrTransfer(ThingSetMakerDefOf.TraderStock.root.Generate(parms));
+        base.Tick();
+        innerTrader?.Traderick();
     }
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
         if (pawn == null)
         {
-            Messages.Message("OA_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
+            Messages.Message("OAFrame_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
         }
         Find.WindowStack.Add(new Dialog_Trade(pawn, innerTrader));
     }
 
-    public override void PostRemove()
+    public override void Destroy()
     {
-        innerTrader?.Depart();
-        innerTrader = null;
-        base.PostRemove();
+        innerTrader?.Destory();
+        base.Destroy();
+        
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)

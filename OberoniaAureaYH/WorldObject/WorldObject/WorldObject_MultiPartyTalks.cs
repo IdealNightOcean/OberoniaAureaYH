@@ -33,7 +33,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
         if (pawn == null)
         {
-            Messages.Message("OA_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
+            Messages.Message("OAFrame_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
         }
         float negotiationAbility = pawn.GetStatValue(StatDefOf.NegotiationAbility);

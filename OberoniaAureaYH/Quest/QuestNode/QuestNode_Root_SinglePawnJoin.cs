@@ -20,11 +20,11 @@ public abstract class QuestNode_Root_SinglePawnJoin : QuestNode
         {
             quest.SetFaction(Gen.YieldSingle(pawn), Faction.OfPlayer);
             quest.PawnsArrive(Gen.YieldSingle(pawn), null, map.Parent);
-            QuestGen_End.End(quest, QuestEndOutcome.Success);
+            quest.End(QuestEndOutcome.Success);
         });
         quest.Signal(signalReject, delegate
         {
-            QuestGen_End.End(quest, QuestEndOutcome.Fail);
+            quest.End(QuestEndOutcome.Fail);
         });
     }
 
@@ -57,11 +57,11 @@ public abstract class QuestNode_Root_SinglePawnJoin : QuestNode
     {
         quest.AnyPawnUnhealthy(Gen.YieldSingle(pawn), delegate
         {
-            QuestGen_End.End(quest, QuestEndOutcome.Fail);
+            quest.End(QuestEndOutcome.Fail);
         },
         delegate
         {
-            QuestGen_End.End(quest, QuestEndOutcome.Success);
+            quest.End(QuestEndOutcome.Success);
         });
     }
 

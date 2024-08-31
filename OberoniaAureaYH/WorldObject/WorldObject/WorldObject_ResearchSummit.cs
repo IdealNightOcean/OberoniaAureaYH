@@ -106,7 +106,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_Fair);
         worldObject.Tile = tile;
-        worldObject.innerTrader = ResearchSummit_Fair.GenerateFairTrader(tile);
+        worldObject.InitInnerTrader();
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(150000);
         Find.WorldObjects.Add(worldObject);

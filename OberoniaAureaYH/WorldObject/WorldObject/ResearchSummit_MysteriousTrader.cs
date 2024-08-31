@@ -17,7 +17,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
         if (pawn == null)
         {
-            Messages.Message("OA_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
+            Messages.Message("OAFrame_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
         }
 
