@@ -21,29 +21,6 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
             return lastWorkTick + 60000 - Find.TickManager.TicksGame;
         }
     }
-    public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
-    {
-        foreach (Gizmo gizmo in base.GetCaravanGizmos(caravan))
-        {
-            yield return gizmo;
-        }
-        Command_Action command_startWork = new()
-        {
-            defaultLabel = "OA_StartRSAssistWork".Translate(),
-            defaultDesc = "OA_StartRSAssistWorkDesc".Translate(),
-
-            action = delegate
-            {
-                StartWork(caravan);
-            }
-        };
-        int remainingCoolingTick = RemainingCoolingTick;
-        if (remainingCoolingTick > 0)
-        {
-            command_startWork.Disable("WaitTime".Translate(remainingCoolingTick.ToStringTicksToPeriod()));
-        }
-        yield return command_startWork;
-    }
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         StartWork(caravan);

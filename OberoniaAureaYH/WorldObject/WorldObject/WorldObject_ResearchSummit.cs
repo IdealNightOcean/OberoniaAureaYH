@@ -340,7 +340,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         List<ResearchProjectDef> availableResearch = AddResearchProgress(5, 1200);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(base.Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
     }
-
     private void Outcome_Triumph(Caravan caravan) //大成功谈判的结果
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(6, 1500);
@@ -418,6 +417,5 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         sb.AppendInNewLine("Triumph: " + 4.0f.ToStringPercent());
         Log.Message(sb.ToString());
     }
-
 
 }
