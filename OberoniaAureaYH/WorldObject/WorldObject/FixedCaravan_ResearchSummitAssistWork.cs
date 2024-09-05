@@ -15,6 +15,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected static readonly List<Pair<Action, float>> tmpPossibleOutcomes = [];
     public static readonly int CheckInterval = 5000;
 
+    protected int allTicksRemaining = 25000;
     protected int checkRemaining = 5;
     public ResearchSummit_AssistWork assistWork;
     protected int workPoints;
@@ -22,6 +23,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     public override void Tick()
     {
         base.Tick();
+        allTicksRemaining--;
         ticksRemaining--;
         if (ticksRemaining <= 0)
         {
@@ -226,6 +228,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     public override string GetInspectString()
     {
         StringBuilder stringBuilder = new(base.GetInspectString());
+        stringBuilder.AppendInNewLine("OA_FixedCaravanRSAssistWork_TimeLeft".Translate(allTicksRemaining.ToStringTicksToPeriod()));
         stringBuilder.AppendInNewLine("OA_FixedCaravanRSAssistWork_workPoints".Translate(workPoints));
         return stringBuilder.ToString();
     }
@@ -234,6 +237,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         base.ExposeData();
         Scribe_Values.Look(ref checkRemaining, "checkRemaining", 5);
         Scribe_Values.Look(ref workPoints, "workPoints", 0);
+        Scribe_Values.Look(ref allTicksRemaining, "allTicksRemaining", 25000);
         Scribe_References.Look(ref assistWork, "assistWork");
     }
 }

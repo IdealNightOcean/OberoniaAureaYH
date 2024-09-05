@@ -3,6 +3,7 @@ using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Verse;
 
 namespace OberoniaAurea;
@@ -46,6 +47,12 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     {
         DiplomaticSummitUtility.ApplyEffect(curNegotiatingTeamLevel, this, associateSettlement, negotiant);
         FixedCaravanUtility.ConvertToCaravan(this);
+    }
+    public override string GetInspectString()
+    {
+        StringBuilder stringBuilder = new(base.GetInspectString());
+        stringBuilder.AppendInNewLine("OA_FixedCaravanRSAssistWork_TimeLeft".Translate(ticksRemaining.ToStringTicksToPeriod()));
+        return stringBuilder.ToString();
     }
     public override void ExposeData()
     {
