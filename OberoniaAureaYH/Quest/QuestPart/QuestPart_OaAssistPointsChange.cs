@@ -27,7 +27,7 @@ public class QuestPart_OaAssistPointsChange : QuestPart
             }
             else
             {
-                GC_OA.UseAssistPoints(-changePoints);
+                GC_OA?.UseAssistPoints(-changePoints);
             }
         }
     }

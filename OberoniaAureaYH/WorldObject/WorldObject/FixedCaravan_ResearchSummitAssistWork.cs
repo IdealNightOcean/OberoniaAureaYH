@@ -237,7 +237,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         base.ExposeData();
         Scribe_Values.Look(ref allTicksRemaining, "allTicksRemaining", 25000);
         Scribe_Values.Look(ref checkRemaining, "checkRemaining", 5);
-        Scribe_Values.Look(ref workPoints, "workPoints", 0);      
+        Scribe_Values.Look(ref workPoints, "workPoints", 0);
         Scribe_References.Look(ref assistWork, "assistWork");
     }
 }

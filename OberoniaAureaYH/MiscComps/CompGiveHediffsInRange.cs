@@ -31,14 +31,11 @@ public class CompGiveHediffsInRange : ThingComp
 
     public CompProperties_GiveHediffsInRange Props => (CompProperties_GiveHediffsInRange)props;
     public Apparel ApparelParent => parent as Apparel;
+
     protected Pawn Wearer => ApparelParent.Wearer;
 
     public override void CompTick()
     {
-        if (!parent.IsHashIntervalTick(Props.checkInterval))
-        {
-            return;
-        }
         Pawn wearer = Wearer;
         if (wearer == null || !wearer.Spawned)
         {
@@ -55,6 +52,10 @@ public class CompGiveHediffsInRange : ThingComp
                 mote = MoteMaker.MakeAttachedOverlay(wearer, Props.mote, Vector3.zero);
             }
             mote?.Maintain();
+        }
+        if (!parent.IsHashIntervalTick(Props.checkInterval))
+        {
+            return;
         }
         IReadOnlyList<Pawn> readOnlyList = ((!Props.onlyPawnsInSameFaction || wearer.Faction == null) ? wearer.Map.mapPawns.AllPawnsSpawned : wearer.Map.mapPawns.SpawnedPawnsInFaction(wearer.Faction));
         foreach (Pawn pawn in readOnlyList)
@@ -86,6 +87,7 @@ public class CompGiveHediffsInRange : ThingComp
             }
         }
     }
+
     private bool ValidPawn(Pawn pawn, Pawn wearer)
     {
         if (pawn.Dead || pawn.health == null)

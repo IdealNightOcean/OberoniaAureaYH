@@ -34,7 +34,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     {
         innerTrader?.Destory();
         base.Destroy();
-        
+
     }
 
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)

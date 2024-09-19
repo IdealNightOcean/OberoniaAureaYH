@@ -245,11 +245,11 @@ public class SettlementDipComp : WorldObjectComp
 public static class DeepExchangeUtility
 {
     private static readonly float LearnIntellectualXP = 2000f;
-    private static readonly float QuestProbability = 0.3f;
+    private static readonly float QuestProbability = 0.5f;
     private static readonly int ChanwuNum = 10;
     private static readonly int AddAssistPoints = 5;
 
-    private readonly static List<Pair<QuestScriptDef, float>>tmpPossibleOutcomes = [];
+    private readonly static List<Pair<QuestScriptDef, float>> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
@@ -264,27 +264,15 @@ public static class DeepExchangeUtility
         tmpPossibleOutcomes.Clear();
         if (Rand.Chance(QuestProbability))
         {
-            Slate slate = new();
-            if (OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks.CanRun(slate))
-            {
-                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef,float> (OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks,35f));
-            }
-            slate = new();
-            if (OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor.CanRun(slate))
-            {
-                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor,25f));
-            }
-            slate = new();
-            slate.Set("settlement", settlement);
-            if (OberoniaAureaYHDefOf.OA_UrbanConstruction.CanRun(slate))
-            {
-                tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(OberoniaAureaYHDefOf.OA_UrbanConstruction, 40f));
-            }
+            AddQuest(OberoniaAureaYHDefOf.OA_OpportunitySite_MultiPartyTalks, 20f);
+            AddQuest(OberoniaAureaYHDefOf.OA_OpportunitySite_PunishmentExecutor, 15f);
+            AddQuest(OberoniaAureaYHDefOf.OA_UrbanConstruction, 40f, settlement);
+            AddQuest(OberoniaAureaYHDefOf.OA_FestivalOrders, 25f);
             if (tmpPossibleOutcomes.Any())
             {
-                slate = new();
+                Slate slate = new();
                 QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight((Pair<QuestScriptDef, float> x) => x.Second).First;
-                if(questScript == OberoniaAureaYHDefOf.OA_UrbanConstruction)
+                if (questScript == OberoniaAureaYHDefOf.OA_UrbanConstruction)
                 {
                     slate.Set("settlement", settlement);
                 }
@@ -297,5 +285,17 @@ public static class DeepExchangeUtility
             }
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDeepExchange".Translate(), text, LetterDefOf.PositiveEvent, caravan, settlement.Faction);
+    }
+    private static void AddQuest(QuestScriptDef scriptDef, float chance, Settlement targetSettle = null)
+    {
+        Slate slate = new();
+        if (targetSettle != null)
+        {
+            slate.Set("settlement", targetSettle);
+        }
+        if (scriptDef.CanRun(slate))
+        {
+            tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(scriptDef, chance));
+        }
     }
 }

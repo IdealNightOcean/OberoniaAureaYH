@@ -135,7 +135,6 @@
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
     <Compile Include="Misc\ThoughtWorker_Precept_Snow.cs" />
-    <Compile Include="Misc\Thought_SituationalGiveHediff.cs" />
     <Compile Include="Equipment\BarrageEnhancedBullet.cs" />
     <Compile Include="Equipment\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Equipment\ShotgunBullet.cs" />

@@ -1,4 +1,5 @@
-﻿using RimWorld.QuestGen;
+﻿using RimWorld;
+using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
@@ -6,11 +7,15 @@ public class QuestNode_OaAssistPointsChange : QuestNode
 {
     [NoTranslate]
     public SlateRef<string> storeAs;
-
     [NoTranslate]
     public SlateRef<string> inSignal;
 
     public SlateRef<int> changePoints;
+
+    public SlateRef<bool> canSendLetter;
+    public SlateRef<LetterDef> letterDef;
+    public SlateRef<string> letterLabel;
+    public SlateRef<string> letterText;
 
     protected override bool TestRunInt(Slate slate)
     {
@@ -23,12 +28,27 @@ public class QuestNode_OaAssistPointsChange : QuestNode
             return;
         }
         Slate slate = QuestGen.slate;
-        slate.Set(storeAs.GetValue(slate), changePoints.GetValue(slate));
+        Quest quest = QuestGen.quest;
+        if (storeAs.GetValue(slate) != null)
+        {
+            slate.Set(storeAs.GetValue(slate), changePoints.GetValue(slate));
+        }
         QuestPart_OaAssistPointsChange questPart_OaAssistPointsChange = new()
         {
             inSignal = QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
             changePoints = changePoints.GetValue(slate)
         };
-        QuestGen.quest.AddPart(questPart_OaAssistPointsChange);
+        quest.AddPart(questPart_OaAssistPointsChange);
+
+        if (canSendLetter.GetValue(slate))
+        {
+            LetterDef letterDef = this.letterDef.GetValue(slate) ?? LetterDefOf.NeutralEvent;
+            QuestPart_Letter questPart_Letter = new()
+            {
+                inSignal = QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
+                letter = LetterMaker.MakeLetter(letterLabel.GetValue(slate), letterText.GetValue(slate), letterDef, OberoniaAureaYHUtility.OAFaction, quest)
+            };
+            quest.AddPart(questPart_Letter);
+        }
     }
 }

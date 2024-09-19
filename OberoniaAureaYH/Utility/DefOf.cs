@@ -25,6 +25,7 @@ public static class OberoniaAureaYHDefOf
     public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //科研峰会：同道中人
     public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
     public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
+    public static QuestScriptDef OA_FestivalOrders; //节日订单
 
     //public static RaidStrategyDef OA_RK_DropAttack;
 
