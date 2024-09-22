@@ -16,7 +16,6 @@ public static class OberoniaAureaYHDefOf
 
     public static LetterDef OA_RK_AcceptJoinerViewInfo;
 
-    //public static PawnsArrivalModeDef OA_RK_CenterDrop;
     public static PreceptDef OA_RK_MentalBreakProbability_Atonement;
     public static PreceptDef OA_RK_MentalBreakProbability_Low;
 
@@ -26,8 +25,6 @@ public static class OberoniaAureaYHDefOf
     public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
     public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
     public static QuestScriptDef OA_FestivalOrders; //节日订单
-
-    //public static RaidStrategyDef OA_RK_DropAttack;
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
 

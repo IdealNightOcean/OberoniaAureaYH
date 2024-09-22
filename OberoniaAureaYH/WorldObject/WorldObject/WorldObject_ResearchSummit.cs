@@ -100,7 +100,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void Fair(int parentTile) //集市
     {
         List<int> neighborTiles = [];
-        if (!OberoniaAureaFrameUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -116,7 +116,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void AcademicDispute(int parentTile) //学术约架
     {
         List<int> neighborTiles = [];
-        if (!OberoniaAureaFrameUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }

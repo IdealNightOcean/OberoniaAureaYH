@@ -12,11 +12,6 @@ public class QuestNode_OaAssistPointsChange : QuestNode
 
     public SlateRef<int> changePoints;
 
-    public SlateRef<bool> canSendLetter;
-    public SlateRef<LetterDef> letterDef;
-    public SlateRef<string> letterLabel;
-    public SlateRef<string> letterText;
-
     protected override bool TestRunInt(Slate slate)
     {
         return OberoniaAureaYHUtility.OAFaction != null;
@@ -39,16 +34,5 @@ public class QuestNode_OaAssistPointsChange : QuestNode
             changePoints = changePoints.GetValue(slate)
         };
         quest.AddPart(questPart_OaAssistPointsChange);
-
-        if (canSendLetter.GetValue(slate))
-        {
-            LetterDef letterDef = this.letterDef.GetValue(slate) ?? LetterDefOf.NeutralEvent;
-            QuestPart_Letter questPart_Letter = new()
-            {
-                inSignal = QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
-                letter = LetterMaker.MakeLetter(letterLabel.GetValue(slate), letterText.GetValue(slate), letterDef, OberoniaAureaYHUtility.OAFaction, quest)
-            };
-            quest.AddPart(questPart_Letter);
-        }
     }
 }
