@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
     private static readonly int ArrivalDelayTicks = 120000;
     private static readonly IntRange IntellectualSkill = new(8, 18);
 
-
     protected override void RunInt()
     {
         Faction faction = GetOrGenerateFaction();
@@ -28,9 +28,9 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
         string lodgerArrestedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Arrested");
         string lodgerBecameMutantSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.BecameMutant");
         string lodgerArrestedOrRecruited = QuestGen.GenerateNewSignal("Lodger_ArrestedOrRecruited");
-        quest.AnySignal(new List<string> { lodgerRecruitedSignal, lodgerArrestedSignal }, null, new List<string> { lodgerArrestedOrRecruited });
+        quest.AnySignal([lodgerRecruitedSignal, lodgerArrestedSignal], null, [lodgerArrestedOrRecruited]);
 
-        List<Pawn> pawns = GeneratePawns(lodgerCount, faction, quest, map, lodgerRecruitedSignal);
+        List<Pawn> pawns = GeneratePawns(lodgerCount, faction, map, quest, lodgerRecruitedSignal);
         faction.leader = pawns.First();
         Pawn asker = pawns.First();
 
@@ -73,13 +73,13 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
         slate.Set("lodgers", pawns);
         slate.Set("asker", asker);
     }
-    protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Quest quest, Map map, string lodgerRecruitedSignal = null)
+    protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Map map, Quest quest, string lodgerRecruitedSignal = null)
     {
         List<Pawn> pawns = [];
         for (int i = 0; i < lodgerCount; i++)
         {
             DevelopmentalStage developmentalStages = DevelopmentalStage.Adult;
-            Pawn pawn = quest.GeneratePawn(RimWorld.PawnKindDefOf.Empire_Common_Lodger, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
+            Pawn pawn = quest.GeneratePawn(PawnKindDefOf.Empire_Common_Lodger, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
             AdjustPawnSkill(pawn);
             pawns.Add(pawn);
             quest.PawnJoinOffer(pawn, "LetterJoinOfferLabel".Translate(pawn.Named("PAWN")), "LetterJoinOfferTitle".Translate(pawn.Named("PAWN")), "LetterJoinOfferText".Translate(pawn.Named("PAWN"), map.Parent.Named("MAP")), delegate

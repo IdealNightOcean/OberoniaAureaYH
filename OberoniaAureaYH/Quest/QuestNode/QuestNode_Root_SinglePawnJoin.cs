@@ -32,7 +32,7 @@ public abstract class QuestNode_Root_SinglePawnJoin : QuestNode
     {
         Quest quest = QuestGen.quest;
         Slate slate = QuestGen.slate;
-        if (!slate.TryGet<Map>("map", out Map map))
+        if (!slate.TryGet("map", out Map map))
         {
             map = QuestGen_Get.GetMap();
         }

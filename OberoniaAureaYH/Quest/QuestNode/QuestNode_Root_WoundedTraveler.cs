@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
@@ -43,9 +44,9 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         string lodgerArrestedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Arrested");
         string lodgerBecameMutantSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.BecameMutant");
         string lodgerArrestedOrRecruited = QuestGen.GenerateNewSignal("Lodger_ArrestedOrRecruited");
-        quest.AnySignal(new List<string> { lodgerRecruitedSignal, lodgerArrestedSignal }, null, new List<string> { lodgerArrestedOrRecruited });
+        quest.AnySignal([lodgerRecruitedSignal, lodgerArrestedSignal], null, [lodgerArrestedOrRecruited]);
 
-        List<Pawn> pawns = GeneratePawns(lodgerCount, faction, quest, map, lodgerRecruitedSignal);
+        List<Pawn> pawns = GeneratePawns(lodgerCount, faction, map, quest, lodgerRecruitedSignal);
         Pawn wounded = pawns[1];
         wounded.health.AddHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjuryII);
         NonLethalDamage(wounded, DamageDefOf.Blunt);
@@ -58,7 +59,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         SetAward(quest, faction, lodgerCount, out int goodwillReward);
 
-        QuestPart_OARefugeeInteractions questPart_WoundedTravelerInteractions = WoundedTravelerInteractions(faction, map.Parent);
+        QuestPart_OARefugeeInteractions questPart_WoundedTravelerInteractions = WoundedTravelerInteractions(faction, map.Parent, slate);
         questPart_WoundedTravelerInteractions.inSignalArrested = lodgerArrestedSignal;
         questPart_WoundedTravelerInteractions.inSignalRecruited = lodgerRecruitedSignal;
         questPart_WoundedTravelerInteractions.pawns.AddRange(pawns);
@@ -91,7 +92,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
             quest.Leave(pawns, null, sendStandardLetter: false, leaveOnCleanup: false, lodgerArrestedOrRecruited, wakeUp: true);
         }, null, inSignalAllHealthy, null, reactivatable: false, null, null, isQuestTimeout: false, "GuestsDepartsIn".Translate(), "GuestsDepartsOn".Translate(), "QuestDelay");
 
-        SetQuestEndComp(quest, questPart_WoundedTravelerInteractions, pawns, goodwillReward, faction, lodgerCount);
+        SetQuestEndComp(quest, questPart_WoundedTravelerInteractions, pawns, goodwillReward, faction);
 
         slate.Set("map", map);
         slate.Set("faction", faction);
@@ -106,7 +107,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         return OberoniaAureaYHUtility.OAFaction;
     }
 
-    protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Quest quest, Map map, string lodgerRecruitedSignal = null)
+    protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Map map, Quest quest, string lodgerRecruitedSignal = null)
     {
         List<Pawn> pawns = [];
         for (int i = 0; i < lodgerCount; i++)
@@ -154,13 +155,13 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         questPart_Choice.choices.Add(choice);
     }
 
-    private QuestPart_OARefugeeInteractions WoundedTravelerInteractions(Faction faction, MapParent mapParent) => new()
+    private QuestPart_OARefugeeInteractions WoundedTravelerInteractions(Faction faction, MapParent mapParent, Slate slate) => new()
     {
         allowAssaultColony = false,
         allowLeave = true,
         allowBadThought = false,
 
-        inSignalEnable = QuestGen.slate.Get<string>("inSignal"),
+        inSignalEnable = slate.Get<string>("inSignal"),
         inSignalDestroyed = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Destroyed"),
         inSignalSurgeryViolation = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.SurgeryViolation"),
         inSignalKidnapped = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Kidnapped"),
@@ -186,7 +187,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         signalListenMode = QuestPart.SignalListenMode.Always
     };
 
-    private void SetQuestEndComp(Quest quest, QuestPart_OARefugeeInteractions questPart_Interactions, List<Pawn> pawns, int goodwillReward, Faction faction, int lodgerCount)
+    private void SetQuestEndComp(Quest quest, QuestPart_OARefugeeInteractions questPart_Interactions, List<Pawn> pawns, int goodwillReward, Faction faction)
     {
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalDestroyed_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerDiedLeaveMapLetterText]", null, "[lodgerDiedLeaveMapLetterLabel]");
         quest.Letter(LetterDefOf.NegativeEvent, questPart_Interactions.outSignalArrested_LeaveColony, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, "[lodgerArrestedLeaveMapLetterText]", null, "[lodgerArrestedLeaveMapLetterLabel]");
