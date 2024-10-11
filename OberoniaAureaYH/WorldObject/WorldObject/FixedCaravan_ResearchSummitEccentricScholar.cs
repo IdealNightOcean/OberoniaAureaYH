@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Text;
 using Verse;
@@ -38,7 +39,9 @@ public class FixedCaravan_ResearchSummitEccentricScholar : FixedCaravan
 
         string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
         string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
-        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000), delegate { }));
+        DiaNode startNode = OAFrame_DiaUtility.DefaultConfirmDiaNode("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000));
+        Dialog_NodeTree nodeTree = new(startNode);
+        Find.WindowStack.Add(nodeTree);
     }
     protected override void PreConvertToCaravanByPlayer()
     {

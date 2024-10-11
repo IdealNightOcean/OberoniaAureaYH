@@ -13,21 +13,16 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
     {
         if (!workStart)
         {
-            Find.WindowStack.Add
+            DiaNode startNode = OAFrame_DiaUtility.ConfirmDiaNode
             (
-                new Dialog_MessageBox
-                (
-                    "OA_ResearchSummit_EccentricScholarText".Translate(),
-                    "OA_ResearchSummit_EccentricScholarConfirm".Translate(OrganizeTicks.ToStringTicksToPeriod(shortForm: true)),
-                    delegate
-                    {
-                        StartOrganize(caravan);
-                    },
-                    "OA_ResearchSummit_EccentricScholarIngore".Translate(),
-                    Destroy,
-                    buttonADestructive: false
-                )
+                "OA_ResearchSummit_EccentricScholarText".Translate(),
+                "OA_ResearchSummit_EccentricScholarConfirm".Translate(OrganizeTicks.ToStringTicksToPeriod(shortForm: true)),
+                delegate { StartOrganize(caravan); },
+                "OA_ResearchSummit_EccentricScholarIngore".Translate(),
+                Destroy
             );
+            Dialog_NodeTree nodeTree = new(startNode);
+            Find.WindowStack.Add(nodeTree);
         }
         else
         {
