@@ -181,8 +181,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }, 35f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            AssistWork(this.Tile);
-        }, 35f));
+            EccentricScholar(this.Tile);
+        }, 25f));
         tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
@@ -305,7 +305,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void EccentricScholar(int parentTile)
+    private static void EccentricScholar(int parentTile) //废品旁的学者
     {
         List<int> neighborTiles = [];
         if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
@@ -313,6 +313,12 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             tile = parentTile;
         }
 
+        ResearchSummit_EccentricScholar worldObject = (ResearchSummit_EccentricScholar)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummitEccentricScholar);
+        worldObject.Tile = tile;
+        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
+        timeComp?.StartTimeout(120000);
+        Find.WorldObjects.Add(worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_EccentricScholar".Translate(), "OA_LetterResearchSummit_EccentricScholar".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
     private static void AssistWork(int tile) //协助者募集点
     {

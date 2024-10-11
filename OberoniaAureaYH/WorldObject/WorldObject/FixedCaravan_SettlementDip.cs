@@ -51,7 +51,7 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     public override string GetInspectString()
     {
         StringBuilder stringBuilder = new(base.GetInspectString());
-        stringBuilder.AppendInNewLine("OA_FixedCaravanRSAssistWork_TimeLeft".Translate(ticksRemaining.ToStringTicksToPeriod()));
+        stringBuilder.AppendInNewLine("OA_FixedCaravanDipSummit_TimeLeft".Translate(ticksRemaining.ToStringTicksToPeriod()));
         return stringBuilder.ToString();
     }
     public override void ExposeData()

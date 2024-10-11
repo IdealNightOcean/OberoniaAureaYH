@@ -93,11 +93,13 @@ public static class OA_WorldObjectDefOf
 
     public static WorldObjectDef OA_RK_ResearchSummit; //科研峰会
     public static WorldObjectDef OA_ResearchSummit_AcademicDispute; //科研峰会：约架
+    public static WorldObjectDef OA_ResearchSummitEccentricScholar;
     public static WorldObjectDef OA_ResearchSummit_Fair;
     public static WorldObjectDef OA_ResearchSummit_MysteriousTrader;
     public static WorldObjectDef OA_ResearchSummit_AssistWork;
     public static WorldObjectDef OA_FixedCaravan_ResearchSummitAssistWork;
     public static WorldObjectDef OA_FixedCaravan_DiplomaticSummit;
+    public static WorldObjectDef OA_FixedCaravan_ResearchSummitEccentricScholar;
     static OA_WorldObjectDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OA_WorldObjectDefOf));
