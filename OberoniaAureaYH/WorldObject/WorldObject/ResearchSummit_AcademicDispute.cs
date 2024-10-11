@@ -27,15 +27,11 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
         Destroy();
     }
 
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
+    public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)
     {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
+        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSAcademicDispute".Translate(this.Label)))
         {
             yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSAcademicDispute".Translate(this.Label)))
-        {
-            yield return floatMenuOption2;
         }
     }
 }

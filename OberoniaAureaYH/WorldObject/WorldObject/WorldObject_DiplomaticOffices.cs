@@ -38,18 +38,6 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
         Destroy();
     }
 
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
-    {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
-        {
-            yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
-        {
-            yield return floatMenuOption2;
-        }
-    }
-
     private void Outcome_Success(Caravan caravan) //成功谈判的结果
     {
         FactionRelationKind playerRelationKind = ParticipantFaction.PlayerRelationKind;

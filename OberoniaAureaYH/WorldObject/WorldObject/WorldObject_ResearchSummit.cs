@@ -21,12 +21,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static readonly float SuccessNeedSpeed = 3.0f; //成功所需要的研究能力
     private static readonly float TriumphNeedSpeed = 4.0f; //大成功所需要的研究能力
 
-    private static readonly float AcademicDisputeFactor = 0.4f; //学术约架概率
-
     private static readonly IntRange ScholarGiftValue = new(1000, 3000);
 
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesI = [];
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesII = [];
+    private static readonly List<Pair<Action, float>> tmpPossibleOutcomesIII = [];
 
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
@@ -42,12 +41,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         AffectFactionGoodwill(base.Faction, participantFactions);
         GetPossibleOutcomesI(researchSpeed, caravan);
         GetPossibleOutcomesII();
+        GetPossibleOutcomesIII();
         pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
         Fair(this.Tile);
-        if (Rand.Chance(AcademicDisputeFactor))
-        {
-            AcademicDispute(this.Tile);
-        }
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
@@ -113,20 +109,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Fair".Translate(), "OA_LetterResearchSummit_Fair".Translate(), LetterDefOf.PositiveEvent, worldObject);
 
     }
-    private static void AcademicDispute(int parentTile) //学术约架
-    {
-        List<int> neighborTiles = [];
-        if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
-        {
-            tile = parentTile;
-        }
-        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
-        worldObject.Tile = tile;
-        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
-        timeComp?.StartTimeout(120000);
-        Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
-    }
     private void GetPossibleOutcomesI(float researchSpeed, Caravan caravan)
     {
         tmpPossibleOutcomesI.Clear();
@@ -188,6 +170,20 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             AssistWork(this.Tile);
         }, 35f));
         tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+    }
+    private void GetPossibleOutcomesIII()
+    {
+        tmpPossibleOutcomesIII.Clear();
+        tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate { }, 45f));
+        tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
+        {
+            AcademicDispute(this.Tile);
+        }, 35f));
+        tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
+        {
+            AssistWork(this.Tile);
+        }, 35f));
+        tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
     {
@@ -295,6 +291,29 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
+    private static void AcademicDispute(int parentTile) //学术约架
+    {
+        List<int> neighborTiles = [];
+        if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        {
+            tile = parentTile;
+        }
+        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
+        worldObject.Tile = tile;
+        TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
+        timeComp?.StartTimeout(120000);
+        Find.WorldObjects.Add(worldObject);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
+    }
+    private static void EccentricScholar(int parentTile)
+    {
+        List<int> neighborTiles = [];
+        if (!TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        {
+            tile = parentTile;
+        }
+
+    }
     private static void AssistWork(int tile) //协助者募集点
     {
         ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
@@ -303,17 +322,6 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         timeComp?.StartTimeout(180000);
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AssistWork".Translate(), "OA_LetterResearchSummit_AssistWork".Translate(), LetterDefOf.PositiveEvent, worldObject);
-    }
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
-    {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
-        {
-            yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
-        {
-            yield return floatMenuOption2;
-        }
     }
     private void Outcome_Disaster(Caravan caravan) //大失败事件
     {

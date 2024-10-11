@@ -68,18 +68,6 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         Destroy();
     }
 
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
-    {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
-        {
-            yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
-        {
-            yield return floatMenuOption2;
-        }
-    }
-
     private void Outcome_Disaster(Caravan caravan) //大失败事件
     {
         Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, -50, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksDisaster);

@@ -27,21 +27,10 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         };
         Find.WindowStack.Add(dialog_Negotiation);
     }
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
-    {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
-        {
-            yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this))
-        {
-            yield return floatMenuOption2;
-        }
-    }
     protected static DiaNode TraderNode(Caravan caravan, WorldObject worldObject)
     {
         DiaNode root = new("OA_ResearchSummit_MysteriousTrader".Translate());
-        TaggedString taggedString = "OA_RSMysteriousTrader_BuyTech".Translate();
+        TaggedString taggedString = "OA_RSMysteriousTrader_BuyTech".Translate(NeedSilver);
         DiaOption buyTech = new(taggedString);
         List<ResearchProjectDef> availableResearch = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(ValidResearch).InRandomOrder().Take(2).ToList();
         if (availableResearch.Any())
@@ -71,7 +60,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             }
             else
             {
-                buyTech.Disable("NeedSilverLaunchable".Translate(NeedSilver));
+                buyTech.Disable("OA_RSMysteriousTrader_NeedSilverCaravan".Translate(NeedSilver));
             }
         }
         else

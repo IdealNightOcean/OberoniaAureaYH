@@ -40,15 +40,11 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
         return true;
     }
 
-    public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
+    public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)
     {
-        foreach (FloatMenuOption floatMenuOption in base.GetFloatMenuOptions(caravan))
+        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, CanVisit()))
         {
             yield return floatMenuOption;
-        }
-        foreach (FloatMenuOption floatMenuOption2 in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, CanVisit()))
-        {
-            yield return floatMenuOption2;
         }
     }
     public void StartWork(Caravan caravan)
