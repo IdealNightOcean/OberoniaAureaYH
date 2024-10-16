@@ -19,6 +19,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected int checkRemaining = 5;
     public ResearchSummit_AssistWork assistWork;
     protected int workPoints;
+    protected bool workEnd;
 
     public override void Tick()
     {
@@ -44,12 +45,11 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         {
             SupplyFood(this);
         }
-        else if (checkRemaining <= 0)
+        GetPossibleOutcomes();
+        if (checkRemaining <= 0 && !workEnd)
         {
             FinishedWork();
-            return;
         }
-        GetPossibleOutcomes();
     }
     protected void GetPossibleOutcomes()
     {
@@ -107,6 +107,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     public override void Notify_ConvertToCaravan()
     {
+        workEnd = true;
         assistWork?.EndWork();
     }
     protected static void ConsumptionNeeds(List<Pawn> allPawns) //消耗饥饿/娱乐值
