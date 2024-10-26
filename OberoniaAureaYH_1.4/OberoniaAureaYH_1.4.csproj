@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Game\SteamLibrary\steamapps\common\RimWorld\Mods\Ratkin Faction Oberonia Aurea\1.4\Assemblies\</OutputPath>
+    <OutputPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Mods\Ratkin Faction Oberonia Aurea\1.4\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,11 +33,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\RimWorld引用dll\1.4\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\1.4\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\RimWorld引用dll\1.4\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\1.4\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,15 +49,15 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\1.4\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\1.4\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\RimWorld引用dll\1.4\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\1.4\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
