@@ -49,11 +49,11 @@ public class ResearchSummit_AssistWork : WorldObject_InteractiveBase
     }
     public void StartWork(Caravan caravan)
     {
-        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
+        if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
-        FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);
+        FixedCaravan_ResearchSummitAssistWork fixedCaravan = (FixedCaravan_ResearchSummitAssistWork)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitAssistWork, FixedCaravan_ResearchSummitAssistWork.CheckInterval);
         fixedCaravan.assistWork = this;
         Find.WorldObjects.Add(fixedCaravan);
         Find.WorldSelector.Select(fixedCaravan);

@@ -146,7 +146,7 @@ public class SettlementDipComp : WorldObjectComp
     }
     protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
-        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
+        if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
@@ -184,7 +184,7 @@ public class SettlementDipComp : WorldObjectComp
 
         void InitDiplomaticSummit(NegotiatingTeamLevel teamLevel)
         {
-            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)FixedCaravanUtility.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
+            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
             fixedCaravan.negotiant = pawn;
             fixedCaravan.associateSettlement = settlement;
             fixedCaravan.curNegotiatingTeamLevel = teamLevel;
@@ -255,7 +255,7 @@ public static class DeepExchangeUtility
     {
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(AddAssistPoints);
         pawn.skills.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);

@@ -24,22 +24,21 @@ public class FixedCaravan_ResearchSummitEccentricScholar : FixedCaravan
     {
         int componentCount = ComponentCountRange.RandomInRange;
         int steelCount = SteelCountRange.RandomInRange;
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.ComponentIndustrial, componentCount);
-        things.AddRange(OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.Steel, steelCount));
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.ComponentIndustrial, componentCount);
+        things.AddRange(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Steel, steelCount));
         foreach (Thing t in things)
         {
-            FixedCaravanUtility.GiveThing(this, t);
+            OAFrame_FixedCaravanUtility.GiveThing(this, t);
         }
         foreach (Pawn pawn in PawnsListForReading)
         {
             pawn.skills?.Learn(SkillDefOf.Intellectual, 1000f, direct: true);
         }
-        FixedCaravanUtility.ConvertToCaravan(this);
+        OAFrame_FixedCaravanUtility.ConvertToCaravan(this);
 
         string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
         string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
-        DiaNode startNode = OAFrame_DiaUtility.DefaultConfirmDiaNode("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000));
-        Dialog_NodeTree nodeTree = new(startNode);
+        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000));
         Find.WindowStack.Add(nodeTree);
     }
     protected override void PreConvertToCaravanByPlayer()

@@ -97,10 +97,10 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(APpoints);
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
-            FixedCaravanUtility.GiveThing(this, t);
+            OAFrame_FixedCaravanUtility.GiveThing(this, t);
         }
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
         Find.LetterStack.ReceiveLetter(label.Translate(), letterText, letterDef, assistWork, assistWork?.Faction);
@@ -133,10 +133,10 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected static void SupplyFood(FixedCaravan_ResearchSummitAssistWork assistWorkCaravan) //给予当天的食物
     {
         ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         foreach (Thing t in things)
         {
-            FixedCaravanUtility.GiveThing(assistWorkCaravan, t);
+            OAFrame_FixedCaravanUtility.GiveThing(assistWorkCaravan, t);
         }
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
@@ -160,13 +160,13 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     public void FinishedWork()
     {
         GetReward("OA_LetterLabelRSAssistWork_FinishedWork", "OA_LetterRSAssistWork_FinishedWork", LetterDefOf.PositiveEvent);
-        FixedCaravanUtility.ConvertToCaravan(this);
+        OAFrame_FixedCaravanUtility.ConvertToCaravan(this);
     }
     protected void Outcome_CausingArgument(int capableCount)
     {
         workPoints += capableCount;
         GetReward("OA_LetterLabelRSAssistWork_CausingArgument", "OA_LetterRSAssistWork_CausingArgument", LetterDefOf.NegativeEvent);
-        FixedCaravanUtility.ConvertToCaravan(this);
+        OAFrame_FixedCaravanUtility.ConvertToCaravan(this);
     }
 
     protected void Outcome_SmoothWork(int capableCount)

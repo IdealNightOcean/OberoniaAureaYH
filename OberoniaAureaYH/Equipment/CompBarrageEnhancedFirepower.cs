@@ -17,6 +17,7 @@ public class CompProperties_BarrageEnhancedFirepower : CompProperties
 public class CompBarrageEnhancedFirepower : ThingComp
 {
     public CompProperties_BarrageEnhancedFirepower Props => (CompProperties_BarrageEnhancedFirepower)props;
+    [Unsaved]
     private Verb_BarrageEnhancedShoot AttackVerbInt;
     private Verb_BarrageEnhancedShoot AttackVerb => AttackVerbInt ??= (Verb_BarrageEnhancedShoot)parent.TryGetComp<CompEquippable>().PrimaryVerb;
     protected int CurLevel => Mathf.Min(AttackVerb.CurLevel, Props.maxLevel);

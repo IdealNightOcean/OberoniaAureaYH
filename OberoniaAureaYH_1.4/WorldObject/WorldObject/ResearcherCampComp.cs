@@ -52,7 +52,7 @@ public class ResearcherCampComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref active, "active", defaultValue: false);
+        Scribe_Values.Look(ref active, "active_ResearcherCamp", defaultValue: false);
     }
 
     public static Faction GenerateTempCampFaction()

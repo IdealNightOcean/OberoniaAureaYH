@@ -46,7 +46,7 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     private void DiplomaticSummitOutcome()
     {
         DiplomaticSummitUtility.ApplyEffect(curNegotiatingTeamLevel, this, associateSettlement, negotiant);
-        FixedCaravanUtility.ConvertToCaravan(this);
+        OAFrame_FixedCaravanUtility.ConvertToCaravan(this);
     }
     public override string GetInspectString()
     {
@@ -164,10 +164,10 @@ public static class DiplomaticSummitUtility
     private static void Outcome_Triumph(FixedCaravan_DiplomaticSummit fixedCaravan, Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, 1500);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, 1500);
         foreach (Thing thing in things)
         {
-            FixedCaravanUtility.GiveThing(fixedCaravan, thing);
+            OAFrame_FixedCaravanUtility.GiveThing(fixedCaravan, thing);
         }
         Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
         OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(TriumphAssistPoints);

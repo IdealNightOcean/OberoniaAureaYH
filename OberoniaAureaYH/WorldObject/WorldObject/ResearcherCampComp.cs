@@ -53,7 +53,7 @@ public class ResearcherCampComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref active, "active", defaultValue: false);
+        Scribe_Values.Look(ref active, "active_ResearcherCamp", defaultValue: false);
     }
 
     public static Faction GenerateTempCampFaction()
@@ -144,7 +144,7 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     }
     private static void Robbery(Caravan caravan, WorldObject worldObject)
     {
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.Silver, SilverNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, SilverNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);

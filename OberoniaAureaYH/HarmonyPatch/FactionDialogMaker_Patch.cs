@@ -266,7 +266,7 @@ public static class FactionDialogFor_Patch
 public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
 {
     [HarmonyPrefix]
-    private static bool Prefix(ref DiaOption __result, Map map, Faction faction, Pawn negotiator)
+    public static bool Prefix(ref DiaOption __result, Map map, Faction faction, Pawn negotiator)
     {
         if (faction.def != OberoniaAureaYHDefOf.OA_RK_Faction)
         {
@@ -398,7 +398,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int count = Mathf.Min(pawnNum * preCount, maxCount);
         if (count > 0)
         {
-            List<Thing> dropThings = OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.MealSurvivalPack, count);
+            List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MealSurvivalPack, count);
             IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.MealSurvivalPack.size);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
@@ -407,9 +407,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     private static void CallEmergencyMedicine(Map map, Faction faction)
     {
         List<List<Thing>> dropThings = [];
-        dropThings.Add(OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
-        dropThings.Add(OberoniaAureaFrameUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
-        dropThings.Add(OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
+        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
+        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
+        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, new IntVec2(2, 2));
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named("FACTION")), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
@@ -418,7 +418,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         if (count > 0)
         {
-            List<Thing> dropThings = OberoniaAureaFrameUtility.TryGenerateThing(ThingDefOf.Silver, count);
+            List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, count);
             IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.Silver.size);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);

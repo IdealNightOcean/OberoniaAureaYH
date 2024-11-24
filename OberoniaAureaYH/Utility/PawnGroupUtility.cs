@@ -5,7 +5,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
-
+[StaticConstructorOnStartup]
 public static class PawnGroupUtility
 {
     public static bool TryGetRandomPawnGroupMaker(PawnGroupMakerParms parms, StandalonePawnGroupMakerDef pawnGroupMakerDef, out PawnGroupMaker pawnGroupMaker)

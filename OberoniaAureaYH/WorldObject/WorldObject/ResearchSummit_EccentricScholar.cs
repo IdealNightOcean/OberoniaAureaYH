@@ -8,12 +8,12 @@ namespace OberoniaAurea;
 public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
 {
     protected bool workStart;
-    protected int OrganizeTicks = 15000;
+    protected const int OrganizeTicks = 15000;
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         if (!workStart)
         {
-            DiaNode startNode = OAFrame_DiaUtility.ConfirmDiaNode
+            Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree
             (
                 "OA_ResearchSummit_EccentricScholarText".Translate(),
                 "OA_ResearchSummit_EccentricScholarConfirm".Translate(OrganizeTicks.ToStringTicksToPeriod(shortForm: true)),
@@ -21,7 +21,6 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
                 "OA_ResearchSummit_EccentricScholarIngore".Translate(),
                 Destroy
             );
-            Dialog_NodeTree nodeTree = new(startNode);
             Find.WindowStack.Add(nodeTree);
         }
         else
@@ -32,11 +31,11 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
 
     protected void StartOrganize(Caravan caravan)
     {
-        if (!FixedCaravanUtility.IsExactTypeCaravan(caravan))
+        if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
-        FixedCaravan_ResearchSummitEccentricScholar fixedCaravan = (FixedCaravan_ResearchSummitEccentricScholar)FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitEccentricScholar, OrganizeTicks);
+        FixedCaravan_ResearchSummitEccentricScholar fixedCaravan = (FixedCaravan_ResearchSummitEccentricScholar)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitEccentricScholar, OrganizeTicks);
         fixedCaravan.associateScholar = this;
         Find.WorldObjects.Add(fixedCaravan);
         Find.WorldSelector.Select(fixedCaravan);

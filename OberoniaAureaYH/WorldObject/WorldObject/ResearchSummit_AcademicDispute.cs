@@ -18,7 +18,7 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
             pawn.skills?.Learn(SkillDefOf.Melee, 1000f, direct: true);
         }
         int silverNum = SilverCounter.RandomInRange;
-        List<Thing> things = OberoniaAureaFrameUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, silverNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
