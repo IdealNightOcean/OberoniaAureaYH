@@ -55,8 +55,7 @@ public static class OA_PawnInfoDefOf
 {
     public static HediffDef OA_RK_Hediff_ColdAdaptation;
     public static HediffDef OA_RK_Hediff_HotAdaptation;
-    public static HediffDef OA_RK_SeriousInjuryI;
-    public static HediffDef OA_RK_SeriousInjuryII;
+    public static HediffDef OA_RK_SeriousInjury;
 
     public static ThoughtDef OA_RK_Atonement;
     public static ThoughtDef OA_RK_ResponsibilityConstraints;

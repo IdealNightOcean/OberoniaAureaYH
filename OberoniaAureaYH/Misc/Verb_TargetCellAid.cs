@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -27,7 +28,7 @@ public class Verb_TargetCellAid : Verb_CastBase
             raidArrivalModeForQuickMilitaryAid = true,
             points = 1000f,
         };
-        if (IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms))
+        if (OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms))
         {
             base.ReloadableCompSource?.UsedOnce();
             return true;

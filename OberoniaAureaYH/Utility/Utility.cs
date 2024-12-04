@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using System.Linq;
 using Verse;
 
@@ -29,7 +30,7 @@ public static class OberoniaAureaYHUtility
             points = points,
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
-        IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
+        OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms);
     }
 
     public static bool AnyEnemiesOfFactionOnMap(Map map, Faction faction) //map上是否有faction派系的敌人

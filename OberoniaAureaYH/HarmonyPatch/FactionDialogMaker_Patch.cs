@@ -87,8 +87,8 @@ public static class FactionDialogFor_Patch
                 traderKind = traderKind,
                 forced = true
             };
-            Find.Storyteller.incidentQueue.Add(OberoniaAureaYHDefOf.OA_RK_LargeScaleTraderArrival, Find.TickManager.TicksGame + 120000, parms, 120000);
-            TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, 2000, map, null);
+            OAFrame_MiscUtility.AddNewQueuedIncident(OberoniaAureaYHDefOf.OA_RK_LargeScaleTraderArrival, 120000, parms, 12000);
+            TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, 2000, map, null);
         }
     }
 
@@ -456,7 +456,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
             forced = true
         };
-        Find.Storyteller.incidentQueue.Add(incidentDef, Find.TickManager.TicksGame + 120000, parms, 240000);
+        OAFrame_MiscUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
     }
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)

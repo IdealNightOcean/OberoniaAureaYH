@@ -48,7 +48,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         List<Pawn> pawns = GeneratePawns(lodgerCount, faction, map, quest, lodgerRecruitedSignal);
         Pawn wounded = pawns[1];
-        wounded.health.AddHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjuryII);
+        wounded.health.AddHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjury);
         NonLethalDamage(wounded, DamageDefOf.Blunt);
         Pawn asker = pawns.First();
 
