@@ -3,9 +3,7 @@
 
 该仓库是游戏RimWorld模组 **[OA]鼠族派系扩展：金鸢尾兰** 的C#源代码文件。
 
-<img src="img/[OA]Ratkin Faction - Oberonia aurea.png" alt="interpolate" width="60%" />
-
-
+<img src="img/%5BOA%5DRatkin%20Faction%20-%20Oberonia%20aurea.png" alt="interpolate" width="60%" />
 
 Steam创意工坊链接：
 
