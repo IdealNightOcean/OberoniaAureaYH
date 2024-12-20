@@ -1,12 +1,9 @@
 ﻿using HarmonyLib;
-using JetBrains.Annotations;
 using System.Reflection;
 using Verse;
 
 namespace OberoniaAurea;
 
-
-[UsedImplicitly]
 [StaticConstructorOnStartup]
 public static class ModHarmonyPatch
 {
@@ -16,7 +13,7 @@ public static class ModHarmonyPatch
     {
         get
         {
-            harmonyInstance ??= new Harmony("OberoniaAureaYH_Hramony");
+            harmonyInstance ??= new Harmony("OberoniaAurea.Harmony");
             return harmonyInstance;
         }
     }
