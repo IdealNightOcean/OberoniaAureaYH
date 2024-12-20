@@ -1,6 +1,7 @@
-﻿using OberoniaAurea;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
+
+namespace OberoniaAurea;
 
 [StaticConstructorOnStartup]
 public class ThoughtWorker_LeaderDowned : ThoughtWorker

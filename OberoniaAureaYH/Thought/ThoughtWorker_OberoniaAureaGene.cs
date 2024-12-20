@@ -11,7 +11,7 @@ public class ThoughtWorker_OberoniaAureaGene : ThoughtWorker
         {
             return ThoughtState.Inactive;
         }
-        int count = p.Map.OAMapComp()?.OAGenePawnsCount ?? 0;
+        int count = p.Map.GetOAMapComp()?.OAGenePawnsCount ?? 0;
         if (count <= 2)
         {
             return ThoughtState.ActiveAtStage(0);

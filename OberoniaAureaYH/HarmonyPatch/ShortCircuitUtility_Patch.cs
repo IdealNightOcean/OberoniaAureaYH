@@ -14,11 +14,11 @@ public static class ShortCircuitUtility_Patch
     {
         PowerNet powerNet = culprit.PowerComp.PowerNet;
         MapComponent_OberoniaAurea oaMapComp = culprit.Map.GetOAMapComp();
-        if (mc_OA == null)
+        if (oaMapComp == null)
         {
             return true;
         }
-        if (mc_OA.AverageCircuitStability(powerNet) > 0.2f)
+        if (oaMapComp.AverageCircuitStability(powerNet) > 0.2f)
         {
             return false;
         }

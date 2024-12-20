@@ -22,11 +22,11 @@ public static class MBW_TryStart_Patch
             return;
         }
 
-        if (pawn.Ideo.HasPrecept(OA_MiscDefOf.OA_RK_MentalBreakProbability_Low))
+        if (pawn.Ideo.HasPrecept(OA_PreceptDefOf.OA_RK_MentalBreakProbability_Low))
         {
             MentalBreakProbability_Low(pawn);
         }
-        else if (pawn.Ideo.HasPrecept(OA_MiscDefOf.OA_RK_MentalBreakProbability_Atonement))
+        else if (pawn.Ideo.HasPrecept(OA_PreceptDefOf.OA_RK_MentalBreakProbability_Atonement))
         {
             MentalBreakProbability_Atonement(pawn);
         }

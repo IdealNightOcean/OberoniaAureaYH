@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
+namespace OberoniaAurea;
+
 public class CompProperties_ChargedExplosion : CompProperties_Explosive
 {
     public int chargeTicks = 100000;
