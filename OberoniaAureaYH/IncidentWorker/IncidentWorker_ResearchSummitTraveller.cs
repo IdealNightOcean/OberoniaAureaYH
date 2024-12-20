@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace OberoniaAurea;
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGroup
 {
     protected static readonly TraderKindDef TraderKindDef = OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
-    protected static readonly StandalonePawnGroupMakerDef PawnGroupMakerDef = OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker;
 
     private static readonly SimpleCurve PointsCurve =
     [
@@ -56,7 +56,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         }
         Settlement settlement = (Settlement)researchSummit.AssociateWorldObject;
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
-        if (!PawnGroupUtility.TryGetRandomPawnGroupMaker(groupMakerParms, PawnGroupMakerDef, out PawnGroupMaker groupMaker))
+        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
         {
             return false;
         }
@@ -83,7 +83,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     protected List<Pawn> SpawnPawns(IncidentParms parms, PawnGroupMakerParms groupMakerParms, PawnGroupMaker groupMaker)
     {
         Map map = (Map)parms.target;
-        List<Pawn> list = PawnGroupUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
+        List<Pawn> list = OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
         foreach (Pawn item in list)
         {
             IntVec3 loc = CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5);

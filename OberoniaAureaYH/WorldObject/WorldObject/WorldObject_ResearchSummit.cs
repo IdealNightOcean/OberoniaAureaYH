@@ -188,9 +188,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OberoniaAureaYHDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
+        if (OA_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OberoniaAureaYHDefOf.OA_ResearchSummitSamePeopleJoin, slate);
+            QuestUtility.GenerateQuestAndMakeAvailable(OA_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
         }
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
@@ -240,9 +240,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherVisit() //无势力学者的访问
     {
         Slate slate = new();
-        if (OberoniaAureaYHDefOf.OA_ResearcherVisit.CanRun(slate))
+        if (OA_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
         {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OberoniaAureaYHDefOf.OA_ResearcherVisit, slate);
+            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OA_QuestScriptDefOf.OA_ResearcherVisit, slate);
             if (!quest.hidden && quest.root.sendAvailableLetter)
             {
                 QuestUtility.SendLetterQuestAvailable(quest);

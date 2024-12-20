@@ -26,11 +26,11 @@ public class ResearcherCampComp : WorldObjectComp
         {
             return;
         }
-        Faction faction = OberoniaAureaYHUtility.OAFaction;
-        if (faction != null)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction != null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(faction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_AttackResearcherCamp);
-            Find.LetterStack.ReceiveLetter("OA_LetterLabelAttackResearcherCamp".Translate(), "OA_LetterAttackResearcherCamp".Translate(faction.NameColored, faction.leader, ReduceGoodwill), LetterDefOf.NegativeEvent, parent, faction);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_AttackResearcherCamp);
+            Find.LetterStack.ReceiveLetter("OA_LetterLabelAttackResearcherCamp".Translate(), "OA_LetterAttackResearcherCamp".Translate(oaFaction.NameColored, oaFaction.leader, ReduceGoodwill), LetterDefOf.NegativeEvent, parent, oaFaction);
         }
     }
     public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Caravan caravan)
@@ -97,16 +97,6 @@ public class ResearcherCampComp : WorldObjectComp
         }
         return false;
     }
-
-    private static bool FactionUseable(Faction f)
-    {
-        if (f.ideos?.PrimaryIdeo != null)
-        {
-            return false;
-        }
-        return FactionDefUseable(f.def);
-    }
-
 }
 
 

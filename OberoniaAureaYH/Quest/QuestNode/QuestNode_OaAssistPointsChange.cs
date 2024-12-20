@@ -14,11 +14,11 @@ public class QuestNode_OaAssistPointsChange : QuestNode
 
     protected override bool TestRunInt(Slate slate)
     {
-        return OberoniaAureaYHUtility.OAFaction != null;
+        return OA_MiscUtility.OAFaction != null;
     }
     protected override void RunInt()
     {
-        if (OberoniaAureaYHUtility.OAFaction == null)
+        if (OA_MiscUtility.OAFaction == null)
         {
             return;
         }

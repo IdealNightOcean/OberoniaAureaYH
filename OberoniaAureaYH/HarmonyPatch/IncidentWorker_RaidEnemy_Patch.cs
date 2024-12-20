@@ -15,9 +15,9 @@ public static class TryExecuteWorker_Patch
         {
             return;
         }
-        if (parms.target is Map map && map.GameConditionManager.ConditionIsActive(OberoniaAureaYHDefOf.OA_MilitaryDeployment))
+        if (parms.target is Map map && map.GameConditionManager.ConditionIsActive(OA_MiscDefOf.OA_MilitaryDeployment))
         {
-            OberoniaAureaYHUtility.CallForAidFixedPoints(map, OberoniaAureaYHUtility.OAFaction, 4500f);
+            OA_MiscUtility.CallForAidFixedPoints(map, OA_MiscUtility.OAFaction, 4500f);
         }
     }
 }

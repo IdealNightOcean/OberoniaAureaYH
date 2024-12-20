@@ -36,7 +36,7 @@ public class WorkGiver_CircuitRegulator : WorkGiver_Scanner
     }
     public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
-        return JobMaker.MakeJob(OberoniaAureaYHDefOf.OA_RK_RepairCircuitRegulator, t);
+        return JobMaker.MakeJob(OA_MiscDefOf.OA_RK_RepairCircuitRegulator, t);
     }
 }
 

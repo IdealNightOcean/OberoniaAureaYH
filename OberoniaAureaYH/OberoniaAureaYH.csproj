@@ -66,7 +66,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatch\GenerateBestowingCeremonyQuest_Patch.cs" />
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_OABestowingCeremony.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony.cs" />
     <Compile Include="ThingComp\CompExtremelyHiTechResearchBench.cs" />
     <Compile Include="ThingComp\CompOpticalResearchFacility.cs" />
     <Compile Include="ThingComp\CompCircuitRegulator.cs" />
@@ -84,7 +87,6 @@
     <Compile Include="Misc\Gene_HotAdaptation.cs" />
     <Compile Include="Misc\Gene_ColdAdaptation.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
-    <Compile Include="Utility\PawnGroupUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitEccentricScholar.cs" />

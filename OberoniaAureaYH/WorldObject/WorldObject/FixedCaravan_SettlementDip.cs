@@ -132,14 +132,14 @@ public static class DiplomaticSummitUtility
     {
         Faction faction = settlement.Faction;
         Faction.OfPlayer.TryAffectGoodwillWith(faction, DisasterGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Disaster);
-        OberoniaAureaYHUtility.OA_GCOA.assistPointsStoppageDays = DisasterStoppageDays;
+        OA_MiscUtility.OAGameComp.assistPointsStoppageDays = DisasterStoppageDays;
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Disaster".Translate(), "OA_LetterDiplomaticSummit_Disaster".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, DisasterGoodwill, DisasterStoppageDays), LetterDefOf.NegativeEvent, settlement, faction);
     }
     private static void Outcome_Flounder(Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
         Faction.OfPlayer.TryAffectGoodwillWith(faction, FlounderGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Flounder);
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(FlounderAssistPoints);
+        OA_MiscUtility.OAGameComp?.GetAssistPoints(FlounderAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Flounder".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, FlounderGoodwill, FlounderAssistPoints);
         if (pawn != null)
         {
@@ -151,7 +151,7 @@ public static class DiplomaticSummitUtility
     private static void Outcome_Success(Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(SuccessAssistPoints);
+        OA_MiscUtility.OAGameComp?.GetAssistPoints(SuccessAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Success".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, SuccessAssistPoints);
         if (pawn != null)
         {
@@ -170,7 +170,7 @@ public static class DiplomaticSummitUtility
             OAFrame_FixedCaravanUtility.GiveThing(fixedCaravan, thing);
         }
         Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(TriumphAssistPoints);
+        OA_MiscUtility.OAGameComp?.GetAssistPoints(TriumphAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Triumph".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, TriumphGoodwill, TriumphAssistPoints, 1500);
         if (pawn != null)
         {

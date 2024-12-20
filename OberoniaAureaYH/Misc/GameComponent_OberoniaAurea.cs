@@ -6,8 +6,6 @@ namespace OberoniaAurea;
 
 public class GameComponent_OberoniaAurea : GameComponent
 {
-    protected static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OberoniaAureaYHDefOf.OA_RK_Faction);
-
     protected int ticksRemaining;
     public int initAllianceTick = -1; //本次结盟的起始时刻
     protected float oldAllianceDuration; //记录旧结盟时间
@@ -50,15 +48,15 @@ public class GameComponent_OberoniaAurea : GameComponent
     }
     protected void AdjustAssistPoints()
     {
-        Faction faction = OAFaction;
-        if (faction != null)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction != null)
         {
             assistPointsStoppageDays--;
-            if (faction.PlayerRelationKind == FactionRelationKind.Hostile)
+            if (oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
             {
                 assistPoints = Mathf.Max(assistPoints - 25, 0);
             }
-            else if (faction.PlayerRelationKind == FactionRelationKind.Ally)
+            else if (oaFaction.PlayerRelationKind == FactionRelationKind.Ally)
             {
                 if (assistPointsStoppageDays <= 0 && assistPoints < CurAssistPointsCap)
                 {
@@ -83,10 +81,10 @@ public class GameComponent_OberoniaAurea : GameComponent
     }
     private void ResolveOldSave()
     {
-        Faction faction = OAFaction;
-        if (faction != null)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction != null)
         {
-            if (initAllianceTick < 0 && faction.PlayerRelationKind == FactionRelationKind.Ally)
+            if (initAllianceTick < 0 && oaFaction.PlayerRelationKind == FactionRelationKind.Ally)
                 initAllianceTick = Find.TickManager.TicksGame;
         }
     }

@@ -62,7 +62,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
             Outcome_SmoothWork(capableCount);
         }, weight));
 
-        weight = 20f + Faction.OfPlayer.GoodwillWith(OberoniaAureaYHUtility.OAFaction) / 5f;
+        weight = 20f + Faction.OfPlayer.GoodwillWith(OA_MiscUtility.OAFaction) / 5f;
         tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
         {
             Outcome_FriendlyCollaboration(capableCount);
@@ -96,7 +96,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     {
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
-        OberoniaAureaYHUtility.OA_GCOA?.GetAssistPoints(APpoints);
+        OA_MiscUtility.OAGameComp?.GetAssistPoints(APpoints);
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
@@ -181,7 +181,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     protected void Outcome_TradeDisputesSuccess(int capableCount)
     {
-        Faction oaFaction = OberoniaAureaYHUtility.OAFaction;
+        Faction oaFaction = OA_MiscUtility.OAFaction;
         if (oaFaction != null)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_ResearchSummit);

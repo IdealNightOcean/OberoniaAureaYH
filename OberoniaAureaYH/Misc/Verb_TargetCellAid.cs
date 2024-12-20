@@ -13,8 +13,8 @@ public class Verb_TargetCellAid : Verb_CastBase
         {
             return false;
         }
-        Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
-        if (OAFaction == null || OAFaction.defeated || OAFaction.PlayerRelationKind == FactionRelationKind.Hostile)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction == null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;
         }
@@ -23,7 +23,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         IncidentParms incidentParms = new()
         {
             target = map,
-            faction = OAFaction,
+            faction = oaFaction,
             spawnCenter = cell,
             raidArrivalModeForQuickMilitaryAid = true,
             points = 1000f,
@@ -35,7 +35,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         }
         else
         {
-            Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", OAFaction));
+            Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", oaFaction));
             return false;
         }
     }

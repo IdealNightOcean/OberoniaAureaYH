@@ -22,7 +22,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     protected override bool TestRunInt(Slate slate)
     {
-        Faction faction = OberoniaAureaYHUtility.OAFaction;
+        Faction faction = OA_MiscUtility.OAFaction;
         if (faction == null || faction.HostileTo(Faction.OfPlayer))
         {
             return false;
@@ -104,7 +104,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     }
     protected override Faction GetOrGenerateFaction()
     {
-        return OberoniaAureaYHUtility.OAFaction;
+        return OA_MiscUtility.OAFaction;
     }
 
     protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Map map, Quest quest, string lodgerRecruitedSignal = null)

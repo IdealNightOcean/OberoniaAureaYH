@@ -20,14 +20,17 @@ public class QuestPart_OaAssistPointsChange : QuestPart
         base.Notify_QuestSignalReceived(signal);
         if (signal.tag == inSignal)
         {
-            GameComponent_OberoniaAurea GC_OA = OberoniaAureaYHUtility.OA_GCOA;
-            if (changePoints > 0)
+            GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+            if (oaGameComp != null)
             {
-                GC_OA?.GetAssistPoints(changePoints);
-            }
-            else
-            {
-                GC_OA?.UseAssistPoints(-changePoints);
+                if (changePoints > 0)
+                {
+                    oaGameComp.GetAssistPoints(changePoints);
+                }
+                else
+                {
+                    oaGameComp.UseAssistPoints(-changePoints);
+                }
             }
         }
     }

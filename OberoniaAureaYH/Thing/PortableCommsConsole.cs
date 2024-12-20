@@ -12,19 +12,19 @@ public class PortableCommsConsole : Apparel
         {
             yield return gizmo;
         }
-        Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
+        Faction oaFaction = OA_MiscUtility.OAFaction;
         Command_Action command_Use = new()
         {
             defaultLabel = "OA_PortableCommsConsoleLable".Translate(),
             defaultDesc = "OA_PortableCommsConsoleDesc".Translate(this.Label),
             action = delegate
             {
-                GizmoFloat_CommsConsoleList(Wearer, OAFaction);
+                GizmoFloat_CommsConsoleList(Wearer, oaFaction);
             },
             icon = this.def.uiIcon,
             activateSound = SoundDefOf.Tick_Tiny
         };
-        if (OAFaction == null)
+        if (oaFaction == null)
         {
             command_Use.Disable("OA_RK_FactionNonexistent".Translate());
         }

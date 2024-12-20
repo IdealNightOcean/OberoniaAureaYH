@@ -17,7 +17,7 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
     protected override void RunInt()
     {
         Slate slate = QuestGen.slate;
-        Faction faction = OberoniaAureaYHUtility.OAFaction;
+        Faction faction = OA_MiscUtility.OAFaction;
         if (ValidFaction(faction, slate))
         {
             slate.Set(storeAs.GetValue(slate), faction);
@@ -32,10 +32,10 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
 
     protected override bool TestRunInt(Slate slate)
     {
-        Faction faction = OberoniaAureaYHUtility.OAFaction;
-        if (ValidFaction(faction, slate))
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (ValidFaction(oaFaction, slate))
         {
-            slate.Set(storeAs.GetValue(slate), faction);
+            slate.Set(storeAs.GetValue(slate), oaFaction);
             return true;
         }
         else

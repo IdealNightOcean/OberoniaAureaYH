@@ -8,10 +8,9 @@ namespace OberoniaAurea;
 //金鸢尾兰慰问
 public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 {
-    public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OberoniaAureaYHDefOf.OA_RK_Faction);
     protected bool TryResolveParmsGeneral(IncidentParms parms)
     {
-        Faction oaFaction = OAFaction;
+        Faction oaFaction = OA_MiscUtility.OAFaction;
         if (oaFaction == null)
         {
             return false;

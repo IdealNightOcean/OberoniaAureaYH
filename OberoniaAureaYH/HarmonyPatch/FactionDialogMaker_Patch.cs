@@ -18,7 +18,7 @@ public static class FactionDialogFor_Patch
     [HarmonyPostfix]
     public static void Postfix(ref DiaNode __result, Pawn negotiator, Faction faction)
     {
-        if (faction.def != OberoniaAureaYHDefOf.OA_RK_Faction)
+        if (faction.def != OA_MiscDefOf.OA_RK_Faction)
         {
             return;
         }
@@ -48,9 +48,9 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
-        GameComponent_OberoniaAurea gc_OA = OberoniaAureaYHUtility.OA_GCOA;
-        float allianceDuration = gc_OA.AllianceDuration;
-        int remainingTradeCoolingTick = gc_OA.RemainingTradeCoolingTick;
+        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        float allianceDuration = oaGameComp.AllianceDuration;
+        int remainingTradeCoolingTick = oaGameComp.RemainingTradeCoolingTick;
         if (allianceDuration < 75)
         {
             diaOption.Disable("OA_AllianceDurationShort".Translate(75.ToString("F0")));
@@ -61,7 +61,7 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("WaitTime".Translate(remainingTradeCoolingTick.ToStringTicksToPeriod()));
             return diaOption;
         }
-        if (OberoniaAureaYHUtility.AmountSendable(map, RimWorld.ThingDefOf.Silver) < 2000)
+        if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < 2000)
         {
             diaOption.Disable("NeedSilverLaunchable".Translate(2000));
             return diaOption;
@@ -77,8 +77,8 @@ public static class FactionDialogFor_Patch
 
         void CallTrader()
         {
-            gc_OA.lastTradeTick = Find.TickManager.TicksGame;
-            gc_OA.tradeCoolingDays = 60;
+            oaGameComp.lastTradeTick = Find.TickManager.TicksGame;
+            oaGameComp.tradeCoolingDays = 60;
             TraderKindDef traderKind = DefDatabase<TraderKindDef>.GetNamed("OA_RK_Caravan_TraderGeneral_B");
             IncidentParms parms = new()
             {
@@ -87,7 +87,7 @@ public static class FactionDialogFor_Patch
                 traderKind = traderKind,
                 forced = true
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OberoniaAureaYHDefOf.OA_RK_LargeScaleTraderArrival, 120000, parms, 12000);
+            OAFrame_MiscUtility.AddNewQueuedIncident(OA_MiscDefOf.OA_RK_LargeScaleTraderArrival, 120000, parms, 12000);
             TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, 2000, map, null);
         }
     }
@@ -97,9 +97,9 @@ public static class FactionDialogFor_Patch
         TaggedString taggedString = "OA_SponsorOberoniaAurea".Translate();
         DiaOption diaOption = new(taggedString);
 
-        GameComponent_OberoniaAurea gc_OA = OberoniaAureaYHUtility.OA_GCOA;
+        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
 
-        if (gc_OA.RemainingSponsorCoolingTick > 0) //冷却时不需要更多的帮助
+        if (oaGameComp.RemainingSponsorCoolingTick > 0) //冷却时不需要更多的帮助
         {
             string cdConfirmStr = "OA_SponsorThanksAgain".Translate(faction.leader).CapitalizeFirst();
             diaOption.link = new DiaNode(cdConfirmStr)
@@ -140,15 +140,15 @@ public static class FactionDialogFor_Patch
                 action = delegate
                 {
                     DoSponsorOberoniaAurea(needSilver, gainAP, gainFavor);
-                    gc_OA.lastSponsorTick = Find.TickManager.TicksGame;
-                    gc_OA.sponsorCoolingDays = 30;
+                    oaGameComp.lastSponsorTick = Find.TickManager.TicksGame;
+                    oaGameComp.sponsorCoolingDays = 30;
                 },
                 link = new DiaNode(confirmSb.ToString())
                 {
                     options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
-            if (OberoniaAureaYHUtility.AmountSendable(map, RimWorld.ThingDefOf.Silver) < needSilver)
+            if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < needSilver)
             {
                 diaOption.Disable("NeedSilverLaunchable".Translate(needSilver));
             }
@@ -157,7 +157,7 @@ public static class FactionDialogFor_Patch
         void DoSponsorOberoniaAurea(int silverCount, int gainAP, int gainFavor)
         {
             TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, silverCount, map, null);
-            gc_OA.GetAssistPoints(gainAP);
+            oaGameComp.GetAssistPoints(gainAP);
             negotiator.royalty?.GainFavor(faction, gainFavor);
         }
     }
@@ -170,9 +170,9 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
-        GameComponent_OberoniaAurea gc_OA = OberoniaAureaYHUtility.OA_GCOA;
-        float allianceDuration = gc_OA.AllianceDuration;
-        int remainingTechPrintCoolingTick = gc_OA.RemainingTechPrintCoolingTick;
+        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        float allianceDuration = oaGameComp.AllianceDuration;
+        int remainingTechPrintCoolingTick = oaGameComp.RemainingTechPrintCoolingTick;
         if (allianceDuration < 45)
         {
             diaOption.Disable("OA_AllianceDurationShort".Translate(45.ToString("F0")));
@@ -215,15 +215,15 @@ public static class FactionDialogFor_Patch
                 action = delegate
                 {
                     GetTechPrint(map, faction, dbtpDef.TechPrintDef, dbtpDef.price);
-                    gc_OA.lastTechPrintTick = Find.TickManager.TicksGame;
-                    gc_OA.techPrintCoolingDays = 30;
+                    oaGameComp.lastTechPrintTick = Find.TickManager.TicksGame;
+                    oaGameComp.techPrintCoolingDays = 30;
                 },
                 link = new DiaNode(confirmStr)
                 {
                     options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
-            if (OberoniaAureaYHUtility.AmountSendable(map, RimWorld.ThingDefOf.Silver) < dbtpDef.price)
+            if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < dbtpDef.price)
             {
                 DeniedTechPrintDiaOption("NeedSilverLaunchable".Translate(dbtpDef.price), diaNode, diaOption);
             }
@@ -268,7 +268,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     [HarmonyPrefix]
     public static bool Prefix(ref DiaOption __result, Map map, Faction faction, Pawn negotiator)
     {
-        if (faction.def != OberoniaAureaYHDefOf.OA_RK_Faction)
+        if (faction.def != OA_MiscDefOf.OA_RK_Faction)
         {
             return true;
         }
@@ -294,11 +294,11 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             diaOption.Disable("NeedGoodwill".Translate(50.ToString("F0")));
             return diaOption;
         }
-        GameComponent_OberoniaAurea gc_OA = OberoniaAureaYHUtility.OA_GCOA;
-        int assistPoints = gc_OA.AssistPoints;
-        int curAssistPointsCap = gc_OA.CurAssistPointsCap;
-        float allianceDuration = gc_OA.AllianceDuration;
-        int assistPointsStoppageDays = gc_OA.assistPointsStoppageDays;
+        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        int assistPoints = oaGameComp.AssistPoints;
+        int curAssistPointsCap = oaGameComp.CurAssistPointsCap;
+        float allianceDuration = oaGameComp.AllianceDuration;
+        int assistPointsStoppageDays = oaGameComp.assistPointsStoppageDays;
         //以下为二级界面按钮
         TaggedString taggedStringInfo = taggedString + "\n\n" + "OA_AssistWithTroubleInfo".Translate(assistPoints, curAssistPointsCap);
         if (assistPointsStoppageDays > 0)
@@ -310,56 +310,56 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         AddDiaOption("OA_WeAreStarving", delegate
         {
             CallForMealSurvivalPack(map, faction, 5, 80);
-            gc_OA.UseAssistPoints(35);
+            oaGameComp.UseAssistPoints(35);
         }, needAP: 35);
         //粮荒
         AddDiaOption("OA_WeHadAFamine", delegate
         {
             CallForMealSurvivalPack(map, faction, 20, 320);
-            gc_OA.UseAssistPoints(80);
+            oaGameComp.UseAssistPoints(80);
         }, needAD: 60, needAP: 80);
         //应急药品
         AddDiaOption("OA_WeNeedEmergencyMedicine", delegate
         {
             CallEmergencyMedicine(map, faction);
-            gc_OA.UseAssistPoints(35);
+            oaGameComp.UseAssistPoints(35);
         }, needAP: 35);
         //资金困难
         AddDiaOption("OA_WeAreInFinancialTrouble", delegate
         {
             CallForSilver(map, faction);
-            gc_OA.UseAssistPoints(35);
+            oaGameComp.UseAssistPoints(35);
         }, needAP: 35);
         //长期协助
         AddDiaOption("OA_WeNeedLongTermAssistance", delegate
         {
             PawnKindDef pawnKind = DefDatabase<PawnKindDef>.GetNamed("OA_RK_Court_Member");
             CallForLongTermAssist(map, faction, pawnKind, 2);
-            gc_OA.UseAssistPoints(80);
+            oaGameComp.UseAssistPoints(80);
         }, needAD: 60, needAP: 80);
         //物质征募
         AddDiaOption("OA_CallForTributeCollector", delegate
         {
             CallForTributeCollector(map, faction);
-            gc_OA.UseAssistPoints(35);
+            oaGameComp.UseAssistPoints(35);
         }, needAP: 35);
         //突袭小组
         AddDiaOption("OA_WeAreBeingAttacked", delegate
         {
-            OberoniaAureaYHUtility.CallForAidFixedPoints(map, faction, 1800);
-            gc_OA.UseAssistPoints(45);
+            OA_MiscUtility.CallForAidFixedPoints(map, faction, 1800);
+            oaGameComp.UseAssistPoints(45);
         }, needAD: 60, needAP: 45);
         //突袭分队
         AddDiaOption("OA_WeNeedUrgentBackup", delegate
         {
-            OberoniaAureaYHUtility.CallForAidFixedPoints(map, faction, 6300);
-            gc_OA.UseAssistPoints(100);
+            OA_MiscUtility.CallForAidFixedPoints(map, faction, 6300);
+            oaGameComp.UseAssistPoints(100);
         }, needAD: 120, needAP: 100);
         //军事部署
         AddDiaOption("OA_WeNeedMilitaryDeployment", delegate
         {
             CallForMilitaryDeployment(map, faction);
-            gc_OA.UseAssistPoints(200);
+            oaGameComp.UseAssistPoints(200);
         }, needAD: 360, needAP: 200);
         //返回按钮
         diaNode.options.Add(new DiaOption("GoBack".Translate())
@@ -461,11 +461,11 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)
     {
-        if (OberoniaAureaYHUtility.AnyEnemiesOfFactionOnMap(map, Faction.OfPlayer))
+        if (OAFrame_MapUtility.ThreatsCountOfPlayerOnMap(map) > 0)
         {
-            OberoniaAureaYHUtility.CallForAidFixedPoints(map, faction, 4500);
+            OA_MiscUtility.CallForAidFixedPoints(map, faction, 4500);
         }
-        GameCondition gameCondition = GameConditionMaker.MakeCondition(OberoniaAureaYHDefOf.OA_MilitaryDeployment, 300000);
+        GameCondition gameCondition = GameConditionMaker.MakeCondition(OA_MiscDefOf.OA_MilitaryDeployment, 300000);
         map.gameConditionManager.RegisterCondition(gameCondition);
     }
 }

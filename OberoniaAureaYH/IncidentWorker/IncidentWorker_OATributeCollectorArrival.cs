@@ -13,12 +13,12 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
         {
             return false;
         }
-        Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
-        if (OAFaction == null)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction == null)
         {
             return false;
         }
-        parms.faction = OAFaction;
+        parms.faction = oaFaction;
         parms.traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector;
         return true;
     }
@@ -30,12 +30,12 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
         {
             return false;
         }
-        Faction OAFaction = OberoniaAureaYHUtility.OAFaction;
-        if (OAFaction == null || OAFaction.PlayerRelationKind == FactionRelationKind.Hostile)
+        Faction oaFaction = OA_MiscUtility.OAFaction;
+        if (oaFaction == null || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;
         }
-        return FactionCanBeGroupSource(OAFaction, (Map)parms.target);
+        return FactionCanBeGroupSource(oaFaction, (Map)parms.target);
     }
 
     protected override float TraderKindCommonality(TraderKindDef traderKind, Map map, Faction faction)

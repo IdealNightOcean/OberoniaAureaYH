@@ -1,10 +1,11 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
 
 [DefOf]
-public static class OberoniaAureaYHDefOf
+public static class OA_MiscDefOf
 {
     public static FactionDef OA_RK_Faction; //金鼠鼠派系
 
@@ -19,37 +20,13 @@ public static class OberoniaAureaYHDefOf
     public static PreceptDef OA_RK_MentalBreakProbability_Atonement;
     public static PreceptDef OA_RK_MentalBreakProbability_Low;
 
-    public static QuestScriptDef OA_OpportunitySite_MultiPartyTalks; //多方会谈
-    public static QuestScriptDef OA_OpportunitySite_PunishmentExecutor; //惩戒的执行者
-    public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //科研峰会：同道中人
-    public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
-    public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
-    public static QuestScriptDef OA_FestivalOrders; //节日订单
-
     public static StorytellerDef Begonia_Oberonia_Aurea;
 
-    static OberoniaAureaYHDefOf()
+    static OA_MiscDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OberoniaAureaYHDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OA_MiscDefOf));
     }
 }
-
-[DefOf]
-public static class OA_ThingDefOf
-{
-    public static ThingDef OA_RK_CircuitRegulator;
-    public static ThingDef OA_RK_Cloth_Processing_B;
-    public static ThingDef Oberonia_Aurea_Tea; //花茶
-    public static ThingDef Oberonia_Aurea_Chanwu_AB; //花糕
-    public static ThingDef Oberonia_Aurea_Chanwu_AC; //流心花糕
-    public static ThingDef Oberonia_Aurea_Chanwu_F; //浓缩液
-    public static ThingDef Oberonia_Aurea_Chanwu_G; //提取液
-    static OA_ThingDefOf()
-    {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_ThingDefOf));
-    }
-}
-
 [DefOf]
 public static class OA_PawnInfoDefOf
 {
@@ -70,10 +47,14 @@ public static class OA_PawnInfoDefOf
 public static class OA_PawnGenerateDefOf
 {
     public static PawnKindDef OA_RK_Traveller;
+    [MayRequireRoyalty]
+    public static PawnKindDef OA_RK_Noble_C; //金鼠鼠授勋官
+    [MayRequireRoyalty]
+    public static PawnKindDef OA_RK_Guard_Member;  //金鼠鼠授勋官护卫
 
     public static PawnGroupKindDef OA_Rk_LargeScaleTrader;
 
-    public static StandalonePawnGroupMakerDef OA_ResearchSummit_TravellerMaker;
+    public static IsolatedPawnGroupMakerDef OA_ResearchSummit_TravellerMaker;
 
     public static TraderKindDef OA_RK_Caravan_TributeCollector; //物质征募队
     public static TraderKindDef OA_ResearchSummit_FairTrader; //科研峰会：集市商人
@@ -82,6 +63,40 @@ public static class OA_PawnGenerateDefOf
     static OA_PawnGenerateDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OA_PawnGenerateDefOf));
+    }
+}
+
+[DefOf]
+public static class OA_QuestScriptDefOf
+{
+    public static QuestScriptDef OA_BestowingCeremony; //金鸢尾兰授勋仪式
+
+    public static QuestScriptDef OA_FestivalOrders; //节日订单
+    public static QuestScriptDef OA_OpportunitySite_MultiPartyTalks; //多方会谈
+    public static QuestScriptDef OA_OpportunitySite_PunishmentExecutor; //惩戒的执行者
+    public static QuestScriptDef OA_ResearchSummitSamePeopleJoin; //科研峰会：同道中人
+    public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
+    public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
+
+    static OA_QuestScriptDefOf()
+    {
+        DefOfHelper.EnsureInitializedInCtor(typeof(OA_QuestScriptDefOf));
+    }
+}
+
+[DefOf]
+public static class OA_ThingDefOf
+{
+    public static ThingDef OA_RK_CircuitRegulator;
+    public static ThingDef OA_RK_Cloth_Processing_B;
+    public static ThingDef Oberonia_Aurea_Tea; //花茶
+    public static ThingDef Oberonia_Aurea_Chanwu_AB; //花糕
+    public static ThingDef Oberonia_Aurea_Chanwu_AC; //流心花糕
+    public static ThingDef Oberonia_Aurea_Chanwu_F; //浓缩液
+    public static ThingDef Oberonia_Aurea_Chanwu_G; //提取液
+    static OA_ThingDefOf()
+    {
+        DefOfHelper.EnsureInitializedInCtor(typeof(OA_ThingDefOf));
     }
 }
 

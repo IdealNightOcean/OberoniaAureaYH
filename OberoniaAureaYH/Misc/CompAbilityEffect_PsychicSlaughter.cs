@@ -9,11 +9,11 @@ public class CompAbilityEffect_PsychicSlaughter : RimWorld.CompAbilityEffect_Psy
     public override void PostApplied(List<LocalTargetInfo> targets, Map map)
     {
         base.PostApplied(targets, map);
-        if (OberoniaAureaYHUtility.OAFaction == null)
+        if (OA_MiscUtility.OAFaction == null)
         {
             return;
         }
-        Faction oaFaction = OberoniaAureaYHUtility.OAFaction;
+        Faction oaFaction = OA_MiscUtility.OAFaction;
         foreach (LocalTargetInfo localTarget in targets)
         {
             if (localTarget.HasThing && localTarget.Thing is Pawn pawn && pawn.RaceProps.Humanlike && pawn.Faction == oaFaction)
