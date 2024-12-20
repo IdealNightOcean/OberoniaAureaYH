@@ -150,7 +150,7 @@
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
-    <Compile Include="Misc\ThoughtWorker_Precept_Snow.cs" />
+    <Compile Include="Thought\ThoughtWorker_Precept_Snow.cs" />
     <Compile Include="Thing\BarrageEnhancedBullet.cs" />
     <Compile Include="ThingComp\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Thing\ShotgunBullet.cs" />

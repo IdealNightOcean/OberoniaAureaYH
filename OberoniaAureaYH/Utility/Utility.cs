@@ -10,7 +10,7 @@ namespace OberoniaAurea;
 public static class OA_MiscUtility
 {
     public static GameComponent_OberoniaAurea OAGameComp => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
-    public static MapComponent_OberoniaAurea OAMapComp(this Map map)
+    public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {
         return map?.GetComponent<MapComponent_OberoniaAurea>();
     }

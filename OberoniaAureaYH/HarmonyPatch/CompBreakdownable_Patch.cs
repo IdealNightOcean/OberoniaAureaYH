@@ -16,8 +16,8 @@ public static class CompBreakdownable_Patch
         {
             return true;
         }
-        MapComponent_OberoniaAurea mc_oa = __instance.parent.Map?.GetComponent<MapComponent_OberoniaAurea>();
-        if (mc_oa == null || mc_oa.AverageCircuitStability(powerComp.PowerNet) <= 0f)
+        MapComponent_OberoniaAurea oaMapComp = __instance.parent.Map.GetOAMapComp();
+        if (oaMapComp == null || oaMapComp.AverageCircuitStability(powerComp.PowerNet) <= 0f)
         {
             return true;
         }

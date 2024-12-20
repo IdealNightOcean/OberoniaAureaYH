@@ -8,7 +8,7 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
 {
-    protected List<CompCircuitRegulator> circuitRegulators = [];
+    public readonly List<CompCircuitRegulator> circuitRegulators = [];
 
     protected int nextOAGeneCheckTick = -1;
     protected int cachedOAGenePawnsCount;
@@ -39,18 +39,6 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
             }
         }
         return validPawns;
-    }
-
-    public void RegisterCircuitRegulator(CompCircuitRegulator comp)
-    {
-        if (!circuitRegulators.Contains(comp))
-        {
-            circuitRegulators.Add(comp);
-        }
-    }
-    public void DeregisterCircuitRegulator(CompCircuitRegulator comp)
-    {
-        circuitRegulators.Remove(comp);
     }
 
     public int ValidCircuitRegulatorCount(PowerNet powerNet)

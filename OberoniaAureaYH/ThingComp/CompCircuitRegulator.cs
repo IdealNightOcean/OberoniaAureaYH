@@ -19,8 +19,8 @@ public class CompCircuitRegulator : CompPowerTransmitter
 {
     protected static readonly float BaseCircuitStabilityLoss = 0.0005f;
     private new CompProperties_CircuitRegulator Props => (CompProperties_CircuitRegulator)props;
-    protected MapComponent_OberoniaAurea mc_oa;
-    public MapComponent_OberoniaAurea MC_OA => mc_oa ??= parent.Map.GetComponent<MapComponent_OberoniaAurea>();
+    protected MapComponent_OberoniaAurea oaMapComp;
+    public MapComponent_OberoniaAurea OAMapComp => oaMapComp ??= parent.Map.GetOAMapComp();
 
     private Gizmo gizmo;
     protected int ticksRemaining;
@@ -71,7 +71,7 @@ public class CompCircuitRegulator : CompPowerTransmitter
         }
         else if (curCircuitStability > 0)
         {
-            curLoadElectricity = CurrentPowerExport(powerNet) / MC_OA.ValidCircuitRegulatorCount(powerNet);
+            curLoadElectricity = CurrentPowerExport(powerNet) / OAMapComp.ValidCircuitRegulatorCount(powerNet);
         }
         else
         {
@@ -91,31 +91,40 @@ public class CompCircuitRegulator : CompPowerTransmitter
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
         base.PostSpawnSetup(respawningAfterLoad);
-        mc_oa = null;
-        MC_OA.RegisterCircuitRegulator(this);
+        oaMapComp = null;
+        if (OAMapComp != null)
+        {
+            if (!OAMapComp.circuitRegulators.Contains(this))
+            {
+                OAMapComp.circuitRegulators.Add(this);
+            }
+        }
         ticksRemaining = 0;
     }
     public override void PostDeSpawn(Map map)
     {
+        if (oaMapComp != null)
+        {
+            if (oaMapComp.circuitRegulators.Contains(this))
+            {
+                oaMapComp.circuitRegulators.Remove(this);
+            }
+        }
+        MapComponent_OberoniaAurea deSpawnMapComp = map.GetOAMapComp();
+        if (deSpawnMapComp != null)
+        {
+            if (deSpawnMapComp.circuitRegulators.Contains(this))
+            {
+                deSpawnMapComp.circuitRegulators.Remove(this);
+            }
+        }
         base.PostDeSpawn(map);
-        map.GetComponent<MapComponent_OberoniaAurea>()?.DeregisterCircuitRegulator(this);
         Reset();
     }
-    public override void Notify_MapRemoved()
-    {
-        base.Notify_MapRemoved();
-        mc_oa?.DeregisterCircuitRegulator(this);
-        Reset();
-    }
-    public override void PostDestroy(DestroyMode mode, Map previousMap)
-    {
-        base.PostDestroy(mode, previousMap);
-        previousMap.GetComponent<MapComponent_OberoniaAurea>()?.DeregisterCircuitRegulator(this);
-        Reset();
-    }
+
     private void Reset()
     {
-        mc_oa = null;
+        oaMapComp = null;
         curLoadElectricity = 0f;
         curCircuitStabilityLoss = 0f;
     }

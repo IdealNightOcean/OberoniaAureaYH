@@ -13,7 +13,7 @@ public static class ShortCircuitUtility_Patch
     public static bool DoShortCircuit_Prefix(Building culprit)
     {
         PowerNet powerNet = culprit.PowerComp.PowerNet;
-        MapComponent_OberoniaAurea mc_OA = culprit.Map.GetComponent<MapComponent_OberoniaAurea>();
+        MapComponent_OberoniaAurea oaMapComp = culprit.Map.GetOAMapComp();
         if (mc_OA == null)
         {
             return true;
@@ -34,12 +34,12 @@ public static class ShortCircuitUtility_Patch
         {
             return true;
         }
-        MapComponent_OberoniaAurea mc_OA = thing.Map?.GetComponent<MapComponent_OberoniaAurea>();
-        if (mc_OA == null)
+        MapComponent_OberoniaAurea oaMapComp = thing.Map.GetOAMapComp();
+        if (oaMapComp == null)
         {
             return true;
         }
-        if (mc_OA.AverageCircuitStability(powerNet) > 0.2f)
+        if (oaMapComp.AverageCircuitStability(powerNet) > 0.2f)
         {
             __result = false;
             return false;
