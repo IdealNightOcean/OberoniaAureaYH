@@ -123,6 +123,7 @@ public static class OA_ThingDefOf
     public static ThingDef Oberonia_Aurea_Chanwu_AC; //流心花糕
     public static ThingDef Oberonia_Aurea_Chanwu_F; //浓缩液
     public static ThingDef Oberonia_Aurea_Chanwu_G; //提取液
+    public static ThingDef OA_RK_EMPInst;
     static OA_ThingDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OA_ThingDefOf));

@@ -17,7 +17,7 @@ public class HediffCompProperties_ExtraStun : HediffCompProperties
 public class HediffComp_ExtraStun : HediffComp
 {
     public int ticksRemaining = 60;
-    HediffCompProperties_ExtraStun Props => props as HediffCompProperties_ExtraStun;
+    HediffCompProperties_ExtraStun Props => (HediffCompProperties_ExtraStun)props;
     public override void CompPostPostAdd(DamageInfo? dinfo)
     {
         if (Pawn.RaceProps.IsFlesh)

@@ -73,6 +73,9 @@
     <Compile Include="HarmonyPatch\NegativeInteractionChanceFactor_Patch.cs" />
     <Compile Include="HarmonyPatch\GenerateBestowingCeremonyQuest_Patch.cs" />
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
+    <Compile Include="HediffComp\HediffComp_TeaWithSkyWarmth.cs" />
+    <Compile Include="Misc\RaidStrategyWorker_OAImmediateAttack.cs" />
+    <Compile Include="Misc\PlaceWorker_GiveHediffInRange_Building.cs" />
     <Compile Include="Misc\RoyalTitlePermitWorker_OACallAid.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_OABestowingCeremony.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony.cs" />
@@ -92,6 +95,13 @@
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\Gene_HotAdaptation.cs" />
     <Compile Include="Misc\Gene_ColdAdaptation.cs" />
+    <Compile Include="ThingComp\CompTargetEffect_GiveTargeterHediff.cs" />
+    <Compile Include="ThingComp\CompGiveHediffInRange_Building.cs" />
+    <Compile Include="ThingComp\CompEMPInstExplosion.cs" />
+    <Compile Include="ThingComp\CompChargedExplosion.cs" />
+    <Compile Include="Thing\EMP_Summoner.cs" />
+    <Compile Include="Thing\AstableBullet.cs" />
+    <Compile Include="Thing\AstableExplosiveBullet.cs" />
     <Compile Include="Thing\OA_DropPodIncoming.cs" />
     <Compile Include="Thought\ThoughtWorker_HaveAliveLeader.cs" />
     <Compile Include="Thought\ThoughtWorker_LeaderOpinion.cs" />
@@ -104,6 +114,8 @@
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
+    <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
+    <Compile Include="Verb\Verb_SummonEMP.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitEccentricScholar.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_EccentricScholar.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
@@ -138,7 +150,7 @@
     <Compile Include="Misc\PawnGroupKindWorker_FixPawnNumberRaid.cs" />
     <Compile Include="Misc\PlaceWorker_ShowFacilityRadius.cs" />
     <Compile Include="Thing\PortableCommsConsole.cs" />
-    <Compile Include="Misc\Verb_TargetCellAid.cs" />
+    <Compile Include="Verb\Verb_TargetCellAid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearcherVisit.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
@@ -155,7 +167,7 @@
     <Compile Include="ThingComp\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Thing\ShotgunBullet.cs" />
     <Compile Include="DefModExtension\ShotgunExtension.cs" />
-    <Compile Include="Misc\Verb_BarrageEnhancedShoot.cs" />
+    <Compile Include="Verb\Verb_BarrageEnhancedShoot.cs" />
     <Compile Include="WorldObject\SymbolResolver_SingleResearcher.cs" />
     <Compile Include="WorldObject\GenStep_ResearcherCamp.cs" />
     <Compile Include="WorldObject\GenStep_OABasicGenStep.cs" />
