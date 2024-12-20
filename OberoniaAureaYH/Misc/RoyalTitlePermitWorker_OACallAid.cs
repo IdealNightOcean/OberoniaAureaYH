@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 
-namespace OberoniaAurea_Hyacinth;
+namespace OberoniaAurea;
 public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
 {
     protected Faction calledFaction;
 
     protected float biocodeChance;
 
-    protected ModExtension_RatkinGroup modEx_RG;
-    public ModExtension_RatkinGroup ModEx_RG => modEx_RG ??= def.GetModExtension<ModExtension_RatkinGroup>();
+    [Unsaved]
+    protected OARatkinGroupExtension modEx_RG;
+    public OARatkinGroupExtension ModEx_RG => modEx_RG ??= def.GetModExtension<OARatkinGroupExtension>();
 
     public override IEnumerable<FloatMenuOption> GetRoyalAidOptions(Map map, Pawn pawn, Faction faction)
     {
@@ -38,7 +39,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         yield return new FloatMenuOption(description, action, faction.def.FactionIcon, faction.Color);
     }
 
-    private void BeginCallAid(Pawn caller, Map map, Faction faction, bool free, float biocodeChance = 1f)
+    protected void BeginCallAid(Pawn caller, Map map, Faction faction, bool free, float biocodeChance = 1f)
     {
         IEnumerable<Faction> source = from f in (from p in map.mapPawns.AllPawnsSpawned
                                                  where p.Faction != null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
@@ -93,10 +94,10 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
     {
         bool callSuccess = false;
         callSuccess = CallNormalAid(map, spawnPos, faction, biocodeChance) || callSuccess;
-        ModExtension_RatkinGroup modEx_RG = ModEx_RG;
+        OARatkinGroupExtension modEx_RG = ModEx_RG;
         if (modEx_RG != null)
         {
-            foreach (RatkinGroup ratkinGroup in modEx_RG.extraGroups)
+            foreach (OARatkinGroup ratkinGroup in modEx_RG.extraGroups)
             {
                 callSuccess = CallOAAid(ratkinGroup, map, spawnPos, faction, biocodeChance) || callSuccess;
             }
@@ -113,9 +114,9 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         else
         {
             Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", faction));
-        }    
+        }
     }
-    protected bool CallNormalAid(Map map, IntVec3 spawnPos, Faction faction, float biocodeChance=1f)
+    protected bool CallNormalAid(Map map, IntVec3 spawnPos, Faction faction, float biocodeChance = 1f)
     {
         IncidentParms incidentParms = new()
         {
@@ -137,7 +138,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         }
         return IncidentDefOf.RaidFriendly.Worker.TryExecute(incidentParms);
     }
-    protected bool CallOAAid(RatkinGroup ratkinGroup, Map map, IntVec3 spawnPos, Faction faction, float biocodeChance=1f)
+    protected bool CallOAAid(OARatkinGroup ratkinGroup, Map map, IntVec3 spawnPos, Faction faction, float biocodeChance = 1f)
     {
         IncidentParms incidentParms = new()
         {
