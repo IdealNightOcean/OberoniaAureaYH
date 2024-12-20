@@ -11,14 +11,16 @@ public static class OA_MiscDefOf
 
     public static GameConditionDef OA_MilitaryDeployment; //军事部署
 
+    public static GeneDef RK_OA_gene_Social; //
+
     public static IncidentDef OA_RK_LargeScaleTraderArrival;
 
     public static JobDef OA_RK_RepairCircuitRegulator; //整修电路调控
 
     public static LetterDef OA_RK_AcceptJoinerViewInfo;
 
-    public static PreceptDef OA_RK_MentalBreakProbability_Atonement;
-    public static PreceptDef OA_RK_MentalBreakProbability_Low;
+    [MayRequireIdeology]
+    public static MemeDef OA_RK_meme_Friendly; //和谐团体
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
 
@@ -65,6 +67,33 @@ public static class OA_PawnGenerateDefOf
         DefOfHelper.EnsureInitializedInCtor(typeof(OA_PawnGenerateDefOf));
     }
 }
+
+[DefOf]
+public static class OA_PreceptDefOf
+{
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_MentalBreakProbability_Atonement;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_MentalBreakProbability_Low;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_Community_Turbulent;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_Community_Common;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_Community_Harmonious;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_Community_Utopia;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_LeaderAttitude_Respect;
+    [MayRequireIdeology]
+    public static PreceptDef OA_RK_LeaderAttitude_Worship;
+
+    static OA_PreceptDefOf()
+    {
+        DefOfHelper.EnsureInitializedInCtor(typeof(OA_PreceptDefOf));
+    }
+}
+
 
 [DefOf]
 public static class OA_QuestScriptDefOf

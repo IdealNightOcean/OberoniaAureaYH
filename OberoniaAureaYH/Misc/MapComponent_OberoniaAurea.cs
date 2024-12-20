@@ -5,9 +5,41 @@ using Verse;
 
 namespace OberoniaAurea;
 
+[StaticConstructorOnStartup]
 public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
 {
     protected List<CompCircuitRegulator> circuitRegulators = [];
+
+    protected int nextOAGeneCheckTick = -1;
+    protected int cachedOAGenePawnsCount;
+
+    public int OAGenePawnsCount
+    {
+        get
+        {
+            if (Find.TickManager.TicksGame > nextOAGeneCheckTick)
+            {
+                cachedOAGenePawnsCount = PawnsCountWithOAGene(map);
+                nextOAGeneCheckTick = Find.TickManager.TicksGame + Rand.RangeInclusive(27500, 32500);
+            }
+            return cachedOAGenePawnsCount;
+        }
+    }
+
+    protected static int PawnsCountWithOAGene(Map map)
+    {
+        int validPawns = 0;
+        List<Pawn> allHumans = map.mapPawns.AllHumanlikeSpawned;
+        for (int i = 0; i < allHumans.Count; i++)
+        {
+            Pawn pawn = allHumans[i];
+            if (pawn.genes.HasActiveGene(OA_MiscDefOf.RK_OA_gene_Social))
+            {
+                validPawns++;
+            }
+        }
+        return validPawns;
+    }
 
     public void RegisterCircuitRegulator(CompCircuitRegulator comp)
     {

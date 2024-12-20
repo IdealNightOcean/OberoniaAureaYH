@@ -10,6 +10,11 @@ namespace OberoniaAurea;
 public static class OA_MiscUtility
 {
     public static GameComponent_OberoniaAurea OAGameComp => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
+    public static MapComponent_OberoniaAurea OAMapComp(this Map map)
+    {
+        return map?.GetComponent<MapComponent_OberoniaAurea>();
+    }
+
     public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OA_MiscDefOf.OA_RK_Faction);
     public static bool IsOAFaction(this Faction faction, bool allowTemp = false)
     {

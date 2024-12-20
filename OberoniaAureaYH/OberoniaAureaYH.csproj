@@ -66,8 +66,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefModExtension\MemeTraitOpinionExtension.cs" />
+    <Compile Include="DefModExtension\OARatkinGroupExtension.cs" />
+    <Compile Include="HarmonyPatch\SocialFightChance_Patch.cs" />
+    <Compile Include="HarmonyPatch\KindWords_RandomSelectionWeight_Patch.cs" />
+    <Compile Include="HarmonyPatch\NegativeInteractionChanceFactor_Patch.cs" />
     <Compile Include="HarmonyPatch\GenerateBestowingCeremonyQuest_Patch.cs" />
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
+    <Compile Include="Misc\RoyalTitlePermitWorker_OACallAid.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_OABestowingCeremony.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony.cs" />
     <Compile Include="ThingComp\CompExtremelyHiTechResearchBench.cs" />
@@ -86,6 +92,15 @@
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\Gene_HotAdaptation.cs" />
     <Compile Include="Misc\Gene_ColdAdaptation.cs" />
+    <Compile Include="Thing\OA_DropPodIncoming.cs" />
+    <Compile Include="Thought\ThoughtWorker_HaveAliveLeader.cs" />
+    <Compile Include="Thought\ThoughtWorker_LeaderOpinion.cs" />
+    <Compile Include="Thought\ThoughtWorker_MemeTraitOpinion.cs" />
+    <Compile Include="Thought\Thought_SkyWarmth.cs" />
+    <Compile Include="Thought\Thought_OAIdeoLeaderResentment.cs" />
+    <Compile Include="Thought\ThoughtWorker_OberoniaAureaGene.cs" />
+    <Compile Include="Thought\ThoughtWorker_LeaderDowned.cs" />
+    <Compile Include="Thought\ThoughtWorker_HaveOutstandingLeader.cs" />
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\Utility.cs" />
@@ -139,7 +154,7 @@
     <Compile Include="Thing\BarrageEnhancedBullet.cs" />
     <Compile Include="ThingComp\CompBarrageEnhancedFirepower.cs" />
     <Compile Include="Thing\ShotgunBullet.cs" />
-    <Compile Include="Misc\ShotgunExtension.cs" />
+    <Compile Include="DefModExtension\ShotgunExtension.cs" />
     <Compile Include="Misc\Verb_BarrageEnhancedShoot.cs" />
     <Compile Include="WorldObject\SymbolResolver_SingleResearcher.cs" />
     <Compile Include="WorldObject\GenStep_ResearcherCamp.cs" />
