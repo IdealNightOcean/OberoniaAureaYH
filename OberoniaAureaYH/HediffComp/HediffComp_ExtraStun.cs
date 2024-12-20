@@ -1,5 +1,5 @@
-﻿using RimWorld;
-using System.Reflection;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -11,10 +11,10 @@ public class HediffCompProperties_ExtraStun : HediffCompProperties
 
     public HediffCompProperties_ExtraStun()
     {
-        compClass = typeof(HeiffComp_ExtraStun);
+        compClass = typeof(HediffComp_ExtraStun);
     }
 }
-public class HeiffComp_ExtraStun : HediffComp
+public class HediffComp_ExtraStun : HediffComp
 {
     public int ticksRemaining = 60;
     HediffCompProperties_ExtraStun Props => props as HediffCompProperties_ExtraStun;
@@ -44,7 +44,7 @@ public class HeiffComp_ExtraStun : HediffComp
         if (stunHandler.StunTicksLeft > 0)
         {
             int totalStunTicks = stunHandler.StunTicksLeft + extraStunTicks;
-            stunHandler.GetType().GetField("stunTicksLeft", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(stunHandler, totalStunTicks);
+            OAFrame_ReflectionUtility.SetFieldValue(stunHandler, "stunTicksLeft", totalStunTicks);
         }
         else
         {

@@ -7,7 +7,7 @@ public class CompProperties_OpticalResearchFacility : CompProperties_Facility
 {
     public float needGlowLevel;
 
-    public int checkInterval = 250;
+    public int checkInterval = 600;
     public CompProperties_OpticalResearchFacility()
     {
         compClass = typeof(CompOpticalResearchFacility);
