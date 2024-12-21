@@ -41,6 +41,7 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
         return validPawns;
     }
 
+    //电路稳定检测
     public int ValidCircuitRegulatorCount(PowerNet powerNet)
     {
         return circuitRegulators.Where(c => c.PowerNet == powerNet && c.CurCircuitStability > 0).Count();

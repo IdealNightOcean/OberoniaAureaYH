@@ -128,7 +128,7 @@
     <Compile Include="HarmonyPatch\Faction_Patch.cs" />
     <Compile Include="HarmonyPatch\ShortCircuitUtility_Patch.cs" />
     <Compile Include="HarmonyPatch\TradeUtility_PricePatch.cs" />
-    <Compile Include="HarmonyPatch\HarmonyPatch.cs" />
+    <Compile Include="HarmonyPatch\ModHarmonyPatch.cs" />
     <Compile Include="HarmonyPatch\IncidentWorker_RaidEnemy_Patch.cs" />
     <Compile Include="HarmonyPatch\MakeRecipeProducts_Patch.cs" />
     <Compile Include="HarmonyPatch\MBW_TryStart_Patch.cs" />

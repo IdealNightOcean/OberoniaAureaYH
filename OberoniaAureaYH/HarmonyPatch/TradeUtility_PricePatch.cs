@@ -10,7 +10,7 @@ namespace OberoniaAurea;
 [HarmonyPatch(typeof(TradeUtility))]
 public static class TradeUtility_PricePatch
 {
-    private static List<SpecialtyPriceFactor> cachedSpecialtyPriceFactors;
+    private static List<SpecialtyPriceFactor> CachedSpecialtyPriceFactors;
     //private static Faction cachedTradeFaction;
 
     [HarmonyPostfix]
@@ -30,6 +30,7 @@ public static class TradeUtility_PricePatch
         }
         __result = price;
     }
+
     [HarmonyPostfix]
     [HarmonyPatch("GetPricePlayerBuy")]
     public static void GetPricePlayerBuy_Postfix(ref float __result, Thing thing)
@@ -53,13 +54,13 @@ public static class TradeUtility_PricePatch
         {
             return prePrice;
         }
-        cachedSpecialtyPriceFactors = thingDef.GetModExtension<SpecialtyPriceExtension>()?.SpecialtyPriceFactors;
-        if (cachedSpecialtyPriceFactors.NullOrEmpty())
+        CachedSpecialtyPriceFactors = thingDef.GetModExtension<SpecialtyPriceExtension>()?.SpecialtyPriceFactors;
+        if (CachedSpecialtyPriceFactors.NullOrEmpty())
         {
             return prePrice;
         }
         float priceFactor = 1f;
-        foreach (SpecialtyPriceFactor specialtyPriceFactor in cachedSpecialtyPriceFactors)
+        foreach (SpecialtyPriceFactor specialtyPriceFactor in CachedSpecialtyPriceFactors)
         {
             if (tradeFaction == specialtyPriceFactor.factionDef)
             {
