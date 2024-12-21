@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.BaseGen;
 using System;
 using Verse;
@@ -21,15 +22,10 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         Lord singlePawnLord = (rp.settlementLord = rp.singlePawnLord ?? LordMaker.MakeNewLord(faction, new LordJob_DefendBase(faction, rp.rect.CenterCell, rp.attackWhenPlayerBecameEnemy ?? false), map));
         TraverseParms traverseParms = TraverseParms.For(TraverseMode.PassDoors);
         ResolveParams resolveParams1 = rp;
-        PawnGenerationRequest pawnRequest = new()
-        {
-            Faction = faction,
-            KindDef = RimWorld.PawnKindDefOf.Villager,
-            Context = PawnGenerationContext.NonPlayer,
-            Tile = map.Tile,
-            AllowDead = false,
-            AllowDowned = false,
-        };
+
+        PawnGenerationRequest pawnRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction);
+        pawnRequest.Tile = map.Tile;
+
         resolveParams1.rect = rp.rect;
         resolveParams1.faction = faction;
         resolveParams1.singlePawnGenerationRequest = pawnRequest;
@@ -38,7 +34,7 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         ResolveParams resolveParams2 = new()
         {
             rect = rp.rect,
-            singleThingDef = RimWorld.ThingDefOf.Bedroll
+            singleThingDef = ThingDefOf.Bedroll
         };
         for (int i = 0; i < rp.bedCount; i++)
         {

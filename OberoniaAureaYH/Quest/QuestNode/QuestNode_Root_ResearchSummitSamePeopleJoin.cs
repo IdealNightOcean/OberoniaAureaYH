@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using Verse;
@@ -32,12 +33,13 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_Single
     public override Pawn GeneratePawn()
     {
         Slate slate = QuestGen.slate;
-        slate.TryGet<Faction>("faction", out Faction fVar);
-        if (!slate.TryGet<PawnGenerationRequest>("overridePawnGenParams", out var var))
+        slate.TryGet("faction", out Faction fVar);
+        if (!slate.TryGet("overridePawnGenParams", out PawnGenerationRequest request))
         {
-            var = new PawnGenerationRequest(PawnKindDefOf.Villager, fVar, PawnGenerationContext.NonPlayer, -1, forceGenerateNewPawn: true, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 20f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: true, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Adult, null, null, null, forceRecruitable: true);
+            request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, fVar, forceNew: true);
         }
-        Pawn pawn = PawnGenerator.GeneratePawn(var);
+        request.ForceAddFreeWarmLayerIfNeeded = true;
+        Pawn pawn = PawnGenerator.GeneratePawn(request);
 
         if (!pawn.IsWorldPawn())
         {

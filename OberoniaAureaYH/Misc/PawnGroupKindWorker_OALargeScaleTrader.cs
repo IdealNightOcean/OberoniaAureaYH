@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -67,7 +68,11 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             int num = (int)pgo.selectionWeight;
             for (int i = 0; i < num; i++)
             {
-                Pawn item = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pgo.kind, parms.faction, PawnGenerationContext.NonPlayer, forcedXenotype: null, tile: parms.tile, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: true, colonistRelationChanceFactor: 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: parms.inhabitants, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, biocodeWeaponChance: 0f, biocodeApparelChance: 0f, extraPawnForExtraRelationChance: null, relationWithExtraPawnChanceFactor: 1f, validatorPreGear: null, validatorPostGear: null, forcedTraits: null, prohibitedTraits: null, minChanceToRedressWorldPawn: null, fixedBiologicalAge: null, fixedChronologicalAge: null, fixedGender: null, fixedLastName: null, fixedBirthName: null, fixedTitle: null, fixedIdeo: parms.ideo));
+                PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
+                request.Tile = parms.tile;
+                request.FixedIdeo = parms.ideo;
+                request.Inhabitant = parms.inhabitants;
+                Pawn item = PawnGenerator.GeneratePawn(request);
                 outPawns.Add(item);
             }
         }
@@ -76,7 +81,12 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     //下面三个不重要，是因为泰南用了private才复制过来的
     protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {
-        Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(groupMaker.traders.RandomElementByWeight((PawnGenOption x) => x.selectionWeight).kind, parms.faction, PawnGenerationContext.NonPlayer, fixedIdeo: parms.ideo, tile: parms.tile, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, colonistRelationChanceFactor: 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: parms.inhabitants));
+        PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight((PawnGenOption x) => x.selectionWeight).kind;
+        PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
+        request.Tile = parms.tile;
+        request.FixedIdeo = parms.ideo;
+        request.Inhabitant = parms.inhabitants;
+        Pawn pawn = PawnGenerator.GeneratePawn(request);
         pawn.mindState.wantsToTradeWithColony = true;
         PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned: true);
         pawn.trader.traderKind = traderKind;
@@ -92,7 +102,11 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         List<Pawn> list2 = [];
         for (int j = 0; j < num; j++)
         {
-            Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, parms.faction, PawnGenerationContext.NonPlayer, fixedIdeo: parms.ideo, tile: parms.tile, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, colonistRelationChanceFactor: 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: parms.inhabitants));
+            PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(kind, parms.faction);
+            request.Tile = parms.tile;
+            request.FixedIdeo = parms.ideo;
+            request.Inhabitant = parms.inhabitants;
+            Pawn pawn = PawnGenerator.GeneratePawn(request);
             if (i < list.Count)
             {
                 pawn.inventory.innerContainer.TryAdd(list[i]);

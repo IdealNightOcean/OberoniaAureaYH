@@ -11,9 +11,7 @@ public class StatPart_RatkinHarmTurret : StatPart
 
     [Unsaved]
     GameComponent_Hyacinth hyacinthGameComp;
-
     GameComponent_Hyacinth HyacinthGameComp => hyacinthGameComp ??= Hyacinth_Utility.HyacinthGameComp;
-
 
     public override void TransformValue(StatRequest req, ref float val)
     {

@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using Verse;
@@ -23,7 +24,11 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
 
         foreach (PawnGenOption pgo in groupMaker.options)
         {
-            PawnGenerationRequest request = new(pgo.kind, parms.faction, PawnGenerationContext.NonPlayer, fixedIdeo: parms.ideo, tile: parms.tile, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: true, colonistRelationChanceFactor: 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: true, allowFood: allowFood, allowAddictions: true, inhabitant: parms.inhabitants, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, biocodeWeaponChance: 0f, biocodeApparelChance: 0f, extraPawnForExtraRelationChance: null, relationWithExtraPawnChanceFactor: 1f, validatorPreGear: null, validatorPostGear: validatorPostGear);
+            PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
+            request.Tile = parms.tile;
+            request.FixedIdeo = parms.ideo;
+            request.MustBeCapableOfViolence = true;
+            request.Inhabitant = parms.inhabitants;
 
             if (parms.raidAgeRestriction != null && parms.raidAgeRestriction.Worker.ShouldApplyToKind(pgo.kind))
             {
