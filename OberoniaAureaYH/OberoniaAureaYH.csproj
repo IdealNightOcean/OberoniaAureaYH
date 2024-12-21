@@ -78,6 +78,7 @@
     <Compile Include="Misc\PlaceWorker_GiveHediffInRange_Building.cs" />
     <Compile Include="Misc\RoyalTitlePermitWorker_OACallAid.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_OABestowingCeremony.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_OABestowingCeremony.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony.cs" />
     <Compile Include="ThingComp\CompExtremelyHiTechResearchBench.cs" />
     <Compile Include="ThingComp\CompOpticalResearchFacility.cs" />

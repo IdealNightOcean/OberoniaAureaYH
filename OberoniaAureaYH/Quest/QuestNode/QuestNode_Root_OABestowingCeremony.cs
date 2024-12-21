@@ -17,7 +17,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         pawn = null;
 
         slate.TryGet("bestowingFaction", out bestowingFaction);
-        if (OA_MiscUtility.OAFaction == null)
+        if (OA_MiscUtility.OAFaction == null) //金鸢尾兰派系判定
         {
             return false;
         }
@@ -60,7 +60,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
             return false;
         }
         QuestGen_Pawns.GetPawnParms parms = default;
-        parms.mustBeOfKind = OA_PawnGenerateDefOf.OA_RK_Noble_C;
+        parms.mustBeOfKind = OA_PawnGenerateDefOf.OA_RK_Noble_C; //授勋官
         parms.canGeneratePawn = true;
         parms.mustBeOfFaction = bestowingFaction;
         if (!QuestGen_Pawns.GetPawnTest(parms, out _))
@@ -116,6 +116,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         List<Pawn> defenders = [];
         for (int j = 0; j < DefenderCount; j++)
         {
+            //金鼠鼠授勋官护卫
             Pawn defender = quest.GeneratePawn(OA_PawnGenerateDefOf.OA_RK_Guard_Member, bestowingFaction);
             shuttleContents.Add(defender);
             defenders.Add(defender);
@@ -131,7 +132,8 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         QuestUtility.AddQuestTag(ref transportShip.questTags, tagStr);
         quest.FactionGoodwillChange(bestowingFaction, -5, QuestGenUtility.HardcodedSignalWithQuestID("defenders.Killed"), canSendMessage: true, canSendHostilityLetter: true, getLookTargetFromSignal: true, HistoryEventDefOf.QuestPawnLost);
 
-        QuestPart_BestowingCeremony questPart_BestowingCeremony = new()
+        //授勋仪式（part有改动）
+        QuestPart_OABestowingCeremony questPart_OABestowingCeremony = new()
         {
             inSignal = slate.Get<string>("inSignal"),
             mapOfPawn = pawn,
@@ -141,8 +143,8 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
             shuttle = thing,
             questTag = tagStr
         };
-        questPart_BestowingCeremony.pawns.Add(bestower);
-        quest.AddPart(questPart_BestowingCeremony);
+        questPart_OABestowingCeremony.pawns.Add(bestower);
+        quest.AddPart(questPart_OABestowingCeremony);
 
         QuestPart_EscortPawn questPart_EscortPawn = new()
         {
@@ -182,6 +184,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         };
         quest.AddPart(questPart_RequirementsToAcceptNoDanger);
 
+        //授勋仪式不可同时进行（金鼠鼠互斥）
         quest.AddPart(new QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony());
 
         string recruitedSignal = QuestGenUtility.HardcodedSignalWithQuestID("shuttleContents.Recruited");
@@ -204,30 +207,30 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         quest.End(QuestEndOutcome.Success, 0, null, doneSignal);
 
         QuestPart_Choice questPart_Choice = quest.RewardChoice();
-        QuestPart_Choice.Choice item2 = new()
+        QuestPart_Choice.Choice rewardChoice = new()
         {
             rewards = { new Reward_BestowingCeremony
             {
                 targetPawnName = pawn.NameShortColored.Resolve(),
                 titleName = titleAwardedWhenUpdating.GetLabelCapFor(pawn),
                 awardingFaction = bestowingFaction,
-                givePsylink = (titleAwardedWhenUpdating.maxPsylinkLevel > pawn.GetPsylinkLevel()),
+                givePsylink = false, //金鼠授勋不给启灵
                 royalTitle = titleAwardedWhenUpdating
             } }
         };
-        questPart_Choice.choices.Add(item2);
-        List<Rule> list3 =
+        questPart_Choice.choices.Add(rewardChoice);
+        List<Rule> newTitleLabel =
         [
             .. GrammarUtility.RulesForPawn("pawn", pawn),
             new Rule_String("newTitle", titleAwardedWhenUpdating.GetLabelCapFor(pawn)),
         ];
-        QuestGen.AddQuestNameRules(list3);
-        List<Rule> list4 =
+        QuestGen.AddQuestNameRules(newTitleLabel);
+        List<Rule> newTitleAward =
         [
             .. GrammarUtility.RulesForFaction("faction", bestowingFaction),
             .. GrammarUtility.RulesForPawn("pawn", pawn),
             new Rule_String("newTitle", pawn.royalty.GetTitleAwardedWhenUpdating(bestowingFaction, pawn.royalty.GetFavor(bestowingFaction)).GetLabelFor(pawn)),
         ];
-        QuestGen.AddQuestDescriptionRules(list4);
+        QuestGen.AddQuestDescriptionRules(newTitleAward);
     }
 }

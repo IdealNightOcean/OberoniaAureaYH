@@ -12,7 +12,7 @@ public static class ModHarmonyPatch
     {
         get
         {
-            harmonyInstance ??= new Harmony("OberoniaAurea.FXZ.Harmony");
+            harmonyInstance ??= new Harmony("OberoniaAurea.Hyacinth.Harmony");
             return harmonyInstance;
         }
     }
