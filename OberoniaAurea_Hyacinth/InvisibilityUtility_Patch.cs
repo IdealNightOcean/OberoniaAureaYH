@@ -1,53 +1,28 @@
 using HarmonyLib;
-using RimWorld;
-using System.Collections.Generic;
 using Verse;
 
 namespace OberoniaAurea_Hyacinth;
 
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(InvisibilityUtility))]
-public static class InvisibilityUtility_Patch
+[HarmonyPatch(typeof(HediffComp_Invisibility), "ForcedVisible", MethodType.Getter)]
+
+public static class ForcedVisible_Patch
 {
-	[HarmonyPostfix]
-    [HarmonyPatch("IsPsychologicallyInvisible")]
-    public static void IsPsychologicallyInvisible_PostFix(ref bool __result, Pawn pawn)
-	{
-		if (__result)
-		{
-            GameComponent_Hyacinth gameComponent_Hyacinth = Current.Game.GetComponent<GameComponent_Hyacinth>();
-			if (gameComponent_Hyacinth != null)
-			{
-				__result = gameComponent_Hyacinth.AntiStealthCheck(pawn.Map, pawn);
-			}
-		}
-	}
-
     [HarmonyPostfix]
-    [HarmonyPatch("IsHiddenFromPlayer")]
-    public static void IsHiddenFromPlayer_Postfix(ref bool __result, Pawn pawn)
+    public static void PostFix(ref HediffComp_Invisibility __instance, ref bool __result)
     {
-        if (__result)
+        if (!__result)
         {
-            GameComponent_Hyacinth gameComponent_Hyacinth = Current.Game.GetComponent<GameComponent_Hyacinth>();
-            if (gameComponent_Hyacinth != null)
+            Pawn pawn = __instance.parent.pawn;
+            if (pawn == null || !pawn.Spawned)
             {
-                __result = gameComponent_Hyacinth.AntiStealthCheck(pawn.Map, pawn);
+                return;
+            }
+            GameComponent_Hyacinth HyacinthGameComp = Hyacinth_Utility.HyacinthGameComp;
+            if (HyacinthGameComp != null)
+            {
+                __result = HyacinthGameComp.AntiStealthCheck(pawn);
             }
         }
     }
-    [HarmonyPostfix]
-    [HarmonyPatch("GetAlpha")]
-    public static void GetAlpha(ref float __result, Pawn pawn)
-    {
-        if (__result != 1f)
-        {
-            GameComponent_Hyacinth gameComponent_Hyacinth = Current.Game.GetComponent<GameComponent_Hyacinth>();
-            if (!gameComponent_Hyacinth.AntiStealthCheck(pawn.Map, pawn))
-            {
-                __result = 1f;
-            }
-        }
-    }
-
 }

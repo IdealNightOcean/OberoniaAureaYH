@@ -6,7 +6,6 @@ namespace OberoniaAurea_Hyacinth;
 
 public class GameComponent_Hyacinth : GameComponent
 {
-
     public Dictionary<Thing, float> antiStealth = [];
     private List<Thing> antiStealthThings;
     private List<float> antiStealthRadiusSquared;
@@ -18,70 +17,30 @@ public class GameComponent_Hyacinth : GameComponent
 
     public GameComponent_Hyacinth(Game game) { }
 
-    public void RegisterAntiStealth(Thing thing, float radiusSquared)
+    //·´ÒþÉí¼ì²â
+    public bool AntiStealthCheck(Thing thing)
     {
-        if (thing == null)
-        {
-            return;
-        }
-        if (antiStealth.ContainsKey(thing))
-        {
-            antiStealth[thing] = radiusSquared;
-        }
-        else
-        {
-            antiStealth.Add(thing, radiusSquared);
-        }
-    }
-    public void RegisterRatkinHarmTurret(Thing thing, float radiusSquared)
-    {
-        if (thing == null)
-        {
-            return;
-        }
-        if (ratkinHarmTurret.ContainsKey(thing))
-        {
-            ratkinHarmTurret[thing] = radiusSquared;
-        }
-        else
-        {
-            ratkinHarmTurret.Add(thing, radiusSquared);
-        }
-    }
-
-    public void UnregisterAntiStealth(Thing thing)
-    {
-        if (thing != null)
-        {
-            antiStealth.Remove(thing);
-        }
-    }
-    public void UnregisterRatkinHarmTurret(Thing thing)
-    {
-        if (thing != null)
-        {
-            ratkinHarmTurret.Remove(thing);
-        }
-    }
-
-    public bool AntiStealthCheck(Map map, Thing thing)
-    {
+        Map map = thing.Map;
         IntVec3 thingPos = thing.Position;
         foreach (KeyValuePair<Thing, float> antiStealthThing in antiStealth)
         {
-            if (ValidThing(antiStealthThing.Key, map) && thingPos.DistanceToSquared(antiStealthThing.Key.Position) <= antiStealthThing.Value)
+            Thing asThing = antiStealthThing.Key;
+            if (ThingValidator(thing, asThing, map) && thingPos.DistanceToSquared(asThing.Position) <= antiStealthThing.Value)
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
-    public bool RatkinHarmTurretCheck(Map map, Thing thing)
+    //¸ÉÈÅÅÚÌ¨¼ì²â
+    public bool RatkinHarmTurretCheck(Thing thing)
     {
+        Map map = thing.Map;
         IntVec3 thingPos = thing.Position;
         foreach (KeyValuePair<Thing, float> ratkinHarmTurretThing in ratkinHarmTurret)
         {
-            if (ValidThing(ratkinHarmTurretThing.Key, map) && thing.HostileTo(ratkinHarmTurretThing.Key) && thingPos.DistanceToSquared(ratkinHarmTurretThing.Key.Position) <= ratkinHarmTurretThing.Value)
+            Thing rhThing = ratkinHarmTurretThing.Key;
+            if (ThingValidator(thing, rhThing, map) && thingPos.DistanceToSquared(rhThing.Position) <= ratkinHarmTurretThing.Value)
             {
                 return true;
             }
@@ -89,22 +48,27 @@ public class GameComponent_Hyacinth : GameComponent
         return false;
     }
 
-    protected static bool ValidThing(Thing t, Map map)
+    protected static bool ThingValidator(Thing ct, Thing t, Map map)
     {
-        if (t == null || map == null || !t.Spawned || t.Map != map)
+        if (t == null || !t.Spawned || t.Map != map)
         {
             return false;
         }
-        return true;
+        if (ct.Faction == null || t.Faction == null)
+        {
+            return true;
+        }
+        return t.Faction.HostileTo(ct.Faction);
     }
+
     public override void ExposeData()
     {
         Scribe_Collections.Look(ref antiStealth, "antiStealth", LookMode.Reference, LookMode.Value, ref antiStealthThings, ref antiStealthRadiusSquared);
         Scribe_Collections.Look(ref ratkinHarmTurret, "ratkinHarmTurret", LookMode.Reference, LookMode.Value, ref ratkinHarmTurretThings, ref ratkinHarmTurretRadiusSquared);
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            antiStealth.RemoveAll((KeyValuePair<Thing, float> t) => t.Key == null);
-            ratkinHarmTurret.RemoveAll((KeyValuePair<Thing, float> t) => t.Key == null);
+            antiStealth.RemoveAll((KeyValuePair<Thing, float> t) => t.Key == null || t.Key.Destroyed);
+            ratkinHarmTurret.RemoveAll((KeyValuePair<Thing, float> t) => t.Key == null || t.Key.Destroyed);
         }
     }
 }
