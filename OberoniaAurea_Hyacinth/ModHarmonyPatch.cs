@@ -22,6 +22,7 @@ public static class ModHarmonyPatch
         HarmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
     }
 }
+
 [StaticConstructorOnStartup]
 public static class Hyacinth_Utility
 {

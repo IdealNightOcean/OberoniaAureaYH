@@ -10,7 +10,8 @@ namespace OberoniaAurea;
 public class QuestNode_Root_OABestowingCeremony : QuestNode
 {
     public const string QuestTag = "Bestowing";
-    protected const int DefenderCount = 8;
+    protected const int DefenderGuardCount = 6;
+    protected const int DefenderAssaultCount = 2;
 
     protected bool TryGetCeremonyTarget(Slate slate, out Pawn pawn, out Faction bestowingFaction)
     {
@@ -114,10 +115,17 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         slate.Set("bestowingFaction", bestowingFaction);
 
         List<Pawn> defenders = [];
-        for (int j = 0; j < DefenderCount; j++)
+        for (int i = 0; i < DefenderGuardCount; i++)
         {
             //金鼠鼠授勋官护卫
             Pawn defender = quest.GeneratePawn(OA_PawnGenerateDefOf.OA_RK_Guard_Member, bestowingFaction);
+            shuttleContents.Add(defender);
+            defenders.Add(defender);
+        }
+        for (int i = 0; i < DefenderAssaultCount; i++)
+        {
+            //金鼠鼠授勋官护卫（突袭）
+            Pawn defender = quest.GeneratePawn(OA_PawnGenerateDefOf.OA_RK_Assault_B, bestowingFaction);
             shuttleContents.Add(defender);
             defenders.Add(defender);
         }

@@ -6,7 +6,7 @@ namespace OberoniaAurea_Hyacinth;
 [StaticConstructorOnStartup]
 [HarmonyPatch(typeof(HediffComp_Invisibility), "ForcedVisible", MethodType.Getter)]
 
-public static class ForcedVisible_Patch
+public static class Invisibility_ForcedVisible_Patch
 {
     [HarmonyPostfix]
     public static void PostFix(ref HediffComp_Invisibility __instance, ref bool __result)
