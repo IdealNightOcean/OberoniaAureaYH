@@ -28,7 +28,7 @@ public class Verb_TargetCellAid : Verb_CastBase
             raidArrivalModeForQuickMilitaryAid = true,
             points = 1000f,
         };
-        if (OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms))
+        if (OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true))
         {
             base.ReloadableCompSource?.UsedOnce();
             return true;
