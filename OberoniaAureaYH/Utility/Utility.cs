@@ -46,7 +46,7 @@ public static class OA_MiscUtility
             points = points,
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
-        OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms);
+        OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 }
 
