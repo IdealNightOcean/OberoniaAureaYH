@@ -11,7 +11,7 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGroup
 {
-    protected static readonly TraderKindDef TraderKindDef = OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
+    protected static readonly TraderKindDef TraderKindDef = OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
 
     private static readonly SimpleCurve PointsCurve =
     [
@@ -56,7 +56,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         }
         Settlement settlement = (Settlement)researchSummit.AssociateWorldObject;
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
-        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OA_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
+        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
         {
             return false;
         }
@@ -135,7 +135,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     }
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
-        var obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OA_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
+        var obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
         if (obj == null)
         {
             researchSummit = null;

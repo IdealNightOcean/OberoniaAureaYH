@@ -5,7 +5,7 @@ using Verse.AI;
 namespace OberoniaAurea;
 public class WorkGiver_CircuitRegulator : WorkGiver_Scanner
 {
-    public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(OA_ThingDefOf.OA_RK_CircuitRegulator);
+    public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(OARatkin_ThingDefOf.OA_RK_CircuitRegulator);
 
     public override PathEndMode PathEndMode => PathEndMode.Touch;
 
@@ -36,7 +36,7 @@ public class WorkGiver_CircuitRegulator : WorkGiver_Scanner
     }
     public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
-        return JobMaker.MakeJob(OA_MiscDefOf.OA_RK_RepairCircuitRegulator, t);
+        return JobMaker.MakeJob(OARatkin_MiscDefOf.OA_RK_RepairCircuitRegulator, t);
     }
 }
 

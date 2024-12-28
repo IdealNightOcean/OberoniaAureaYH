@@ -34,7 +34,7 @@ public static class MakeRecipeProducts_Patch
         }
         foreach (Thing facility in compABF.LinkedFacilitiesListForReading)
         {
-            if (facility.def == OA_ThingDefOf.OA_RK_Cloth_Processing_B)
+            if (facility.def == OARatkin_ThingDefOf.OA_RK_Cloth_Processing_B)
             {
                 return true;
             }

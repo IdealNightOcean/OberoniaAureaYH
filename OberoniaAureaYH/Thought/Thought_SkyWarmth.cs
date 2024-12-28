@@ -8,7 +8,7 @@ public class Thought_SkyWarmth : Thought_Situational
     {
         float moodOffset = base.MoodOffset();
         Ideo ideo = pawn.Ideo;
-        if (ideo != null && ideo.HasMeme(OA_MiscDefOf.OA_RK_meme_Friendly))
+        if (ideo != null && ideo.HasMeme(OARatkin_MiscDefOf.OA_RK_meme_Friendly))
         {
             moodOffset += 2f;
         }

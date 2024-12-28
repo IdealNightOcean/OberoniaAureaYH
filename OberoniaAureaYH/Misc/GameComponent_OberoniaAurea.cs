@@ -54,7 +54,7 @@ public class GameComponent_OberoniaAurea : GameComponent
     }
     protected void AdjustAssistPoints()
     {
-        Faction oaFaction = OA_MiscUtility.OAFaction;
+        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
         if (oaFaction != null)
         {
             assistPointsStoppageDays--;
@@ -98,9 +98,9 @@ public class GameComponent_OberoniaAurea : GameComponent
                     IncidentParms parms = new()
                     {
                         target = map,
-                        faction = OA_MiscUtility.OAFaction
+                        faction = OARatkin_MiscUtility.OAFaction
                     };
-                    OAFrame_MiscUtility.AddNewQueuedIncident(OA_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
+                    OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
                 }
             }
         }

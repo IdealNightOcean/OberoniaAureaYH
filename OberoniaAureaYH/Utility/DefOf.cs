@@ -5,7 +5,7 @@ using Verse;
 namespace OberoniaAurea;
 
 [DefOf]
-public static class OA_MiscDefOf
+public static class OARatkin_MiscDefOf
 {
     public static FactionDef OA_RK_Faction; //金鼠鼠派系
 
@@ -25,13 +25,13 @@ public static class OA_MiscDefOf
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
 
-    static OA_MiscDefOf()
+    static OARatkin_MiscDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_MiscDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_MiscDefOf));
     }
 }
 [DefOf]
-public static class OA_PawnInfoDefOf
+public static class OARatkin_PawnInfoDefOf
 {
     public static HediffDef OA_RK_Hediff_ColdAdaptation;
     public static HediffDef OA_RK_Hediff_HotAdaptation;
@@ -40,14 +40,14 @@ public static class OA_PawnInfoDefOf
     public static ThoughtDef OA_RK_Atonement;
     public static ThoughtDef OA_RK_ResponsibilityConstraints;
 
-    static OA_PawnInfoDefOf()
+    static OARatkin_PawnInfoDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_PawnInfoDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_PawnInfoDefOf));
     }
 }
 
 [DefOf]
-public static class OA_PawnGenerateDefOf
+public static class OARatkin_PawnGenerateDefOf
 {
     public static PawnKindDef OA_RK_Traveller;
     [MayRequireRoyalty]
@@ -65,14 +65,14 @@ public static class OA_PawnGenerateDefOf
     public static TraderKindDef OA_ResearchSummit_FairTrader; //科研峰会：集市商人
     public static TraderKindDef OA_ResearchSummit_TravellerTrader; //科研峰会：参会旅行者
 
-    static OA_PawnGenerateDefOf()
+    static OARatkin_PawnGenerateDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_PawnGenerateDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_PawnGenerateDefOf));
     }
 }
 
 [DefOf]
-public static class OA_PreceptDefOf
+public static class OARatkin_PreceptDefOf
 {
     [MayRequireIdeology]
     public static PreceptDef OA_RK_MentalBreakProbability_Atonement;
@@ -91,15 +91,15 @@ public static class OA_PreceptDefOf
     [MayRequireIdeology]
     public static PreceptDef OA_RK_LeaderAttitude_Worship;
 
-    static OA_PreceptDefOf()
+    static OARatkin_PreceptDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_PreceptDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_PreceptDefOf));
     }
 }
 
 
 [DefOf]
-public static class OA_QuestScriptDefOf
+public static class OARatkin_QuestScriptDefOf
 {
     public static QuestScriptDef OA_BestowingCeremony; //金鸢尾兰授勋仪式
 
@@ -110,14 +110,14 @@ public static class OA_QuestScriptDefOf
     public static QuestScriptDef OA_ResearcherVisit;  //科研峰会：学者访问
     public static QuestScriptDef OA_UrbanConstruction; //城镇建设需求
 
-    static OA_QuestScriptDefOf()
+    static OARatkin_QuestScriptDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_QuestScriptDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_QuestScriptDefOf));
     }
 }
 
 [DefOf]
-public static class OA_ThingDefOf
+public static class OARatkin_ThingDefOf
 {
     public static ThingDef OA_RK_CircuitRegulator;
     public static ThingDef OA_RK_Cloth_Processing_B;
@@ -129,14 +129,14 @@ public static class OA_ThingDefOf
 
     public static ThingDef OARatkin_ResearchAnalyzer; //科研分析仪
     public static ThingDef OA_RK_EMPInst;
-    static OA_ThingDefOf()
+    static OARatkin_ThingDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_ThingDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_ThingDefOf));
     }
 }
 
 [DefOf]
-public static class OA_WorldObjectDefOf
+public static class OARatkin_WorldObjectDefOf
 {
     public static SitePartDef OA_RK_ResearcherCamp; //科研峰会：落脚点
 
@@ -149,14 +149,14 @@ public static class OA_WorldObjectDefOf
     public static WorldObjectDef OA_FixedCaravan_ResearchSummitAssistWork;
     public static WorldObjectDef OA_FixedCaravan_DiplomaticSummit;
     public static WorldObjectDef OA_FixedCaravan_ResearchSummitEccentricScholar;
-    static OA_WorldObjectDefOf()
+    static OARatkin_WorldObjectDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_WorldObjectDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_WorldObjectDefOf));
     }
 }
 
 [DefOf]
-public static class OA_HistoryEventDefOf
+public static class OARatkin_HistoryEventDefOf
 {
     public static HistoryEventDef OA_ResearchSummit;
     public static HistoryEventDef OA_AttackResearcherCamp;
@@ -168,15 +168,15 @@ public static class OA_HistoryEventDefOf
 
     public static HistoryEventDef OA_PsychicSlaughter;
 
-    static OA_HistoryEventDefOf()
+    static OARatkin_HistoryEventDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_HistoryEventDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_HistoryEventDefOf));
     }
 }
 
 
 [DefOf]
-public static class OA_RimWorldDefOf
+public static class OARatkin_RimWorldDefOf
 {
     public static WeatherDef SnowHard;
     public static WeatherDef SnowGentle;
@@ -185,8 +185,8 @@ public static class OA_RimWorldDefOf
 
     public static TraitDef NaturalMood;
 
-    static OA_RimWorldDefOf()
+    static OARatkin_RimWorldDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(OA_RimWorldDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_RimWorldDefOf));
     }
 }

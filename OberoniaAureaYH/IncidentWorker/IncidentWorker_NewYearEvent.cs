@@ -10,7 +10,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (OA_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
+        if (OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
         {
             return false;
         }
@@ -27,7 +27,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
     }
     protected bool ResolveParams(IncidentParms parms)
     {
-        if (OA_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
+        if (OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
         {
             return false;
         }
@@ -40,7 +40,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         */
         if (!parms.faction.IsOAFaction())
         {
-            parms.faction = OA_MiscUtility.OAFaction;
+            parms.faction = OARatkin_MiscUtility.OAFaction;
             if (parms.faction == null)
             {
                 return false;
@@ -69,8 +69,8 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         }
         Map map = (Map)parms.target;
 
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
-        things.Add(ThingMaker.MakeThing(OA_ThingDefOf.OARatkin_ResearchAnalyzer));
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
+        things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.OARatkin_ResearchAnalyzer));
         ThingDef garlandDef = DefDatabase<ThingDef>.GetNamed("OA_RK_New_Hat_A");
         Thing garland = ThingMaker.MakeThing(garlandDef);
         if (garland != null)
@@ -86,7 +86,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         TaggedString letterText = "OARatkin_Letter_NewYearEvent".Translate(learder.Named("LEADER"), map.Parent.Named("MAP"));
         Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, lookTargets, relatedFaction: parms.faction);
 
-        OA_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;
+        OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;
         return true;
 
     }

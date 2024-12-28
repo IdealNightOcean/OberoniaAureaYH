@@ -75,7 +75,7 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
         {
             return false;
         }
-        if (pawnHediffSet.HasHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjury))
+        if (pawnHediffSet.HasHediff(OARatkin_PawnInfoDefOf.OA_RK_SeriousInjury))
         {
             return false;
         }

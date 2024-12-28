@@ -82,7 +82,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         else
         {
-            ThoughtDef thoughtDef = OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
+            ThoughtDef thoughtDef = OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
             foreach (Pawn pawn in caravan.PawnsListForReading)
             {
                 if (pawn.needs.food != null)
@@ -99,7 +99,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             tile = parentTile;
         }
-        ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_Fair);
+        ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_Fair);
         worldObject.Tile = tile;
         worldObject.InitInnerTrader();
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
@@ -188,15 +188,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OA_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
+        if (OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OA_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
+            QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
         }
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
@@ -214,8 +214,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
-        things.Add(ThingMaker.MakeThing(OA_ThingDefOf.Oberonia_Aurea_Tea));
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.Oberonia_Aurea_Tea));
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -230,7 +230,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             tile = parentTile;
         }
         Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OA_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
+        Site camp = SiteMaker.MakeSite(OARatkin_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
@@ -240,9 +240,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherVisit() //无势力学者的访问
     {
         Slate slate = new();
-        if (OA_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
+        if (OARatkin_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
         {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OA_QuestScriptDefOf.OA_ResearcherVisit, slate);
+            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearcherVisit, slate);
             if (!quest.hidden && quest.root.sendAvailableLetter)
             {
                 QuestUtility.SendLetterQuestAvailable(quest);
@@ -253,9 +253,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OA_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate))
+        if (OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OA_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
+            QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
         }
@@ -283,7 +283,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             tile = parentTile;
         }
-        ResearchSummit_MysteriousTrader worldObject = (ResearchSummit_MysteriousTrader)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_MysteriousTrader);
+        ResearchSummit_MysteriousTrader worldObject = (ResearchSummit_MysteriousTrader)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_MysteriousTrader);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
@@ -296,7 +296,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             tile = parentTile;
         }
-        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
+        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
@@ -310,7 +310,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             tile = parentTile;
         }
 
-        ResearchSummit_EccentricScholar worldObject = (ResearchSummit_EccentricScholar)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummitEccentricScholar);
+        ResearchSummit_EccentricScholar worldObject = (ResearchSummit_EccentricScholar)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummitEccentricScholar);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
@@ -319,7 +319,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     }
     private static void AssistWork(int tile) //协助者募集点
     {
-        ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OA_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
+        ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(180000);
@@ -361,14 +361,14 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         if (oaFaction != null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_ResearchSummit);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
         }
 
         if (!factions.NullOrEmpty())
         {
             foreach (Faction faction in factions)
             {
-                Faction.OfPlayer.TryAffectGoodwillWith(faction, 15, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_ResearchSummit);
+                Faction.OfPlayer.TryAffectGoodwillWith(faction, 15, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
             }
         }
     }

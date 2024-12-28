@@ -62,7 +62,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
             Outcome_SmoothWork(capableCount);
         }, weight));
 
-        weight = 20f + Faction.OfPlayer.GoodwillWith(OA_MiscUtility.OAFaction) / 5f;
+        weight = 20f + Faction.OfPlayer.GoodwillWith(OARatkin_MiscUtility.OAFaction) / 5f;
         tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
         {
             Outcome_FriendlyCollaboration(capableCount);
@@ -96,7 +96,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     {
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
-        OA_MiscUtility.OAGameComp?.GetAssistPoints(APpoints);
+        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(APpoints);
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
@@ -132,7 +132,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     protected static void SupplyFood(FixedCaravan_ResearchSummitAssistWork assistWorkCaravan) //给予当天的食物
     {
-        ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OA_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
+        ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         foreach (Thing t in things)
         {
@@ -181,10 +181,10 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     }
     protected void Outcome_TradeDisputesSuccess(int capableCount)
     {
-        Faction oaFaction = OA_MiscUtility.OAFaction;
+        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
         if (oaFaction != null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_ResearchSummit);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
         }
         workPoints += (capableCount * 4 + 6);
         Messages.Message("OA_FixedCaravanRSAssistWork_TradeDisputesSuccess".Translate(), MessageTypeDefOf.PositiveEvent, historical: false);

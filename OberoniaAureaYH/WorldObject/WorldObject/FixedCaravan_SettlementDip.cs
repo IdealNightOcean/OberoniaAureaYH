@@ -18,7 +18,7 @@ public enum NegotiatingTeamLevel
 [StaticConstructorOnStartup]
 public class FixedCaravan_DiplomaticSummit : FixedCaravan
 {
-    public static WorldObjectDef AssociateObjectDef = OA_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit;
+    public static WorldObjectDef AssociateObjectDef = OARatkin_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit;
     public const int CheckInterval = 5000;
 
     public Pawn negotiant;
@@ -125,21 +125,21 @@ public static class DiplomaticSummitUtility
     public static void Outcome_LeaveHalfway(Settlement settlement)
     {
         Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, LeaveHalfwayGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_LeaveHalfway);
+        Faction.OfPlayer.TryAffectGoodwillWith(faction, LeaveHalfwayGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_LeaveHalfway);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_LeaveHalfway".Translate(), "OA_LetterDiplomaticSummit_LeaveHalfway".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, LeaveHalfwayGoodwill), LetterDefOf.NegativeEvent, settlement, faction);
     }
     private static void Outcome_Disaster(Settlement settlement)
     {
         Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, DisasterGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Disaster);
-        OA_MiscUtility.OAGameComp.assistPointsStoppageDays = DisasterStoppageDays;
+        Faction.OfPlayer.TryAffectGoodwillWith(faction, DisasterGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_Disaster);
+        OARatkin_MiscUtility.OAGameComp.assistPointsStoppageDays = DisasterStoppageDays;
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Disaster".Translate(), "OA_LetterDiplomaticSummit_Disaster".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, DisasterGoodwill, DisasterStoppageDays), LetterDefOf.NegativeEvent, settlement, faction);
     }
     private static void Outcome_Flounder(Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, FlounderGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Flounder);
-        OA_MiscUtility.OAGameComp?.GetAssistPoints(FlounderAssistPoints);
+        Faction.OfPlayer.TryAffectGoodwillWith(faction, FlounderGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_Flounder);
+        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(FlounderAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Flounder".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, FlounderGoodwill, FlounderAssistPoints);
         if (pawn != null)
         {
@@ -151,7 +151,7 @@ public static class DiplomaticSummitUtility
     private static void Outcome_Success(Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        OA_MiscUtility.OAGameComp?.GetAssistPoints(SuccessAssistPoints);
+        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(SuccessAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Success".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, SuccessAssistPoints);
         if (pawn != null)
         {
@@ -169,8 +169,8 @@ public static class DiplomaticSummitUtility
         {
             OAFrame_FixedCaravanUtility.GiveThing(fixedCaravan, thing);
         }
-        Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OA_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
-        OA_MiscUtility.OAGameComp?.GetAssistPoints(TriumphAssistPoints);
+        Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
+        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(TriumphAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Triumph".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, TriumphGoodwill, TriumphAssistPoints, 1500);
         if (pawn != null)
         {

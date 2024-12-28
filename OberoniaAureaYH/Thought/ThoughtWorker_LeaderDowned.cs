@@ -15,11 +15,11 @@ public class ThoughtWorker_LeaderDowned : ThoughtWorker
         Ideo ideo = pawn.Ideo;
         if (ideo != null && LeaderDowned(pawn.Faction))
         {
-            if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
+            if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
             {
                 return ThoughtState.ActiveAtStage(0);
             }
-            else if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_LeaderAttitude_Worship))
+            else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Worship))
             {
                 return ThoughtState.ActiveAtStage(1);
             }

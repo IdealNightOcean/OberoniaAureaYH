@@ -22,7 +22,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     protected override bool TestRunInt(Slate slate)
     {
-        Faction faction = OA_MiscUtility.OAFaction;
+        Faction faction = OARatkin_MiscUtility.OAFaction;
         if (faction == null || faction.HostileTo(Faction.OfPlayer))
         {
             return false;
@@ -48,7 +48,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         List<Pawn> pawns = GeneratePawns(lodgerCount, faction, map, quest, lodgerRecruitedSignal);
         Pawn wounded = pawns[1];
-        wounded.health.AddHediff(OA_PawnInfoDefOf.OA_RK_SeriousInjury);
+        wounded.health.AddHediff(OARatkin_PawnInfoDefOf.OA_RK_SeriousInjury);
         NonLethalDamage(wounded, DamageDefOf.Blunt);
         Pawn asker = pawns.First();
 
@@ -104,7 +104,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     }
     protected override Faction GetOrGenerateFaction()
     {
-        return OA_MiscUtility.OAFaction;
+        return OARatkin_MiscUtility.OAFaction;
     }
 
     protected override List<Pawn> GeneratePawns(int lodgerCount, Faction faction, Map map, Quest quest, string lodgerRecruitedSignal = null)
@@ -113,7 +113,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         for (int i = 0; i < lodgerCount; i++)
         {
             DevelopmentalStage developmentalStages = DevelopmentalStage.Adult;
-            Pawn pawn = quest.GeneratePawn(OA_PawnGenerateDefOf.OA_RK_Traveller, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
+            Pawn pawn = quest.GeneratePawn(OARatkin_PawnGenerateDefOf.OA_RK_Traveller, faction, allowAddictions: false, null, 0f, mustBeCapableOfViolence: true, null, 0f, 0f, ensureNonNumericName: false, forceGenerateNewPawn: true, developmentalStages);
             pawns.Add(pawn);
             quest.PawnJoinOffer(pawn, "LetterJoinOfferLabel".Translate(pawn.Named("PAWN")), "LetterJoinOfferTitle".Translate(pawn.Named("PAWN")), "LetterJoinOfferText".Translate(pawn.Named("PAWN"), map.Parent.Named("MAP")), delegate
             {

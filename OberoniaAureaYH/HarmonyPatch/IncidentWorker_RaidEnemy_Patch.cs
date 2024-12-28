@@ -15,9 +15,9 @@ public static class TryExecuteWorker_Patch
         {
             return;
         }
-        if (parms.target is Map map && map.GameConditionManager.ConditionIsActive(OA_MiscDefOf.OA_MilitaryDeployment))
+        if (parms.target is Map map && map.GameConditionManager.ConditionIsActive(OARatkin_MiscDefOf.OA_MilitaryDeployment))
         {
-            OA_MiscUtility.CallForAidFixedPoints(map, OA_MiscUtility.OAFaction, 4500f);
+            OARatkin_MiscUtility.CallForAidFixedPoints(map, OARatkin_MiscUtility.OAFaction, 4500f);
         }
     }
 }

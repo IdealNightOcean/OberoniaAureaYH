@@ -35,7 +35,7 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
         {
             return;
         }
-        FixedCaravan_ResearchSummitEccentricScholar fixedCaravan = (FixedCaravan_ResearchSummitEccentricScholar)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OA_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitEccentricScholar, OrganizeTicks);
+        FixedCaravan_ResearchSummitEccentricScholar fixedCaravan = (FixedCaravan_ResearchSummitEccentricScholar)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OARatkin_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitEccentricScholar, OrganizeTicks);
         fixedCaravan.associateScholar = this;
         Find.WorldObjects.Add(fixedCaravan);
         Find.WorldSelector.Select(fixedCaravan);

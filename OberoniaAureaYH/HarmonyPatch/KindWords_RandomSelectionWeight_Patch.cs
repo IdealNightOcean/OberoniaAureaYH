@@ -21,11 +21,11 @@ public static class KindWords_RandomSelectionWeight_Patch
             return;
         }
         float factor = 1f;
-        if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_Community_Utopia))
+        if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Utopia))
         {
             factor = 1.1f;
         }
-        else if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_Community_Turbulent))
+        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Turbulent))
         {
             factor = 0.75f;
         }

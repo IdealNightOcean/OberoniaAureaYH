@@ -54,7 +54,7 @@ public class SettlementDipComp : WorldObjectComp
         {
             return false;
         }
-        Faction oaFaction = OA_MiscUtility.OAFaction;
+        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
         if (oaFaction == null || worldObject.Faction != oaFaction)
         {
             return false;
@@ -221,7 +221,7 @@ public class SettlementDipComp : WorldObjectComp
             case SettlementDipVisitType.DeepExchange: return true;
             case SettlementDipVisitType.DiplomaticSummit:
                 {
-                    float allianceDuration = OA_MiscUtility.OAGameComp.AllianceDuration;
+                    float allianceDuration = OARatkin_MiscUtility.OAGameComp.AllianceDuration;
                     if (allianceDuration < 60)
                     {
                         return FloatMenuAcceptanceReport.WithFailReason("OA_AllianceDurationShort".Translate(60.ToString("F0")));
@@ -253,9 +253,9 @@ public static class DeepExchangeUtility
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
-        OA_MiscUtility.OAGameComp?.GetAssistPoints(AddAssistPoints);
+        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(AddAssistPoints);
         pawn.skills.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -264,15 +264,15 @@ public static class DeepExchangeUtility
         tmpPossibleOutcomes.Clear();
         if (Rand.Chance(QuestProbability))
         {
-            AddQuest(OA_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f);
-            AddQuest(OA_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f);
-            AddQuest(OA_QuestScriptDefOf.OA_UrbanConstruction, 40f, settlement);
-            AddQuest(OA_QuestScriptDefOf.OA_FestivalOrders, 25f);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_UrbanConstruction, 40f, settlement);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_FestivalOrders, 25f);
             if (tmpPossibleOutcomes.Any())
             {
                 Slate slate = new();
                 QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight((Pair<QuestScriptDef, float> x) => x.Second).First;
-                if (questScript == OA_QuestScriptDefOf.OA_UrbanConstruction)
+                if (questScript == OARatkin_QuestScriptDefOf.OA_UrbanConstruction)
                 {
                     slate.Set("settlement", settlement);
                 }

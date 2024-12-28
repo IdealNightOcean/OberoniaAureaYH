@@ -19,15 +19,15 @@ public static class SocialFightChance_Patch
             return;
         }
         float factor = 1f;
-        if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_Community_Utopia))
+        if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Utopia))
         {
             factor = 0.2f;
         }
-        else if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_Community_Harmonious))
+        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Harmonious))
         {
             factor = 0.5f;
         }
-        else if (ideo.HasPrecept(OA_PreceptDefOf.OA_RK_Community_Turbulent))
+        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Turbulent))
         {
             factor = 1.25f;
         }

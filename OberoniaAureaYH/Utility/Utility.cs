@@ -7,7 +7,7 @@ using Verse;
 namespace OberoniaAurea;
 
 [StaticConstructorOnStartup]
-public static class OA_MiscUtility
+public static class OARatkin_MiscUtility
 {
     public static GameComponent_OberoniaAurea OAGameComp => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
@@ -15,14 +15,14 @@ public static class OA_MiscUtility
         return map?.GetComponent<MapComponent_OberoniaAurea>();
     }
 
-    public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OA_MiscDefOf.OA_RK_Faction);
+    public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OARatkin_MiscDefOf.OA_RK_Faction);
     public static bool IsOAFaction(this Faction faction, bool allowTemp = false)
     {
         if (faction == null)
         {
             return false;
         }
-        if (faction.def == OA_MiscDefOf.OA_RK_Faction)
+        if (faction.def == OARatkin_MiscDefOf.OA_RK_Faction)
         {
             return allowTemp || !faction.temporary;
         }

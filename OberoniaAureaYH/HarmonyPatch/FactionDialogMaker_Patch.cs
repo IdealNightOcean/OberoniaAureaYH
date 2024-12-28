@@ -18,7 +18,7 @@ public static class FactionDialogFor_Patch
     [HarmonyPostfix]
     public static void Postfix(ref DiaNode __result, Pawn negotiator, Faction faction)
     {
-        if (faction.def != OA_MiscDefOf.OA_RK_Faction)
+        if (faction.def != OARatkin_MiscDefOf.OA_RK_Faction)
         {
             return;
         }
@@ -48,7 +48,7 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
-        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
         float allianceDuration = oaGameComp.AllianceDuration;
         int remainingTradeCoolingTick = oaGameComp.RemainingTradeCoolingTick;
         if (allianceDuration < 75)
@@ -61,7 +61,7 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("WaitTime".Translate(remainingTradeCoolingTick.ToStringTicksToPeriod()));
             return diaOption;
         }
-        if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < 2000)
+        if (OARatkin_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < 2000)
         {
             diaOption.Disable("NeedSilverLaunchable".Translate(2000));
             return diaOption;
@@ -87,7 +87,7 @@ public static class FactionDialogFor_Patch
                 traderKind = traderKind,
                 forced = true
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OA_MiscDefOf.OA_RK_LargeScaleTraderArrival, 120000, parms, 12000);
+            OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OA_RK_LargeScaleTraderArrival, 120000, parms, 12000);
             TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, 2000, map, null);
         }
     }
@@ -97,7 +97,7 @@ public static class FactionDialogFor_Patch
         TaggedString taggedString = "OA_SponsorOberoniaAurea".Translate();
         DiaOption diaOption = new(taggedString);
 
-        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
 
         if (oaGameComp.RemainingSponsorCoolingTick > 0) //冷却时不需要更多的帮助
         {
@@ -148,7 +148,7 @@ public static class FactionDialogFor_Patch
                     options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
-            if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < needSilver)
+            if (OARatkin_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < needSilver)
             {
                 diaOption.Disable("NeedSilverLaunchable".Translate(needSilver));
             }
@@ -170,7 +170,7 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
-        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
         float allianceDuration = oaGameComp.AllianceDuration;
         int remainingTechPrintCoolingTick = oaGameComp.RemainingTechPrintCoolingTick;
         if (allianceDuration < 45)
@@ -223,7 +223,7 @@ public static class FactionDialogFor_Patch
                     options = { FactionDialogUtility.OKToRoot(faction, negotiator) }
                 }
             };
-            if (OA_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < dbtpDef.price)
+            if (OARatkin_MiscUtility.AmountSendable(map, ThingDefOf.Silver) < dbtpDef.price)
             {
                 DeniedTechPrintDiaOption("NeedSilverLaunchable".Translate(dbtpDef.price), diaNode, diaOption);
             }
@@ -268,7 +268,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     [HarmonyPrefix]
     public static bool Prefix(ref DiaOption __result, Map map, Faction faction, Pawn negotiator)
     {
-        if (faction.def != OA_MiscDefOf.OA_RK_Faction)
+        if (faction.def != OARatkin_MiscDefOf.OA_RK_Faction)
         {
             return true;
         }
@@ -294,7 +294,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             diaOption.Disable("NeedGoodwill".Translate(50.ToString("F0")));
             return diaOption;
         }
-        GameComponent_OberoniaAurea oaGameComp = OA_MiscUtility.OAGameComp;
+        GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
         int assistPoints = oaGameComp.AssistPoints;
         int curAssistPointsCap = oaGameComp.CurAssistPointsCap;
         float allianceDuration = oaGameComp.AllianceDuration;
@@ -346,13 +346,13 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         //突袭小组
         AddDiaOption("OA_WeAreBeingAttacked", delegate
         {
-            OA_MiscUtility.CallForAidFixedPoints(map, faction, 1800);
+            OARatkin_MiscUtility.CallForAidFixedPoints(map, faction, 1800);
             oaGameComp.UseAssistPoints(45);
         }, needAD: 60, needAP: 45);
         //突袭分队
         AddDiaOption("OA_WeNeedUrgentBackup", delegate
         {
-            OA_MiscUtility.CallForAidFixedPoints(map, faction, 6300);
+            OARatkin_MiscUtility.CallForAidFixedPoints(map, faction, 6300);
             oaGameComp.UseAssistPoints(100);
         }, needAD: 120, needAP: 100);
         //军事部署
@@ -407,8 +407,8 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     private static void CallEmergencyMedicine(Map map, Faction faction)
     {
         List<List<Thing>> dropThings = [];
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OA_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
+        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
+        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
         dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, new IntVec2(2, 2));
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
@@ -453,7 +453,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         {
             target = map,
             faction = faction,
-            traderKind = OA_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
+            traderKind = OARatkin_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
             forced = true
         };
         OAFrame_MiscUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
@@ -463,9 +463,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         if (OAFrame_MapUtility.ThreatsCountOfPlayerOnMap(map) > 0)
         {
-            OA_MiscUtility.CallForAidFixedPoints(map, faction, 4500);
+            OARatkin_MiscUtility.CallForAidFixedPoints(map, faction, 4500);
         }
-        GameCondition gameCondition = GameConditionMaker.MakeCondition(OA_MiscDefOf.OA_MilitaryDeployment, 300000);
+        GameCondition gameCondition = GameConditionMaker.MakeCondition(OARatkin_MiscDefOf.OA_MilitaryDeployment, 300000);
         map.gameConditionManager.RegisterCondition(gameCondition);
     }
 }
