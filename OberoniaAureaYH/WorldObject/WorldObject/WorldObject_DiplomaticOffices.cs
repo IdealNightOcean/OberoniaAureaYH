@@ -14,7 +14,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
 {
     private Faction ParticipantFaction => participantFactions[0];
 
-    private static readonly float TriumphNeedAbility = 2.2f; //大成功所需要的谈判能力
+    private const float TriumphNeedAbility = 2.2f; //大成功所需要的谈判能力
 
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {

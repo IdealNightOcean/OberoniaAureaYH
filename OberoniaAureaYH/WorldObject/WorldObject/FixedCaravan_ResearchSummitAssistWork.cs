@@ -13,7 +13,7 @@ namespace OberoniaAurea;
 public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
 {
     protected static readonly List<Pair<Action, float>> tmpPossibleOutcomes = [];
-    public static readonly int CheckInterval = 5000;
+    public const int CheckInterval = 5000;
 
     protected int allTicksRemaining = 25000;
     protected int checkRemaining = 5;

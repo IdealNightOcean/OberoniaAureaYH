@@ -9,9 +9,9 @@ namespace OberoniaAurea;
 //科研峰会 - 同道中人
 public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_SinglePawnJoin
 {
-    private static readonly int TimeoutTicks = 60000;
+    private const int TimeoutTicks = 60000;
 
-    public static readonly float RelationWithColonistWeight = 20f;
+    public const float RelationWithColonistWeight = 20f;
     protected override void AddSpawnPawnQuestParts(Quest quest, Map map, Pawn pawn)
     {
         signalAccept = QuestGenUtility.HardcodedSignalWithQuestID("Accept");

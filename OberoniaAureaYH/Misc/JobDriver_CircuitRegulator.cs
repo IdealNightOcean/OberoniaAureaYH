@@ -8,7 +8,7 @@ namespace OberoniaAurea;
 
 public class JobDriver_CircuitRegulator : JobDriver
 {
-    private static readonly int BaseJobEndInterval = 2500;
+    private const int BaseJobEndInterval = 2500;
     private int jobEndInterval;
     private int ticksRemaining;
     private float repairSpeed = 1f;

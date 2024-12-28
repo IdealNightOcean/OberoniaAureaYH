@@ -19,10 +19,10 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         new CurvePoint(1.5f, 0.4f)
     ];
 
-    public static readonly float LeaderOffset = 0.05f;
+    public const float LeaderOffset = 0.05f;
 
-    private static readonly int SuccessAssistPoints = 10;
-    private static readonly int TriumphAssistPoints = 25;
+    private const int SuccessAssistPoints = 10;
+    private const int TriumphAssistPoints = 25;
 
 
     private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];

@@ -15,10 +15,10 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     private static readonly IntRange InjuryCount = new(2, 3);
 
-    private static readonly int HealthCheckInterval = 30000;
-    private static readonly int QuestDurationDays = 7;
-    private static readonly int QuestDurationTicks = QuestDurationDays * 60000;
-    private static readonly int AssistPoints = 15;
+    private const int HealthCheckInterval = 30000;
+    private const int QuestDurationDays = 7;
+    private const int QuestDurationTicks = QuestDurationDays * 60000;
+    private const int AssistPoints = 15;
 
     protected override bool TestRunInt(Slate slate)
     {

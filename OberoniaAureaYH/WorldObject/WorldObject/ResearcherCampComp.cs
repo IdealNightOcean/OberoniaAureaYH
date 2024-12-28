@@ -19,7 +19,7 @@ public class ResearcherCampComp : WorldObjectComp
 {
     private bool active = false;
 
-    private static readonly int ReduceGoodwill = -55;
+    private const int ReduceGoodwill = -55;
     public override void PostMapGenerate()
     {
         if (!active)
@@ -102,7 +102,7 @@ public class ResearcherCampComp : WorldObjectComp
 
 public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
 {
-    private static readonly int SilverNum = 300;
+    private const int SilverNum = 300;
 
     private WorldObject site;
     public override string Label => "OA_RobResearcherCamp".Translate(site.Label);

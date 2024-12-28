@@ -15,11 +15,11 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
 {
-    private static readonly float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
-    private static readonly float FlounderNeedSpeed = 1.75f; //小失败所需要的研究能力
-    private static readonly float NormalNeedSpeed = 2.4f; //中立所需要的研究能力
-    private static readonly float SuccessNeedSpeed = 3.0f; //成功所需要的研究能力
-    private static readonly float TriumphNeedSpeed = 4.0f; //大成功所需要的研究能力
+    private const float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
+    private const float FlounderNeedSpeed = 1.75f; //小失败所需要的研究能力
+    private const float NormalNeedSpeed = 2.4f; //中立所需要的研究能力
+    private const float SuccessNeedSpeed = 3.0f; //成功所需要的研究能力
+    private const float TriumphNeedSpeed = 4.0f; //大成功所需要的研究能力
 
     private static readonly IntRange ScholarGiftValue = new(1000, 3000);
 

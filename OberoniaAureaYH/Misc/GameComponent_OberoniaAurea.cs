@@ -6,6 +6,9 @@ namespace OberoniaAurea;
 
 public class GameComponent_OberoniaAurea : GameComponent
 {
+    protected const int BaseAssistPointsCap = 40;
+    protected const int MaxAssistPointsCap = 300;
+
     protected int ticksRemaining;
     public int initAllianceTick = -1; //本次结盟的起始时刻
     protected float oldAllianceDuration; //记录旧结盟时间
@@ -27,8 +30,9 @@ public class GameComponent_OberoniaAurea : GameComponent
     public int AssistPoints => assistPoints;
 
     public int assistPointsStoppageDays = 0;
-    protected static readonly int BaseAssistPointsCap = 40;
-    protected static readonly int MaxAssistPointsCap = 300;
+
+
+    public bool
 
     public GameComponent_OberoniaAurea(Game game)
     {

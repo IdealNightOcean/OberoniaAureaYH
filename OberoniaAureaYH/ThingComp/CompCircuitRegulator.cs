@@ -17,7 +17,7 @@ public class CompProperties_CircuitRegulator : CompProperties_Power
 }
 public class CompCircuitRegulator : CompPowerTransmitter
 {
-    protected static readonly float BaseCircuitStabilityLoss = 0.0005f;
+    protected const float BaseCircuitStabilityLoss = 0.0005f;
     private new CompProperties_CircuitRegulator Props => (CompProperties_CircuitRegulator)props;
     protected MapComponent_OberoniaAurea oaMapComp;
     public MapComponent_OberoniaAurea OAMapComp => oaMapComp ??= parent.Map.GetOAMapComp();

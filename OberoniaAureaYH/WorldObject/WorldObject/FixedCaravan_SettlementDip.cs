@@ -19,7 +19,7 @@ public enum NegotiatingTeamLevel
 public class FixedCaravan_DiplomaticSummit : FixedCaravan
 {
     public static WorldObjectDef AssociateObjectDef = OA_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit;
-    public static readonly int CheckInterval = 5000;
+    public const int CheckInterval = 5000;
 
     public Pawn negotiant;
     public Settlement associateSettlement;
@@ -81,21 +81,21 @@ public static class DiplomaticSummitUtility
         {NegotiatingTeamLevel.Excellence,0.25f}
     };
 
-    private static readonly int LeaveHalfwayGoodwill = -50;
+    private const int LeaveHalfwayGoodwill = -50;
 
-    private static readonly int DisasterGoodwill = -50;
-    private static readonly int DisasterStoppageDays = 30;
+    private const int DisasterGoodwill = -50;
+    private const int DisasterStoppageDays = 30;
 
-    private static readonly int FlounderGoodwill = -15;
-    private static readonly int FlounderAssistPoints = 5;
-    private static readonly float FlounderXP = 3000f;
+    private const int FlounderGoodwill = -15;
+    private const int FlounderAssistPoints = 5;
+    private const float FlounderXP = 3000f;
 
-    private static readonly int SuccessAssistPoints = 25;
-    private static readonly float SuccessXP = 6000f;
+    private const int SuccessAssistPoints = 25;
+    private const float SuccessXP = 6000f;
 
-    private static readonly int TriumphGoodwill = 10;
-    private static readonly int TriumphAssistPoints = 60;
-    private static readonly float TriumphXP = 8000f;
+    private const int TriumphGoodwill = 10;
+    private const int TriumphAssistPoints = 60;
+    private const float TriumphXP = 8000f;
 
     private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
 

@@ -11,7 +11,7 @@ using static RimWorld.ResearchManager;
 namespace OberoniaAurea;
 public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
 {
-    protected static readonly int NeedSilver = 1500;
+    protected const int NeedSilver = 1500;
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);

@@ -11,9 +11,9 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 {
     protected override IntRange LodgerCount => new(2, 3);
 
-    private static readonly int QuestDurationDays = 4;
-    private static readonly int QuestDurationTicks = QuestDurationDays * 60000;
-    private static readonly int ArrivalDelayTicks = 120000;
+    private const int QuestDurationDays = 4;
+    private const int QuestDurationTicks = QuestDurationDays * 60000;
+    private const int ArrivalDelayTicks = 120000;
     private static readonly IntRange IntellectualSkill = new(8, 18);
 
     protected override void RunInt()

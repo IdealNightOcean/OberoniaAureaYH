@@ -244,10 +244,10 @@ public class SettlementDipComp : WorldObjectComp
 
 public static class DeepExchangeUtility
 {
-    private static readonly float LearnIntellectualXP = 2000f;
-    private static readonly float QuestProbability = 0.5f;
-    private static readonly int ChanwuNum = 10;
-    private static readonly int AddAssistPoints = 5;
+    private const float LearnIntellectualXP = 2000f;
+    private const float QuestProbability = 0.5f;
+    private const int ChanwuNum = 10;
+    private const int AddAssistPoints = 5;
 
     private readonly static List<Pair<QuestScriptDef, float>> tmpPossibleOutcomes = [];
 
