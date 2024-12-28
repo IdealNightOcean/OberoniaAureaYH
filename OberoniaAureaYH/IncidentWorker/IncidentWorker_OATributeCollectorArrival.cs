@@ -45,8 +45,8 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
 
     protected override void SendLetter(IncidentParms parms, List<Pawn> pawns, TraderKindDef traderKind)
     {
-        TaggedString letterLabel = "LetterLabelTributeCollectorArrival_OA".Translate().CapitalizeFirst();
-        TaggedString letterText = "LetterTributeCollectorArrival_OA".Translate(parms.faction.NameColored).CapitalizeFirst();
+        TaggedString letterLabel = "OARatkin_LetterLabel_TributeCollectorArrival".Translate().CapitalizeFirst();
+        TaggedString letterText = "OARatkin_Letter_TributeCollectorArrival".Translate(parms.faction.Named("FACTION")).CapitalizeFirst();
         letterText += "\n\n" + "LetterCaravanArrivalCommonWarning".Translate();
         PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref letterLabel, ref letterText, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), informEvenIfSeenBefore: true);
         SendStandardLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, parms, pawns[0]);

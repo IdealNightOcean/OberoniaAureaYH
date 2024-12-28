@@ -87,13 +87,13 @@ public class GameComponent_OberoniaAurea : GameComponent
     }
     private void TryAddNewYearEnent()
     {
-        if(!newYearEventTriggeredOnce)
+        if (!newYearEventTriggeredOnce)
         {
             DateTime date = DateTime.Now;
-            if (date.Month == 1 || date.Day == 1)
+            if (date.Month == 1 && date.Day == 1)
             {
                 Map map = Find.AnyPlayerHomeMap;
-                if(map!=null)
+                if (map != null && OARatkin_MiscUtility.OAFaction != null)
                 {
                     IncidentParms parms = new()
                     {

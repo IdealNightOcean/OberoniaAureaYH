@@ -31,13 +31,11 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         {
             return false;
         }
-        /*
         DateTime date = DateTime.Now;
         if (date.Month != 1 || date.Day != 1)
         {
             return false;
         }
-        */
         if (!parms.faction.IsOAFaction())
         {
             parms.faction = OARatkin_MiscUtility.OAFaction;
@@ -83,7 +81,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         LookTargets lookTargets = new(parms.spawnCenter, map);
         Pawn learder = parms.faction.leader;
         TaggedString letterLabel = "OARatkin_LetterLabel_NewYearEvent".Translate();
-        TaggedString letterText = "OARatkin_Letter_NewYearEvent".Translate(learder.Named("LEADER"), map.Parent.Named("MAP"));
+        TaggedString letterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
         Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, lookTargets, relatedFaction: parms.faction);
 
         OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;

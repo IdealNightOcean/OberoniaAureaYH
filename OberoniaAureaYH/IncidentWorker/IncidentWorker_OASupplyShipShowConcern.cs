@@ -35,8 +35,10 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
         List<List<Thing>> dropThings = OAFrame_MiscUtility.TryGengrateThingGroup(rawBerriesDef, count);
         foreach (List<Thing> things in dropThings)
+        {
             DropPodUtility.DropThingGroupsNear(intVec, map, [things], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
-        SendStandardLetter("OA_SupplyShipShowConcernLabel".Translate(), "OA_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count), LetterDefOf.PositiveEvent, parms, new TargetInfo(intVec, map));
+        }
+        SendStandardLetter("OARatkin_LetterLabel_SupplyShipShowConcern".Translate(), "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count), LetterDefOf.PositiveEvent, parms, new TargetInfo(intVec, map));
         return true;
     }
 }
