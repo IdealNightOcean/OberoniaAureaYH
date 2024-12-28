@@ -1,4 +1,6 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
+using System;
 using UnityEngine;
 using Verse;
 
@@ -32,14 +34,14 @@ public class GameComponent_OberoniaAurea : GameComponent
     public int assistPointsStoppageDays = 0;
 
 
-    public bool
+    public bool newYearEventTriggeredOnce;
 
     public GameComponent_OberoniaAurea(Game game)
     {
     }
     public override void LoadedGame()
     {
-        ResolveOldSave();
+        TryAddNewYearEnent();
     }
     public override void GameComponentTick()
     {
@@ -83,13 +85,24 @@ public class GameComponent_OberoniaAurea : GameComponent
             assistPoints = Mathf.Max(assistPoints - points, 0);
         }
     }
-    private void ResolveOldSave()
+    private void TryAddNewYearEnent()
     {
-        Faction oaFaction = OA_MiscUtility.OAFaction;
-        if (oaFaction != null)
+        if(!newYearEventTriggeredOnce)
         {
-            if (initAllianceTick < 0 && oaFaction.PlayerRelationKind == FactionRelationKind.Ally)
-                initAllianceTick = Find.TickManager.TicksGame;
+            DateTime date = DateTime.Now;
+            if (date.Month == 1 || date.Day == 1)
+            {
+                Map map = Find.AnyPlayerHomeMap;
+                if(map!=null)
+                {
+                    IncidentParms parms = new()
+                    {
+                        target = map,
+                        faction = OA_MiscUtility.OAFaction
+                    };
+                    OAFrame_MiscUtility.AddNewQueuedIncident(OA_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
+                }
+            }
         }
     }
 

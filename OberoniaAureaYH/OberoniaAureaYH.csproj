@@ -74,7 +74,7 @@
     <Compile Include="HarmonyPatch\GenerateBestowingCeremonyQuest_Patch.cs" />
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
     <Compile Include="HediffComp\HediffComp_TeaWithSkyWarmth.cs" />
-    <Compile Include="IncidentWorker\IncidentWorker_NewYear.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_NewYearEvent.cs" />
     <Compile Include="Misc\RaidStrategyWorker_OAImmediateAttack.cs" />
     <Compile Include="Misc\PlaceWorker_GiveHediffInRange_Building.cs" />
     <Compile Include="Misc\RoyalTitlePermitWorker_OACallAid.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="ThingComp\CompGiveHediffInRange_Building.cs" />
     <Compile Include="ThingComp\CompEMPInstExplosion.cs" />
     <Compile Include="ThingComp\CompChargedExplosion.cs" />
+    <Compile Include="ThingComp\CompUseEffect_ResearchAnalyzer.cs" />
     <Compile Include="Thing\EMP_Summoner.cs" />
     <Compile Include="Thing\AstableBullet.cs" />
     <Compile Include="Thing\AstableExplosiveBullet.cs" />

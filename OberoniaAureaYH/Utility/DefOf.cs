@@ -14,6 +14,7 @@ public static class OA_MiscDefOf
     public static GeneDef RK_OA_gene_Social; //
 
     public static IncidentDef OA_RK_LargeScaleTraderArrival;
+    public static IncidentDef OARatkin_NewYearEvent; //新年慰问
 
     public static JobDef OA_RK_RepairCircuitRegulator; //整修电路调控
 
@@ -125,6 +126,8 @@ public static class OA_ThingDefOf
     public static ThingDef Oberonia_Aurea_Chanwu_AC; //流心花糕
     public static ThingDef Oberonia_Aurea_Chanwu_F; //浓缩液
     public static ThingDef Oberonia_Aurea_Chanwu_G; //提取液
+
+    public static ThingDef OARatkin_ResearchAnalyzer; //科研分析仪
     public static ThingDef OA_RK_EMPInst;
     static OA_ThingDefOf()
     {
