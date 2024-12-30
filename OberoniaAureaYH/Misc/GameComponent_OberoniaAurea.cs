@@ -90,17 +90,21 @@ public class GameComponent_OberoniaAurea : GameComponent
         if (!newYearEventTriggeredOnce)
         {
             DateTime date = DateTime.Now;
-            if (date.Month == 1 && date.Day == 1)
+            if (date.Month == 1 && date.Day <= 3)
             {
                 Map map = Find.AnyPlayerHomeMap;
-                if (map != null && OARatkin_MiscUtility.OAFaction != null)
+                Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+                if (map != null && oaFaction != null)
                 {
-                    IncidentParms parms = new()
+                    if (oaFaction.PlayerRelationKind == FactionRelationKind.Ally)
                     {
-                        target = map,
-                        faction = OARatkin_MiscUtility.OAFaction
-                    };
-                    OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
+                        IncidentParms parms = new()
+                        {
+                            target = map,
+                            faction = OARatkin_MiscUtility.OAFaction
+                        };
+                        OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
+                    }
                 }
             }
         }
@@ -182,6 +186,8 @@ public class GameComponent_OberoniaAurea : GameComponent
         Scribe_Values.Look(ref techPrintCoolingDays, "techPrintCoolingDays", -1);
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
         Scribe_Values.Look(ref assistPointsStoppageDays, "assistPointsStoppageDays", 0);
+
+        Scribe_Values.Look(ref newYearEventTriggeredOnce, "newYearEventTriggeredOnce", defaultValue: false, forceSave: true);
 
     }
 }

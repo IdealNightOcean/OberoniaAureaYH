@@ -47,7 +47,7 @@ public class PortableCommsConsole : Apparel
     public FloatMenuOption CommFloatMenuOption(Pawn negotiator, Faction faction)
     {
         string text = "CallOnRadio".Translate(faction.GetCallLabel());
-        text = text + " (" + faction.RelationKindWith(Faction.OfPlayer).GetLabelCap() + ", " + faction.GoodwillWith(Faction.OfPlayer).ToStringWithSign() + ")";
+        text = text + " (" + faction.PlayerRelationKind.GetLabelCap() + ", " + faction.GoodwillWith(Faction.OfPlayer).ToStringWithSign() + ")";
         Pawn leader = faction.leader;
         if (!LeaderIsAvailableToTalk(leader))
         {

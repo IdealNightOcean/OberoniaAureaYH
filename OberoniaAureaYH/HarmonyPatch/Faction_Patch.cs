@@ -16,7 +16,7 @@ public static class Notify_RelationKindChanged_Patch
         {
             return;
         }
-        FactionRelationKind curRelation = __instance.RelationKindWith(Faction.OfPlayer);
+        FactionRelationKind curRelation = __instance.PlayerRelationKind;
         GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
         switch (curRelation)
         {

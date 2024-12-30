@@ -15,11 +15,15 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
             return false;
         }
         DateTime date = DateTime.Now;
-        if (date.Month != 1 || date.Day != 1)
+        if (date.Month != 1 || date.Day > 3)
         {
             return false;
         }
         if (!parms.faction.IsOAFaction())
+        {
+            return false;
+        }
+        if (parms.faction.PlayerRelationKind != FactionRelationKind.Ally)
         {
             return false;
         }
@@ -31,11 +35,6 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         {
             return false;
         }
-        DateTime date = DateTime.Now;
-        if (date.Month != 1 || date.Day != 1)
-        {
-            return false;
-        }
         if (!parms.faction.IsOAFaction())
         {
             parms.faction = OARatkin_MiscUtility.OAFaction;
@@ -44,7 +43,10 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
                 return false;
             }
         }
-
+        if (parms.faction.PlayerRelationKind != FactionRelationKind.Ally)
+        {
+            return false;
+        }
         Map map = (Map)parms.target;
         map ??= Find.AnyPlayerHomeMap;
         if (map == null)
@@ -66,6 +68,22 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
             return false;
         }
         Map map = (Map)parms.target;
+        DateTime date = DateTime.Now;
+        if (date.Month != 1 || date.Day > 3)
+        {
+            return false;
+        }
+        Pawn learder = parms.faction.leader;
+        TaggedString letterLabel = "OARatkin_LetterLabel_NewYearEvent".Translate();
+        TaggedString letterText;
+        if (date.Day == 1)
+        {
+            letterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
+        }
+        else
+        {
+            letterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
+        }
 
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
         things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.OARatkin_ResearchAnalyzer));
@@ -79,9 +97,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
 
         DropPodUtility.DropThingGroupsNear(parms.spawnCenter, map, [things], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: parms.faction);
         LookTargets lookTargets = new(parms.spawnCenter, map);
-        Pawn learder = parms.faction.leader;
-        TaggedString letterLabel = "OARatkin_LetterLabel_NewYearEvent".Translate();
-        TaggedString letterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
+        
         Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, lookTargets, relatedFaction: parms.faction);
 
         OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;
