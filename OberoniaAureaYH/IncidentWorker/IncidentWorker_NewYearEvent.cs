@@ -78,11 +78,11 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         TaggedString letterText;
         if (date.Day == 1)
         {
-            letterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
+            letterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), parms.faction.LeaderTitle, learder.Named("LEADER"), map.Parent.Named("MAP"));
         }
         else
         {
-            letterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named("FACTION"), learder.Named("LEADER"), map.Parent.Named("MAP"));
+            letterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named("FACTION"), parms.faction.LeaderTitle, learder.Named("LEADER"), map.Parent.Named("MAP"));
         }
 
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
