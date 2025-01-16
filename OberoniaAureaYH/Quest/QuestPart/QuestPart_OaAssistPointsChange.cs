@@ -7,8 +7,7 @@ public class QuestPart_OaAssistPointsChange : QuestPart
 {
     public string inSignal;
     public int changePoints;
-    public QuestPart_OaAssistPointsChange()
-    { }
+    public QuestPart_OaAssistPointsChange() { }
 
     public QuestPart_OaAssistPointsChange(string inSignal, int changePoints)
     {

@@ -7,6 +7,7 @@ namespace OberoniaAurea;
 [HarmonyPatch(typeof(Pawn_InteractionsTracker), "SocialFightChance")]
 public static class SocialFightChance_Patch
 {
+    [HarmonyPostfix]
     public static void Postfix(ref float __result, Pawn initiator)
     {
         if (__result == 0f)

@@ -97,7 +97,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
 
         DropPodUtility.DropThingGroupsNear(parms.spawnCenter, map, [things], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: parms.faction);
         LookTargets lookTargets = new(parms.spawnCenter, map);
-        
+
         Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, lookTargets, relatedFaction: parms.faction);
 
         OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;

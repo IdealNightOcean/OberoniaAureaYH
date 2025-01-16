@@ -85,7 +85,11 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
         }
         return true;
     }
-
+    public override void Cleanup()
+    {
+        base.Cleanup();
+        pawns.Clear();
+    }
     public override void ExposeData()
     {
         base.ExposeData();
