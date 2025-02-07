@@ -8,7 +8,7 @@ public class Verb_CastTargetEffectFriendly : Verb_CastTargetEffect
 {
     public override void OnGUI(LocalTargetInfo target)
     {
-        if (CanHitTarget(target) && IsFriendlyPawn(target))
+        if (CanHitTarget(target) && IsValidlPawn(target))
         {
             if (verbProps.targetParams.CanTarget(target.ToTargetInfo(caster.Map)))
             {
@@ -31,20 +31,32 @@ public class Verb_CastTargetEffectFriendly : Verb_CastTargetEffect
 
     public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
     {
-        if (!IsFriendlyPawn(target))
+        if (!IsValidlPawn(target))
         {
             return false;
         }
         return base.ValidateTarget(target, showMessages);
     }
 
-    private static bool IsFriendlyPawn(LocalTargetInfo target)
+    private static bool IsValidlPawn(LocalTargetInfo target)
     {
         Pawn pawn = target.Pawn;
         if (pawn == null)
         {
             return false;
         }
-        return pawn.Faction == Faction.OfPlayer || pawn.Downed || pawn.IsPrisonerOfColony || pawn.IsQuestLodger();
+        if (pawn.Downed)
+        {
+            return true;
+        }
+        if (pawn.Faction.IsPlayerSafe() || pawn.IsPrisonerOfColony)
+        {
+            return true;
+        }
+        if (!Faction.OfPlayer.HostileTo(pawn.Faction))
+        {
+            return true;
+        }
+        return false;
     }
 }

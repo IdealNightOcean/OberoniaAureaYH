@@ -12,7 +12,7 @@ public static class Notify_RelationKindChanged_Patch
     [HarmonyPostfix]
     public static void Postfix(ref Faction __instance, Faction other)
     {
-        if (__instance.def != OARatkin_MiscDefOf.OA_RK_Faction || other != Faction.OfPlayer)
+        if (__instance.def != OARatkin_MiscDefOf.OA_RK_Faction || !other.IsPlayerSafe())
         {
             return;
         }
