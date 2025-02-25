@@ -37,7 +37,9 @@ public static class OARatkin_PawnInfoDefOf
     public static HediffDef OA_RK_Hediff_HotAdaptation;
     public static HediffDef OA_RK_SeriousInjury;
 
+    [MayRequireIdeology]
     public static ThoughtDef OA_RK_Atonement;
+    [MayRequireIdeology]
     public static ThoughtDef OA_RK_ResponsibilityConstraints;
 
     static OARatkin_PawnInfoDefOf()

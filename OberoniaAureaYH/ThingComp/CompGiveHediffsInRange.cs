@@ -41,7 +41,7 @@ public class CompGiveHediffsInRange : ThingComp
         {
             return;
         }
-        if (Props.onlyPlayerCanUse && wearer.Faction != Faction.OfPlayer)
+        if (Props.onlyPlayerCanUse && !wearer.Faction.IsPlayerSafe())
         {
             return;
         }

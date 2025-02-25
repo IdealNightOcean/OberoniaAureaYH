@@ -18,7 +18,7 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         rp.bedCount = DefaultBedCount.RandomInRange;
 
         Map map = BaseGen.globalSettings.map;
-        Faction faction = ((map.ParentFaction != null && map.ParentFaction != Faction.OfPlayer) ? map.ParentFaction : ResearcherCampComp.GenerateTempCampFaction());
+        Faction faction = ((map.ParentFaction != null && !map.ParentFaction.IsPlayer) ? map.ParentFaction : ResearcherCampComp.GenerateTempCampFaction());
         Lord singlePawnLord = (rp.settlementLord = rp.singlePawnLord ?? LordMaker.MakeNewLord(faction, new LordJob_DefendBase(faction, rp.rect.CenterCell, rp.attackWhenPlayerBecameEnemy ?? false), map));
         TraverseParms traverseParms = TraverseParms.For(TraverseMode.PassDoors);
         ResolveParams resolveParams1 = rp;

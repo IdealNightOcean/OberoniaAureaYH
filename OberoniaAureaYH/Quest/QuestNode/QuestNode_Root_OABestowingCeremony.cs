@@ -23,7 +23,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
             return false;
         }
 
-        if (slate.TryGet("titleHolder", out pawn) && pawn.Faction != null && pawn.Faction.IsPlayer)
+        if (slate.TryGet("titleHolder", out pawn) && pawn.Faction.IsPlayerSafe())
         {
             if (bestowingFaction != null)
             {

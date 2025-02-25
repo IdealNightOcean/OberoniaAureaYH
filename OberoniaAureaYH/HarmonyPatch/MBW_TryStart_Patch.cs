@@ -13,59 +13,40 @@ public static class MBW_TryStart_Patch
     [HarmonyPostfix]
     public static void Postfix(ref bool __result, Pawn pawn)
     {
-        if (!__result || !ModsConfig.IdeologyActive)
+        if (!__result || !ModsConfig.IdeologyActive || pawn.Ideo == null)
         {
             return;
         }
         Ideo ideo = pawn.Ideo;
-        if (ideo == null)
-        {
-            return;
-        }
 
         if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_MentalBreakProbability_Low))
         {
-            MentalBreakProbability_Low(pawn);
+            MentalBreakProbability(pawn, 0.5f, OARatkin_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
+            Messages.Message("OA_ResponsibilityConstraints".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
         }
         else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_MentalBreakProbability_Atonement))
         {
-            MentalBreakProbability_Atonement(pawn);
-        }
-
-    }
-    private static void MentalBreakProbability_Low(Pawn pawn)
-    {
-        //有戒律崩溃后50%概率恢复
-        if (Rand.Bool)
-        {
-            //拥有责任感的心情修正的情况下再次崩溃不会触发判定
-            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OARatkin_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
-            if (tm != null)
-            {
-                return;
-            }
-            pawn.mindState.mentalStateHandler.Reset();
-            Messages.Message("OA_ResponsibilityConstraints".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
-            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OARatkin_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
-        }
-    }
-    private static void MentalBreakProbability_Atonement(Pawn pawn)
-    {
-        //有戒律崩溃后80%概率恢复
-        if (Rand.Value < 0.8)
-        {
-            // 拥有赎罪的心情修正的情况下再次崩溃不会触发判定
-            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(OARatkin_PawnInfoDefOf.OA_RK_Atonement);
-            if (tm != null)
-            {
-                return;
-            }
-            pawn.mindState.mentalStateHandler.Reset();
+            MentalBreakProbability(pawn, 0.8f, OARatkin_PawnInfoDefOf.OA_RK_Atonement);
             Messages.Message("OA_Atonement".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
-            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(OARatkin_PawnInfoDefOf.OA_RK_Atonement);
         }
 
     }
 
+    private static void MentalBreakProbability(Pawn pawn, float chance, ThoughtDef thought)
+    {
+        //有戒律崩溃后概率恢复
+        if (Rand.Chance(chance))
+        {
+            //拥有对应心情修正的情况下再次崩溃不会触发判定
+            Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(thought);
+            if (tm != null)
+            {
+                return;
+            }
+            pawn.mindState.mentalStateHandler.Reset();
+
+            pawn.needs.mood?.thoughts?.memories?.TryGainMemory(thought);
+        }
+    }
 
 }

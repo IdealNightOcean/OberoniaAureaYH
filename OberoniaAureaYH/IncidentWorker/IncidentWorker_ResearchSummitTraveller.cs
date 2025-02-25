@@ -26,7 +26,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     }
     protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
     {
-        if (f.IsPlayer || f.defeated || f.temporary || f.Hidden)
+        if (f.IsPlayerSafe() || f.defeated || f.temporary || f.Hidden)
         {
             return false;
         }

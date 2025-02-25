@@ -82,7 +82,7 @@ public class CompChargedExplosion : ThingComp
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
-        if (parent.Faction == null || parent.Faction == Faction.OfPlayer)
+        if (parent.Faction == null || parent.Faction.IsPlayer)
         {
             Command_Action command_Action = new()
             {
