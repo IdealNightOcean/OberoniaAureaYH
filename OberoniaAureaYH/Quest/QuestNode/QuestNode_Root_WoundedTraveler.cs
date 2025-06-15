@@ -159,7 +159,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     {
         allowAssaultColony = false,
         allowLeave = true,
-        allowBadThought = false,
+        allowBadThought = true,
 
         inSignalEnable = slate.Get<string>("inSignal"),
         inSignalDestroyed = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Destroyed"),

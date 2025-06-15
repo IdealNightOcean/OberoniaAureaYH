@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
@@ -31,13 +32,7 @@ public class IncidentWorker_OptionalDiplomaticOffices : IncidentWorker_GiveQuest
         {
             return false;
         }
-        foreach (Faction f in Find.FactionManager.AllFactionsVisible)
-        {
-            if (f != oaFaction && f.PlayerRelationKind == FactionRelationKind.Hostile && f.RelationKindWith(oaFaction) != FactionRelationKind.Hostile)
-            {
-                return true;
-            }
-        }
-        return false;
+
+        return Find.FactionManager.AllFactionsVisible.Any(f => f != oaFaction && f.PlayerRelationKind == FactionRelationKind.Hostile && f.RelationKindWith(oaFaction) != FactionRelationKind.Hostile);
     }
 }

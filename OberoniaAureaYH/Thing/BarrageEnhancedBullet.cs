@@ -9,6 +9,6 @@ public class BarrageEnhancedBullet : Bullet
     {
         base.Launch(launcher, origin, usedTarget, intendedTarget, hitFlags, preventFriendlyFire, equipment, targetCoverDef);
         float damageMultiplier = equipment.TryGetComp<CompBarrageEnhancedFirepower>()?.DamageMultiplier ?? 0f;
-        base.weaponDamageMultiplier = base.weaponDamageMultiplier + damageMultiplier;
+        base.weaponDamageMultiplier += damageMultiplier;
     }
 }

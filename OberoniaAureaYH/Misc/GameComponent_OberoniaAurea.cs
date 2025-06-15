@@ -36,13 +36,20 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     public bool newYearEventTriggeredOnce;
 
-    public GameComponent_OberoniaAurea(Game game)
+    public GameComponent_OberoniaAurea(Game game) 
     {
+        OARatkin_MiscUtility.OAGameComp = this;
+    }
+
+    public override void StartedNewGame()
+    {
+        GameStart();
     }
     public override void LoadedGame()
     {
-        TryAddNewYearEnent();
+        GameStart();
     }
+
     public override void GameComponentTick()
     {
         ticksRemaining--;
@@ -85,31 +92,7 @@ public class GameComponent_OberoniaAurea : GameComponent
             assistPoints = Mathf.Max(assistPoints - points, 0);
         }
     }
-    private void TryAddNewYearEnent()
-    {
-        if (!newYearEventTriggeredOnce)
-        {
-            DateTime date = DateTime.Now;
-            if (date.Month == 1 && date.Day <= 3)
-            {
-                Map map = Find.AnyPlayerHomeMap;
-                Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-                if (map != null && oaFaction != null)
-                {
-                    if (oaFaction.PlayerRelationKind == FactionRelationKind.Ally)
-                    {
-                        IncidentParms parms = new()
-                        {
-                            target = map,
-                            faction = OARatkin_MiscUtility.OAFaction
-                        };
-                        OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
-                    }
-                }
-            }
-        }
-    }
-
+  
     public float AllianceDuration
     {
         get
@@ -170,6 +153,36 @@ public class GameComponent_OberoniaAurea : GameComponent
         }
     }
 
+    private void GameStart()
+    {
+        OARatkin_MiscUtility.Notify_GameStart();
+        TryAddNewYearEnent();
+    }
+
+    private void TryAddNewYearEnent()
+    {
+        if (!newYearEventTriggeredOnce)
+        {
+            DateTime date = DateTime.Now;
+            if (date.Month == 1 && date.Day <= 3)
+            {
+                Map map = Find.AnyPlayerHomeMap;
+                if (map != null && OARatkin_MiscUtility.OAFaction != null)
+                {
+                    if (OARatkin_MiscUtility.OAFaction.PlayerRelationKind == FactionRelationKind.Ally)
+                    {
+                        IncidentParms parms = new()
+                        {
+                            target = map,
+                            faction = OARatkin_MiscUtility.OAFaction
+                        };
+                        OAFrame_MiscUtility.AddNewQueuedIncident(OARatkin_MiscDefOf.OARatkin_NewYearEvent, 2500, parms);
+                    }
+                }
+            }
+        }
+    }
+
     public override void ExposeData()
     {
         base.ExposeData();
@@ -187,7 +200,7 @@ public class GameComponent_OberoniaAurea : GameComponent
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
         Scribe_Values.Look(ref assistPointsStoppageDays, "assistPointsStoppageDays", 0);
 
-        Scribe_Values.Look(ref newYearEventTriggeredOnce, "newYearEventTriggeredOnce", defaultValue: false, forceSave: true);
+        Scribe_Values.Look(ref newYearEventTriggeredOnce, "newYearEventTriggeredOnce", defaultValue: false);
 
     }
 }

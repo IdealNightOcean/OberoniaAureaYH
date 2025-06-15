@@ -9,13 +9,13 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public static class OARatkin_MiscUtility
 {
-    public static GameComponent_OberoniaAurea OAGameComp => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
+    public static GameComponent_OberoniaAurea OAGameComp;
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {
         return map?.GetComponent<MapComponent_OberoniaAurea>();
     }
-
-    public static Faction OAFaction => Find.FactionManager.FirstFactionOfDef(OARatkin_MiscDefOf.OA_RK_Faction);
+    private static Faction OAFactionCache;
+    public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARatkin_MiscDefOf.OA_RK_Faction);
     public static bool IsOAFaction(this Faction faction, bool allowTemp = false)
     {
         if (faction == null)
@@ -47,6 +47,11 @@ public static class OARatkin_MiscUtility
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
         OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
+    }
+
+    public static void Notify_GameStart()
+    {
+        OAFactionCache = Find.FactionManager.FirstFactionOfDef(OARatkin_MiscDefOf.OA_RK_Faction);
     }
 }
 
