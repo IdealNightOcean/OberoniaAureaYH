@@ -93,9 +93,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
     }
-    private static void Fair(int parentTile) //集市
+    private static void Fair(PlanetTile parentTile) //集市
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -187,8 +187,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void SamePeople(Faction faction) //同道中人
     {
         Slate slate = new();
+        Map map = QuestGen_Get.GetMap();
         slate.Set("faction", faction);
-        if (OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
+        slate.Set("map", map);
+        if (OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate, map))
         {
             QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
         }
@@ -222,10 +224,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherSite(int parentTile) //落脚点
+    private static void ResearcherSite(PlanetTile parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, (PlanetTile t) => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -240,7 +242,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherVisit() //无势力学者的访问
     {
         Slate slate = new();
-        if (OARatkin_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
+        Map map = QuestGen_Get.GetMap();
+        slate.Set("map", map);
+        if (OARatkin_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate, map))
         {
             Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearcherVisit, slate);
             if (!quest.hidden && quest.root.sendAvailableLetter)
@@ -253,7 +257,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate))
+        if (OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate, Find.World))
         {
             QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
@@ -276,10 +280,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ScholarGift".Translate(), "OA_LetterResearchSummit_ScholarGift".Translate(), LetterDefOf.PositiveEvent, caravan);
     }
-    private static void MysteriousTrader(int parentTile) //神秘商人
+    private static void MysteriousTrader(PlanetTile parentTile) //神秘商人
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, (PlanetTile t) => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -290,9 +294,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AcademicDispute(int parentTile) //学术约架
+    private static void AcademicDispute(PlanetTile parentTile) //学术约架
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -303,9 +307,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void EccentricScholar(int parentTile) //废品旁的学者
+    private static void EccentricScholar(PlanetTile parentTile) //废品旁的学者
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -317,7 +321,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_EccentricScholar".Translate(), "OA_LetterResearchSummit_EccentricScholar".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AssistWork(int tile) //协助者募集点
+    private static void AssistWork(PlanetTile tile) //协助者募集点
     {
         ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
         worldObject.Tile = tile;

@@ -14,7 +14,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
         innerTrader = new(OARatkin_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
         innerTrader.GenerateThings(this.Tile);
     }
-    public override void Tick()
+    protected override void Tick()
     {
         base.Tick();
         innerTrader?.Traderick();

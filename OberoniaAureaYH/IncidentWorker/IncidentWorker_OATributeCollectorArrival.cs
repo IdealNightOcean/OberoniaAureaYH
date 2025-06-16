@@ -35,7 +35,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
         {
             return false;
         }
-        return FactionCanBeGroupSource(oaFaction, (Map)parms.target);
+        return FactionCanBeGroupSource(oaFaction, parms);
     }
 
     protected override float TraderKindCommonality(TraderKindDef traderKind, Map map, Faction faction)

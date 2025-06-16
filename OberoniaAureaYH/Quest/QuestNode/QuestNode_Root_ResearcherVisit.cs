@@ -22,7 +22,10 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 
         Quest quest = QuestGen.quest;
         Slate slate = QuestGen.slate;
-        Map map = QuestGen_Get.GetMap();
+        if (!slate.TryGet("map", out Map map))
+        {
+            map = QuestGen_Get.GetMap();
+        }
         int lodgerCount = LodgerCount.RandomInRange;
         string lodgerRecruitedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Recruited");
         string lodgerArrestedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Arrested");

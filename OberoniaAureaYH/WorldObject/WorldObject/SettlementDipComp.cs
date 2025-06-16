@@ -264,10 +264,10 @@ public static class DeepExchangeUtility
         tmpPossibleOutcomes.Clear();
         if (Rand.Chance(QuestProbability))
         {
-            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f);
-            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f);
-            AddQuest(OARatkin_QuestScriptDefOf.OA_UrbanConstruction, 40f, settlement);
-            AddQuest(OARatkin_QuestScriptDefOf.OA_FestivalOrders, 25f);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f, Find.World);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f, Find.World);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_UrbanConstruction, 40f, Find.World, settlement);
+            AddQuest(OARatkin_QuestScriptDefOf.OA_FestivalOrders, 25f, QuestGen_Get.GetMap());
             if (tmpPossibleOutcomes.Any())
             {
                 Slate slate = new();
@@ -286,14 +286,14 @@ public static class DeepExchangeUtility
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDeepExchange".Translate(), text, LetterDefOf.PositiveEvent, caravan, settlement.Faction);
     }
-    private static void AddQuest(QuestScriptDef scriptDef, float chance, Settlement targetSettle = null)
+    private static void AddQuest(QuestScriptDef scriptDef, float chance, IIncidentTarget target, Settlement targetSettle = null)
     {
         Slate slate = new();
         if (targetSettle != null)
         {
             slate.Set("settlement", targetSettle);
         }
-        if (scriptDef.CanRun(slate))
+        if (scriptDef.CanRun(slate, target))
         {
             tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(scriptDef, chance));
         }

@@ -119,7 +119,7 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     {
         Robbery(caravan, site);
     }
-    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, int destinationTile)
+    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, PlanetTile destinationTile)
     {
         FloatMenuAcceptanceReport floatMenuAcceptanceReport = base.StillValid(caravan, destinationTile);
         if (!floatMenuAcceptanceReport)

@@ -12,7 +12,7 @@ public class FixedCaravan_ResearchSummitEccentricScholar : FixedCaravan
     private static readonly IntRange SteelCountRange = new(20, 50);
 
     public ResearchSummit_EccentricScholar associateScholar;
-    public override void Tick()
+    protected override void Tick()
     {
         ticksRemaining--;
         if (ticksRemaining < 0)

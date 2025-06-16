@@ -21,7 +21,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected int workPoints;
     protected bool workEnd;
 
-    public override void Tick()
+    protected override void Tick()
     {
         base.Tick();
         allTicksRemaining--;

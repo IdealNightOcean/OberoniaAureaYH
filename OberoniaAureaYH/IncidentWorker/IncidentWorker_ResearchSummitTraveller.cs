@@ -24,7 +24,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out var result);
         return new LordJob_VisitColony(parms.faction, result);
     }
-    protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+    public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
     {
         if (f.IsPlayerSafe() || f.defeated || f.temporary || f.Hidden)
         {
@@ -35,7 +35,11 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         {
             return false;
         }
-
+        Map map = (Map)parms.target;
+        if (map is null)
+        {
+            return false;
+        }
         if (!desperate && (!f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) || !f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp)))
         {
             return false;

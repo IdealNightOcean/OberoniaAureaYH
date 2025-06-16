@@ -50,13 +50,13 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
             }
             else
             {
-                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionType == null || !x.defaultFactionType.isPlayer).RandomElement();
+                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionDef == null || !x.defaultFactionDef.isPlayer).RandomElement();
                 Faction result = rp.faction;
                 if (result == null && pawnKindDef.RaceProps.Humanlike)
                 {
-                    if (pawnKindDef.defaultFactionType != null)
+                    if (pawnKindDef.defaultFactionDef != null)
                     {
-                        result = FactionUtility.DefaultFactionFrom(pawnKindDef.defaultFactionType);
+                        result = FactionUtility.DefaultFactionFrom(pawnKindDef.defaultFactionDef);
                         if (result == null)
                         {
                             return;

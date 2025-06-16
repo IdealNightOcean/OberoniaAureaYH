@@ -14,24 +14,42 @@ public class AstableExplosiveBullet : Projectile_Explosive
             effecter.Trigger(new TargetInfo(position, map), new TargetInfo(position, map));
             effecter.Cleanup();
         }
-        float explosionRadius = def.projectile.explosionRadius;
-        DamageDef damageDef = def.projectile.damageDef;
-        Thing instigator = launcher;
         int damAmount = (int)Rand.Range(DamageAmount * 0.4f, DamageAmount * 1.2f);
-        float armorPenetration = ArmorPenetration;
-        SoundDef soundExplode = def.projectile.soundExplode;
-        ThingDef weapon = equipmentDef;
-        ThingDef projectile = def;
-        Thing thing = intendedTarget.Thing;
-        ThingDef postExplosionSpawnThingDef = def.projectile.postExplosionSpawnThingDef;
-        ThingDef postExplosionSpawnThingDefWater = def.projectile.postExplosionSpawnThingDefWater;
-        float postExplosionSpawnChance = def.projectile.postExplosionSpawnChance;
-        int postExplosionSpawnThingCount = def.projectile.postExplosionSpawnThingCount;
-        GasType? postExplosionGasType = def.projectile.postExplosionGasType;
-        ThingDef preExplosionSpawnThingDef = def.projectile.preExplosionSpawnThingDef;
-        float preExplosionSpawnChance = def.projectile.preExplosionSpawnChance;
-        int preExplosionSpawnThingCount = def.projectile.preExplosionSpawnThingCount;
-        GenExplosion.DoExplosion(position, map, explosionRadius, damageDef, instigator, damAmount, armorPenetration, soundExplode, weapon, projectile, thing, postExplosionSpawnThingDef, postExplosionSpawnChance, postExplosionSpawnThingCount, postExplosionGasType, def.projectile.applyDamageToExplosionCellsNeighbors, preExplosionSpawnThingDef, preExplosionSpawnChance, preExplosionSpawnThingCount, def.projectile.explosionChanceToStartFire, def.projectile.explosionDamageFalloff, origin.AngleToFlat(destination), null, null, doVisualEffects: true, def.projectile.damageDef.expolosionPropagationSpeed, 0f, doSoundEffects: true, postExplosionSpawnThingDefWater, def.projectile.screenShakeFactor);
+        float direction = origin.AngleToFlat(destination);
+
+        GenExplosion.DoExplosion(center: position,
+            map: map,
+            radius: def.projectile.explosionRadius,
+            damType: def.projectile.damageDef,
+            instigator: launcher,
+            damAmount: damAmount,
+            armorPenetration: ArmorPenetration,
+            explosionSound: def.projectile.soundExplode,
+            weapon: equipmentDef,
+            projectile: def,
+            intendedTarget: intendedTarget.Thing,
+            postExplosionSpawnThingDef: def.projectile.postExplosionSpawnThingDef,
+            postExplosionSpawnChance: def.projectile.postExplosionSpawnChance,
+            postExplosionSpawnThingCount: def.projectile.postExplosionSpawnThingCount,
+            postExplosionGasType: def.projectile.postExplosionGasType,
+            postExplosionGasRadiusOverride: null,
+            postExplosionGasAmount: 255,
+            applyDamageToExplosionCellsNeighbors: def.projectile.applyDamageToExplosionCellsNeighbors,
+            preExplosionSpawnThingDef: def.projectile.preExplosionSpawnThingDef,
+            preExplosionSpawnChance: def.projectile.preExplosionSpawnChance,
+            preExplosionSpawnThingCount: def.projectile.preExplosionSpawnThingCount,
+            chanceToStartFire: def.projectile.explosionChanceToStartFire,
+            damageFalloff: def.projectile.explosionDamageFalloff,
+            direction: direction,
+            ignoredThings: null,
+            affectedAngle: null,
+            doSoundEffects: true,
+            propagationSpeed: def.projectile.damageDef.expolosionPropagationSpeed,
+            excludeRadius: 0f,
+            postExplosionSpawnThingDefWater: def.projectile.postExplosionSpawnThingDefWater,
+            screenShakeFactor: def.projectile.screenShakeFactor
+            );
+
         Destroy();
     }
 }

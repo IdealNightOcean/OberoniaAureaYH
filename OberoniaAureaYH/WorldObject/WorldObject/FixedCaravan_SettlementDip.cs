@@ -26,7 +26,7 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
     public NegotiatingTeamLevel curNegotiatingTeamLevel = NegotiatingTeamLevel.Standard;
     public SettlementDipComp AssociateSettlementComp => associateSettlement?.GetComponent<SettlementDipComp>();
 
-    public override void Tick()
+    protected override void Tick()
     {
         base.Tick();
         ticksRemaining--;

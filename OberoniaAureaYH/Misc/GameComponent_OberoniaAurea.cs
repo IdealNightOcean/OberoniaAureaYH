@@ -36,7 +36,7 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     public bool newYearEventTriggeredOnce;
 
-    public GameComponent_OberoniaAurea(Game game) 
+    public GameComponent_OberoniaAurea(Game game)
     {
         OARatkin_MiscUtility.OAGameComp = this;
     }
@@ -92,7 +92,7 @@ public class GameComponent_OberoniaAurea : GameComponent
             assistPoints = Mathf.Max(assistPoints - points, 0);
         }
     }
-  
+
     public float AllianceDuration
     {
         get

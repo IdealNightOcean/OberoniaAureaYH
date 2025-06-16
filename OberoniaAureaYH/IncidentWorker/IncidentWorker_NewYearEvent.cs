@@ -54,7 +54,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
             return false;
         }
         IntVec3 intVec = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.Two);
-        if (intVec == null || !intVec.IsValid)
+        if (!intVec.IsValid)
         {
             return false;
         }
