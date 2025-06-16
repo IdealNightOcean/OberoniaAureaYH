@@ -12,12 +12,12 @@ public static class CompBreakdownable_Patch
     public static bool DoBreakdown_Prefix(ref CompBreakdownable __instance)
     {
         CompPowerTrader powerComp = __instance.parent.GetComp<CompPowerTrader>();
-        if (powerComp == null)
+        if (powerComp is null)
         {
             return true;
         }
         MapComponent_OberoniaAurea oaMapComp = __instance.parent.Map.GetOAMapComp();
-        if (oaMapComp == null || oaMapComp.AverageCircuitStability(powerComp.PowerNet) <= 0f)
+        if (oaMapComp is null || oaMapComp.AverageCircuitStability(powerComp.PowerNet) <= 0f)
         {
             return true;
         }

@@ -20,7 +20,7 @@ public static class NegativeInteractionChanceFactor_Patch
             return;
         }
         Ideo ideo = initiator.Ideo;
-        if (ideo == null)
+        if (ideo is null)
         {
             return;
         }

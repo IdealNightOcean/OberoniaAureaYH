@@ -16,7 +16,7 @@ public class WorkGiver_CircuitRegulator : WorkGiver_Scanner
     public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
     {
         CompCircuitRegulator compCircuitRegulator = t.TryGetComp<CompCircuitRegulator>();
-        if (compCircuitRegulator == null)
+        if (compCircuitRegulator is null)
         {
             return false;
         }

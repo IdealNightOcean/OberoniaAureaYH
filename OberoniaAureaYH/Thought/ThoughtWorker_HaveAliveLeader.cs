@@ -13,9 +13,9 @@ public class ThoughtWorker_HaveAliveLeader : ThoughtWorker
         }
         Ideo ideo = pawn.Ideo;
         Faction faction = pawn.Faction;
-        if (ideo != null && faction != null)
+        if (ideo is not null && faction is not null)
         {
-            if (faction.leader != null && !faction.leader.Dead)
+            if (faction.leader is not null && !faction.leader.Dead)
             {
                 if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
                 {

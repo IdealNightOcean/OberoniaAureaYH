@@ -16,7 +16,7 @@ public static class KindWords_RandomSelectionWeight_Patch
             return;
         }
         Ideo ideo = initiator.Ideo;
-        if (ideo == null)
+        if (ideo is null)
         {
             return;
         }

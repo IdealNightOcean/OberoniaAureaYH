@@ -28,7 +28,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         ticksRemaining--;
         if (ticksRemaining <= 0)
         {
-            if (assistWork == null)
+            if (assistWork is null)
             {
                 FinishedWork();
                 return;
@@ -119,12 +119,12 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         foreach (Pawn pawn in allPawns)
         {
             Need_Food need_Food = pawn.needs?.food;
-            if (need_Food != null)
+            if (need_Food is not null)
             {
                 need_Food.CurLevel -= 0.1f;
             }
             Need_Joy need_Joy = pawn.needs?.joy;
-            if (need_Joy != null)
+            if (need_Joy is not null)
             {
                 need_Joy.CurLevel -= 0.1f;
             }
@@ -141,12 +141,12 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
             Need_Food need_Food = pawn.needs?.food;
-            if (need_Food != null)
+            if (need_Food is not null)
             {
                 need_Food.CurLevel += 0.5f;
             }
             Need_Joy need_Joy = pawn.needs?.joy;
-            if (need_Joy != null)
+            if (need_Joy is not null)
             {
                 need_Joy.CurLevel += 0.3f;
             }
@@ -182,7 +182,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
     protected void Outcome_TradeDisputesSuccess(int capableCount)
     {
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction != null)
+        if (oaFaction is not null)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
         }

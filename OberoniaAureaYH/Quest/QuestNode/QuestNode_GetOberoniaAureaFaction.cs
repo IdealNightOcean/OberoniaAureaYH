@@ -45,7 +45,7 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
     }
     protected bool ValidFaction(Faction faction, Slate slate)
     {
-        if (faction == null)
+        if (faction is null)
         {
             return false;
         }

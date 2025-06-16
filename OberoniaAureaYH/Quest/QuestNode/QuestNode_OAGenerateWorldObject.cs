@@ -31,7 +31,7 @@ public class QuestNode_OAGenerateWorldObject : QuestNode_GenerateWorldObject
             return;
         }
         WorldObject_InteractiveBase worldObject = InitInteractiveBase(slate);
-        if (storeAs.GetValue(slate) != null)
+        if (storeAs.GetValue(slate) is not null)
         {
             slate.Set(storeAs.GetValue(slate), worldObject);
         }
@@ -40,11 +40,11 @@ public class QuestNode_OAGenerateWorldObject : QuestNode_GenerateWorldObject
     {
         WorldObject_InteractiveBase worldObject = (WorldObject_InteractiveBase)WorldObjectMaker.MakeWorldObject(def.GetValue(slate));
         worldObject.Tile = tile.GetValue(slate);
-        if (faction.GetValue(slate) != null)
+        if (faction.GetValue(slate) is not null)
         {
             worldObject.SetFaction(faction.GetValue(slate));
         }
-        if (associateWorldObject.GetValue(slate) != null)
+        if (associateWorldObject.GetValue(slate) is not null)
         {
             worldObject.AssociateWorldObject = associateWorldObject.GetValue(slate);
         }
@@ -67,7 +67,7 @@ public class QuestNode_GenerateWorldObjectWithMutiFactions : QuestNode_OAGenerat
             return;
         }
         WorldObject_WithMutiFactions worldObject = InitWorldObject(slate);
-        if (storeAs.GetValue(slate) != null)
+        if (storeAs.GetValue(slate) is not null)
         {
             slate.Set(storeAs.GetValue(slate), worldObject);
         }
@@ -76,11 +76,11 @@ public class QuestNode_GenerateWorldObjectWithMutiFactions : QuestNode_OAGenerat
     protected WorldObject_WithMutiFactions InitWorldObject(Slate slate)
     {
         WorldObject_WithMutiFactions worldObject = (WorldObject_WithMutiFactions)InitInteractiveBase(slate);
-        if (participantFactions.GetValue(slate) != null)
+        if (participantFactions.GetValue(slate) is not null)
         {
             worldObject.SetParticipantFactions(participantFactions.GetValue(slate));
         }
-        if (associateFaction.GetValue(slate) != null)
+        if (associateFaction.GetValue(slate) is not null)
         {
             worldObject.AddParticipantFaction(associateFaction.GetValue(slate));
         }

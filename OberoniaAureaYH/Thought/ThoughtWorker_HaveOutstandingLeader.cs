@@ -31,7 +31,7 @@ public class ThoughtWorker_HaveOutstandingLeader : ThoughtWorker
             return ThoughtState.Inactive;
         }
         Ideo ideo = pawn.Ideo;
-        if (ideo != null && HasOutstandingLeader(pawn.Faction))
+        if (ideo is not null && HasOutstandingLeader(pawn.Faction))
         {
             if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
             {
@@ -46,7 +46,7 @@ public class ThoughtWorker_HaveOutstandingLeader : ThoughtWorker
     }
     protected static bool HasOutstandingLeader(Faction faction)
     {
-        if (faction == null || faction.leader == null)
+        if (faction is null || faction.leader is null)
         {
             return false;
         }

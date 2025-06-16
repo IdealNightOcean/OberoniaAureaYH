@@ -23,7 +23,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     protected override bool TestRunInt(Slate slate)
     {
         Faction faction = OARatkin_MiscUtility.OAFaction;
-        if (faction == null || faction.HostileTo(Faction.OfPlayer))
+        if (faction is null || faction.HostileTo(Faction.OfPlayer))
         {
             return false;
         }
@@ -32,7 +32,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     protected override void RunInt()
     {
         Faction faction = GetOrGenerateFaction();
-        if (faction == null || faction.HostileTo(Faction.OfPlayer))
+        if (faction is null || faction.HostileTo(Faction.OfPlayer))
         {
             return;
         }
@@ -148,7 +148,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             choice.rewards.Add(new Reward_PossibleFutureReward());
         }
-        if (ModsConfig.IdeologyActive && Faction.OfPlayer.ideos.FluidIdeo != null)
+        if (ModsConfig.IdeologyActive && Faction.OfPlayer.ideos.FluidIdeo is not null)
         {
             choice.rewards.Add(new Reward_DevelopmentPoints(quest));
         }
@@ -279,7 +279,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         HediffSet hediffSet = pawn.health.hediffSet;
         return from x in hediffSet.GetNotMissingParts()
                where x.depth == BodyPartDepth.Outside || (x.depth == BodyPartDepth.Inside && x.def.IsSolid(x, hediffSet.hediffs))
-               where !pawn.health.hediffSet.hediffs.Any((Hediff y) => y.Part == x && y.CurStage != null && y.CurStage.partEfficiencyOffset < 0f)
+               where !pawn.health.hediffSet.hediffs.Any((Hediff y) => y.Part == x && y.CurStage is not null && y.CurStage.partEfficiencyOffset < 0f)
                select x;
     }
 

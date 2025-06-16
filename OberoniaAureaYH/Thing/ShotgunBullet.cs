@@ -41,7 +41,7 @@ public class ShotgunBullet : BulletBase
     protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact, int splashCount = 0)
     {
         ShotgunExtension modEx_SG = ModEx_SG;
-        if (modEx_SG == null)
+        if (modEx_SG is null)
         {
             return;
         }
@@ -57,7 +57,7 @@ public class ShotgunBullet : BulletBase
     {
         splashCount = 0;
         ShotgunExtension modEx_SG = ModEx_SG;
-        if (modEx_SG != null && modEx_SG.splash)
+        if (modEx_SG is not null && modEx_SG.splash)
         {
             IntRange splashDamageCount = GetSplashRadiusAndDamageCount(modEx_SG, firingDistance, out float splashRadius);
             if (splashRadius > 0)

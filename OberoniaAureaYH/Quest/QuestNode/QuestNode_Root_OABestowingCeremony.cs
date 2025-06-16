@@ -18,14 +18,14 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         pawn = null;
 
         slate.TryGet("bestowingFaction", out bestowingFaction);
-        if (OARatkin_MiscUtility.OAFaction == null) //金鸢尾兰派系判定
+        if (OARatkin_MiscUtility.OAFaction is null) //金鸢尾兰派系判定
         {
             return false;
         }
 
         if (slate.TryGet("titleHolder", out pawn) && pawn.Faction.IsPlayerSafe())
         {
-            if (bestowingFaction != null)
+            if (bestowingFaction is not null)
             {
                 return RoyalTitleUtility.ShouldGetBestowingCeremonyQuest(pawn, bestowingFaction);
             }
@@ -44,7 +44,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
             }
             foreach (Pawn allPawn in map.mapPawns.FreeColonistsSpawned)
             {
-                if (bestowingFaction != null)
+                if (bestowingFaction is not null)
                 {
                     return RoyalTitleUtility.ShouldGetBestowingCeremonyQuest(allPawn, bestowingFaction);
                 }

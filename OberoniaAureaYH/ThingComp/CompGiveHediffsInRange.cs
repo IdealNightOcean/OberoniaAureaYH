@@ -37,7 +37,7 @@ public class CompGiveHediffsInRange : ThingComp
     public override void CompTick()
     {
         Pawn wearer = Wearer;
-        if (wearer == null || !wearer.Spawned)
+        if (wearer is null || !wearer.Spawned)
         {
             return;
         }
@@ -47,7 +47,7 @@ public class CompGiveHediffsInRange : ThingComp
         }
         if (!Props.hideMoteWhenNotDrafted || wearer.Drafted)
         {
-            if (Props.mote != null && (mote == null || mote.Destroyed))
+            if (Props.mote is not null && (mote is null || mote.Destroyed))
             {
                 mote = MoteMaker.MakeAttachedOverlay(wearer, Props.mote, Vector3.zero);
             }
@@ -57,7 +57,7 @@ public class CompGiveHediffsInRange : ThingComp
         {
             return;
         }
-        IReadOnlyList<Pawn> readOnlyList = ((!Props.onlyPawnsInSameFaction || wearer.Faction == null) ? wearer.Map.mapPawns.AllPawnsSpawned : wearer.Map.mapPawns.SpawnedPawnsInFaction(wearer.Faction));
+        IReadOnlyList<Pawn> readOnlyList = ((!Props.onlyPawnsInSameFaction || wearer.Faction is null) ? wearer.Map.mapPawns.AllPawnsSpawned : wearer.Map.mapPawns.SpawnedPawnsInFaction(wearer.Faction));
         foreach (Pawn pawn in readOnlyList)
         {
             if (!ValidPawn(pawn, wearer))
@@ -65,19 +65,19 @@ public class CompGiveHediffsInRange : ThingComp
                 continue;
             }
             Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
-            if (hediff == null)
+            if (hediff is null)
             {
                 hediff = pawn.health.AddHediff(Props.hediff, pawn.health.hediffSet.GetBrain());
                 hediff.Severity = Props.initialSeverity;
                 HediffComp_Link hediffComp_Link = hediff.TryGetComp<HediffComp_Link>();
-                if (hediffComp_Link != null)
+                if (hediffComp_Link is not null)
                 {
                     hediffComp_Link.drawConnection = true;
                     hediffComp_Link.other = wearer;
                 }
             }
             HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
-            if (hediffComp_Disappears == null)
+            if (hediffComp_Disappears is null)
             {
                 Log.Error("HediffComp_GiveHediffsInRange has a hediff in props which does not have a HediffComp_Disappears");
             }
@@ -90,7 +90,7 @@ public class CompGiveHediffsInRange : ThingComp
 
     private bool ValidPawn(Pawn pawn, Pawn wearer)
     {
-        if (pawn.Dead || pawn.health == null)
+        if (pawn.Dead || pawn.health is null)
         {
             return false;
         }

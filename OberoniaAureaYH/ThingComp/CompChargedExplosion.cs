@@ -53,7 +53,7 @@ public class CompChargedExplosion : ThingComp
     {
         if (chargeProgress < Props.chargeTicks)
         {
-            if (powerComp == null)
+            if (powerComp is null)
             {
                 chargeProgress++;
             }
@@ -66,7 +66,7 @@ public class CompChargedExplosion : ThingComp
                 powerComp.PowerOutput = 0f - powerComp.Props.PowerConsumption;
             }
         }
-        else if (powerComp != null)
+        else if (powerComp is not null)
         {
             powerComp.PowerOutput = 0f - powerComp.Props.idlePowerDraw;
         }
@@ -132,7 +132,7 @@ public class CompChargedExplosion : ThingComp
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
-        if (parent.Faction == null || parent.Faction.IsPlayer)
+        if (parent.Faction is null || parent.Faction.IsPlayer)
         {
             Command_Action command_Action = new()
             {
@@ -142,11 +142,11 @@ public class CompChargedExplosion : ThingComp
                 action = Explosion
             };
 
-            if (powerComp != null && !powerComp.PowerOn)
+            if (powerComp is not null && !powerComp.PowerOn)
             {
                 command_Action.Disable(Props.noPowerReason);
             }
-            else if (refuelComp != null && !refuelComp.IsFull)
+            else if (refuelComp is not null && !refuelComp.IsFull)
             {
                 command_Action.Disable(Props.noFuelReason);
             }
@@ -154,7 +154,7 @@ public class CompChargedExplosion : ThingComp
             {
                 command_Action.Disable(Props.cooling);
             }
-            else if (breakdownComp != null && breakdownComp.BrokenDown)
+            else if (breakdownComp is not null && breakdownComp.BrokenDown)
             {
                 command_Action.Disable(Props.noFuelReason);
             }

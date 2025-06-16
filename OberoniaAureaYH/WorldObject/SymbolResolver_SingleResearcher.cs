@@ -14,7 +14,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
         {
             return false;
         }
-        if (rp.singlePawnToSpawn != null && rp.singlePawnToSpawn.Spawned)
+        if (rp.singlePawnToSpawn is not null && rp.singlePawnToSpawn.Spawned)
         {
             return true;
         }
@@ -27,21 +27,21 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
 
     public override void Resolve(ResolveParams rp)
     {
-        if (rp.singlePawnToSpawn != null && rp.singlePawnToSpawn.Spawned)
+        if (rp.singlePawnToSpawn is not null && rp.singlePawnToSpawn.Spawned)
         {
             return;
         }
         Map map = BaseGen.globalSettings.map;
         if (!TryFindSpawnCell(rp, out var cell))
         {
-            if (rp.singlePawnToSpawn != null)
+            if (rp.singlePawnToSpawn is not null)
             {
                 Find.WorldPawns.PassToWorld(rp.singlePawnToSpawn);
             }
             return;
         }
         Pawn pawn;
-        if (rp.singlePawnToSpawn == null)
+        if (rp.singlePawnToSpawn is null)
         {
             PawnGenerationRequest request;
             if (rp.singlePawnGenerationRequest.HasValue)
@@ -50,14 +50,14 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
             }
             else
             {
-                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionDef == null || !x.defaultFactionDef.isPlayer).RandomElement();
+                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionDef is null || !x.defaultFactionDef.isPlayer).RandomElement();
                 Faction result = rp.faction;
-                if (result == null && pawnKindDef.RaceProps.Humanlike)
+                if (result is null && pawnKindDef.RaceProps.Humanlike)
                 {
-                    if (pawnKindDef.defaultFactionDef != null)
+                    if (pawnKindDef.defaultFactionDef is not null)
                     {
                         result = FactionUtility.DefaultFactionFrom(pawnKindDef.defaultFactionDef);
-                        if (result == null)
+                        if (result is null)
                         {
                             return;
                         }
@@ -90,7 +90,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
     private static void AdjustPawnSkill(Pawn pawn)
     {
         SkillRecord intellectual = pawn.skills?.GetSkill(SkillDefOf.Intellectual);
-        if (intellectual != null && intellectual.Level < 8)
+        if (intellectual is not null && intellectual.Level < 8)
         {
             intellectual.Level = IntellectualSkill.RandomInRange;
         }
@@ -99,6 +99,6 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
     public static bool TryFindSpawnCell(ResolveParams rp, out IntVec3 cell)
     {
         Map map = BaseGen.globalSettings.map;
-        return CellFinder.TryFindRandomCellInsideWith(rp.rect, (IntVec3 x) => x.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate == null || rp.singlePawnSpawnCellExtraPredicate(x)), out cell);
+        return CellFinder.TryFindRandomCellInsideWith(rp.rect, (IntVec3 x) => x.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate is null || rp.singlePawnSpawnCellExtraPredicate(x)), out cell);
     }
 }

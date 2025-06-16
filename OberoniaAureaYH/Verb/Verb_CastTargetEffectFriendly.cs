@@ -41,7 +41,7 @@ public class Verb_CastTargetEffectFriendly : Verb_CastTargetEffect
     private static bool IsValidlPawn(LocalTargetInfo target)
     {
         Pawn pawn = target.Pawn;
-        if (pawn == null)
+        if (pawn is null)
         {
             return false;
         }

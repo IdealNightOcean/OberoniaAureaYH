@@ -67,7 +67,7 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
             return false;
         }
         HediffSet pawnHediffSet = pawn.health.hediffSet;
-        if (pawnHediffSet == null) //没有健康状态属性那肯定是健康的（确信）
+        if (pawnHediffSet is null) //没有健康状态属性那肯定是健康的（确信）
         {
             return true;
         }
@@ -103,7 +103,7 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            pawns.RemoveAll((Pawn x) => x == null);
+            pawns.RemoveAll((Pawn x) => x is null);
         }
     }
 }

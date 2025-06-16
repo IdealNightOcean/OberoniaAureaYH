@@ -38,7 +38,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         if (!parms.faction.IsOAFaction())
         {
             parms.faction = OARatkin_MiscUtility.OAFaction;
-            if (parms.faction == null)
+            if (parms.faction is null)
             {
                 return false;
             }
@@ -49,7 +49,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         }
         Map map = (Map)parms.target;
         map ??= Find.AnyPlayerHomeMap;
-        if (map == null)
+        if (map is null)
         {
             return false;
         }
@@ -59,7 +59,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
             return false;
         }
         parms.spawnCenter = intVec;
-        return map != null;
+        return map is not null;
     }
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
@@ -89,7 +89,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.OARatkin_ResearchAnalyzer));
         ThingDef garlandDef = DefDatabase<ThingDef>.GetNamed("OA_RK_New_Hat_A");
         Thing garland = ThingMaker.MakeThing(garlandDef);
-        if (garland != null)
+        if (garland is not null)
         {
             garland.TryGetComp<CompQuality>()?.SetQuality(QualityCategory.Excellent, ArtGenerationContext.Outsider);
             things.Add(garland);

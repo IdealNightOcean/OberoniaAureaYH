@@ -22,7 +22,7 @@ public class HediffComp_TeaWithSkyWarmth : HediffComp
     public override void CompPostPostAdd(DamageInfo? dinfo)
     {
         Hediff firstHediffOfDef = parent.pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
-        if (firstHediffOfDef != null)
+        if (firstHediffOfDef is not null)
         {
             firstHediffOfDef.Severity = Props.extraSeverity;
         }
@@ -30,7 +30,7 @@ public class HediffComp_TeaWithSkyWarmth : HediffComp
     public override void CompPostPostRemoved()
     {
         Hediff firstHediffOfDef = parent.pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
-        if (firstHediffOfDef != null)
+        if (firstHediffOfDef is not null)
         {
             firstHediffOfDef.Severity = 1f;
         }

@@ -50,7 +50,7 @@ public static class TradeUtility_PricePatch
             return prePrice;
         }
         FactionDef tradeFaction = TradeSession.trader.Faction?.def;
-        if (tradeFaction == null)
+        if (tradeFaction is null)
         {
             return prePrice;
         }
@@ -80,7 +80,7 @@ public static class TradeUtility_PricePatch
             return prePrice;
         }
         Faction tradeFaction = TradeSession.trader.Faction;
-        if (tradeFaction == null)
+        if (tradeFaction is null)
         {
             return prePrice;
         }

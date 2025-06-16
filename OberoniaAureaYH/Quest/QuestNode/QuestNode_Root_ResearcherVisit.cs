@@ -100,7 +100,7 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
     private static void AdjustPawnSkill(Pawn pawn)
     {
         SkillRecord intellectual = pawn.skills?.GetSkill(SkillDefOf.Intellectual);
-        if (intellectual != null && intellectual.Level < 8)
+        if (intellectual is not null && intellectual.Level < 8)
         {
             intellectual.Level = IntellectualSkill.RandomInRange;
         }
@@ -116,7 +116,7 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
                 (Reward)new Reward_PossibleFutureReward()
             }
         };
-        if (ModsConfig.IdeologyActive && Faction.OfPlayer.ideos.FluidIdeo != null)
+        if (ModsConfig.IdeologyActive && Faction.OfPlayer.ideos.FluidIdeo is not null)
         {
             choice.rewards.Add(new Reward_DevelopmentPoints(quest));
         }

@@ -14,7 +14,7 @@ public class Verb_TargetCellAid : Verb_CastBase
             return false;
         }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
+        if (oaFaction is null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;
         }

@@ -141,7 +141,7 @@ public static class DiplomaticSummitUtility
         Faction.OfPlayer.TryAffectGoodwillWith(faction, FlounderGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_Flounder);
         OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(FlounderAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Flounder".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, FlounderGoodwill, FlounderAssistPoints);
-        if (pawn != null)
+        if (pawn is not null)
         {
             pawn.skills.Learn(SkillDefOf.Intellectual, FlounderXP, direct: true);
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, FlounderXP.ToString("F0"), pawn.Named("PAWN"));
@@ -153,7 +153,7 @@ public static class DiplomaticSummitUtility
         Faction faction = settlement.Faction;
         OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(SuccessAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Success".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, SuccessAssistPoints);
-        if (pawn != null)
+        if (pawn is not null)
         {
             pawn.skills.Learn(SkillDefOf.Intellectual, SuccessXP, direct: true);
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, SuccessXP.ToString("F0"), pawn.Named("PAWN"));
@@ -172,7 +172,7 @@ public static class DiplomaticSummitUtility
         Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
         OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(TriumphAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Triumph".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, TriumphGoodwill, TriumphAssistPoints, 1500);
-        if (pawn != null)
+        if (pawn is not null)
         {
             pawn.skills.Learn(SkillDefOf.Intellectual, TriumphXP, direct: true);
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, TriumphXP.ToString("F0"), pawn.Named("PAWN"));

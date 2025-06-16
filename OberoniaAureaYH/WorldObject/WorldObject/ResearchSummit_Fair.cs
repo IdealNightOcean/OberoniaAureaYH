@@ -22,7 +22,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;

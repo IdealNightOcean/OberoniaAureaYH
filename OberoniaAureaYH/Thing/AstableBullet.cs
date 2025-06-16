@@ -9,7 +9,7 @@ public class AstableBullet : BulletBase
     protected override void ImpactPawn(Pawn hitPawn, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
     {
         StaggerHandler staggerHandler = hitPawn?.stances?.stagger;
-        if (staggerHandler != null)
+        if (staggerHandler is not null)
         {
             if (hitPawn.BodySize <= def.projectile.stoppingPower + 0.001f)
             {

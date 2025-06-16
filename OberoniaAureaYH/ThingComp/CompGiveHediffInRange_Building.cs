@@ -36,7 +36,7 @@ public class CompGiveHediffInRange_Building : ThingComp
         {
             return;
         }
-        if (powerTrader != null && !powerTrader.PowerOn)
+        if (powerTrader is not null && !powerTrader.PowerOn)
         {
             return;
         }
@@ -45,19 +45,19 @@ public class CompGiveHediffInRange_Building : ThingComp
         foreach (Pawn pawn in parent.Map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer).Where(PawnValidator))
         {
             Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(giveHediff);
-            if (hediff == null)
+            if (hediff is null)
             {
                 hediff = pawn.health.AddHediff(giveHediff);
                 hediff.Severity = 1f;
                 HediffComp_Link hediffComp_Link = hediff.TryGetComp<HediffComp_Link>();
-                if (hediffComp_Link != null)
+                if (hediffComp_Link is not null)
                 {
                     hediffComp_Link.drawConnection = false;
                     hediffComp_Link.other = parent;
                 }
             }
             HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
-            if (hediffComp_Disappears == null)
+            if (hediffComp_Disappears is null)
             {
                 Log.Error("TCP_HediffAoE has a hediff in props which does not have a HediffComp_Disappears");
             }
@@ -73,7 +73,7 @@ public class CompGiveHediffInRange_Building : ThingComp
     }
     public override void PostDraw()
     {
-        if (Find.Selector.SingleSelectedThing != parent || parent.Faction == null)
+        if (Find.Selector.SingleSelectedThing != parent || parent.Faction is null)
         {
             return;
         }

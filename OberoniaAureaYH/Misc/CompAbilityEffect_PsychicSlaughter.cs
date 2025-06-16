@@ -9,7 +9,7 @@ public class CompAbilityEffect_PsychicSlaughter : RimWorld.CompAbilityEffect_Psy
     public override void PostApplied(List<LocalTargetInfo> targets, Map map)
     {
         base.PostApplied(targets, map);
-        if (OARatkin_MiscUtility.OAFaction == null)
+        if (OARatkin_MiscUtility.OAFaction is null)
         {
             return;
         }
