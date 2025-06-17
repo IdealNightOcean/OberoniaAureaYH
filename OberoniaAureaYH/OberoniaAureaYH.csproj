@@ -45,7 +45,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>..\..\OberoniaAurea_Frame\Release\1.5\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>..\..\OberoniaAurea_Frame\Release\1.5\old\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -190,6 +190,7 @@
     <Analyzer Include="..\..\..\RimWorldReference\1.5\UnityEngine.CoreModule.dll" />
     <Analyzer Include="..\..\..\RimWorldReference\1.5\UnityEngine.IMGUIModule.dll" />
     <Analyzer Include="..\..\..\RimWorldReference\1.5\UnityEngine.TextRenderingModule.dll" />
+    <Analyzer Include="..\..\OberoniaAurea_Frame\Release\1.5\old\OberoniaAurea_Frame.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
