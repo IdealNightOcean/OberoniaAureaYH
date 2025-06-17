@@ -118,7 +118,7 @@ public class CompCircuitRegulator : CompPowerTransmitter
                 deSpawnMapComp.circuitRegulators.Remove(this);
             }
         }
-        base.PostDeSpawn(map);
+        base.PostDeSpawn(map, mode);
         Reset();
     }
 

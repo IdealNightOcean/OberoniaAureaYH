@@ -34,9 +34,11 @@
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\RimWorldReference\0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\RimWorldReference\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,12 +50,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\RimWorldReference\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\RimWorldReference\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\..\..\RimWorldReference\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
