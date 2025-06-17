@@ -11,6 +11,7 @@ public static class OARatkin_MiscDefOf
 
     public static GameConditionDef OA_MilitaryDeployment; //军事部署
 
+    [MayRequireBiotech]
     public static GeneDef RK_OA_gene_Social; //
 
     public static IncidentDef OA_RK_LargeScaleTraderArrival;
@@ -33,8 +34,11 @@ public static class OARatkin_MiscDefOf
 [DefOf]
 public static class OARatkin_PawnInfoDefOf
 {
+    [MayRequireBiotech]
     public static HediffDef OA_RK_Hediff_ColdAdaptation;
+    [MayRequireBiotech]
     public static HediffDef OA_RK_Hediff_HotAdaptation;
+
     public static HediffDef OA_RK_SeriousInjury;
 
     [MayRequireIdeology]
