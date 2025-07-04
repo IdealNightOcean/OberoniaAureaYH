@@ -9,22 +9,28 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class Gizmo_CircuitRegulator : Gizmo_Slider
 {
-    private readonly ThingWithComps thing;
-
     private static readonly Texture2D IconTex = ContentFinder<Texture2D>.Get("UI/Icons/SuppressionToggle");
+    private static bool draggingBar;
 
+    private readonly ThingWithComps thing;
     private readonly CompCircuitRegulator comp;
 
     protected override string Title => "OA_CircuitRegulatorGizmo".Translate();
-
     protected override float ValuePercent => comp.CurCircuitStability;
-
     protected override bool IsDraggable => true;
-
+    protected override bool DraggingBar
+    {
+        get
+        {
+            return draggingBar;
+        }
+        set
+        {
+            draggingBar = value;
+        }
+    }
     protected override FloatRange DragRange => new(0f, 1f);
-
     protected override string HighlightTag => "OA_CircuitRegulatorGizmo";
-
     protected override float Target
     {
         get
