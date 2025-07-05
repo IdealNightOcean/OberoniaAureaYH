@@ -6,8 +6,8 @@ public class AstableExplosiveBullet : Projectile_Explosive
 {
     protected override void Explode()
     {
-        Map map = base.Map;
-        IntVec3 position = base.Position;
+        Map map = Map;
+        IntVec3 position = Position;
         if (def.projectile.explosionEffect is not null)
         {
             Effecter effecter = def.projectile.explosionEffect.Spawn();

@@ -18,7 +18,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
 
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
-        if (base.Faction is null || ParticipantFaction is null)
+        if (Faction is null || ParticipantFaction is null)
         {
             QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
             Destroy();
@@ -50,7 +50,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
     {
         FactionRelationKind playerRelationKind = ParticipantFaction.PlayerRelationKind;
         Faction.OfPlayer.TryAffectGoodwillWith(ParticipantFaction, 60, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticOffices_Success".Translate(), GetLetterText("OA_LetterDiplomaticOffices_Success".Translate(base.Faction.NameColored, ParticipantFaction.NameColored, 60), caravan, playerRelationKind), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticOffices_Success".Translate(), GetLetterText("OA_LetterDiplomaticOffices_Success".Translate(Faction.NameColored, ParticipantFaction.NameColored, 60), caravan, playerRelationKind), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private void Outcome_Triumph(Caravan caravan) //大成功谈判的结果
@@ -62,13 +62,13 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
         parms.techLevel = ParticipantFaction.def.techLevel;
         parms.maxTotalMass = 20f;
         parms.totalMarketValueRange = new FloatRange(500f, 1200f);
-        parms.tile = base.Tile;
+        parms.tile = Tile;
         List<Thing> list = ThingSetMakerDefOf.Reward_ItemsStandard.root.Generate(parms);
         for (int i = 0; i < list.Count; i++)
         {
             caravan.AddPawnOrItem(list[i], addCarriedPawnToWorldPawnsIfAny: true);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticOffices_Triumph".Translate(), GetLetterText("OA_LetterDiplomaticOffices_Triumph".Translate(base.Faction.NameColored, ParticipantFaction.NameColored, 100, GenLabel.ThingsLabel(list)), caravan, playerRelationKind), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticOffices_Triumph".Translate(), GetLetterText("OA_LetterDiplomaticOffices_Triumph".Translate(Faction.NameColored, ParticipantFaction.NameColored, 100, GenLabel.ThingsLabel(list)), caravan, playerRelationKind), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private string GetLetterText(string baseText, Caravan caravan, FactionRelationKind previousRelationKind)

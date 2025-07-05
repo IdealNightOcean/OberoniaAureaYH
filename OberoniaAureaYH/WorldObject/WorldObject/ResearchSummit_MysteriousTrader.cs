@@ -90,7 +90,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         int remaining = NeedSilver;
         List<Thing> list = CaravanInventoryUtility.TakeThings(caravan, delegate (Thing thing)
         {
-            if (thing.def != RimWorld.ThingDefOf.Silver)
+            if (thing.def != ThingDefOf.Silver)
             {
                 return 0;
             }

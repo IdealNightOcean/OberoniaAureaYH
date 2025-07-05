@@ -8,7 +8,7 @@ public class EMP_Summoner : Apparel
 {
     public override void Notify_BulletImpactNearby(BulletImpactData impactData)
     {
-        Pawn wearer = base.Wearer;
+        Pawn wearer = Wearer;
         if (wearer is null || wearer.Dead || !wearer.Spawned || wearer.IsColonist)
         {
             return;

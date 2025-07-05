@@ -25,12 +25,12 @@ public class ShotgunBullet : BulletBase
 
     protected override void ImpactCell(IntVec3 hitCell, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
     {
-        TryTakeSplashDamage(hitCell, base.Map, out splashCount);
+        TryTakeSplashDamage(hitCell, Map, out splashCount);
     }
 
     protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
     {
-        DamageDef damageDef = base.DamageDef;
+        DamageDef damageDef = DamageDef;
         float amount = DamageAmount;
         float armorPenetration = ArmorPenetration;
         DamageInfo dinfo = new(damageDef, amount, armorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);

@@ -38,7 +38,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         float researchSpeed = pawn.GetStatValue(StatDefOf.ResearchSpeed);
         MainOutcome(researchSpeed, caravan);
         EatChanwu(caravan);
-        AffectFactionGoodwill(base.Faction, participantFactions);
+        AffectFactionGoodwill(Faction, participantFactions);
         GetPossibleOutcomesI(researchSpeed, caravan);
         GetPossibleOutcomesII();
         GetPossibleOutcomesIII();
@@ -126,11 +126,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            Bonus(caravan, base.Faction);
+            Bonus(caravan, Faction);
         }, 20f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherGift(caravan, associateWorldObject, base.Faction);
+            ResearcherGift(caravan, associateWorldObject, Faction);
         }, 30f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
@@ -333,32 +333,32 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private void Outcome_Disaster(Caravan caravan) //大失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(1, 200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(base.Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Backfire(Caravan caravan) //失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(2, 300);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(base.Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Flounder(Caravan caravan) //小失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(3, 500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(base.Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Normal(Caravan caravan) //中立事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(4, 800);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(base.Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
     private void Outcome_Success(Caravan caravan) //成功谈判的结果
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(5, 1200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(base.Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
     private void Outcome_Triumph(Caravan caravan) //大成功谈判的结果
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(6, 1500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(base.Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private static void AffectFactionGoodwill(Faction oaFaction, List<Faction> factions)
@@ -401,7 +401,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         sb.AppendLine();
         sb.AppendLine();
-        sb.AppendInNewLine("OA_GoodWillChange".Translate(base.Faction.NameColored, 15));
+        sb.AppendInNewLine("OA_GoodWillChange".Translate(Faction.NameColored, 15));
         if (participantFactions is not null)
         {
             foreach (Faction f in participantFactions)

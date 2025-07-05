@@ -156,7 +156,7 @@ public static class FactionDialogFor_Patch
         }
         void DoSponsorOberoniaAurea(int silverCount, int gainAP, int gainFavor)
         {
-            TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, silverCount, map, null);
+            TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, silverCount, map, null);
             oaGameComp.GetAssistPoints(gainAP);
             negotiator.royalty?.GainFavor(faction, gainFavor);
         }
@@ -242,7 +242,7 @@ public static class FactionDialogFor_Patch
     }
     private static void GetTechPrint(Map map, Faction faction, ThingDef tDef, int price)
     {
-        TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, price, map, null);
+        TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, price, map, null);
         Thing dropThing = ThingMaker.MakeThing(tDef);
         IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.One);
         DropPodUtility.DropThingsNear(dropCell, map, [dropThing], forbid: false, allowFogged: false, faction: faction);
