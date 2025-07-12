@@ -75,7 +75,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, -40, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksDisaster);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Disaster".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Disaster".Translate(Faction.NameColored, -40, -50), caravan, -40, -50, this.participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Disaster".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Disaster".Translate(Faction.NameColored, -40, -50), caravan, -40, -50, participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
     }
 
     private void Outcome_Backfire(Caravan caravan) //失败事件
@@ -85,7 +85,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, -20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksBackfire);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Backfire".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Backfire".Translate(Faction.NameColored, -20), caravan, -20, -20, this.participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Backfire".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Backfire".Translate(Faction.NameColored, -20), caravan, -20, -20, participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
     }
 
     private void Outcome_TalksFlounder(Caravan caravan) //中立事件
@@ -97,7 +97,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private void Outcome_Success(Caravan caravan) //成功事件
     {
         Faction.OfPlayer.TryAffectGoodwillWith(Faction, 30, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
-        List<Faction> targetFactions = this.participantFactions.Take(3).ToList();
+        List<Faction> targetFactions = participantFactions.Take(3).ToList();
         foreach (Faction faction in targetFactions)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, 20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
@@ -125,7 +125,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
             caravan.AddPawnOrItem(list[i], addCarriedPawnToWorldPawnsIfAny: true);
         }
         GC_OA?.GetAssistPoints(TriumphAssistPoints);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, this.participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private int TryGainRoyalFavor(Caravan caravan) //获取帝国贡献

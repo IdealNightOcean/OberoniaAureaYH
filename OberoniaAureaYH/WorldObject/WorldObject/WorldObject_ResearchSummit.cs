@@ -51,7 +51,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         GetPossibleOutcomesII();
         GetPossibleOutcomesIII();
         pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
-        Fair(this.Tile);
+        Fair(Tile);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
@@ -138,11 +138,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }, 20f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherGift(caravan, associateWorldObject, Faction);
+            ResearcherGift(caravan, associateSettlement, Faction);
         }, 30f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherSite(this.Tile);
+            ResearcherSite(Tile);
         }, 20f));
         if (researchSpeed > NormalNeedSpeed)
         {
@@ -170,11 +170,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         tmpPossibleOutcomesII.Clear();
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            MysteriousTrader(this.Tile);
+            MysteriousTrader(Tile);
         }, 35f));
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            AssistWork(this.Tile);
+            AssistWork(Tile);
         }, 35f));
         tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
     }
@@ -184,11 +184,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate { }, 45f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            AcademicDispute(this.Tile);
+            AcademicDispute(Tile);
         }, 35f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            EccentricScholar(this.Tile);
+            EccentricScholar(Tile);
         }, 25f));
         tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
     }

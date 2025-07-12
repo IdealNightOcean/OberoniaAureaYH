@@ -54,7 +54,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         {
             return false;
         }
-        Settlement settlement = (Settlement)researchSummit.AssociateWorldObject;
+        Settlement settlement = researchSummit.AssociateSettlement;
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
         if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
         {

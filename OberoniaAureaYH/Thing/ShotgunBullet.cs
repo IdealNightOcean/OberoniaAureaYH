@@ -42,7 +42,7 @@ public class ShotgunBullet : BulletBase
         {
             damageCount = Mathf.Max(GetDamageCount(ModEx_SG, firingDistance) - splashCount, 1);
         }
-       
+
         for (int i = 0; i < damageCount; i++)
         {
             hitThing.TakeDamage(dinfo).AssociateWithLog(sharedBattleLogEntry);
@@ -64,7 +64,7 @@ public class ShotgunBullet : BulletBase
                 {
                     int preSplashCount;
                     bool flag = launcher is not Pawn pawn || !pawn.Drafted;
-                    DamageInfo dinfo = new(def.projectile.damageDef, (float)DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, (BodyPartRecord)null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, flag, true);
+                    DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, flag, true);
                     foreach (Pawn p in splashPawns)
                     {
                         preSplashCount = splashDamageCount.RandomInRange;
@@ -101,7 +101,7 @@ public class ShotgunBullet : BulletBase
             }
         }
         splashRadius = 0;
-        return IntRange.Zero;
+        return IntRange.zero;
 
     }
     protected static void GetPawnsInRadius(IntVec3 ctrPosition, Map map, float radius, List<Pawn> targetPawns) //获取以ctrPosition为圆心半径radius内的pawn

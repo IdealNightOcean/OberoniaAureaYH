@@ -40,7 +40,7 @@ public class Gizmo_CircuitRegulator : Gizmo_Slider
     public Gizmo_CircuitRegulator(ThingWithComps thing)
     {
         this.thing = thing;
-        this.comp = thing.GetComp<CompCircuitRegulator>();
+        comp = thing.GetComp<CompCircuitRegulator>();
     }
 
     protected override string GetTooltip()

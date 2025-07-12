@@ -97,7 +97,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     {
         List<Thing> list = wares.Where((Thing x) => x is not Pawn).ToList();
         int i = 0;
-        int num = Mathf.CeilToInt((float)list.Count / 8f);
+        int num = Mathf.CeilToInt(list.Count / 8f);
         PawnKindDef kind = groupMaker.carriers.Where((PawnGenOption x) => parms.tile == -1 || Find.WorldGrid[parms.tile].biome.IsPackAnimalAllowed(x.kind.race)).RandomElementByWeight((PawnGenOption x) => x.selectionWeight).kind;
         List<Pawn> list2 = [];
         for (int j = 0; j < num; j++)

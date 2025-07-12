@@ -166,7 +166,7 @@ public class CompChargedExplosion : ThingComp
             GenDraw.FillableBarRequest r = default;
             r.center = parent.TrueCenter() + Vector3.up;
             r.size = BarSize;
-            r.fillPercent = (float)chargeProgress / (float)Props.chargeTicks;
+            r.fillPercent = chargeProgress / (float)Props.chargeTicks;
             r.filledMat = filledMat;
             r.unfilledMat = emptyMat;
             r.margin = 0.15f;

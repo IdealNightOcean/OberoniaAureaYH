@@ -26,17 +26,18 @@ public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProper
 [StaticConstructorOnStartup]
 public class SettlementDipComp : WorldObjectComp
 {
-    protected static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
+    private static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
 
-    protected int diplomacyCoolingDays = 30;
+    private int diplomacyCoolingDays = 30;
 
-    protected Settlement Settlement => parent as Settlement;
+    private Settlement Settlement => parent as Settlement;
 
-    protected bool workStart;
-    protected int ticksRemaining = -1;
+    private DiplomaticSummitHandler diplomaticSummitHandler;
+    private bool IsWorking => diplomaticSummitHandler?.IsWorking ?? false;
+    public DiplomaticSummitHandler DiplomaticSummitHandler => diplomaticSummitHandler;
 
-    protected int lastDiplomacyTick = -1;
-    protected int RemainingDiplomacyCoolingTicks
+    private int lastDiplomacyTick = -1;
+    private int RemainingCoolingTicks
     {
         get
         {
@@ -48,23 +49,15 @@ public class SettlementDipComp : WorldObjectComp
         }
     }
 
-    protected static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
+    private static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
     {
-        if (worldObject is null)
-        {
-            return false;
-        }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction is null || worldObject.Faction != oaFaction)
-        {
-            return false;
-        }
-        return true;
+        return oaFaction is not null && worldObject.Faction == oaFaction;
     }
 
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
-        if (workStart || !DiplomacyValid(parent))
+        if (IsWorking || !DiplomacyValid(parent))
         {
             yield break;
         }
@@ -140,65 +133,30 @@ public class SettlementDipComp : WorldObjectComp
     }
     private void DeepExchange(Caravan caravan, Pawn pawn) //触发深入交流
     {
-        DeepExchangeUtility.ApplyEffect(caravan, this.Settlement, pawn);
+        DeepExchangeUtility.ApplyEffect(caravan, Settlement, pawn);
         diplomacyCoolingDays = 30;
         lastDiplomacyTick = Find.TickManager.TicksGame;
     }
+
     protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
         if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
-        Settlement settlement = this.Settlement;
-        Find.WindowStack.Add
-        (
-            Dialog_MessageBox.CreateConfirmation
-            (
-                "OA_ConfirmDiplomaticSummit".Translate(settlement.Named("SETTLEMENT")),
-                delegate
-                {
-                    ConfirmDiplomaticSummit(caravan, pawn);
-                },
-                destructive: false
-            )
-        );
 
-        void ConfirmDiplomaticSummit(Caravan caravan, Pawn pawn)
-        {
-            Settlement settlement = this.Settlement;
-            NegotiatingTeamLevel negotiatingTeamLevel = DiplomaticSummitUtility.NegotiatingTeamLevelWeight.RandomElementByWeight((KeyValuePair<NegotiatingTeamLevel, float> x) => x.Value).Key;
-            TaggedString text = "OA_ConfirmDiplomaticSummitInfo".Translate(settlement.Named("SETTLEMENT"));
-            text += "\n\n";
-            text += ("OA_DiplomaticSummitNegotiatingTeamLevel" + negotiatingTeamLevel.ToString()).Translate();
-            Find.WindowStack.Add
-            (
-                new Dialog_MessageBox(text, "Confirm".Translate(), delegate
-                {
-                    InitDiplomaticSummit(negotiatingTeamLevel);
-                },
-                    buttonADestructive: false
-                )
-            );
-        }
-
-        void InitDiplomaticSummit(NegotiatingTeamLevel teamLevel)
-        {
-            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
-            fixedCaravan.negotiant = pawn;
-            fixedCaravan.associateSettlement = settlement;
-            fixedCaravan.curNegotiatingTeamLevel = teamLevel;
-            Find.WorldObjects.Add(fixedCaravan);
-            Find.WorldSelector.Select(fixedCaravan);
-            workStart = true;
-        }
-
+        diplomaticSummitHandler = new(Settlement);
+        diplomaticSummitHandler.InitSummit(caravan, pawn);
     }
-    public void DiplomaticSummitEnd()
+
+    public void Notify_DiplomaticSummitEnd(bool cancel)
     {
-        lastDiplomacyTick = Find.TickManager.TicksGame;
-        diplomacyCoolingDays = 30;
-        workStart = false;
+        if (!cancel)
+        {
+            lastDiplomacyTick = Find.TickManager.TicksGame;
+            diplomacyCoolingDays = 30;
+        }
+        diplomaticSummitHandler = null;
     }
     public AcceptanceReport CanVisitNow()
     {
@@ -206,7 +164,7 @@ public class SettlementDipComp : WorldObjectComp
         {
             return "MustBeAlly".Translate();
         }
-        int remainingDiplomacyCoolingTicks = RemainingDiplomacyCoolingTicks;
+        int remainingDiplomacyCoolingTicks = RemainingCoolingTicks;
         if (remainingDiplomacyCoolingTicks > 0)
         {
             return "WaitTime".Translate(remainingDiplomacyCoolingTicks.ToStringTicksToPeriod());
@@ -235,9 +193,16 @@ public class SettlementDipComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref workStart, "workStart", defaultValue: false);
         Scribe_Values.Look(ref lastDiplomacyTick, "lastDiplomacyTick", -1);
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", -1);
+        Scribe_Deep.Look(ref diplomaticSummitHandler, "diplomaticSummitHandler", ctorArgs: Settlement);
+        if (Scribe.mode == LoadSaveMode.PostLoadInit)
+        {
+            if (diplomaticSummitHandler is not null && !diplomaticSummitHandler.IsWorking)
+            {
+                diplomaticSummitHandler.CancelSummit();
+                Notify_DiplomaticSummitEnd(cancel: true);
+            }
+        }
     }
 
 }

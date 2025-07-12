@@ -4,27 +4,27 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public class QuestPart_AllPawnHealthy : QuestPartActivable
+public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
 {
-    public int checkInterval = 2500;
-
-    public string outSignalSuccess;
-    public string outSignalFailed;
+    private const int HealthCheckInterval = 30000;
+    public string outSignal;
 
     public List<Pawn> pawns = [];
-
-    public bool anyUnhealthyCauseFailure;
-    public bool allHealthyCauseSuccess;
+    public Map map;
 
     private int ticksRemaining = 2500;
 
-    public virtual bool AllPawnHealthy
+    public bool CanLeaveNow
     {
         get
         {
             if (pawns.NullOrEmpty())
             {
                 return true;
+            }
+            if (map.weatherManager.curWeather?.favorability == Favorability.VeryBad)
+            {
+                return false;
             }
             foreach (Pawn p in pawns)
             {
@@ -44,19 +44,11 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
         ticksRemaining--;
         if (ticksRemaining <= 0)
         {
-            ticksRemaining = checkInterval;
-            if (AllPawnHealthy)
-            {
-                if (allHealthyCauseSuccess)
-                {
-                    Complete();
-                    Find.SignalManager.SendSignal(new Signal(outSignalSuccess));
-                }
-            }
-            else if (anyUnhealthyCauseFailure)
+            ticksRemaining = HealthCheckInterval;
+            if (CanLeaveNow)
             {
                 Complete();
-                Find.SignalManager.SendSignal(new Signal(outSignalFailed));
+                Find.SignalManager.SendSignal(new Signal(outSignal));
             }
         }
     }
@@ -93,17 +85,14 @@ public class QuestPart_AllPawnHealthy : QuestPartActivable
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref outSignalSuccess, "outSignalSuccess");
-        Scribe_Values.Look(ref outSignalFailed, "outSignalFailed");
-        Scribe_Values.Look(ref anyUnhealthyCauseFailure, "anyUnhealthyCauseFailure", defaultValue: false);
-        Scribe_Values.Look(ref allHealthyCauseSuccess, "allHealthyCauseSuccess", defaultValue: false);
-        Scribe_Values.Look(ref checkInterval, "checkInterval", 2500);
+
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 2500);
+        Scribe_References.Look(ref map, "map");
         Scribe_Collections.Look(ref pawns, "pawns", LookMode.Reference);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            pawns.RemoveAll((Pawn x) => x is null);
+            pawns.RemoveAll(p => p is null);
         }
     }
 }

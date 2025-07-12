@@ -124,12 +124,11 @@
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
-    <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitEccentricScholar.cs" />
+    <Compile Include="WorldObject\DiplomaticSummitHandler.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_EccentricScholar.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_SettlementDip.cs" />
-    <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitAssistWork.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_AssistWork.cs" />
     <Compile Include="WorldObject\WorldObject\ResearcherCampComp.cs" />
     <Compile Include="HarmonyPatch\FactionDialogMaker_Patch.cs" />

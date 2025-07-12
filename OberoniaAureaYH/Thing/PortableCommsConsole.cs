@@ -16,12 +16,12 @@ public class PortableCommsConsole : Apparel
         Command_Action command_Use = new()
         {
             defaultLabel = "OA_PortableCommsConsoleLable".Translate(),
-            defaultDesc = "OA_PortableCommsConsoleDesc".Translate(this.Label),
+            defaultDesc = "OA_PortableCommsConsoleDesc".Translate(Label),
             action = delegate
             {
                 GizmoFloat_CommsConsoleList(Wearer, oaFaction);
             },
-            icon = this.def.uiIcon,
+            icon = def.uiIcon,
             activateSound = SoundDefOf.Tick_Tiny
         };
         if (oaFaction is null)

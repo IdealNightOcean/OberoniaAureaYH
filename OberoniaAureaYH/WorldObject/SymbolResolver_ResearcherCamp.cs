@@ -1,7 +1,6 @@
 ﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.BaseGen;
-using System;
 using Verse;
 using Verse.AI.Group;
 
@@ -29,7 +28,7 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         resolveParams1.rect = rp.rect;
         resolveParams1.faction = faction;
         resolveParams1.singlePawnGenerationRequest = pawnRequest;
-        resolveParams1.singlePawnSpawnCellExtraPredicate = rp.singlePawnSpawnCellExtraPredicate ?? ((Predicate<IntVec3>)((IntVec3 x) => map.reachability.CanReachMapEdge(x, traverseParms)));
+        resolveParams1.singlePawnSpawnCellExtraPredicate = rp.singlePawnSpawnCellExtraPredicate ?? ((IntVec3 x) => map.reachability.CanReachMapEdge(x, traverseParms));
 
         ResolveParams resolveParams2 = new()
         {
