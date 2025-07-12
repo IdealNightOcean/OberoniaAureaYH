@@ -23,22 +23,22 @@ public class ShotgunBullet : BulletBase
         splashCount = 0;
     }
 
-    protected override void ImpactCell(IntVec3 hitCell, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
+    protected override void ImpactCell(IntVec3 hitCell)
     {
         TryTakeSplashDamage(hitCell, Map, out splashCount);
     }
 
-    protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
+    protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
     {
         DamageDef damageDef = DamageDef;
         float amount = DamageAmount;
         float armorPenetration = ArmorPenetration;
         DamageInfo dinfo = new(damageDef, amount, armorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
         dinfo.SetWeaponQuality(equipmentQuality);
-        HitThingTakeDamage(hitThing, dinfo, battleLogEntry_RangedImpact, splashCount);
+        HitThingTakeDamage(hitThing, dinfo, splashCount);
     }
 
-    protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact, int splashCount = 0)
+    protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, int splashCount = 0)
     {
         ShotgunExtension modEx_SG = ModEx_SG;
         if (modEx_SG is null)
@@ -49,7 +49,7 @@ public class ShotgunBullet : BulletBase
         damageCount = Mathf.Max(damageCount - splashCount, 1);
         for (int i = 0; i < damageCount; i++)
         {
-            hitThing.TakeDamage(dinfo).AssociateWithLog(battleLogEntry_RangedImpact);
+            hitThing.TakeDamage(dinfo).AssociateWithLog(sharedBattleLogEntry);
         }
     }
 

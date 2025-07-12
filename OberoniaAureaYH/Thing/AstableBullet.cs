@@ -6,7 +6,7 @@ namespace OberoniaAurea;
 
 public class AstableBullet : BulletBase
 {
-    protected override void ImpactPawn(Pawn hitPawn, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact)
+    protected override void ImpactPawn(Pawn hitPawn)
     {
         StaggerHandler staggerHandler = hitPawn?.stances?.stagger;
         if (staggerHandler is not null)

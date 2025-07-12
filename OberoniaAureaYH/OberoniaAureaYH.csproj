@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Mods\[OA]Ratkin Faction Oberonia Aurea\1.6\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -86,6 +86,7 @@
     <Compile Include="Misc\RaidStrategyWorker_OAImmediateAttack.cs" />
     <Compile Include="Misc\PlaceWorker_GiveHediffInRange_Building.cs" />
     <Compile Include="Misc\RoyalTitlePermitWorker_OACallAid.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_SetResearchSummitAssociatedSettlement.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_OABestowingCeremony.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OABestowingCeremony.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony.cs" />
@@ -168,11 +169,10 @@
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_OAGenerateWorldObject.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_WoundedTraveler.cs" />
-    <Compile Include="Quest\QuestPart\QuestPart_AllPawnHealthy.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_WoundedTravelerCanLeaveNow.cs" />
     <Compile Include="Thought\ThoughtWorker_Precept_Snow.cs" />
     <Compile Include="Thing\BarrageEnhancedBullet.cs" />
     <Compile Include="ThingComp\CompBarrageEnhancedFirepower.cs" />

@@ -27,6 +27,14 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesII = [];
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesIII = [];
 
+    private Settlement associateSettlement;
+    public Settlement AssociateSettlement => associateSettlement;
+
+    public void SetAssociateSettlement(Settlement settlement)
+    {
+        associateSettlement = settlement;
+    }
+
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
         Pawn pawn = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed);
@@ -130,7 +138,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }, 20f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherGift(caravan, associateWorldObject, Faction);
+            ResearcherGift(caravan, associateSettlement, Faction);
         }, 30f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
@@ -431,6 +439,12 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         sb.AppendInNewLine("Success: " + 3.0f.ToStringPercent());
         sb.AppendInNewLine("Triumph: " + 4.0f.ToStringPercent());
         Log.Message(sb.ToString());
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_References.Look(ref associateSettlement, "associateSettlement");
     }
 
 }

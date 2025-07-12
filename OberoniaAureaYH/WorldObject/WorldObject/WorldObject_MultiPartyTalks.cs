@@ -24,7 +24,6 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private const int SuccessAssistPoints = 10;
     private const int TriumphAssistPoints = 25;
 
-
     private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
     private static GameComponent_OberoniaAurea GC_OA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
 
