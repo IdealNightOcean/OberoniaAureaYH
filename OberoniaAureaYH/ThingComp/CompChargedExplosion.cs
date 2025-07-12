@@ -76,8 +76,54 @@ public class CompChargedExplosion : ThingComp
     {
         chargeProgress = 0;
         refuelComp?.ConsumeFuel(refuelComp.Fuel);
-        GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.explosiveDamageType, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, [parent]);
-        GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.requiredDamageTypeToExplode, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, [parent]);
+
+        GenExplosion.DoExplosion(center: parent.Position,
+            map: parent.Map,
+            radius: Props.explosiveRadius,
+            damType: Props.explosiveDamageType,
+            instigator: parent,
+            damAmount: Props.damageAmountBase,
+            armorPenetration: Props.armorPenetrationBase,
+            explosionSound: Props.explosionSound,
+            weapon: parent.def,
+            projectile: null,
+            intendedTarget: null,
+            postExplosionSpawnThingDef: Props.postExplosionSpawnThingDef,
+            postExplosionSpawnChance: Props.postExplosionSpawnChance,
+            postExplosionSpawnThingCount: Props.postExplosionSpawnThingCount,
+            postExplosionGasType: Props.postExplosionGasType,
+            applyDamageToExplosionCellsNeighbors: Props.applyDamageToExplosionCellsNeighbors,
+            preExplosionSpawnThingDef: Props.preExplosionSpawnThingDef,
+            preExplosionSpawnChance: Props.preExplosionSpawnChance,
+            preExplosionSpawnThingCount: Props.preExplosionSpawnThingCount,
+            chanceToStartFire: Props.chanceToStartFire,
+            damageFalloff: Props.damageFalloff,
+            direction: null,
+            ignoredThings: [parent]);
+
+        GenExplosion.DoExplosion(center: parent.Position,
+            map: parent.Map,
+            radius: Props.explosiveRadius,
+            damType: Props.requiredDamageTypeToExplode,
+            instigator: parent,
+            damAmount: Props.damageAmountBase,
+            armorPenetration: Props.armorPenetrationBase,
+            explosionSound: Props.explosionSound,
+            weapon: parent.def,
+            projectile: null,
+            intendedTarget: null,
+            postExplosionSpawnThingDef: Props.postExplosionSpawnThingDef,
+            postExplosionSpawnChance: Props.postExplosionSpawnChance,
+            postExplosionSpawnThingCount: Props.postExplosionSpawnThingCount,
+            postExplosionGasType: Props.postExplosionGasType,
+            applyDamageToExplosionCellsNeighbors: Props.applyDamageToExplosionCellsNeighbors,
+            preExplosionSpawnThingDef: Props.preExplosionSpawnThingDef,
+            preExplosionSpawnChance: Props.preExplosionSpawnChance,
+            preExplosionSpawnThingCount: Props.preExplosionSpawnThingCount,
+            chanceToStartFire: Props.chanceToStartFire,
+            damageFalloff: Props.damageFalloff,
+            direction: null,
+            ignoredThings: [parent]);
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()

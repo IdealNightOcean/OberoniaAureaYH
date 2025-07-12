@@ -156,7 +156,7 @@ public static class FactionDialogFor_Patch
         }
         void DoSponsorOberoniaAurea(int silverCount, int gainAP, int gainFavor)
         {
-            TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, silverCount, map, null);
+            TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, silverCount, map, null);
             oaGameComp.GetAssistPoints(gainAP);
             negotiator.royalty?.GainFavor(faction, gainFavor);
         }
@@ -242,9 +242,9 @@ public static class FactionDialogFor_Patch
     }
     private static void GetTechPrint(Map map, Faction faction, ThingDef tDef, int price)
     {
-        TradeUtility.LaunchThingsOfType(RimWorld.ThingDefOf.Silver, price, map, null);
+        TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, price, map, null);
         Thing dropThing = ThingMaker.MakeThing(tDef);
-        IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.One);
+        IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         DropPodUtility.DropThingsNear(dropCell, map, [dropThing], forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_TechPrintArrive".Translate(faction.Named("FACTION"), tDef.label), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
 
@@ -399,7 +399,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         if (count > 0)
         {
             List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MealSurvivalPack, count);
-            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.MealSurvivalPack.size);
+            IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
@@ -410,7 +410,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
         dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
         dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
-        IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, new IntVec2(2, 2));
+        IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named("FACTION")), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
     }
@@ -419,7 +419,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         if (count > 0)
         {
             List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, count);
-            IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, ThingDefOf.Silver.size);
+            IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [dropThings], forbid: false, allowFogged: false, faction: faction);
             Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
@@ -429,7 +429,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         StringBuilder letterStr = new();
         letterStr.Append("OA_AssistPawnArrivalDetail".Translate(faction.Named("FACTION"), pawnCount, pawnKind.race.LabelCap));
         letterStr.AppendLine();
-        IntVec3 dropCell = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.One);
+        IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         List<Pawn> DropPawns = [];
         for (int i = 0; i < pawnCount; i++)
         {

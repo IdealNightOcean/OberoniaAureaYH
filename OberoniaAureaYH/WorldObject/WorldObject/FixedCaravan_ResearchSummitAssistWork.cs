@@ -97,7 +97,7 @@ public class FixedCaravan_ResearchSummitAssistWork : FixedCaravan
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
         OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(APpoints);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(RimWorld.ThingDefOf.Silver, silverNum);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, silverNum);
         foreach (Thing t in things)
         {
             OAFrame_FixedCaravanUtility.GiveThing(this, t);

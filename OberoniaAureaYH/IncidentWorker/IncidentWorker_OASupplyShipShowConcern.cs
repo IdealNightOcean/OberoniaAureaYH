@@ -31,7 +31,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         Map map = (Map)parms.target;
         Faction faction = parms.faction;
         int count = map.mapPawns.FreeColonistsSpawnedCount * 100;
-        IntVec3 intVec = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.One);
+        IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
         List<List<Thing>> dropThings = OAFrame_MiscUtility.TryGengrateThingGroup(rawBerriesDef, count);
         foreach (List<Thing> things in dropThings)

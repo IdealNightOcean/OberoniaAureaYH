@@ -30,7 +30,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         };
         if (OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true))
         {
-            base.ReloadableCompSource?.UsedOnce();
+            ReloadableCompSource?.UsedOnce();
             return true;
         }
         else

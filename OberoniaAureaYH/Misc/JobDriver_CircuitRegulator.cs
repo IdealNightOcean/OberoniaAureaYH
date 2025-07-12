@@ -23,7 +23,7 @@ public class JobDriver_CircuitRegulator : JobDriver
             repairSpeed = Mathf.Clamp(value, 0.01f, BaseJobEndInterval);
         }
     }
-    private Thing CircuitRegulator => base.TargetThingA;
+    private Thing CircuitRegulator => TargetThingA;
     private bool IsAttachment
     {
         get
