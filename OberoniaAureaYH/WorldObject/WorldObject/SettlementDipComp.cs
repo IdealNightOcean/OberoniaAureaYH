@@ -50,12 +50,12 @@ public class SettlementDipComp : WorldObjectComp
 
     protected static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
     {
-        if (worldObject == null)
+        if (worldObject is null)
         {
             return false;
         }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null || worldObject.Faction != oaFaction)
+        if (oaFaction is null || worldObject.Faction != oaFaction)
         {
             return false;
         }
@@ -121,7 +121,7 @@ public class SettlementDipComp : WorldObjectComp
     public void Notify_CaravanArrived(Caravan caravan, SettlementDipVisitType SettlementDipVisitType)//触发交互事件
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -289,7 +289,7 @@ public static class DeepExchangeUtility
     private static void AddQuest(QuestScriptDef scriptDef, float chance, Settlement targetSettle = null)
     {
         Slate slate = new();
-        if (targetSettle != null)
+        if (targetSettle is not null)
         {
             slate.Set("settlement", targetSettle);
         }

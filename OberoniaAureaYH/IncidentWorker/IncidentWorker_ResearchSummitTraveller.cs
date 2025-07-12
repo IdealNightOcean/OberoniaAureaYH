@@ -136,7 +136,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
         var obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
-        if (obj == null)
+        if (obj is null)
         {
             researchSummit = null;
             return false;

@@ -11,7 +11,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
     protected bool TryResolveParmsGeneral(IncidentParms parms)
     {
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null)
+        if (oaFaction is null)
         {
             return false;
         }

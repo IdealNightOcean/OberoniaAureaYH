@@ -30,7 +30,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
         Pawn pawn = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OA_MessageNoResearcher".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -76,7 +76,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     }
     private static void EatChanwu(Caravan caravan) //补满饥饿，获得吃花糕心情
     {
-        if (caravan == null)
+        if (caravan is null)
         {
             return;
         }
@@ -85,7 +85,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             ThoughtDef thoughtDef = OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
             foreach (Pawn pawn in caravan.PawnsListForReading)
             {
-                if (pawn.needs.food != null)
+                if (pawn.needs.food is not null)
                 {
                     pawn.needs.food.CurLevelPercentage = 1f;
                 }
@@ -116,7 +116,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         if (researchSpeed < BackfireNeedSpeed)
         {
             Faction fVar = participantFactions.RandomElement();
-            if (fVar != null)
+            if (fVar is not null)
             {
                 tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
@@ -143,7 +143,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         if (researchSpeed > SuccessNeedSpeed)
         {
             Faction fVar = participantFactions.Where(f => f.HostileTo(Faction.OfPlayer)).RandomElementWithFallback(null);
-            if (fVar != null)
+            if (fVar is not null)
             {
                 tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
@@ -203,7 +203,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
         Thing book = ThingMaker.MakeThing(ThingDefOf.Novel);
-        if (book != null)
+        if (book is not null)
         {
             CompQuality comp = book.TryGetComp<CompQuality>();
             comp.SetQuality(QualityCategory.Good, ArtGenerationContext.Outsider);
@@ -359,7 +359,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
 
     private static void AffectFactionGoodwill(Faction oaFaction, List<Faction> factions)
     {
-        if (oaFaction != null)
+        if (oaFaction is not null)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
         }
@@ -386,7 +386,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private string GetLetterText(string baseText, Caravan caravan, float amout, List<ResearchProjectDef> availableResearch)
     {
         StringBuilder sb = new(baseText);
-        if (availableResearch != null)
+        if (availableResearch is not null)
         {
             sb.AppendLine();
             sb.AppendLine();
@@ -398,7 +398,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         sb.AppendLine();
         sb.AppendLine();
         sb.AppendInNewLine("OA_GoodWillChange".Translate(base.Faction.NameColored, 15));
-        if (participantFactions != null)
+        if (participantFactions is not null)
         {
             foreach (Faction f in participantFactions)
             {
@@ -406,7 +406,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn != null)
+        if (pawn is not null)
         {
             sb.AppendLine();
             sb.AppendLine();

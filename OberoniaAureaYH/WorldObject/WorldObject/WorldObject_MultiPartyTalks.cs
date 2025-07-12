@@ -31,7 +31,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -142,7 +142,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     {
         TaggedString text = baseText;
         text += "\n\n" + "OA_GoodWillChange".Translate(base.Faction.NameColored, oAGoodWill);
-        if (factions != null)
+        if (factions is not null)
         {
             foreach (Faction f in factions)
             {
@@ -150,7 +150,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
             }
         }
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn != null)
+        if (pawn is not null)
         {
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, 6000f.ToString("F0"), pawn.Named("PAWN"));
             if (royalFavorGained > 0)

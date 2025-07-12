@@ -16,7 +16,7 @@ public class ThoughtWorker_MemeTraitOpinion : ThoughtWorker
         if (RelationsUtility.PawnsKnowEachOther(pawn, other))
         {
             Ideo ideo = pawn.Ideo;
-            if (ideo != null && ideo.HasMeme(ModEx_MTO.meme) && other.story.traits.HasTrait(ModEx_MTO.trait))
+            if (ideo is not null && ideo.HasMeme(ModEx_MTO.meme) && other.story.traits.HasTrait(ModEx_MTO.trait))
             {
                 return ThoughtState.ActiveAtStage(0);
             }

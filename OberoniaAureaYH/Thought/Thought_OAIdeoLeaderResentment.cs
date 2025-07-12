@@ -8,7 +8,7 @@ public class Thought_OAIdeoLeaderResentment : Thought_IdeoLeaderResentment
     {
         float moodOffset = base.MoodOffset();
         Ideo ideo = pawn.Ideo;
-        if (ideo != null)
+        if (ideo is not null)
         {
             if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
             {

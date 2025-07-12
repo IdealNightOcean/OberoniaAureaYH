@@ -11,7 +11,7 @@ public class AstableBullet : Bullet
     protected void ProjectileImpact(bool blockedByShield = false)
     {
         GenClamor.DoClamor(this, 12f, ClamorDefOf.Impact);
-        if (!blockedByShield && def.projectile.landedEffecter != null)
+        if (!blockedByShield && def.projectile.landedEffecter is not null)
         {
             def.projectile.landedEffecter.Spawn(base.Position, base.Map).Cleanup();
         }
@@ -26,7 +26,7 @@ public class AstableBullet : Bullet
         BattleLogEntry_RangedImpact battleLogEntry_RangedImpact = new(launcher, hitThing, intendedTarget.Thing, equipmentDef, def, targetCoverDef);
         Find.BattleLog.Add(battleLogEntry_RangedImpact);
         NotifyImpact(hitThing, map, position);
-        if (hitThing != null)
+        if (hitThing is not null)
         {
             bool instigatorGuilty = launcher is not Pawn pawn || !pawn.Drafted;
             DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
@@ -34,7 +34,7 @@ public class AstableBullet : Bullet
             hitThing.TakeDamage(dinfo).AssociateWithLog(battleLogEntry_RangedImpact);
             Pawn hitPawn = hitThing as Pawn;
             StaggerHandler staggerHandler = hitPawn?.stances?.stagger;
-            if (staggerHandler != null)
+            if (staggerHandler is not null)
             {
                 if (hitPawn.BodySize <= def.projectile.StoppingPower + 0.001f)
                 {
@@ -42,7 +42,7 @@ public class AstableBullet : Bullet
                 }
                 staggerHandler.Notify_BulletImpact(this);
             }
-            if (def.projectile.extraDamages != null)
+            if (def.projectile.extraDamages is not null)
             {
                 foreach (ExtraDamage extraDamage in def.projectile.extraDamages)
                 {
@@ -53,7 +53,7 @@ public class AstableBullet : Bullet
                     }
                 }
             }
-            if (Rand.Chance(def.projectile.bulletChanceToStartFire) && (hitPawn == null || Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(hitPawn))))
+            if (Rand.Chance(def.projectile.bulletChanceToStartFire) && (hitPawn is null || Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(hitPawn))))
             {
                 hitThing.TryAttachFire(def.projectile.bulletFireSizeRange.RandomInRange, launcher);
             }

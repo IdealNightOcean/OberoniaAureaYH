@@ -42,7 +42,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
     protected void BeginCallAid(Pawn caller, Map map, Faction faction, bool free, float biocodeChance = 1f)
     {
         IEnumerable<Faction> source = from f in (from p in map.mapPawns.AllPawnsSpawned
-                                                 where p.Faction != null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
+                                                 where p.Faction is not null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
                                                  select p.Faction).Distinct()
                                       where f.HostileTo(Faction.OfPlayer) && !faction.HostileTo(f)
                                       select f;
@@ -74,7 +74,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
                     {
                         return false;
                     }
-                    return target.Cell.GetEdifice(map) == null && !target.Cell.Impassable(map);
+                    return target.Cell.GetEdifice(map) is null && !target.Cell.Impassable(map);
                 }
             };
             base.caller = caller;
@@ -95,7 +95,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         bool callSuccess = false;
         callSuccess = CallNormalAid(map, spawnPos, faction, biocodeChance) || callSuccess;
         OARatkinGroupExtension modEx_RG = ModEx_RG;
-        if (modEx_RG != null)
+        if (modEx_RG is not null)
         {
             foreach (OARatkinGroup ratkinGroup in modEx_RG.extraGroups)
             {
@@ -127,7 +127,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
             biocodeWeaponsChance = biocodeChance,
             spawnCenter = spawnPos
         };
-        if (def.royalAid.pawnKindDef != null)
+        if (def.royalAid.pawnKindDef is not null)
         {
             incidentParms.pawnKind = def.royalAid.pawnKindDef;
             incidentParms.pawnCount = def.royalAid.pawnCount;
@@ -150,7 +150,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
             biocodeWeaponsChance = biocodeChance,
             spawnCenter = spawnPos
         };
-        if (ratkinGroup.pawnKindDef != null)
+        if (ratkinGroup.pawnKindDef is not null)
         {
             incidentParms.pawnKind = ratkinGroup.pawnKindDef;
             incidentParms.pawnCount = ratkinGroup.pawnCount;

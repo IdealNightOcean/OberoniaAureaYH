@@ -45,15 +45,15 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_Single
         {
             Find.WorldPawns.PassToWorld(pawn);
         }
-        if (pawn.skills != null)
+        if (pawn.skills is not null)
         {
             pawn.skills.GetSkill(SkillDefOf.Intellectual).Level = 0;
         }
         TraitSet pawnTrait = pawn.story?.traits;
-        if (pawnTrait != null)
+        if (pawnTrait is not null)
         {
             Trait trait = pawnTrait.GetTrait(OARatkin_RimWorldDefOf.NaturalMood);
-            if (trait != null)
+            if (trait is not null)
             {
                 pawn.story.traits.RemoveTrait(trait);
             }

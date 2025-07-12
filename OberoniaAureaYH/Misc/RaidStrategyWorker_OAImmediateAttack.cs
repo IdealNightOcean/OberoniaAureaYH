@@ -13,7 +13,7 @@ public class RaidStrategyWorker_OAImmediateAttack : RaidStrategyWorker_Immediate
         {
             return false;
         }
-        if (parms.faction != null)
+        if (parms.faction is not null)
         {
             return parms.faction.IsOAFaction();
         }
@@ -35,7 +35,7 @@ public class RaidStrategyWorker_OAImmediateAttackFriendly : RaidStrategyWorker_O
         {
             return false;
         }
-        if (parms.faction != null)
+        if (parms.faction is not null)
         {
             return !parms.faction.HostileTo(Faction.OfPlayer);
         }

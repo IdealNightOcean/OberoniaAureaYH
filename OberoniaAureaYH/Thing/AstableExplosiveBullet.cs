@@ -8,7 +8,7 @@ public class AstableExplosiveBullet : Projectile_Explosive
     {
         Map map = base.Map;
         IntVec3 position = base.Position;
-        if (def.projectile.explosionEffect != null)
+        if (def.projectile.explosionEffect is not null)
         {
             Effecter effecter = def.projectile.explosionEffect.Spawn();
             effecter.Trigger(new TargetInfo(position, map), new TargetInfo(position, map));

@@ -20,7 +20,7 @@ public class QuestPart_OaAssistPointsChange : QuestPart
         if (signal.tag == inSignal)
         {
             GameComponent_OberoniaAurea oaGameComp = OARatkin_MiscUtility.OAGameComp;
-            if (oaGameComp != null)
+            if (oaGameComp is not null)
             {
                 if (changePoints > 0)
                 {

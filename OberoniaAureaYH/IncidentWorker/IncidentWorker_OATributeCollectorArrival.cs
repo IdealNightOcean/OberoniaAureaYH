@@ -14,7 +14,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
             return false;
         }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null)
+        if (oaFaction is null)
         {
             return false;
         }
@@ -31,7 +31,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
             return false;
         }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
+        if (oaFaction is null || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;
         }

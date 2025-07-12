@@ -17,11 +17,11 @@ public class DiaBuyableTechPrintDef : Def
     public override void ResolveReferences()
     {
         base.ResolveReferences();
-        if (researchProject == null)
+        if (researchProject is null)
         {
             Log.Error($"{this.defName} has no tech research project.");
         }
-        else if (TechPrintDef == null)
+        else if (TechPrintDef is null)
         {
             Log.Error($"Research Project {researchProject.label} has no tech print.");
         }

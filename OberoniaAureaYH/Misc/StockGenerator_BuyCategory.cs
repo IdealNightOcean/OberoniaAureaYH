@@ -17,9 +17,9 @@ public class StockGenerator_BuyCategory : StockGenerator
 
     public override bool HandlesThingDef(ThingDef t)
     {
-        if (categoryDef.DescendantThingDefs.Contains(t) && (excludedThingDefs == null || !excludedThingDefs.Contains(t)))
+        if (categoryDef.DescendantThingDefs.Contains(t) && (excludedThingDefs is null || !excludedThingDefs.Contains(t)))
         {
-            if (excludedCategories != null)
+            if (excludedCategories is not null)
             {
                 return !excludedCategories.Any((ThingCategoryDef c) => c.DescendantThingDefs.Contains(t));
             }

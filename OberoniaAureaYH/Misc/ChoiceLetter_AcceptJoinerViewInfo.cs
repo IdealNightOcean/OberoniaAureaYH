@@ -17,7 +17,7 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
     {
         get
         {
-            if (base.CanShowInLetterStack && quest != null)
+            if (base.CanShowInLetterStack && quest is not null)
             {
                 if (quest.State != QuestState.Ongoing)
                 {
@@ -58,7 +58,7 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
             };
             yield return optionAccept;
             yield return optionReject;
-            if (associatedPawn != null)
+            if (associatedPawn is not null)
             {
                 DiaOption optionViewInfo = new("OA_ViewPawnInfoButton".Translate())
                 {

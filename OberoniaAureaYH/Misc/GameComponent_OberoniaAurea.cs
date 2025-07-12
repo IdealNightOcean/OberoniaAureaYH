@@ -62,7 +62,7 @@ public class GameComponent_OberoniaAurea : GameComponent
     protected void AdjustAssistPoints()
     {
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction != null)
+        if (oaFaction is not null)
         {
             assistPointsStoppageDays--;
             if (oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
@@ -167,7 +167,7 @@ public class GameComponent_OberoniaAurea : GameComponent
             if (date.Month == 1 && date.Day <= 3)
             {
                 Map map = Find.AnyPlayerHomeMap;
-                if (map != null && OARatkin_MiscUtility.OAFaction != null)
+                if (map is not null && OARatkin_MiscUtility.OAFaction is not null)
                 {
                     if (OARatkin_MiscUtility.OAFaction.PlayerRelationKind == FactionRelationKind.Ally)
                     {

@@ -20,7 +20,7 @@ public class Verb_SummonEMP : Verb
             return false;
         }
         CompApparelReloadable reloadableCompSource = base.ReloadableCompSource;
-        if (reloadableCompSource == null)
+        if (reloadableCompSource is null)
         {
             TryShot();
             return true;

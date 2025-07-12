@@ -14,17 +14,17 @@ public class QuestNode_OaAssistPointsChange : QuestNode
 
     protected override bool TestRunInt(Slate slate)
     {
-        return OARatkin_MiscUtility.OAFaction != null;
+        return OARatkin_MiscUtility.OAFaction is not null;
     }
     protected override void RunInt()
     {
-        if (OARatkin_MiscUtility.OAFaction == null)
+        if (OARatkin_MiscUtility.OAFaction is null)
         {
             return;
         }
         Slate slate = QuestGen.slate;
         Quest quest = QuestGen.quest;
-        if (storeAs.GetValue(slate) != null)
+        if (storeAs.GetValue(slate) is not null)
         {
             slate.Set(storeAs.GetValue(slate), changePoints.GetValue(slate));
         }

@@ -13,7 +13,7 @@ public class ThoughtWorker_LeaderOpinion : ThoughtWorker
             return ThoughtState.Inactive;
         }
         Ideo ideo = pawn.Ideo;
-        if (ideo != null && IsLeader(other, pawn.Faction) && RelationsUtility.PawnsKnowEachOther(pawn, other))
+        if (ideo is not null && IsLeader(other, pawn.Faction) && RelationsUtility.PawnsKnowEachOther(pawn, other))
         {
             if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
             {
@@ -29,7 +29,7 @@ public class ThoughtWorker_LeaderOpinion : ThoughtWorker
 
     protected static bool IsLeader(Pawn other, Faction faction)
     {
-        if (faction == null || faction.leader == null)
+        if (faction is null || faction.leader is null)
         {
             return false;
         }

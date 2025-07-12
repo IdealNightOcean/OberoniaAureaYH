@@ -30,14 +30,14 @@ public class ShotgunBullet : Bullet
         Find.BattleLog.Add(battleLogEntry_RangedImpact);
         NotifyImpact(hitThing, map, position);
         TryTakeSplashDamage(position, map, out int splashCount);
-        if (hitThing != null)
+        if (hitThing is not null)
         {
             bool instigatorGuilty = launcher is not Pawn pawn || !pawn.Drafted;
             DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
             dinfo.SetWeaponQuality(equipmentQuality);
             Pawn pawn2 = hitThing as Pawn;
             HitThingTakeDamage(hitThing, dinfo, battleLogEntry_RangedImpact, pawn2, splashCount);
-            if (def.projectile.extraDamages != null)
+            if (def.projectile.extraDamages is not null)
             {
                 foreach (ExtraDamage extraDamage in def.projectile.extraDamages)
                 {
@@ -48,7 +48,7 @@ public class ShotgunBullet : Bullet
                     }
                 }
             }
-            if (Rand.Chance(def.projectile.bulletChanceToStartFire) && (pawn2 == null || Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(pawn2))))
+            if (Rand.Chance(def.projectile.bulletChanceToStartFire) && (pawn2 is null || Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(pawn2))))
             {
                 hitThing.TryAttachFire(def.projectile.bulletFireSizeRange.RandomInRange, launcher);
             }
@@ -74,7 +74,7 @@ public class ShotgunBullet : Bullet
     protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, BattleLogEntry_RangedImpact battleLogEntry_RangedImpact, Pawn hitPawn = null, int splashCount = 0)
     {
         ShotgunExtension modEx_SG = ModEx_SG;
-        if (modEx_SG == null)
+        if (modEx_SG is null)
         {
             return;
         }
@@ -91,7 +91,7 @@ public class ShotgunBullet : Bullet
     {
         splashCount = 0;
         ShotgunExtension modEx_SG = ModEx_SG;
-        if (modEx_SG != null && modEx_SG.splash)
+        if (modEx_SG is not null && modEx_SG.splash)
         {
             IntRange splashDamageCount = GetSplashRadiusAndDamageCount(modEx_SG, firingDistance, out float splashRadius);
             if (splashRadius > 0)
@@ -162,7 +162,7 @@ public class ShotgunBullet : Bullet
     protected void ProjectileImpact(bool blockedByShield = false)
     {
         GenClamor.DoClamor(this, 12f, ClamorDefOf.Impact);
-        if (!blockedByShield && def.projectile.landedEffecter != null)
+        if (!blockedByShield && def.projectile.landedEffecter is not null)
         {
             def.projectile.landedEffecter.Spawn(base.Position, base.Map).Cleanup();
         }

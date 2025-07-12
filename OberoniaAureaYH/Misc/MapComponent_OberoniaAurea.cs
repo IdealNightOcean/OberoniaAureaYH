@@ -48,7 +48,7 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
     }
     public float AverageCircuitStability(PowerNet powerNet)
     {
-        if (powerNet == null)
+        if (powerNet is null)
         {
             return 0f;
         }

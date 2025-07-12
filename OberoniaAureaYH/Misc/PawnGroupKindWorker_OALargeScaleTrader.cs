@@ -26,13 +26,13 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             return;
         }
         PawnGenOption pawnGenOption = groupMaker.traders.FirstOrDefault((PawnGenOption x) => !x.kind.trader);
-        if (pawnGenOption != null)
+        if (pawnGenOption is not null)
         {
             Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption.kind.LabelCap + ") who is not a trader but is in a traders list.");
             return;
         }
         PawnGenOption pawnGenOption2 = groupMaker.carriers.FirstOrDefault((PawnGenOption x) => !x.kind.RaceProps.packAnimal);
-        if (pawnGenOption2 != null)
+        if (pawnGenOption2 is not null)
         {
             Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption2.kind.LabelCap + ") who is not a carrier but is in a carriers list.");
             return;

@@ -13,7 +13,7 @@ public class ThoughtWorker_LeaderDowned : ThoughtWorker
             return ThoughtState.Inactive;
         }
         Ideo ideo = pawn.Ideo;
-        if (ideo != null && LeaderDowned(pawn.Faction))
+        if (ideo is not null && LeaderDowned(pawn.Faction))
         {
             if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_LeaderAttitude_Respect))
             {
@@ -29,7 +29,7 @@ public class ThoughtWorker_LeaderDowned : ThoughtWorker
 
     protected static bool LeaderDowned(Faction faction)
     {
-        if (faction == null || faction.leader == null)
+        if (faction is null || faction.leader is null)
         {
             return false;
         }

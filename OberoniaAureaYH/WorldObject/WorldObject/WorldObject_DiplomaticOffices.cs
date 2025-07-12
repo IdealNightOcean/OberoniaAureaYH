@@ -26,7 +26,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
         }
 
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -75,7 +75,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
     {
         TaggedString text = baseText;
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn != null)
+        if (pawn is not null)
         {
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, 6000f.ToString("F0"), pawn.Named("PAWN"));
         }

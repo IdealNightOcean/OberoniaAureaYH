@@ -45,7 +45,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>..\..\OberoniaAurea_Frame\Release\1.5\old\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Mods\[OA]Ratkin Knight Order\Frame\1.5\Assemblies\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

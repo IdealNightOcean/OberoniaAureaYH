@@ -13,7 +13,7 @@ public static class MBW_TryStart_Patch
     [HarmonyPostfix]
     public static void Postfix(ref bool __result, Pawn pawn)
     {
-        if (!__result || !ModsConfig.IdeologyActive || pawn.Ideo == null)
+        if (!__result || !ModsConfig.IdeologyActive || pawn.Ideo is null)
         {
             return;
         }
@@ -39,7 +39,7 @@ public static class MBW_TryStart_Patch
         {
             //拥有对应心情修正的情况下再次崩溃不会触发判定
             Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(thought);
-            if (tm != null)
+            if (tm is not null)
             {
                 return;
             }

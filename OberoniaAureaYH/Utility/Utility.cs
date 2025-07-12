@@ -18,7 +18,7 @@ public static class OARatkin_MiscUtility
     public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARatkin_MiscDefOf.OA_RK_Faction);
     public static bool IsOAFaction(this Faction faction, bool allowTemp = false)
     {
-        if (faction == null)
+        if (faction is null)
         {
             return false;
         }

@@ -24,7 +24,7 @@ public class IncidentWorker_OptionalDiplomaticOffices : IncidentWorker_GiveQuest
             return false;
         }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null)
+        if (oaFaction is null)
         {
             return false;
         }
