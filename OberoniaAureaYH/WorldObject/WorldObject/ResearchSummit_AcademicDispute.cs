@@ -29,7 +29,7 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
 
     public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)
     {
-        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSAcademicDispute".Translate(this.Label)))
+        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSAcademicDispute".Translate(Label)))
         {
             yield return floatMenuOption;
         }

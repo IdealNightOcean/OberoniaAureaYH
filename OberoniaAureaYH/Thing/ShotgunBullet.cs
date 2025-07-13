@@ -30,23 +30,18 @@ public class ShotgunBullet : BulletBase
 
     protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
     {
-        DamageDef damageDef = DamageDef;
-        float amount = DamageAmount;
-        float armorPenetration = ArmorPenetration;
-        DamageInfo dinfo = new(damageDef, amount, armorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
+        DamageInfo dinfo = new(DamageDef, DamageAmount, ArmorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
         dinfo.SetWeaponQuality(equipmentQuality);
         HitThingTakeDamage(hitThing, dinfo, splashCount);
     }
 
     protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, int splashCount = 0)
     {
-        ShotgunExtension modEx_SG = ModEx_SG;
-        if (modEx_SG is null)
+        int damageCount = 1;
+        if (ModEx_SG is not null)
         {
-            return;
+            damageCount = Mathf.Max(GetDamageCount(ModEx_SG, firingDistance) - splashCount, 1);
         }
-        int damageCount = GetDamageCount(modEx_SG, firingDistance);
-        damageCount = Mathf.Max(damageCount - splashCount, 1);
         for (int i = 0; i < damageCount; i++)
         {
             hitThing.TakeDamage(dinfo).AssociateWithLog(sharedBattleLogEntry);
@@ -68,7 +63,7 @@ public class ShotgunBullet : BulletBase
                 {
                     int preSplashCount;
                     bool flag = launcher is not Pawn pawn || !pawn.Drafted;
-                    DamageInfo dinfo = new(def.projectile.damageDef, (float)DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, (BodyPartRecord)null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, flag, true);
+                    DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, ExactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, flag, true);
                     foreach (Pawn p in splashPawns)
                     {
                         preSplashCount = splashDamageCount.RandomInRange;

@@ -33,7 +33,7 @@ public static class OARatkin_MiscUtility
     {
         return (from t in TradeUtility.AllLaunchableThingsForTrade(map)
                 where t.def == def
-                select t).Sum((Thing t) => t.stackCount);
+                select t).Sum(t => t.stackCount);
     }
 
     public static void CallForAidFixedPoints(Map map, Faction faction, float points, PawnsArrivalModeDef raidArrivalMode = null) //呼叫固定点数支援，固定方式的工作支援

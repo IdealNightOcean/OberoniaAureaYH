@@ -12,7 +12,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     public void InitInnerTrader()
     {
         innerTrader = new(OARatkin_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
-        innerTrader.GenerateThings(this.Tile);
+        innerTrader.GenerateThings(Tile);
     }
     protected override void Tick()
     {
@@ -39,7 +39,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)
     {
-        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSFair".Translate(this.Label)))
+        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSFair".Translate(Label)))
         {
             yield return floatMenuOption;
         }

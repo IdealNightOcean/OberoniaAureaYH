@@ -19,7 +19,7 @@ public class DiaBuyableTechPrintDef : Def
         base.ResolveReferences();
         if (researchProject is null)
         {
-            Log.Error($"{this.defName} has no tech research project.");
+            Log.Error($"{defName} has no tech research project.");
         }
         else if (TechPrintDef is null)
         {

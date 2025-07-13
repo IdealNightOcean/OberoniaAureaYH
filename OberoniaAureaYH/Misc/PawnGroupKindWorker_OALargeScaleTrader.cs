@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +25,13 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             Log.Error(string.Concat("Cannot generate trader caravan for ", parms.faction, " because it has no trader kinds."));
             return;
         }
-        PawnGenOption pawnGenOption = groupMaker.traders.FirstOrDefault((PawnGenOption x) => !x.kind.trader);
+        PawnGenOption pawnGenOption = groupMaker.traders.FirstOrDefault(p => !p.kind.trader);
         if (pawnGenOption is not null)
         {
             Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption.kind.LabelCap + ") who is not a trader but is in a traders list.");
             return;
         }
-        PawnGenOption pawnGenOption2 = groupMaker.carriers.FirstOrDefault((PawnGenOption x) => !x.kind.RaceProps.packAnimal);
+        PawnGenOption pawnGenOption2 = groupMaker.carriers.FirstOrDefault(p => !p.kind.RaceProps.packAnimal);
         if (pawnGenOption2 is not null)
         {
             Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption2.kind.LabelCap + ") who is not a carrier but is in a carriers list.");
@@ -41,7 +41,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         {
             Log.Warning("Deterministic seed not implemented for this pawn group kind worker. The result will be random anyway.");
         }
-        TraderKindDef traderKindDef = (parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight((TraderKindDef traderDef) => traderDef.CalculatedCommonality));
+        TraderKindDef traderKindDef = (parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight(traderDef => traderDef.CalculatedCommonality));
         Pawn pawn = GenerateTrader(parms, groupMaker, traderKindDef);
         outPawns.Add(pawn);
         ThingSetMakerParams parms2 = default;
@@ -54,10 +54,10 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             outPawns.Add(slavesAndAnimalsFromWare);
         }
         GenerateCarriers(parms, groupMaker, pawn, wares, outPawns);
-        GenerateGuards(parms, groupMaker, pawn, wares, outPawns);
+        GenerateGuards(parms, groupMaker, outPawns);
     }
 
-    protected void GenerateGuards(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, Pawn trader, List<Thing> wares, List<Pawn> outPawns)
+    protected void GenerateGuards(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, List<Pawn> outPawns)
     {
         if (!groupMaker.guards.Any())
         {
@@ -81,7 +81,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     //下面三个不重要，是因为泰南用了private才复制过来的
     protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {
-        PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight((PawnGenOption x) => x.selectionWeight).kind;
+        PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight(p => p.selectionWeight).kind;
         PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
         request.Tile = parms.tile;
         request.FixedIdeo = parms.ideo;
@@ -95,10 +95,10 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     }
     protected void GenerateCarriers(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, Pawn trader, List<Thing> wares, List<Pawn> outPawns)
     {
-        List<Thing> list = wares.Where((Thing x) => x is not Pawn).ToList();
+        List<Thing> list = wares.Where(t => t is not Pawn).ToList();
         int i = 0;
         int num = Mathf.CeilToInt(list.Count / 8f);
-        PawnKindDef kind = groupMaker.carriers.Where((PawnGenOption x) => !parms.tile.Valid || Find.WorldGrid[parms.tile].PrimaryBiome.IsPackAnimalAllowed(x.kind.race)).RandomElementByWeight((PawnGenOption x) => x.selectionWeight).kind;
+        PawnKindDef kind = groupMaker.carriers.Where(p => !parms.tile.Valid || Find.WorldGrid[parms.tile].PrimaryBiome.IsPackAnimalAllowed(p.kind.race)).RandomElementByWeight(p => p.selectionWeight).kind;
         List<Pawn> list2 = [];
         for (int j = 0; j < num; j++)
         {

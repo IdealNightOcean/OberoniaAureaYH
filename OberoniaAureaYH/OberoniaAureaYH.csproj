@@ -128,12 +128,11 @@
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
-    <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitEccentricScholar.cs" />
+    <Compile Include="WorldObject\WorldObject\DiplomaticSummitHandler.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_EccentricScholar.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />
     <Compile Include="WorldObject\WorldObject\FixedCaravan_SettlementDip.cs" />
-    <Compile Include="WorldObject\WorldObject\FixedCaravan_ResearchSummitAssistWork.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_AssistWork.cs" />
     <Compile Include="WorldObject\WorldObject\ResearcherCampComp.cs" />
     <Compile Include="HarmonyPatch\FactionDialogMaker_Patch.cs" />
@@ -165,9 +164,8 @@
     <Compile Include="Verb\Verb_TargetCellAid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearcherVisit.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />

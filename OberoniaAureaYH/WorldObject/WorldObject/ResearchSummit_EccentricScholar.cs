@@ -1,55 +1,57 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
+using System.Collections.Generic;
 using Verse;
 
 namespace OberoniaAurea;
 
-public class ResearchSummit_EccentricScholar : WorldObject_InteractiveBase
+public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCarvanBase
 {
-    protected bool workStart;
-    protected const int OrganizeTicks = 15000;
-    public override void Notify_CaravanArrived(Caravan caravan)
+    private static readonly IntRange ComponentCountRange = new(4, 10);
+    private static readonly IntRange SteelCountRange = new(20, 50);
+
+    public override int TicksNeeded => 15000;
+
+    public override bool StartWork(Caravan caravan)
     {
-        if (!workStart)
-        {
-            Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree
-            (
-                "OA_ResearchSummit_EccentricScholarText".Translate(),
-                "OA_ResearchSummit_EccentricScholarConfirm".Translate(OrganizeTicks.ToStringTicksToPeriod(shortForm: true)),
-                delegate { StartOrganize(caravan); },
-                "OA_ResearchSummit_EccentricScholarIngore".Translate(),
-                Destroy
-            );
-            Find.WindowStack.Add(nodeTree);
-        }
-        else
-        {
-            Messages.Message("OA_ResearchSummit_EccentricScholarWorking".Translate(), MessageTypeDefOf.RejectInput, historical: false);
-        }
+        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarText".Translate(),
+                                                                         "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
+                                                                         delegate { base.StartWork(caravan); },
+                                                                         "OA_ResearchSummit_EccentricScholarIngore".Translate(),
+                                                                         Destroy);
+        Find.WindowStack.Add(nodeTree);
+        return true;
     }
 
-    protected void StartOrganize(Caravan caravan)
+    protected override void FinishWork()
     {
-        if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
-        {
-            return;
-        }
-        FixedCaravan_ResearchSummitEccentricScholar fixedCaravan = (FixedCaravan_ResearchSummitEccentricScholar)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OARatkin_WorldObjectDefOf.OA_FixedCaravan_ResearchSummitEccentricScholar, OrganizeTicks);
-        fixedCaravan.associateScholar = this;
-        Find.WorldObjects.Add(fixedCaravan);
-        Find.WorldSelector.Select(fixedCaravan);
-        workStart = true;
-    }
+        int componentCount = ComponentCountRange.RandomInRange;
+        int steelCount = SteelCountRange.RandomInRange;
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.ComponentIndustrial, componentCount);
+        things.AddRange(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Steel, steelCount));
+        OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
 
-    public void EndOrganize()
-    {
+        foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
+        {
+            pawn.skills?.Learn(SkillDefOf.Intellectual, 1000f, direct: true);
+        }
+
+        string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
+        string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
+        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000));
+        Find.WindowStack.Add(nodeTree);
         Destroy();
     }
 
-    public override void ExposeData()
+    protected override void InterruptWork()
     {
-        base.ExposeData();
-        Scribe_Values.Look(ref workStart, "workStart", defaultValue: false);
+        string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
+        string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
+        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("OA_ResearchSummit_EccentricScholarLeaveHalfway".Translate(pawnsPlural), delegate { }));
+        Destroy();
     }
+
+    public override string FixedCaravanWorkDesc() => "OA_FixedCaravanRSEccentricScholar_TimeLeft".Translate(ticksRemaining.ToStringTicksToPeriod());
+
 }

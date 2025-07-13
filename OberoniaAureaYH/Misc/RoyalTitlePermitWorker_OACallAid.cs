@@ -17,7 +17,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
 
     public override IEnumerable<FloatMenuOption> GetRoyalAidOptions(Map map, Pawn pawn, Faction faction)
     {
-        if (AidDisabled(map, pawn, faction, out var reason))
+        if (AidDisabled(map, pawn, faction, out string reason))
         {
             yield return new FloatMenuOption(def.LabelCap + ": " + reason, null);
             yield break;
@@ -29,7 +29,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         }
         Action action = null;
         string description = def.LabelCap + ": ";
-        if (FillAidOption(pawn, faction, ref description, out var free))
+        if (FillAidOption(pawn, faction, ref description, out bool free))
         {
             action = delegate
             {
@@ -48,7 +48,10 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
                                       select f;
         if (source.Any())
         {
-            Find.WindowStack.Add(new Dialog_MessageBox("CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select((Faction f) => f.NameColored.Resolve()).ToCommaList()), "Confirm".Translate(), Call, "GoBack".Translate()));
+            Find.WindowStack.Add(new Dialog_MessageBox(text: "CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select(f => f.NameColored.Resolve()).ToCommaList()),
+                                                       buttonAText: "Confirm".Translate(),
+                                                       buttonAAction: Call,
+                                                       buttonBText: "GoBack".Translate()));
         }
         else
         {

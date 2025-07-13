@@ -56,7 +56,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
     }
     protected override bool TestRunInt(Slate slate)
     {
-        if (!TryGetCeremonyTarget(slate, out _, out var bestowingFaction) || bestowingFaction.HostileTo(Faction.OfPlayer))
+        if (!TryGetCeremonyTarget(slate, out _, out Faction bestowingFaction) || bestowingFaction.HostileTo(Faction.OfPlayer))
         {
             return false;
         }

@@ -51,7 +51,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         GetPossibleOutcomesII();
         GetPossibleOutcomesIII();
         pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
-        Fair(this.Tile);
+        Fair(Tile);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
@@ -142,7 +142,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }, 30f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherSite(this.Tile);
+            ResearcherSite(Tile);
         }, 20f));
         if (researchSpeed > NormalNeedSpeed)
         {
@@ -163,20 +163,20 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
                 ScholarGift(caravan);
             }, 30f));
         }
-        tmpPossibleOutcomesI.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesI.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesII()
     {
         tmpPossibleOutcomesII.Clear();
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            MysteriousTrader(this.Tile);
+            MysteriousTrader(Tile);
         }, 35f));
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            AssistWork(this.Tile);
+            AssistWork(Tile);
         }, 35f));
-        tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesII.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesIII()
     {
@@ -184,20 +184,19 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate { }, 45f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            AcademicDispute(this.Tile);
+            AcademicDispute(Tile);
         }, 35f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            EccentricScholar(this.Tile);
+            EccentricScholar(Tile);
         }, 25f));
-        tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesIII.RandomElementByWeight(x => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
     {
         Slate slate = new();
-        Map map = QuestGen_Get.GetMap();
+        Map map = Find.AnyPlayerHomeMap;
         slate.Set("faction", faction);
-        slate.Set("map", map);
         if (OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate, map))
         {
             QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
@@ -235,7 +234,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherSite(PlanetTile parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, (PlanetTile t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -291,7 +290,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void MysteriousTrader(PlanetTile parentTile) //神秘商人
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, (PlanetTile t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }

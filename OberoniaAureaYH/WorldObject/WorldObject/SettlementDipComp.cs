@@ -15,6 +15,7 @@ public enum SettlementDipVisitType
     DeepExchange,
     DiplomaticSummit
 }
+
 public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProperties
 {
     public WorldObjectCompProperties_SettlementDipComp()
@@ -26,17 +27,19 @@ public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProper
 [StaticConstructorOnStartup]
 public class SettlementDipComp : WorldObjectComp
 {
-    protected static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
+    private static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
 
-    protected int diplomacyCoolingDays = 30;
+    private int diplomacyCoolingDays = 30;
 
-    protected Settlement Settlement => parent as Settlement;
+    private Settlement Settlement => parent as Settlement;
 
-    protected bool workStart;
-    protected int ticksRemaining = -1;
+    private DiplomaticSummitHandler diplomaticSummitHandler;
+    public DiplomaticSummitHandler DiplomaticSummitHandler => diplomaticSummitHandler;
+    private bool IsWorking => diplomaticSummitHandler?.IsWorking ?? false;
 
-    protected int lastDiplomacyTick = -1;
-    protected int RemainingDiplomacyCoolingTicks
+    private int lastDiplomacyTick = -1;
+    private NegotiatingTeamLevel? curNegotiatingTeamLevel = null;
+    private int RemainingCoolingTicks
     {
         get
         {
@@ -48,23 +51,20 @@ public class SettlementDipComp : WorldObjectComp
         }
     }
 
-    protected static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
+    private static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
     {
-        if (worldObject is null)
-        {
-            return false;
-        }
         Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction is null || worldObject.Faction != oaFaction)
-        {
-            return false;
-        }
-        return true;
+        return oaFaction is not null && worldObject.Faction == oaFaction;
     }
 
+    public override void CompTick()
+    {
+        base.CompTick();
+        diplomaticSummitHandler?.WorkTick();
+    }
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
-        if (workStart || !DiplomacyValid(parent))
+        if (IsWorking || !DiplomacyValid(parent))
         {
             yield break;
         }
@@ -140,73 +140,47 @@ public class SettlementDipComp : WorldObjectComp
     }
     private void DeepExchange(Caravan caravan, Pawn pawn) //触发深入交流
     {
-        DeepExchangeUtility.ApplyEffect(caravan, this.Settlement, pawn);
+        DeepExchangeUtility.ApplyEffect(caravan, Settlement, pawn);
         diplomacyCoolingDays = 30;
         lastDiplomacyTick = Find.TickManager.TicksGame;
     }
+
     protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
         if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
         {
             return;
         }
-        Settlement settlement = this.Settlement;
-        Find.WindowStack.Add
-        (
-            Dialog_MessageBox.CreateConfirmation
-            (
-                "OA_ConfirmDiplomaticSummit".Translate(settlement.Named("SETTLEMENT")),
-                delegate
-                {
-                    ConfirmDiplomaticSummit(caravan, pawn);
-                },
-                destructive: false
-            )
-        );
 
-        void ConfirmDiplomaticSummit(Caravan caravan, Pawn pawn)
-        {
-            Settlement settlement = this.Settlement;
-            NegotiatingTeamLevel negotiatingTeamLevel = DiplomaticSummitUtility.NegotiatingTeamLevelWeight.RandomElementByWeight((KeyValuePair<NegotiatingTeamLevel, float> x) => x.Value).Key;
-            TaggedString text = "OA_ConfirmDiplomaticSummitInfo".Translate(settlement.Named("SETTLEMENT"));
-            text += "\n\n";
-            text += ("OA_DiplomaticSummitNegotiatingTeamLevel" + negotiatingTeamLevel.ToString()).Translate();
-            Find.WindowStack.Add
-            (
-                new Dialog_MessageBox(text, "Confirm".Translate(), delegate
-                {
-                    InitDiplomaticSummit(negotiatingTeamLevel);
-                },
-                    buttonADestructive: false
-                )
-            );
-        }
-
-        void InitDiplomaticSummit(NegotiatingTeamLevel teamLevel)
-        {
-            FixedCaravan_DiplomaticSummit fixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, FixedCaravan_DiplomaticSummit.AssociateObjectDef, FixedCaravan_DiplomaticSummit.CheckInterval);
-            fixedCaravan.negotiant = pawn;
-            fixedCaravan.associateSettlement = settlement;
-            fixedCaravan.curNegotiatingTeamLevel = teamLevel;
-            Find.WorldObjects.Add(fixedCaravan);
-            Find.WorldSelector.Select(fixedCaravan);
-            workStart = true;
-        }
-
+        diplomaticSummitHandler = new(Settlement);
+        diplomaticSummitHandler.InitSummit(caravan, pawn);
     }
-    public void DiplomaticSummitEnd()
+
+    public NegotiatingTeamLevel GetSettlementNegotiatingTeamLevel()
     {
-        lastDiplomacyTick = Find.TickManager.TicksGame;
-        diplomacyCoolingDays = 30;
-        workStart = false;
+        curNegotiatingTeamLevel ??= DiplomaticSummitUtility.NegotiatingTeamLevelWeight.RandomElementByWeight(kv => kv.Item2).Item1;
+
+        return curNegotiatingTeamLevel.Value;
     }
+
+    public void Notify_DiplomaticSummitEnd(bool cancel)
+    {
+        if (!cancel)
+        {
+            curNegotiatingTeamLevel = null;
+            lastDiplomacyTick = Find.TickManager.TicksGame;
+            diplomacyCoolingDays = 30;
+        }
+        diplomaticSummitHandler = null;
+    }
+
     public AcceptanceReport CanVisitNow()
     {
         if (parent.Faction.PlayerRelationKind != FactionRelationKind.Ally)
         {
             return "MustBeAlly".Translate();
         }
-        int remainingDiplomacyCoolingTicks = RemainingDiplomacyCoolingTicks;
+        int remainingDiplomacyCoolingTicks = RemainingCoolingTicks;
         if (remainingDiplomacyCoolingTicks > 0)
         {
             return "WaitTime".Translate(remainingDiplomacyCoolingTicks.ToStringTicksToPeriod());
@@ -235,9 +209,9 @@ public class SettlementDipComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref workStart, "workStart", defaultValue: false);
         Scribe_Values.Look(ref lastDiplomacyTick, "lastDiplomacyTick", -1);
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", -1);
+        Scribe_Values.Look(ref curNegotiatingTeamLevel, "curNegotiatingTeamLevel");
+        Scribe_Deep.Look(ref diplomaticSummitHandler, "diplomaticSummitHandler", ctorArgs: Settlement);
     }
 
 }
@@ -249,7 +223,7 @@ public static class DeepExchangeUtility
     private const int ChanwuNum = 10;
     private const int AddAssistPoints = 5;
 
-    private readonly static List<Pair<QuestScriptDef, float>> tmpPossibleOutcomes = [];
+    private readonly static List<(QuestScriptDef, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
@@ -271,7 +245,7 @@ public static class DeepExchangeUtility
             if (tmpPossibleOutcomes.Any())
             {
                 Slate slate = new();
-                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight((Pair<QuestScriptDef, float> x) => x.Second).First;
+                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight(q => q.Item2).Item1;
                 if (questScript == OARatkin_QuestScriptDefOf.OA_UrbanConstruction)
                 {
                     slate.Set("settlement", settlement);
@@ -295,7 +269,7 @@ public static class DeepExchangeUtility
         }
         if (scriptDef.CanRun(slate, target))
         {
-            tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(scriptDef, chance));
+            tmpPossibleOutcomes.Add((scriptDef, chance));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.BaseGen;
 using System.Linq;
@@ -18,7 +18,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
         {
             return true;
         }
-        if (!TryFindSpawnCell(rp, out var _))
+        if (!TryFindSpawnCell(rp, out IntVec3 _))
         {
             return false;
         }
@@ -32,7 +32,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
             return;
         }
         Map map = BaseGen.globalSettings.map;
-        if (!TryFindSpawnCell(rp, out var cell))
+        if (!TryFindSpawnCell(rp, out IntVec3 cell))
         {
             if (rp.singlePawnToSpawn is not null)
             {
@@ -50,7 +50,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
             }
             else
             {
-                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionDef is null || !x.defaultFactionDef.isPlayer).RandomElement();
+                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where(p => p.defaultFactionDef is null || !p.defaultFactionDef.isPlayer).RandomElement();
                 Faction result = rp.faction;
                 if (result is null && pawnKindDef.RaceProps.Humanlike)
                 {
@@ -62,7 +62,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
                             return;
                         }
                     }
-                    else if (!Find.FactionManager.AllFactions.Where((Faction x) => !x.IsPlayer).TryRandomElement(out result))
+                    else if (!Find.FactionManager.AllFactions.Where(f => !f.IsPlayer).TryRandomElement(out result))
                     {
                         return;
                     }
@@ -99,6 +99,6 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
     public static bool TryFindSpawnCell(ResolveParams rp, out IntVec3 cell)
     {
         Map map = BaseGen.globalSettings.map;
-        return CellFinder.TryFindRandomCellInsideWith(rp.rect, (IntVec3 x) => x.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate is null || rp.singlePawnSpawnCellExtraPredicate(x)), out cell);
+        return CellFinder.TryFindRandomCellInsideWith(rp.rect, c => c.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate is null || rp.singlePawnSpawnCellExtraPredicate(c)), out cell);
     }
 }

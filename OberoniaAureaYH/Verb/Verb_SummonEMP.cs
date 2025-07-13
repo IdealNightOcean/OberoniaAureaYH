@@ -25,7 +25,7 @@ public class Verb_SummonEMP : Verb
             TryShot();
             return true;
         }
-        else if (reloadableCompSource.CanBeUsed(out var _))
+        else if (reloadableCompSource.CanBeUsed(out string _))
         {
             TryShot();
             reloadableCompSource.UsedOnce();

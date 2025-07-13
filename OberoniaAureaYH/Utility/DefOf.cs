@@ -152,9 +152,8 @@ public static class OARatkin_WorldObjectDefOf
     public static WorldObjectDef OA_ResearchSummit_Fair;
     public static WorldObjectDef OA_ResearchSummit_MysteriousTrader;
     public static WorldObjectDef OA_ResearchSummit_AssistWork;
-    public static WorldObjectDef OA_FixedCaravan_ResearchSummitAssistWork;
+
     public static WorldObjectDef OA_FixedCaravan_DiplomaticSummit;
-    public static WorldObjectDef OA_FixedCaravan_ResearchSummitEccentricScholar;
     static OARatkin_WorldObjectDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OARatkin_WorldObjectDefOf));

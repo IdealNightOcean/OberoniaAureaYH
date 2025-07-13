@@ -39,7 +39,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             allowAssaultColony = false,
             allowLeave = true,
-            allowBadThought = true,
+            allowBadThought = false,
             LodgerCount = lodgerCount,
             ChildCount = 0,
 
@@ -56,10 +56,10 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     {
         Quest quest = questParameter.quest;
 
-        string travelerCanLeaveNowSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.AllHealthy");
+        string travelerCanLeaveNowSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.TravelerCanLeaveNow");
         QuestPart_WoundedTravelerCanLeaveNow questPart_WoundedTravelerCanLeaveNow = new()
         {
-            inSignalEnable = QuestGen.slate.Get<string>("inSignal"),
+            inSignalEnable = questParameter.slate.Get<string>("inSignal"),
             outSignal = travelerCanLeaveNowSignal,
             map = questParameter.map,
         };
@@ -72,7 +72,10 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         }, inSignal: travelerCanLeaveNowSignal);
         quest.Leave(pawns, travelerCanLeaveNowSignal, sendStandardLetter: false, leaveOnCleanup: false, inSignalRemovePawn, wakeUp: true);
 
-        base.SetPawnsLeaveComp(questParameter, pawns, inSignalEnable, inSignalRemovePawn);
+        if (questParameter.questDurationTicks > 0)
+        {
+            DefaultDelayLeaveComp(questParameter, pawns, inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
+        }
     }
 
     protected override void SetQuestEndComp(QuestParameter questParameter, QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
