@@ -55,6 +55,11 @@ public class SettlementDipComp : WorldObjectComp
         return oaFaction is not null && worldObject.Faction == oaFaction;
     }
 
+    public override void CompTick()
+    {
+        base.CompTick();
+        diplomaticSummitHandler?.SummitTick();
+    }
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
         if (IsWorking || !DiplomacyValid(parent))

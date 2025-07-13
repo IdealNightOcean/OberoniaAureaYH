@@ -86,10 +86,11 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     }
 
     protected override void InterruptWork() { }
-    public override void Notify_FixedCaravanLeaveByPlayer(FixedCaravan fixedCaravan)
+
+    public override void PreConvertToCaravanByPlayer(FixedCaravan fixedCaravan)
     {
         GetReward("OA_LetterLabelRSAssistWork_LeaveHalfway", "OA_LetterRSAssistWork_LeaveHalfway", LetterDefOf.NeutralEvent);
-        base.Notify_FixedCaravanLeaveByPlayer(fixedCaravan);
+        base.PreConvertToCaravanByPlayer(fixedCaravan);
     }
 
     public override string FixedCaravanWorkDesc()
@@ -174,10 +175,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     {
         ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
-        foreach (Thing t in things)
-        {
-            OAFrame_FixedCaravanUtility.GiveThing(assistWorkCaravan, t);
-        }
+        OAFrame_FixedCaravanUtility.GiveThings(assistWorkCaravan, things);
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
             Need_Food need_Food = pawn.needs?.food;
@@ -282,8 +280,6 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
         }
         return 5f + totalNum * 5f;
     }
-
-
 
     public override void ExposeData()
     {

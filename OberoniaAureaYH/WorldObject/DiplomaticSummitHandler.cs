@@ -18,6 +18,7 @@ public enum NegotiatingTeamLevel
 public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixedCaravanAssociate
 {
     public const int TicksNeeded = 5000;
+    public string FixedCaravanName => null;
 
     private Settlement settlement = settlement ?? throw new ArgumentNullException(nameof(settlement));
 
@@ -71,7 +72,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
 
     private void TryStartSummit(Caravan caravan)
     {
-        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan);
+        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, settlement);
         if (associatedFixedCaravan is null)
         {
             CancelSummit();
@@ -98,7 +99,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
         Reset();
     }
 
-    public void Notify_FixedCaravanLeaveByPlayer(FixedCaravan fixedCaravan)
+    public void PreConvertToCaravanByPlayer(FixedCaravan fixedCaravan)
     {
         DiplomaticSummitUtility.Outcome_LeaveHalfway(settlement);
         settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);

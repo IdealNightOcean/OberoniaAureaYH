@@ -26,12 +26,13 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
             {
                 return false;
             }
-            foreach (Pawn p in pawns)
+            for (int i = 0; i < pawns.Count; i++)
             {
-                if (!HealthyPawn(p))
+                if (!HealthyPawn(pawns[i]))
                 {
                     return false;
                 }
+
             }
             return true;
         }
@@ -80,7 +81,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
     public override void Cleanup()
     {
         base.Cleanup();
-        pawns.Clear();
+        pawns = null;
     }
     public override void ExposeData()
     {
