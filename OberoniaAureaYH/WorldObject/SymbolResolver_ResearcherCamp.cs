@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.BaseGen;
 using Verse;
@@ -17,8 +17,9 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         rp.bedCount = DefaultBedCount.RandomInRange;
 
         Map map = BaseGen.globalSettings.map;
-        Faction faction = ((map.ParentFaction is not null && !map.ParentFaction.IsPlayer) ? map.ParentFaction : ResearcherCampComp.GenerateTempCampFaction());
-        Lord singlePawnLord = (rp.settlementLord = rp.singlePawnLord ?? LordMaker.MakeNewLord(faction, new LordJob_DefendBase(faction, rp.rect.CenterCell, rp.attackWhenPlayerBecameEnemy ?? false), map));
+        Faction faction = (map.ParentFaction is not null && !map.ParentFaction.IsPlayer) ? map.ParentFaction : ResearcherCampComp.GenerateTempCampFaction();
+        rp.settlementLord = rp.singlePawnLord ?? LordMaker.MakeNewLord(faction, new LordJob_DefendBase(faction, rp.rect.CenterCell, rp.attackWhenPlayerBecameEnemy ?? false), map);
+        Lord singlePawnLord = rp.settlementLord;
         TraverseParms traverseParms = TraverseParms.For(TraverseMode.PassDoors);
         ResolveParams resolveParams1 = rp;
 
@@ -28,7 +29,7 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         resolveParams1.rect = rp.rect;
         resolveParams1.faction = faction;
         resolveParams1.singlePawnGenerationRequest = pawnRequest;
-        resolveParams1.singlePawnSpawnCellExtraPredicate = rp.singlePawnSpawnCellExtraPredicate ?? ((IntVec3 x) => map.reachability.CanReachMapEdge(x, traverseParms));
+        resolveParams1.singlePawnSpawnCellExtraPredicate = rp.singlePawnSpawnCellExtraPredicate ?? (c => map.reachability.CanReachMapEdge(c, traverseParms));
 
         ResolveParams resolveParams2 = new()
         {

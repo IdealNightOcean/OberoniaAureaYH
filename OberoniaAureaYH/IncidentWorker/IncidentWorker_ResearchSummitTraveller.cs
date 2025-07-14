@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
 
     protected LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
     {
-        RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out var result);
+        RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out IntVec3 result);
         return new LordJob_VisitColony(parms.faction, result);
     }
     protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
@@ -95,7 +95,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     private bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Map map, IncidentParms parms, out Pawn trader)
     {
         Faction faction = parms.faction;
-        IEnumerable<Pawn> source = pawns.Where((Pawn p) => p.DevelopmentalStage.Adult());
+        IEnumerable<Pawn> source = pawns.Where(p => p.DevelopmentalStage.Adult());
         if (!source.Any())
         {
             trader = null;
@@ -135,7 +135,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     }
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
-        var obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
+        WorldObject obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
         if (obj is null)
         {
             researchSummit = null;

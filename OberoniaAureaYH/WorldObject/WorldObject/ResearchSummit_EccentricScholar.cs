@@ -13,29 +13,15 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCarv
 
     public override int TicksNeeded => 15000;
 
-    public override void Notify_CaravanArrived(Caravan caravan)
+    public override bool StartWork(Caravan caravan)
     {
-        if (isWorking)
-        {
-            Messages.Message("OA_ResearchSummit_EccentricScholarWorking".Translate(), MessageTypeDefOf.RejectInput, historical: false);
-        }
-        else
-        {
-            if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
-            {
-                return;
-            }
-            else
-            {
-                Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(
-                    "OA_ResearchSummit_EccentricScholarText".Translate(),
-                    "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
-                    delegate { StartWork(caravan); },
-                    "OA_ResearchSummit_EccentricScholarIngore".Translate(),
-                    Destroy);
-                Find.WindowStack.Add(nodeTree);
-            }
-        }
+        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarText".Translate(),
+                                                                         "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
+                                                                         delegate { base.StartWork(caravan); },
+                                                                         "OA_ResearchSummit_EccentricScholarIngore".Translate(),
+                                                                         Destroy);
+        Find.WindowStack.Add(nodeTree);
+        return true;
     }
 
     protected override void FinishWork()
@@ -44,10 +30,8 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCarv
         int steelCount = SteelCountRange.RandomInRange;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.ComponentIndustrial, componentCount);
         things.AddRange(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Steel, steelCount));
-        foreach (Thing t in things)
-        {
-            OAFrame_FixedCaravanUtility.GiveThing(associatedFixedCaravan, t);
-        }
+        OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
+
         foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
         {
             pawn.skills?.Learn(SkillDefOf.Intellectual, 1000f, direct: true);

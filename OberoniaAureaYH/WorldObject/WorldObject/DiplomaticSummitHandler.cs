@@ -20,12 +20,14 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
     public const int TicksNeeded = 5000;
     public string FixedCaravanName => null;
 
-    private Settlement settlement = settlement ?? throw new ArgumentNullException(nameof(settlement));
+    private readonly Settlement settlement = settlement ?? throw new ArgumentNullException(nameof(settlement));
 
     [Unsaved] private SettlementDipComp settlementDipComp;
-    private FixedCaravan_DiplomaticSummit associatedFixedCaravan;
+    private FixedCaravan associatedFixedCaravan;
     private Pawn negotiant;
     private NegotiatingTeamLevel negotiatingTeamLevel;
+
+    public FixedCaravan AssociatedFixedCaravan => associatedFixedCaravan;
 
     private bool isWorking;
     public bool IsWorking => isWorking;
@@ -40,21 +42,19 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
         this.negotiant = negotiant;
         Find.WindowStack.Add
         (
-            Dialog_MessageBox.CreateConfirmation
-            (
-                "OA_ConfirmDiplomaticSummit".Translate(settlement.Named("SETTLEMENT")),
-                delegate
-                {
-                    ConfirmSummit(caravan);
-                },
-                destructive: false
+            new Dialog_MessageBox("OA_ConfirmDiplomaticSummit".Translate(settlement.Named("SETTLEMENT")),
+                                  "Confirm".Translate(),
+                                  delegate { ConfirmSummit(caravan); },
+                                  "Cancel".Translate(),
+                                  CancelWork,
+                                  buttonADestructive: false
             )
         );
     }
 
     public void ConfirmSummit(Caravan caravan)
     {
-        negotiatingTeamLevel = DiplomaticSummitUtility.NegotiatingTeamLevelWeight.RandomElementByWeight((KeyValuePair<NegotiatingTeamLevel, float> x) => x.Value).Key;
+        negotiatingTeamLevel = settlementDipComp?.GetSettlementNegotiatingTeamLevel() ?? NegotiatingTeamLevel.Standard;
         TaggedString text = "OA_ConfirmDiplomaticSummitInfo".Translate(settlement.Named("SETTLEMENT"));
         text += "\n\n";
         text += ("OA_DiplomaticSummitNegotiatingTeamLevel" + negotiatingTeamLevel.ToString()).Translate();
@@ -64,7 +64,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
                                  "Confirm".Translate(),
                                  delegate { TryStartSummit(caravan); },
                                  "Cancel".Translate(),
-                                 CancelSummit,
+                                 CancelWork,
                                  buttonADestructive: false
             )
         );
@@ -72,48 +72,79 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
 
     private void TryStartSummit(Caravan caravan)
     {
-        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, settlement);
+        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OARatkin_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit, settlement);
+
         if (associatedFixedCaravan is null)
         {
-            CancelSummit();
+            CancelWork();
             return;
         }
-
+        Find.WorldObjects.Add(associatedFixedCaravan);
+        Find.WorldSelector.Select(associatedFixedCaravan);
         ticksRemaining = TicksNeeded;
         isWorking = true;
     }
 
-    public void SummitTick()
+    public void WorkTick()
     {
-        if ((ticksRemaining -= 1) == 0)
+        if (isWorking && ticksRemaining-- == 0)
         {
-            FinishSummit();
+            EndWork(interrupt: false, convertToCaravan: true);
         }
     }
 
-    private void FinishSummit()
+    private void FinishWork()
     {
         DiplomaticSummitUtility.ApplyEffect(negotiatingTeamLevel, associatedFixedCaravan, settlement, negotiant);
         OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
         settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
-        Reset();
     }
 
-    public void PreConvertToCaravanByPlayer(FixedCaravan fixedCaravan)
+    public void PreConvertToCaravanByPlayer()
     {
         DiplomaticSummitUtility.Outcome_LeaveHalfway(settlement);
         settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
-        Reset();
+        EndWork(interrupt: true, convertToCaravan: false);
     }
 
-    public void CancelSummit()
+    private void EndWork(bool interrupt, bool convertToCaravan)
     {
-        if (associatedFixedCaravan is not null)
+        if (isWorking)
+        {
+            isWorking = false;
+            if (interrupt)
+            {
+                settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
+            }
+            else
+            {
+                FinishWork();
+            }
+        }
+
+        if (convertToCaravan && associatedFixedCaravan is not null)
         {
             OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
         }
-        settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: true);
+
         Reset();
+    }
+
+    private void CancelWork()
+    {
+        if (isWorking)
+        {
+            EndWork(interrupt: true, convertToCaravan: true);
+        }
+        else
+        {
+            if (associatedFixedCaravan is not null)
+            {
+                OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
+            }
+            settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: true);
+            Reset();
+        }
     }
 
     private void Reset()
@@ -121,8 +152,6 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
         isWorking = false;
         negotiatingTeamLevel = NegotiatingTeamLevel.Standard;
         ticksRemaining = TicksNeeded;
-        settlement = null;
-        settlementDipComp = null;
         associatedFixedCaravan = null;
     }
 
@@ -145,13 +174,13 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
 [StaticConstructorOnStartup]
 public static class DiplomaticSummitUtility
 {
-    public static readonly Dictionary<NegotiatingTeamLevel, float> NegotiatingTeamLevelWeight = new()
-    {
-        {NegotiatingTeamLevel.Beginner,0.15f},
-        {NegotiatingTeamLevel.Standard,0.5f},
-        {NegotiatingTeamLevel.Sophistication,0.25f},
-        {NegotiatingTeamLevel.Excellence,0.1f}
-    };
+    public static readonly List<(NegotiatingTeamLevel, float)> NegotiatingTeamLevelWeight =
+    [
+        (NegotiatingTeamLevel.Beginner,0.15f),
+        (NegotiatingTeamLevel.Standard,0.5f),
+        (NegotiatingTeamLevel.Sophistication,0.25f),
+        (NegotiatingTeamLevel.Excellence,0.1f)
+    ];
     private static readonly Dictionary<NegotiatingTeamLevel, float> NegotiatingLevelInfluenceFactor = new()
     {
         {NegotiatingTeamLevel.Beginner,1.3f},
@@ -176,30 +205,30 @@ public static class DiplomaticSummitUtility
     private const int TriumphAssistPoints = 60;
     private const float TriumphXP = 8000f;
 
-    private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
+    private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(NegotiatingTeamLevel negotiatingTeamLevel, FixedCaravan fixedCaravan, Settlement settlement, Pawn pawn)
     {
         float influenceFactor = NegotiatingLevelInfluenceFactor[negotiatingTeamLevel];
         float negotiationAbility = pawn.GetStatValue(StatDefOf.NegotiationAbility);
         tmpPossibleOutcomes.Clear();
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Disaster(settlement);
         }, 40f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Flounder(settlement, pawn);
         }, 40f + negotiationAbility * 20f * influenceFactor));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Success(settlement, pawn);
         }, 10f + negotiationAbility * 40f * influenceFactor));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Triumph(fixedCaravan, settlement, pawn);
         }, negotiationAbility * 20f * influenceFactor));
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1();
     }
     public static void Outcome_LeaveHalfway(Settlement settlement)
     {

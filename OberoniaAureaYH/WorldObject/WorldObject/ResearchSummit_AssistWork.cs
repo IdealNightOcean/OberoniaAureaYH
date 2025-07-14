@@ -10,10 +10,9 @@ using Verse;
 namespace OberoniaAurea;
 public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
 {
-    private const int AllTicksNeeded = 25000;
-    private static readonly List<Pair<Action, float>> tmpPossibleOutcomes = [];
+    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 
-    private int checkRemaining = 5;
+    private int cycleRemaining = 5;
     private int allTicksRemaining = 25000;
     public override int TicksNeeded => 5000;
 
@@ -54,8 +53,8 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
         if (base.StartWork(caravan))
         {
             lastWorkTick = Find.TickManager.TicksGame;
-            allTicksRemaining = AllTicksNeeded;
-            checkRemaining = 5;
+            allTicksRemaining = 25000;
+            cycleRemaining = 5;
             return true;
         }
         else
@@ -67,12 +66,11 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     protected override void WorkTick()
     {
         allTicksRemaining--;
-        ticksRemaining--;
-        if (ticksRemaining <= 0)
+        if (--ticksRemaining <= 0)
         {
             if (associatedFixedCaravan is null)
             {
-                EndWork(interrupt: true, coverToCaravan: false);
+                EndWork(interrupt: true, convertToCaravan: false);
                 return;
             }
             ticksRemaining = TicksNeeded;
@@ -87,10 +85,10 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
 
     protected override void InterruptWork() { }
 
-    public override void PreConvertToCaravanByPlayer(FixedCaravan fixedCaravan)
+    public override void PreConvertToCaravanByPlayer()
     {
         GetReward("OA_LetterLabelRSAssistWork_LeaveHalfway", "OA_LetterRSAssistWork_LeaveHalfway", LetterDefOf.NeutralEvent);
-        base.PreConvertToCaravanByPlayer(fixedCaravan);
+        base.PreConvertToCaravanByPlayer();
     }
 
     public override string FixedCaravanWorkDesc()
@@ -104,15 +102,15 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     private void CheckWork()
     {
         ConsumptionNeeds(associatedFixedCaravan);
-        checkRemaining--;
-        if (checkRemaining == 3)
+        cycleRemaining--;
+        if (cycleRemaining == 3)
         {
             SupplyFood(associatedFixedCaravan);
         }
         GetPossibleOutcomes();
-        if (checkRemaining == 0)
+        if (cycleRemaining == 0 && isWorking)
         {
-            EndWork(interrupt: false, coverToCaravan: true);
+            EndWork(interrupt: false, convertToCaravan: true);
         }
     }
 
@@ -123,36 +121,36 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
         int capableCount = pawnsListForReading.Where(p => p.ageTracker.AgeBiologicalYears > 13).Count();
 
         float weight = 50f;
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_SmoothWork(capableCount);
         }, weight));
 
         weight = 20f + Faction.OfPlayer.GoodwillWith(OARatkin_MiscUtility.OAFaction) / 5f;
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_FriendlyCollaboration(capableCount);
         }, weight));
 
         weight = TradeDisputesSuccessWeight(pawnsListForReading);
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_TradeDisputesSuccess(capableCount);
         }, weight));
 
         weight = 15f;
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_TradeDisputesFail(capableCount);
         }, weight));
 
         weight = CausingArgumentWeight(pawnsListForReading);
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_CausingArgument(capableCount);
         }, weight));
 
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1();
     }
     private static void ConsumptionNeeds(FixedCaravan assistWorkCaravan) //消耗饥饿/娱乐值
     {
@@ -195,7 +193,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     {
         workPoints += capableCount;
         GetReward("OA_LetterLabelRSAssistWork_CausingArgument", "OA_LetterRSAssistWork_CausingArgument", LetterDefOf.NegativeEvent);
-        EndWork(interrupt: true, coverToCaravan: true);
+        EndWork(interrupt: true, convertToCaravan: true);
     }
 
     private void Outcome_SmoothWork(int capableCount)
@@ -285,7 +283,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     {
         base.ExposeData();
         Scribe_Values.Look(ref allTicksRemaining, "allTicksRemaining", 25000);
-        Scribe_Values.Look(ref checkRemaining, "checkRemaining", 5);
+        Scribe_Values.Look(ref cycleRemaining, "cycleRemaining", 5);
         Scribe_Values.Look(ref workPoints, "workPoints", 0);
         Scribe_Values.Look(ref lastWorkTick, "lastWorkTick", -1);
     }

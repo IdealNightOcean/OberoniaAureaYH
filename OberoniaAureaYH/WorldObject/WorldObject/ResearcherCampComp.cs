@@ -91,7 +91,7 @@ public class ResearcherCampComp : WorldObjectComp
 
     private static bool FactionDefUseable(FactionDef def)
     {
-        if (def.humanlikeFaction && !def.pawnGroupMakers.NullOrEmpty() && def.pawnGroupMakers.Any((PawnGroupMaker gm) => gm.kindDef == PawnGroupKindDefOf.Settlement))
+        if (def.humanlikeFaction && !def.pawnGroupMakers.NullOrEmpty() && def.pawnGroupMakers.Any(gm => gm.kindDef == PawnGroupKindDefOf.Settlement))
         {
             return true;
         }

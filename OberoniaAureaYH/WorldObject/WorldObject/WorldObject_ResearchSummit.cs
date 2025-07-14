@@ -163,7 +163,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
                 ScholarGift(caravan);
             }, 30f));
         }
-        tmpPossibleOutcomesI.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesI.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesII()
     {
@@ -176,7 +176,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             AssistWork(Tile);
         }, 35f));
-        tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesII.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesIII()
     {
@@ -190,7 +190,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             EccentricScholar(Tile);
         }, 25f));
-        tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesIII.RandomElementByWeight(x => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
     {
@@ -233,7 +233,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherSite(int parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
@@ -287,7 +287,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void MysteriousTrader(int parentTile) //神秘商人
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }

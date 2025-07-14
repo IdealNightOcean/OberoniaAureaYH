@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Mods\[OA]Ratkin Faction Oberonia Aurea\1.5\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,7 +45,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Mods\[OA]Ratkin Knight Order\Frame\1.5\Assemblies\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>..\..\OberoniaAurea_Frame\Release\1.5\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -124,7 +124,7 @@
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
-    <Compile Include="WorldObject\DiplomaticSummitHandler.cs" />
+    <Compile Include="WorldObject\WorldObject\DiplomaticSummitHandler.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_EccentricScholar.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_Fair.cs" />
     <Compile Include="WorldObject\WorldObject\ResearchSummit_MysteriousTrader.cs" />
@@ -162,7 +162,6 @@
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearcherVisit.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ResearchSummitSamePeopleJoin.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_OaAssistPointsChange.cs" />
-    <Compile Include="Quest\QuestNode\QuestNode_Root_SinglePawnJoin.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_OaAssistPointsChange.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetDiplomaticOfficesFaction.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_GetOberoniaAureaFaction.cs" />

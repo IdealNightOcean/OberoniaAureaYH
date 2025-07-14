@@ -32,7 +32,6 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
                 {
                     return false;
                 }
-
             }
             return true;
         }
@@ -42,8 +41,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
     {
         base.QuestPartTick();
 
-        ticksRemaining--;
-        if (ticksRemaining <= 0)
+        if (--ticksRemaining <= 0)
         {
             ticksRemaining = HealthCheckInterval;
             if (CanLeaveNow)

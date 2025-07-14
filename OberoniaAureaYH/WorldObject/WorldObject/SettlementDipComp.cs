@@ -15,6 +15,7 @@ public enum SettlementDipVisitType
     DeepExchange,
     DiplomaticSummit
 }
+
 public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProperties
 {
     public WorldObjectCompProperties_SettlementDipComp()
@@ -33,10 +34,11 @@ public class SettlementDipComp : WorldObjectComp
     private Settlement Settlement => parent as Settlement;
 
     private DiplomaticSummitHandler diplomaticSummitHandler;
-    private bool IsWorking => diplomaticSummitHandler?.IsWorking ?? false;
     public DiplomaticSummitHandler DiplomaticSummitHandler => diplomaticSummitHandler;
+    private bool IsWorking => diplomaticSummitHandler?.IsWorking ?? false;
 
     private int lastDiplomacyTick = -1;
+    private NegotiatingTeamLevel? curNegotiatingTeamLevel = null;
     private int RemainingCoolingTicks
     {
         get
@@ -58,7 +60,7 @@ public class SettlementDipComp : WorldObjectComp
     public override void CompTick()
     {
         base.CompTick();
-        diplomaticSummitHandler?.SummitTick();
+        diplomaticSummitHandler?.WorkTick();
     }
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
@@ -154,15 +156,24 @@ public class SettlementDipComp : WorldObjectComp
         diplomaticSummitHandler.InitSummit(caravan, pawn);
     }
 
+    public NegotiatingTeamLevel GetSettlementNegotiatingTeamLevel()
+    {
+        curNegotiatingTeamLevel ??= DiplomaticSummitUtility.NegotiatingTeamLevelWeight.RandomElementByWeight(kv => kv.Item2).Item1;
+
+        return curNegotiatingTeamLevel.Value;
+    }
+
     public void Notify_DiplomaticSummitEnd(bool cancel)
     {
         if (!cancel)
         {
+            curNegotiatingTeamLevel = null;
             lastDiplomacyTick = Find.TickManager.TicksGame;
             diplomacyCoolingDays = 30;
         }
         diplomaticSummitHandler = null;
     }
+
     public AcceptanceReport CanVisitNow()
     {
         if (parent.Faction.PlayerRelationKind != FactionRelationKind.Ally)
@@ -199,15 +210,8 @@ public class SettlementDipComp : WorldObjectComp
     {
         base.PostExposeData();
         Scribe_Values.Look(ref lastDiplomacyTick, "lastDiplomacyTick", -1);
+        Scribe_Values.Look(ref curNegotiatingTeamLevel, "curNegotiatingTeamLevel");
         Scribe_Deep.Look(ref diplomaticSummitHandler, "diplomaticSummitHandler", ctorArgs: Settlement);
-        if (Scribe.mode == LoadSaveMode.PostLoadInit)
-        {
-            if (diplomaticSummitHandler is not null && !diplomaticSummitHandler.IsWorking)
-            {
-                diplomaticSummitHandler.CancelSummit();
-                Notify_DiplomaticSummitEnd(cancel: true);
-            }
-        }
     }
 
 }
@@ -219,7 +223,7 @@ public static class DeepExchangeUtility
     private const int ChanwuNum = 10;
     private const int AddAssistPoints = 5;
 
-    private readonly static List<Pair<QuestScriptDef, float>> tmpPossibleOutcomes = [];
+    private readonly static List<(QuestScriptDef, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
@@ -241,7 +245,7 @@ public static class DeepExchangeUtility
             if (tmpPossibleOutcomes.Any())
             {
                 Slate slate = new();
-                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight((Pair<QuestScriptDef, float> x) => x.Second).First;
+                QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1;
                 if (questScript == OARatkin_QuestScriptDefOf.OA_UrbanConstruction)
                 {
                     slate.Set("settlement", settlement);
@@ -265,7 +269,7 @@ public static class DeepExchangeUtility
         }
         if (scriptDef.CanRun(slate))
         {
-            tmpPossibleOutcomes.Add(new Pair<QuestScriptDef, float>(scriptDef, chance));
+            tmpPossibleOutcomes.Add((scriptDef, chance));
         }
     }
 }

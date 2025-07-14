@@ -21,7 +21,7 @@ public class StockGenerator_BuyCategory : StockGenerator
         {
             if (excludedCategories is not null)
             {
-                return !excludedCategories.Any((ThingCategoryDef c) => c.DescendantThingDefs.Contains(t));
+                return !excludedCategories.Any(c => c.DescendantThingDefs.Contains(t));
             }
             return true;
         }

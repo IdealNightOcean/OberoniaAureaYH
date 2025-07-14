@@ -9,5 +9,3 @@ public class FixedCaravan_DiplomaticSummit : FixedCaravan
         associatedInterface = associatedWorldObject.GetComponent<SettlementDipComp>()?.DiplomaticSummitHandler;
     }
 }
-
-

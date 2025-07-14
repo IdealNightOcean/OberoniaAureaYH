@@ -25,7 +25,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private const int TriumphAssistPoints = 25;
 
 
-    private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
+    private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
     private static GameComponent_OberoniaAurea GC_OA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
 
     public override void Notify_CaravanArrived(Caravan caravan)
@@ -41,28 +41,28 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         tmpPossibleOutcomes.Clear();
         if (negotiationAbility < 2.4)
         {
-            tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+            tmpPossibleOutcomes.Add((delegate
             {
                 Outcome_Disaster(caravan);
             }, 20f));
         }
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Backfire(caravan);
         }, 50f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_TalksFlounder(caravan);
         }, GetFinalWeight(60f, 12f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Success(caravan);
         }, GetFinalWeight(25f, 9f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Triumph(caravan);
         }, GetFinalWeight(5f, 9f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1();
         pawn.skills.Learn(SkillDefOf.Social, 6000f, direct: true);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
