@@ -13,7 +13,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         {
             return false;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;

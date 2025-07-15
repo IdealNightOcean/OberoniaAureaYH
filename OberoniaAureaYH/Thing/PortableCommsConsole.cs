@@ -12,7 +12,7 @@ public class PortableCommsConsole : Apparel
         {
             yield return gizmo;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         Command_Action command_Use = new()
         {
             defaultLabel = "OA_PortableCommsConsoleLable".Translate(),

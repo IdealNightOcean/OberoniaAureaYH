@@ -26,10 +26,10 @@ public class ResearcherCampComp : WorldObjectComp
         {
             return;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is not null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_AttackResearcherCamp);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_AttackResearcherCamp);
             Find.LetterStack.ReceiveLetter("OA_LetterLabelAttackResearcherCamp".Translate(), "OA_LetterAttackResearcherCamp".Translate(oaFaction.NameColored, oaFaction.leader, ReduceGoodwill), LetterDefOf.NegativeEvent, parent, oaFaction);
         }
     }

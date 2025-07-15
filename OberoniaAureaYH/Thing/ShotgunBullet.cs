@@ -23,12 +23,12 @@ public class ShotgunBullet : BulletBase
         splashCount = 0;
     }
 
-    protected override void ImpactCell(IntVec3 hitCell)
+    protected override void ImpactCell(Map map, IntVec3 hitCell)
     {
-        TryTakeSplashDamage(hitCell, Map, out splashCount);
+        TryTakeSplashDamage(hitCell, map, out splashCount);
     }
 
-    protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
+    protected override void ImpactThing(Map map, Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
     {
         DamageInfo dinfo = new(DamageDef, DamageAmount, ArmorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
         dinfo.SetWeaponQuality(equipmentQuality);
@@ -106,7 +106,7 @@ public class ShotgunBullet : BulletBase
     protected static void GetPawnsInRadius(IntVec3 ctrPosition, Map map, float radius, List<Pawn> targetPawns) //获取以ctrPosition为圆心半径radius内的pawn
     {
         targetPawns.Clear();
-        foreach (IntVec3 cell in GenRadial.RadialCellsAround(ctrPosition, radius, useCenter: true).ToList())
+        foreach (IntVec3 cell in GenRadial.RadialCellsAround(ctrPosition, radius, useCenter: true))
         {
             List<Thing> thingList = map.thingGrid.ThingsListAt(cell);
             for (int i = 0; i < thingList.Count; i++)

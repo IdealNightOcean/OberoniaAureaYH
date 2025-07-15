@@ -33,12 +33,12 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         TraitSet pawnTrait = pawn.story?.traits;
         if (pawnTrait is not null)
         {
-            Trait trait = pawnTrait.GetTrait(OARatkin_RimWorldDefOf.NaturalMood);
+            Trait trait = pawnTrait.GetTrait(OARK_RimWorldDefOf.NaturalMood);
             if (trait is not null)
             {
                 pawn.story.traits.RemoveTrait(trait);
             }
-            pawnTrait.GainTrait(new Trait(OARatkin_RimWorldDefOf.NaturalMood, 2));
+            pawnTrait.GainTrait(new Trait(OARK_RimWorldDefOf.NaturalMood, 2));
         }
         return pawn;
     }
@@ -100,7 +100,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         TaggedString title = "OA_LetterLabelResearchSummitSamePeopleJoin".Translate();
         TaggedString letterText = "OA_LetterResearchSummitSamePeopleJoin".Translate(pawn.Named("PAWN")).AdjustedFor(pawn);
         PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref letterText, ref title, pawn);
-        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARatkin_MiscDefOf.OA_RK_AcceptJoinerViewInfo);
+        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARK_LetterDefOf.OA_RK_AcceptJoinerViewInfo);
         choiceLetter_AcceptJoinerViewInfo.signalAccept = acceptSignal;
         choiceLetter_AcceptJoinerViewInfo.signalReject = rejectSignal;
         choiceLetter_AcceptJoinerViewInfo.associatedPawn = pawn;

@@ -13,7 +13,7 @@ public class ThoughtWorker_Precept_Snow : ThoughtWorker_Precept
         }
         Map map = p.Map;
         WeatherDef curWeather = map.weatherManager.curWeather;
-        if (curWeather == OARatkin_RimWorldDefOf.SnowGentle || curWeather == OARatkin_RimWorldDefOf.SnowHard || map.snowGrid.TotalDepth > 1000)
+        if (curWeather == OARK_RimWorldDefOf.SnowGentle || curWeather == OARK_RimWorldDefOf.SnowHard || map.snowGrid.TotalDepth > 1000)
         {
             return ThoughtState.ActiveDefault;
         }

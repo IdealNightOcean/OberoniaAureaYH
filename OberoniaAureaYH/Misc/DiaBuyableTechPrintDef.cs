@@ -10,6 +10,11 @@ public class DiaBuyableTechPrintDef : Def
     public int allianceDuration = -1;
     public RoyalTitleDef royalTitleDef;
 
+    public bool onlyScienceDepartment;
+
+    public int gravTechAssistPoints;
+    public int gravTechStage;
+
     public ThingDef TechPrintDef => researchProject?.Techprint;
     public bool NeedAllianceDuration => allianceDuration > 0;
     public bool NeedRoyalTitle => royalTitleDef is not null;

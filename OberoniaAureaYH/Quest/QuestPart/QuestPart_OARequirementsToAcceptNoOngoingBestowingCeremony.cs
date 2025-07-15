@@ -8,7 +8,7 @@ public class QuestPart_OARequirementsToAcceptNoOngoingBestowingCeremony : QuestP
 {
     public override AcceptanceReport CanAccept()
     {
-        if (Find.QuestManager.QuestsListForReading.Where(q => q.State == QuestState.Ongoing && q.root == OARatkin_QuestScriptDefOf.OA_BestowingCeremony).Any())
+        if (Find.QuestManager.QuestsListForReading.Where(q => q.State == QuestState.Ongoing && q.root == OARK_QuestScriptDefOf.OA_BestowingCeremony).Any())
         {
             return new AcceptanceReport("QuestCanNotStartUntilBestowingCeremonyFinished".Translate());
         }

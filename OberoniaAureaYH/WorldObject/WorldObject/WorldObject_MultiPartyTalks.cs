@@ -11,7 +11,6 @@ using Verse;
 namespace OberoniaAurea;
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 {
-
     private static readonly SimpleCurve BadOutcomeChanceFactorByNegotiationAbility =
     [
         new CurvePoint(0f, 4f),
@@ -25,8 +24,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private const int TriumphAssistPoints = 25;
 
 
-    private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
-    private static GameComponent_OberoniaAurea GC_OA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
+    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 
     public override void Notify_CaravanArrived(Caravan caravan)
     {
@@ -63,7 +61,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
             Outcome_Triumph(caravan);
         }, GetFinalWeight(5f, 9f, negotiationAbility, leaderWeightFactor)));
         tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1();
-        pawn.skills.Learn(SkillDefOf.Social, 6000f, direct: true);
+        pawn.skills?.Learn(SkillDefOf.Social, 6000f, direct: true);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
@@ -102,7 +100,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, 20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
         }
-        GC_OA?.GetAssistPoints(SuccessAssistPoints);
+        OAInteractHandler.Instance.AdjustAssistPoints(SuccessAssistPoints);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Success".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Success".Translate(Faction.NameColored, 20, 30, SuccessAssistPoints), caravan, 20, 30, targetFactions), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
@@ -124,7 +122,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             caravan.AddPawnOrItem(list[i], addCarriedPawnToWorldPawnsIfAny: true);
         }
-        GC_OA?.GetAssistPoints(TriumphAssistPoints);
+        OAInteractHandler.Instance.AdjustAssistPoints(TriumphAssistPoints);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 

@@ -13,13 +13,13 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
         {
             return false;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is null)
         {
             return false;
         }
         parms.faction = oaFaction;
-        parms.traderKind = OARatkin_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector;
+        parms.traderKind = OARK_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector;
         return true;
     }
 
@@ -30,7 +30,7 @@ public class IncidentWorker_OACaravanArrivalTributeCollector : IncidentWorker_Tr
         {
             return false;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is null || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;

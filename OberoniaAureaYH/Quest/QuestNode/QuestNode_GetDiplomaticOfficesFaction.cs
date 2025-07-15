@@ -8,7 +8,7 @@ public class QuestNode_GetDiplomaticOfficesFaction : OberoniaAurea_Frame.QuestNo
 {
     protected override bool TestRunInt(Slate slate)
     {
-        if (OARatkin_MiscUtility.OAFaction is null)
+        if (ModUtility.OAFaction is null)
         {
             return false;
         }
@@ -16,7 +16,7 @@ public class QuestNode_GetDiplomaticOfficesFaction : OberoniaAurea_Frame.QuestNo
     }
     protected override void RunInt()
     {
-        if (OARatkin_MiscUtility.OAFaction is null)
+        if (ModUtility.OAFaction is null)
         {
             return;
         }
@@ -29,7 +29,7 @@ public class QuestNode_GetDiplomaticOfficesFaction : OberoniaAurea_Frame.QuestNo
         {
             return false;
         }
-        if (faction.HostileTo(OARatkin_MiscUtility.OAFaction))
+        if (faction.HostileTo(ModUtility.OAFaction))
         {
             return false;
         }

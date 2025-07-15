@@ -41,7 +41,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
         {
             Outcome_Triumph(caravan);
         }
-        pawn.skills.Learn(SkillDefOf.Social, 6000f, direct: true);
+        pawn.skills?.Learn(SkillDefOf.Social, 6000f, direct: true);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }

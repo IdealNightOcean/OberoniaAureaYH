@@ -33,7 +33,7 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
         for (int i = 0; i < allHumans.Count; i++)
         {
             Pawn pawn = allHumans[i];
-            if (pawn.genes.HasActiveGene(OARatkin_MiscDefOf.RK_OA_gene_Social))
+            if (pawn.genes.HasActiveGene(OARK_ModDefOf.RK_OA_gene_Social))
             {
                 validPawns++;
             }
