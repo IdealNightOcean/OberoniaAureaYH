@@ -41,7 +41,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         {
             Log.Warning("Deterministic seed not implemented for this pawn group kind worker. The result will be random anyway.");
         }
-        TraderKindDef traderKindDef = (parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight(traderDef => traderDef.CalculatedCommonality));
+        TraderKindDef traderKindDef = parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight(traderDef => traderDef.CalculatedCommonality);
         Pawn pawn = GenerateTrader(parms, groupMaker, traderKindDef);
         outPawns.Add(pawn);
         ThingSetMakerParams parms2 = default;
@@ -81,7 +81,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     //下面三个不重要，是因为泰南用了private才复制过来的
     protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {
-        PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight(x => x.selectionWeight).kind;
+        PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight(p => p.selectionWeight).kind;
         PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
         request.Tile = parms.tile;
         request.FixedIdeo = parms.ideo;

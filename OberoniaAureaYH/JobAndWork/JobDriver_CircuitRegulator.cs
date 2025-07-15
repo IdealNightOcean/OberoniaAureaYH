@@ -45,7 +45,7 @@ public class JobDriver_CircuitRegulator : JobDriver
     protected override IEnumerable<Toil> MakeNewToils()
     {
         this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-        PathEndMode pathEndMode = (IsAttachment ? PathEndMode.OnCell : PathEndMode.Touch);
+        PathEndMode pathEndMode = IsAttachment ? PathEndMode.OnCell : PathEndMode.Touch;
         yield return Toils_Goto.GotoThing(TargetIndex.A, pathEndMode);
         Toil repair = ToilMaker.MakeToil("MakeNewToils");
         repair.initAction = delegate

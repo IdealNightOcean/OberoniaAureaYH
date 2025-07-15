@@ -33,12 +33,12 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         TraitSet pawnTrait = pawn.story?.traits;
         if (pawnTrait is not null)
         {
-            Trait trait = pawnTrait.GetTrait(OARatkin_RimWorldDefOf.NaturalMood);
+            Trait trait = pawnTrait.GetTrait(OARK_RimWorldDefOf.NaturalMood);
             if (trait is not null)
             {
                 pawn.story.traits.RemoveTrait(trait);
             }
-            pawnTrait.GainTrait(new Trait(OARatkin_RimWorldDefOf.NaturalMood, 2));
+            pawnTrait.GainTrait(new Trait(OARK_RimWorldDefOf.NaturalMood, 2));
         }
         return pawn;
     }
@@ -53,6 +53,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
 
         Quest quest = QuestGen.quest;
         Pawn pawn = GeneratePawn(slate);
+        slate.Set("pawn", pawn);
 
         acceptSignal = QuestGenUtility.HardcodedSignalWithQuestID("Accept");
         rejectSignal = QuestGenUtility.HardcodedSignalWithQuestID("Reject");
@@ -62,12 +63,12 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
             quest.Delay(120000, delegate
             {
                 quest.PawnsArrive([pawn], null, map.Parent);
-                quest.End(QuestEndOutcome.Success);
+                QuestGen_End.End(quest, QuestEndOutcome.Success);
             });
         });
 
         quest.End(QuestEndOutcome.Fail, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, rejectSignal);
-        slate.Set("pawn", pawn);
+
         SendLetter(quest, pawn);
         string killedSignal = QuestGenUtility.HardcodedSignalWithQuestID("pawn.Killed");
         string playerTended = QuestGenUtility.HardcodedSignalWithQuestID("pawn.PlayerTended");
@@ -81,17 +82,17 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
             quest.AnyPawnUnhealthy([pawn],
                                 action: delegate
                                 {
-                                    quest.End(QuestEndOutcome.Fail);
+                                    QuestGen_End.End(quest, QuestEndOutcome.Fail);
                                 },
                                 elseAction: delegate
                                 {
-                                    quest.End(QuestEndOutcome.Success);
+                                    QuestGen_End.End(quest, QuestEndOutcome.Success);
                                 });
         });
 
         quest.Delay(60000, delegate
         {
-            quest.End(QuestEndOutcome.Fail);
+            QuestGen_End.End(quest, QuestEndOutcome.Fail);
         }, inSignalEnable: null, inSignalDisable: acceptSignal);
     }
 
@@ -100,7 +101,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         TaggedString title = "OA_LetterLabelResearchSummitSamePeopleJoin".Translate();
         TaggedString letterText = "OA_LetterResearchSummitSamePeopleJoin".Translate(pawn.Named("PAWN")).AdjustedFor(pawn);
         PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref letterText, ref title, pawn);
-        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARatkin_MiscDefOf.OA_RK_AcceptJoinerViewInfo);
+        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARK_ModDefOf.OA_RK_AcceptJoinerViewInfo);
         choiceLetter_AcceptJoinerViewInfo.signalAccept = acceptSignal;
         choiceLetter_AcceptJoinerViewInfo.signalReject = rejectSignal;
         choiceLetter_AcceptJoinerViewInfo.associatedPawn = pawn;

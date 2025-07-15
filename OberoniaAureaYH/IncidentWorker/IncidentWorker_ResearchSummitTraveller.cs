@@ -4,138 +4,63 @@ using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
-using Verse.AI.Group;
 
 namespace OberoniaAurea;
+
 //研究峰会 - 参会旅行者到达
 [StaticConstructorOnStartup]
-public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGroup
+public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGroupBase
 {
-    protected static readonly TraderKindDef TraderKindDef = OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
+    protected override TraderKindDef FixedTraderKind => OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
 
-    private static readonly SimpleCurve PointsCurve =
+    private static readonly SimpleCurve TravellerPointsCurve =
     [
         new CurvePoint(0f, 200f),
         new CurvePoint(10000f, 500f)
     ];
 
-    protected LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
-    {
-        RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out IntVec3 result);
-        return new LordJob_VisitColony(parms.faction, result);
-    }
-    protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
-    {
-        if (f.IsPlayerSafe() || f.defeated || f.temporary || f.Hidden)
-        {
-            return false;
-        }
+    private Settlement settlement;
 
-        if (f.HostileTo(Faction.OfPlayer))
-        {
-            return false;
-        }
-
-        if (!desperate && (!f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) || !f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp)))
-        {
-            return false;
-        }
-
-        return !NeutralGroupIncidentUtility.AnyBlockingHostileLord(map, f);
-    }
-    protected override bool TryExecuteWorker(IncidentParms parms)
-    {
-        Map map = (Map)parms.target;
-        if (!TryResolveParms(parms))
-        {
-            return false;
-        }
-        if (!TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit))
-        {
-            return false;
-        }
-        Settlement settlement = researchSummit.AssociateSettlement;
-        PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
-        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
-        {
-            return false;
-        }
-        List<Pawn> list = SpawnPawns(parms, groupMakerParms, groupMaker);
-        if (list.Count == 0)
-        {
-            return false;
-        }
-        LordMaker.MakeNewLord(parms.faction, CreateLordJob(parms, list), map, list);
-        if (TryConvertOnePawnToSmallTrader(list, map, parms, out Pawn trader))
-        {
-            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
-        }
-        return true;
-    }
     protected override void ResolveParmsPoints(IncidentParms parms)
     {
         if (parms.points < 0f)
         {
-            parms.points = 5000f;
+            parms.points = Rand.ByCurve(TravellerPointsCurve);
         }
-        parms.points = PointsCurve.Evaluate(parms.points);
     }
-    protected List<Pawn> SpawnPawns(IncidentParms parms, PawnGroupMakerParms groupMakerParms, PawnGroupMaker groupMaker)
+
+    protected override bool TryExecuteWorker(IncidentParms parms)
     {
-        Map map = (Map)parms.target;
-        List<Pawn> list = OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
-        foreach (Pawn item in list)
+        settlement = null;
+        if (!TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit))
         {
-            IntVec3 loc = CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5);
-            GenSpawn.Spawn(item, loc, map);
-            parms.storeGeneratedNeutralPawns?.Add(item);
-        }
-        return list;
-    }
-    private bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Map map, IncidentParms parms, out Pawn trader)
-    {
-        Faction faction = parms.faction;
-        IEnumerable<Pawn> source = pawns.Where(p => p.DevelopmentalStage.Adult());
-        if (!source.Any())
-        {
-            trader = null;
             return false;
         }
-        Pawn pawn = source.RandomElement();
-        Lord lord = pawn.GetLord();
-        pawn.mindState.wantsToTradeWithColony = true;
-        PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned: true);
-        pawn.trader.traderKind = TraderKindDef;
-        pawn.inventory.DestroyAll();
-        trader = pawn;
+        settlement = researchSummit.AssociateSettlement;
+        return base.TryExecuteWorker(parms);
+    }
 
-        ThingSetMakerParams parms2 = default;
-        parms2.traderDef = TraderKindDef;
-        parms2.tile = map.Tile;
-        parms2.makingFaction = faction;
-        foreach (Thing item in ThingSetMakerDefOf.TraderStock.root.Generate(parms2))
+    protected override List<Pawn> GeneratePawns(IncidentParms parms)
+    {
+        PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
+        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
         {
-            if (item is Pawn pawn2)
-            {
-                if (pawn2.Faction != pawn.Faction)
-                {
-                    pawn2.SetFaction(pawn.Faction);
-                }
-                IntVec3 loc = CellFinder.RandomClosewalkCellNear(pawn.Position, map, 5);
-                GenSpawn.Spawn(pawn2, loc, map);
-                lord.AddPawn(pawn2);
-            }
-            else if (!pawn.inventory.innerContainer.TryAdd(item))
-            {
-                item.Destroy();
-            }
+            return null;
         }
-        PawnInventoryGenerator.GiveRandomFood(pawn);
-        return true;
+
+        return OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
+    }
+
+    protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader, bool traderExists)
+    {
+        if (traderExists)
+        {
+            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
+        }
     }
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
-        WorldObject obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
+        WorldObject obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARK_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
         if (obj is null)
         {
             researchSummit = null;

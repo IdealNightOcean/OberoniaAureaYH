@@ -102,7 +102,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, 20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
         }
-        GC_OA?.GetAssistPoints(SuccessAssistPoints);
+        OAInteractHandler.Instance?.AdjustAssistPoints(SuccessAssistPoints);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Success".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Success".Translate(Faction.NameColored, 20, 30, SuccessAssistPoints), caravan, 20, 30, targetFactions), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
@@ -124,7 +124,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         {
             caravan.AddPawnOrItem(list[i], addCarriedPawnToWorldPawnsIfAny: true);
         }
-        GC_OA?.GetAssistPoints(TriumphAssistPoints);
+        OAInteractHandler.Instance?.AdjustAssistPoints(TriumphAssistPoints);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
@@ -175,7 +175,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
                     break;
                 }
             }
-            num += (flag ? (-0.05f) : 0.05f);
+            num += flag ? (-0.05f) : 0.05f;
         }
         return num;
     }
@@ -199,7 +199,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
                     break;
                 }
             }
-            num = (flag ? (-0.05f) : 0.05f);
+            num = flag ? (-0.05f) : 0.05f;
         }
         return GetBadOutcomeWeightFactor(statValue) * (1f + num);
     }

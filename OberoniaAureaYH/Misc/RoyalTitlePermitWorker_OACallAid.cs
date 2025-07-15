@@ -49,7 +49,8 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         if (source.Any())
         {
             Find.WindowStack.Add(new Dialog_MessageBox(text: "CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select(f => f.NameColored.Resolve()).ToCommaList()),
-                                                       buttonAText: "Confirm".Translate(), buttonAAction: Call,
+                                                       buttonAText: "Confirm".Translate(),
+                                                       buttonAAction: Call,
                                                        buttonBText: "GoBack".Translate()));
         }
         else

@@ -18,7 +18,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         pawn = null;
 
         slate.TryGet("bestowingFaction", out bestowingFaction);
-        if (OARatkin_MiscUtility.OAFaction is null) //金鸢尾兰派系判定
+        if (ModUtility.OAFaction is null) //金鸢尾兰派系判定
         {
             return false;
         }
@@ -61,7 +61,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
             return false;
         }
         QuestGen_Pawns.GetPawnParms parms = default;
-        parms.mustBeOfKind = OARatkin_PawnGenerateDefOf.OA_RK_Noble_C; //授勋官
+        parms.mustBeOfKind = OARK_PawnGenerateDefOf.OA_RK_Noble_C; //授勋官
         parms.canGeneratePawn = true;
         parms.mustBeOfFaction = bestowingFaction;
         if (!QuestGen_Pawns.GetPawnTest(parms, out _))
@@ -97,7 +97,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         Thing thing = QuestGen_Shuttle.GenerateShuttle(bestowingFaction);
         Pawn bestower = quest.GetPawn(new QuestGen_Pawns.GetPawnParms
         {
-            mustBeOfKind = OARatkin_PawnGenerateDefOf.OA_RK_Noble_C,
+            mustBeOfKind = OARK_PawnGenerateDefOf.OA_RK_Noble_C,
             canGeneratePawn = true,
             mustBeOfFaction = bestowingFaction,
             mustBeWorldPawn = true,
@@ -118,14 +118,14 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         for (int i = 0; i < DefenderGuardCount; i++)
         {
             //金鼠鼠授勋官护卫
-            Pawn defender = quest.GeneratePawn(OARatkin_PawnGenerateDefOf.OA_RK_Guard_Member, bestowingFaction);
+            Pawn defender = quest.GeneratePawn(OARK_PawnGenerateDefOf.OA_RK_Guard_Member, bestowingFaction);
             shuttleContents.Add(defender);
             defenders.Add(defender);
         }
         for (int i = 0; i < DefenderAssaultCount; i++)
         {
             //金鼠鼠授勋官护卫（突袭）
-            Pawn defender = quest.GeneratePawn(OARatkin_PawnGenerateDefOf.OA_RK_Assault_B, bestowingFaction);
+            Pawn defender = quest.GeneratePawn(OARK_PawnGenerateDefOf.OA_RK_Assault_B, bestowingFaction);
             shuttleContents.Add(defender);
             defenders.Add(defender);
         }

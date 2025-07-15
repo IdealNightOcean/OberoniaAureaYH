@@ -10,7 +10,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 {
     protected bool TryResolveParmsGeneral(IncidentParms parms)
     {
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is null)
         {
             return false;

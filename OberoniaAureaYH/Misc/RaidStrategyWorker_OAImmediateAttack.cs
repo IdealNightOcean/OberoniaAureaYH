@@ -21,8 +21,8 @@ public class RaidStrategyWorker_OAImmediateAttack : RaidStrategyWorker_Immediate
     }
     protected override LordJob MakeLordJob(IncidentParms parms, Map map, List<Pawn> pawns, int raidSeed)
     {
-        IntVec3 intVec = (parms.spawnCenter.IsValid ? parms.spawnCenter : pawns[0].PositionHeld);
-        Thing dropThing = ThingMaker.MakeThing(OARatkin_ThingDefOf.OA_RK_EMPInst);
+        IntVec3 intVec = parms.spawnCenter.IsValid ? parms.spawnCenter : pawns[0].PositionHeld;
+        Thing dropThing = ThingMaker.MakeThing(OARK_ThingDefOf.OA_RK_EMPInst);
         DropPodUtility.DropThingsNear(intVec, map, [dropThing]);
         return base.MakeLordJob(parms, map, pawns, raidSeed);
     }

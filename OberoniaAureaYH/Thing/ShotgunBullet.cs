@@ -23,12 +23,12 @@ public class ShotgunBullet : BulletBase
         splashCount = 0;
     }
 
-    protected override void ImpactCell(IntVec3 hitCell)
+    protected override void ImpactCell(Map map, IntVec3 hitCell)
     {
-        TryTakeSplashDamage(hitCell, Map, out splashCount);
+        TryTakeSplashDamage(hitCell, map, out splashCount);
     }
 
-    protected override void ImpactThing(Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
+    protected override void ImpactThing(Map map, Thing hitThing, Quaternion exactRotation, bool instigatorGuilty)
     {
         DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
         dinfo.SetWeaponQuality(equipmentQuality);

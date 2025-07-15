@@ -18,7 +18,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     protected override bool TestRunInt(Slate slate)
     {
-        Faction faction = OARatkin_MiscUtility.OAFaction;
+        Faction faction = ModUtility.OAFaction;
         if (faction is null || faction.HostileTo(Faction.OfPlayer))
         {
             return false;
@@ -28,7 +28,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     protected override Faction GetOrGenerateFaction()
     {
-        return OARatkin_MiscUtility.OAFaction;
+        return ModUtility.OAFaction;
     }
 
     protected override QuestParameter InitQuestParameter(Faction faction)
@@ -48,13 +48,14 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
             rewardValueRange = new FloatRange(1200f, 1800f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
             questDurationTicks = Rand.RangeInclusive(6, 8) * 60000,
 
-            fixedPawnKind = OARatkin_PawnGenerateDefOf.OA_RK_Traveller
+            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Traveller
         };
     }
 
-    protected override void SetPawnsLeaveComp(QuestParameter questParameter, List<Pawn> pawns, string inSignalEnable, string inSignalRemovePawn)
+    protected override void SetPawnsLeaveComp(string inSignalEnable, string inSignalRemovePawn)
     {
         Quest quest = questParameter.quest;
+        List<Pawn> pawns = questParameter.pawns;
 
         string travelerCanLeaveNowSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.TravelerCanLeaveNow");
         QuestPart_WoundedTravelerCanLeaveNow questPart_WoundedTravelerCanLeaveNow = new()
@@ -74,11 +75,11 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         if (questParameter.questDurationTicks > 0)
         {
-            DefaultDelayLeaveComp(questParameter, pawns, inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
+            DefaultDelayLeaveComp(inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
         }
     }
 
-    protected override void SetQuestEndComp(QuestParameter questParameter, QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
+    protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
     {
         questParameter.quest.AddPart(new QuestPart_OaAssistPointsChange(successSignal, AssistPoints));
     }
@@ -87,7 +88,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     {
         if (curPawnIndex++ == 1)
         {
-            pawn.health.AddHediff(OARatkin_PawnInfoDefOf.OA_RK_SeriousInjury);
+            pawn.health.AddHediff(OARK_HediffDefOf.OA_RK_SeriousInjury);
             TakeNonLethalDamage(pawn, DamageDefOf.Blunt);
         }
     }

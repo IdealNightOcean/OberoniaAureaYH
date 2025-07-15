@@ -4,7 +4,6 @@ using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Verse;
 using static RimWorld.ResearchManager;
 
@@ -87,21 +86,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         {
             FinishProjectOnly(projectDef, doCompletionDialog: true);
         }
-        int remaining = NeedSilver;
-        List<Thing> list = CaravanInventoryUtility.TakeThings(caravan, delegate (Thing thing)
-        {
-            if (thing.def != ThingDefOf.Silver)
-            {
-                return 0;
-            }
-            int num = Mathf.Min(remaining, thing.stackCount);
-            remaining -= num;
-            return num;
-        });
-        for (int i = 0; i < list.Count; i++)
-        {
-            list[i].Destroy();
-        }
+        OAFrame_CaravanUtility.RemoveThingOfDef(caravan, ThingDefOf.Silver, NeedSilver);
     }
     private static bool ValidResearch(ResearchProjectDef projectDef)
     {

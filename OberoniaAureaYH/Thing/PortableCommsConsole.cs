@@ -12,7 +12,7 @@ public class PortableCommsConsole : Apparel
         {
             yield return gizmo;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         Command_Action command_Use = new()
         {
             defaultLabel = "OA_PortableCommsConsoleLable".Translate(),
@@ -51,7 +51,7 @@ public class PortableCommsConsole : Apparel
         Pawn leader = faction.leader;
         if (!LeaderIsAvailableToTalk(leader))
         {
-            string text2 = ((leader is null) ? ((string)"LeaderUnavailableNoLeader".Translate()) : ((string)"LeaderUnavailable".Translate(leader.LabelShort, leader)));
+            string text2 = (leader is null) ? ((string)"LeaderUnavailableNoLeader".Translate()) : ((string)"LeaderUnavailable".Translate(leader.LabelShort, leader));
             return new FloatMenuOption(text + " (" + text2 + ")", null, faction.def.FactionIcon, faction.Color);
         }
         return FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate

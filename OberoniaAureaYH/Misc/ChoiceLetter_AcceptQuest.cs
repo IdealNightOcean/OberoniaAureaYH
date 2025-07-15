@@ -7,9 +7,8 @@ namespace OberoniaAurea;
 
 public class ChoiceLetter_OptionalQuest : ChoiceLetter
 {
-
     public QuestScriptDef questScriptDef;
-    public Slate slate;
+    [Unsaved] public Slate slate;
     public override bool CanDismissWithRightClick => false;
 
     public override IEnumerable<DiaOption> Choices
@@ -25,7 +24,7 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
             {
                 action = delegate
                 {
-                    GiveQuest(questScriptDef, slate);
+                    GiveQuest();
                     Find.LetterStack.RemoveLetter(this);
                 },
                 resolveTree = true
@@ -50,13 +49,23 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
         }
     }
 
-    public void GiveQuest(QuestScriptDef questDef, Slate vars)
+    public void GiveQuest()
     {
-        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questDef, vars ?? new Slate());
-        if (!quest.hidden && questDef.sendAvailableLetter)
+        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questScriptDef, slate ?? new Slate());
+        if (!quest.hidden && questScriptDef.sendAvailableLetter)
         {
             QuestUtility.SendLetterQuestAvailable(quest);
         }
         this.quest = quest;
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Defs.Look(ref questScriptDef, "questScriptDef");
+        if (Scribe.mode == LoadSaveMode.Saving && slate is not null)
+        {
+            Log.Error("Try saving a ChoiceLetter_OptionalQuest with a non-null slate.");
+        }
     }
 }

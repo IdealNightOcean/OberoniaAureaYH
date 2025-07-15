@@ -19,9 +19,9 @@ public static class GenerateBestowingCeremonyQuest_Patch
             Slate slate = new();
             slate.Set("titleHolder", pawn);
             slate.Set("bestowingFaction", faction);
-            if (OARatkin_QuestScriptDefOf.OA_BestowingCeremony.CanRun(slate))
+            if (OARK_QuestScriptDefOf.OA_BestowingCeremony.CanRun(slate))
             {
-                Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_BestowingCeremony, slate);
+                Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_BestowingCeremony, slate);
                 if (quest.root.sendAvailableLetter)
                 {
                     QuestUtility.SendLetterQuestAvailable(quest);

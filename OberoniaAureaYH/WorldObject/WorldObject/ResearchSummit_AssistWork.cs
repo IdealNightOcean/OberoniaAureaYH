@@ -126,7 +126,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
             Outcome_SmoothWork(capableCount);
         }, weight));
 
-        weight = 20f + Faction.OfPlayer.GoodwillWith(OARatkin_MiscUtility.OAFaction) / 5f;
+        weight = 20f + Faction.OfPlayer.GoodwillWith(ModUtility.OAFaction) / 5f;
         tmpPossibleOutcomes.Add((delegate
         {
             Outcome_FriendlyCollaboration(capableCount);
@@ -171,7 +171,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
 
     private static void SupplyFood(FixedCaravan assistWorkCaravan) //给予当天的食物
     {
-        ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
+        ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
         OAFrame_FixedCaravanUtility.GiveThings(assistWorkCaravan, things);
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
@@ -208,12 +208,12 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     }
     private void Outcome_TradeDisputesSuccess(int capableCount)
     {
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is not null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 6, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
         }
-        workPoints += (capableCount * 4 + 6);
+        workPoints += capableCount * 4 + 6;
         Messages.Message("OA_FixedCaravanRSAssistWork_TradeDisputesSuccess".Translate(), MessageTypeDefOf.PositiveEvent, historical: false);
     }
     private void Outcome_TradeDisputesFail(int capableCount)
@@ -226,7 +226,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
     {
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
-        OARatkin_MiscUtility.OAGameComp?.GetAssistPoints(APpoints);
+        OAInteractHandler.Instance.AdjustAssistPoints(APpoints);
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, silverNum);
         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
