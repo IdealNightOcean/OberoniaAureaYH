@@ -15,7 +15,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -90,7 +90,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         int remaining = NeedSilver;
         List<Thing> list = CaravanInventoryUtility.TakeThings(caravan, delegate (Thing thing)
         {
-            if (thing.def != RimWorld.ThingDefOf.Silver)
+            if (thing.def != ThingDefOf.Silver)
             {
                 return 0;
             }
@@ -105,7 +105,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
     }
     private static bool ValidResearch(ResearchProjectDef projectDef)
     {
-        if (projectDef == null)
+        if (projectDef is null)
         {
             return false;
         }
@@ -147,7 +147,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             Find.SignalManager.SendSignal(new Signal("ThingStudied", global: true));
         }
 
-        if (researcher != null)
+        if (researcher is not null)
         {
             TaleRecorder.RecordTale(TaleDefOf.FinishedResearchProject, researcher, proj);
         }
@@ -162,7 +162,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
                     foreach (Thing item in map.listerThings.ThingsInGroup(ThingRequestGroup.PowerTrader))
                     {
                         CompPowerTrader compPowerTrader;
-                        if ((compPowerTrader = item.TryGetComp<CompPowerTrader>()) != null)
+                        if ((compPowerTrader = item.TryGetComp<CompPowerTrader>()) is not null)
                         {
                             compPowerTrader.SetUpPowerVars();
                         }
@@ -185,7 +185,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
                 action = delegate
                 {
                     Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Research);
-                    if (MainButtonDefOf.Research.TabWindow is MainTabWindow_Research mainTabWindow_Research && proj.tab != null)
+                    if (MainButtonDefOf.Research.TabWindow is MainTabWindow_Research mainTabWindow_Research && proj.tab is not null)
                     {
                         mainTabWindow_Research.CurTab = proj.tab;
                     }
@@ -200,7 +200,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             Find.LetterStack.ReceiveLetter(proj.discoveredLetterTitle, proj.discoveredLetterText, LetterDefOf.NeutralEvent);
         }
 
-        if (proj.teachConcept != null)
+        if (proj.teachConcept is not null)
         {
             LessonAutoActivator.TeachOpportunity(proj.teachConcept, OpportunityType.Important);
         }
@@ -209,7 +209,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         {
             researchManager.SetCurrentProject(null);
         }
-        else if (ModsConfig.AnomalyActive && proj.knowledgeCategory != null)
+        else if (ModsConfig.AnomalyActive && proj.knowledgeCategory is not null)
         {
             foreach (KnowledgeCategoryProject currentAnomalyKnowledgeProject in researchManager.CurrentAnomalyKnowledgeProjects)
             {

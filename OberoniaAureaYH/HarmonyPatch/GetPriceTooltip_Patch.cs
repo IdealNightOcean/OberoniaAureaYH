@@ -19,12 +19,12 @@ public static class GetPriceTooltip_Patch
             return;
         }
         ThingDef thingDef = __instance.ThingDef;
-        if (thingDef == null)
+        if (thingDef is null)
         {
             return;
         }
         FactionDef tradeFaction = TradeSession.trader.Faction?.def;
-        if (tradeFaction == null)
+        if (tradeFaction is null)
         {
             return;
         }

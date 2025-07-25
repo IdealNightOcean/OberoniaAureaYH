@@ -20,20 +20,20 @@ public static class NegativeInteractionChanceFactor_Patch
             return;
         }
         Ideo ideo = initiator.Ideo;
-        if (ideo == null)
+        if (ideo is null)
         {
             return;
         }
         float factor = 1f;
-        if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Utopia))
+        if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_Community_Utopia))
         {
             factor = 0.5f;
         }
-        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Harmonious))
+        else if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_Community_Harmonious))
         {
             factor = 0.75f;
         }
-        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_Community_Turbulent))
+        else if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_Community_Turbulent))
         {
             factor = 1.25f;
         }

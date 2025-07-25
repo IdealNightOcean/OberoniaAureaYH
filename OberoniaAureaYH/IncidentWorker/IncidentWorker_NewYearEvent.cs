@@ -10,7 +10,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
+        if (GameComponent_OberoniaAurea.Instance.newYearEventTriggeredOnce)
         {
             return false;
         }
@@ -31,14 +31,14 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
     }
     protected bool ResolveParams(IncidentParms parms)
     {
-        if (OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce)
+        if (GameComponent_OberoniaAurea.Instance.newYearEventTriggeredOnce)
         {
             return false;
         }
         if (!parms.faction.IsOAFaction())
         {
-            parms.faction = OARatkin_MiscUtility.OAFaction;
-            if (parms.faction == null)
+            parms.faction = ModUtility.OAFaction;
+            if (parms.faction is null)
             {
                 return false;
             }
@@ -49,17 +49,17 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
         }
         Map map = (Map)parms.target;
         map ??= Find.AnyPlayerHomeMap;
-        if (map == null)
+        if (map is null)
         {
             return false;
         }
-        IntVec3 intVec = DropCellFinder.TryFindSafeLandingSpotCloseToColony(map, IntVec2.Two);
-        if (intVec == null || !intVec.IsValid)
+        IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
+        if (!intVec.IsValid)
         {
             return false;
         }
         parms.spawnCenter = intVec;
-        return map != null;
+        return map is not null;
     }
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
@@ -85,11 +85,11 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
             letterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named("FACTION"), parms.faction.LeaderTitle, learder.Named("LEADER"), map.Parent.Named("MAP"));
         }
 
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
-        things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.OARatkin_ResearchAnalyzer));
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
+        things.Add(ThingMaker.MakeThing(OARK_ThingDefOf.OARatkin_ResearchAnalyzer));
         ThingDef garlandDef = DefDatabase<ThingDef>.GetNamed("OA_RK_New_Hat_A");
         Thing garland = ThingMaker.MakeThing(garlandDef);
-        if (garland != null)
+        if (garland is not null)
         {
             garland.TryGetComp<CompQuality>()?.SetQuality(QualityCategory.Excellent, ArtGenerationContext.Outsider);
             things.Add(garland);
@@ -100,7 +100,7 @@ internal class IncidentWorker_NewYearEvent : IncidentWorker
 
         Find.LetterStack.ReceiveLetter(letterLabel, letterText, LetterDefOf.PositiveEvent, lookTargets, relatedFaction: parms.faction);
 
-        OARatkin_MiscUtility.OAGameComp.newYearEventTriggeredOnce = true;
+        GameComponent_OberoniaAurea.Instance.newYearEventTriggeredOnce = true;
         return true;
 
     }

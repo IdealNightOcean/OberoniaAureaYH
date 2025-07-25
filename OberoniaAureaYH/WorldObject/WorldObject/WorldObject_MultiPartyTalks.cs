@@ -11,7 +11,6 @@ using Verse;
 namespace OberoniaAurea;
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 {
-
     private static readonly SimpleCurve BadOutcomeChanceFactorByNegotiationAbility =
     [
         new CurvePoint(0f, 4f),
@@ -25,13 +24,12 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private const int TriumphAssistPoints = 25;
 
 
-    private readonly static List<Pair<Action, float>> tmpPossibleOutcomes = [];
-    private static GameComponent_OberoniaAurea GC_OA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
+    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoDiplomat".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -41,108 +39,108 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         tmpPossibleOutcomes.Clear();
         if (negotiationAbility < 2.4)
         {
-            tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+            tmpPossibleOutcomes.Add((delegate
             {
                 Outcome_Disaster(caravan);
             }, 20f));
         }
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Backfire(caravan);
         }, 50f));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_TalksFlounder(caravan);
         }, GetFinalWeight(60f, 12f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Success(caravan);
         }, GetFinalWeight(25f, 9f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.Add(new Pair<Action, float>(delegate
+        tmpPossibleOutcomes.Add((delegate
         {
             Outcome_Triumph(caravan);
         }, GetFinalWeight(5f, 9f, negotiationAbility, leaderWeightFactor)));
-        tmpPossibleOutcomes.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
-        pawn.skills.Learn(SkillDefOf.Social, 6000f, direct: true);
+        tmpPossibleOutcomes.RandomElementByWeight(x => x.Item2).Item1();
+        pawn.skills?.Learn(SkillDefOf.Social, 6000f, direct: true);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
 
     private void Outcome_Disaster(Caravan caravan) //大失败事件
     {
-        Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, -50, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksDisaster);
+        Faction.OfPlayer.TryAffectGoodwillWith(Faction, -50, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksDisaster);
         foreach (Faction faction in participantFactions)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, -40, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksDisaster);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Disaster".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Disaster".Translate(base.Faction.NameColored, -40, -50), caravan, -40, -50, this.participantFactions), LetterDefOf.NegativeEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Disaster".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Disaster".Translate(Faction.NameColored, -40, -50), caravan, -40, -50, participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
     }
 
     private void Outcome_Backfire(Caravan caravan) //失败事件
     {
-        Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, -20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksBackfire);
+        Faction.OfPlayer.TryAffectGoodwillWith(Faction, -20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksBackfire);
         foreach (Faction faction in participantFactions)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, -20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksBackfire);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Backfire".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Backfire".Translate(base.Faction.NameColored, -20), caravan, -20, -20, this.participantFactions), LetterDefOf.NegativeEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Backfire".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Backfire".Translate(Faction.NameColored, -20), caravan, -20, -20, participantFactions), LetterDefOf.NegativeEvent, caravan, Faction);
     }
 
     private void Outcome_TalksFlounder(Caravan caravan) //中立事件
     {
-        Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, 5, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Flounder".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Flounder".Translate(base.Faction.NameColored, 5), caravan, 0, 5), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Faction.OfPlayer.TryAffectGoodwillWith(Faction, 5, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Flounder".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Flounder".Translate(Faction.NameColored, 5), caravan, 0, 5), LetterDefOf.NeutralEvent, caravan, Faction);
     }
 
     private void Outcome_Success(Caravan caravan) //成功事件
     {
-        Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, 30, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
-        List<Faction> targetFactions = this.participantFactions.Take(3).ToList();
+        Faction.OfPlayer.TryAffectGoodwillWith(Faction, 30, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
+        List<Faction> targetFactions = participantFactions.Take(3).ToList();
         foreach (Faction faction in targetFactions)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, 20, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksSuccess);
         }
-        GC_OA?.GetAssistPoints(SuccessAssistPoints);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Success".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Success".Translate(base.Faction.NameColored, 20, 30, SuccessAssistPoints), caravan, 20, 30, targetFactions), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        OAInteractHandler.Instance.AdjustAssistPoints(SuccessAssistPoints);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Success".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Success".Translate(Faction.NameColored, 20, 30, SuccessAssistPoints), caravan, 20, 30, targetFactions), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private void Outcome_Triumph(Caravan caravan) //大成功事件
     {
-        Faction.OfPlayer.TryAffectGoodwillWith(base.Faction, 60, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksTriumph);
+        Faction.OfPlayer.TryAffectGoodwillWith(Faction, 60, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksTriumph);
         foreach (Faction faction in participantFactions)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(faction, 40, canSendMessage: false, canSendHostilityLetter: false, HistoryEventDefOf.PeaceTalksTriumph);
         }
         ThingSetMakerParams parms = default;
-        parms.makingFaction = base.Faction;
-        parms.techLevel = base.Faction.def.techLevel;
+        parms.makingFaction = Faction;
+        parms.techLevel = Faction.def.techLevel;
         parms.maxTotalMass = 20f;
         parms.totalMarketValueRange = new FloatRange(500f, 1200f);
-        parms.tile = base.Tile;
+        parms.tile = Tile;
         List<Thing> list = ThingSetMakerDefOf.Reward_ItemsStandard.root.Generate(parms);
         for (int i = 0; i < list.Count; i++)
         {
             caravan.AddPawnOrItem(list[i], addCarriedPawnToWorldPawnsIfAny: true);
         }
-        GC_OA?.GetAssistPoints(TriumphAssistPoints);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(base.Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, this.participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        OAInteractHandler.Instance.AdjustAssistPoints(TriumphAssistPoints);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelMultiPartyTalks_Triumph".Translate(), GetLetterText("OA_LetterMultiPartyTalks_Triumph".Translate(Faction.NameColored, 40, 60, GenLabel.ThingsLabel(list), TriumphAssistPoints), caravan, 40, 60, participantFactions, TryGainRoyalFavor(caravan)), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private int TryGainRoyalFavor(Caravan caravan) //获取帝国贡献
     {
         int num = 0;
-        if (base.Faction.def.HasRoyalTitles)
+        if (Faction.def.HasRoyalTitles)
         {
             num = 3;
-            BestCaravanPawnUtility.FindBestDiplomat(caravan)?.royalty.GainFavor(base.Faction, num);
+            BestCaravanPawnUtility.FindBestDiplomat(caravan)?.royalty.GainFavor(Faction, num);
         }
         return num;
     }
     private string GetLetterText(string baseText, Caravan caravan, int goodWill, int oAGoodWill, List<Faction> factions = null, int royalFavorGained = 0)
     {
         TaggedString text = baseText;
-        text += "\n\n" + "OA_GoodWillChange".Translate(base.Faction.NameColored, oAGoodWill);
-        if (factions != null)
+        text += "\n\n" + "OA_GoodWillChange".Translate(Faction.NameColored, oAGoodWill);
+        if (factions is not null)
         {
             foreach (Faction f in factions)
             {
@@ -150,12 +148,12 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
             }
         }
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn != null)
+        if (pawn is not null)
         {
             text += "\n\n" + "PeaceTalksSocialXPGain".Translate(pawn.LabelShort, 6000f.ToString("F0"), pawn.Named("PAWN"));
             if (royalFavorGained > 0)
             {
-                text += "\n\n" + "PeaceTalksRoyalFavorGain".Translate(pawn.LabelShort, royalFavorGained.ToString(), base.Faction.Named("FACTION"), pawn.Named("PAWN"));
+                text += "\n\n" + "PeaceTalksRoyalFavorGain".Translate(pawn.LabelShort, royalFavorGained.ToString(), Faction.Named("FACTION"), pawn.Named("PAWN"));
             }
         }
         return text;

@@ -10,7 +10,7 @@ public class QuestPart_OABestowingCeremony : QuestPart_BestowingCeremony
     protected override Lord MakeLord()
     {
         Lord lord = base.MakeLord();
-        if (lord != null && bestower != null)
+        if (lord is not null && bestower is not null)
         {
             bestower.inventory.innerContainer.TryAdd(ThingMaker.MakeThing(ThingDefOf.PsychicAmplifier), 1);
         }

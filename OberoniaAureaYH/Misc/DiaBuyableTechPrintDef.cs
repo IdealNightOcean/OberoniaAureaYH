@@ -10,6 +10,11 @@ public class DiaBuyableTechPrintDef : Def
     public int allianceDuration = -1;
     public RoyalTitleDef royalTitleDef;
 
+    public bool onlyScienceDepartment;
+
+    public int gravTechAssistPoints;
+    public int gravTechStage;
+
     public ThingDef TechPrintDef => researchProject?.Techprint;
     public bool NeedAllianceDuration => allianceDuration > 0;
     public bool NeedRoyalTitle => royalTitleDef is not null;
@@ -17,11 +22,11 @@ public class DiaBuyableTechPrintDef : Def
     public override void ResolveReferences()
     {
         base.ResolveReferences();
-        if (researchProject == null)
+        if (researchProject is null)
         {
-            Log.Error($"{this.defName} has no tech research project.");
+            Log.Error($"{defName} has no tech research project.");
         }
-        else if (TechPrintDef == null)
+        else if (TechPrintDef is null)
         {
             Log.Error($"Research Project {researchProject.label} has no tech print.");
         }

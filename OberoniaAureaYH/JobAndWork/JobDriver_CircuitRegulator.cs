@@ -23,13 +23,13 @@ public class JobDriver_CircuitRegulator : JobDriver
             repairSpeed = Mathf.Clamp(value, 0.01f, BaseJobEndInterval);
         }
     }
-    private Thing CircuitRegulator => base.TargetThingA;
+    private Thing CircuitRegulator => TargetThingA;
     private bool IsAttachment
     {
         get
         {
             ThingDef thingDef = GenConstruct.BuiltDefOf(CircuitRegulator.def) as ThingDef;
-            if (thingDef?.building != null)
+            if (thingDef?.building is not null)
             {
                 return thingDef.building.isAttachment;
             }
@@ -76,7 +76,7 @@ public class JobDriver_CircuitRegulator : JobDriver
     private void JobEffect()
     {
         CompCircuitRegulator comp_CR = CircuitRegulator.TryGetComp<CompCircuitRegulator>();
-        if (comp_CR != null)
+        if (comp_CR is not null)
         {
             comp_CR.CurCircuitStability = 1f;
         }

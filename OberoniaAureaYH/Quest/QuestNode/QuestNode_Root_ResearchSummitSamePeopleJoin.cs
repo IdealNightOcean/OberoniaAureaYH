@@ -1,42 +1,23 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
-
-//科研峰会 - 同道中人
-public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_SinglePawnJoin
+public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
 {
     private const int TimeoutTicks = 60000;
 
-    public const float RelationWithColonistWeight = 20f;
-    protected override void AddSpawnPawnQuestParts(Quest quest, Map map, Pawn pawn)
+    protected string acceptSignal;
+    protected string rejectSignal;
+
+    public Pawn GeneratePawn(Slate slate)
     {
-        signalAccept = QuestGenUtility.HardcodedSignalWithQuestID("Accept");
-        signalReject = QuestGenUtility.HardcodedSignalWithQuestID("Reject");
-        quest.Signal(signalAccept, delegate
-        {
-            quest.SetFaction(Gen.YieldSingle(pawn), Faction.OfPlayer);
-            quest.Delay(120000, delegate
-            {
-                quest.PawnsArrive(Gen.YieldSingle(pawn), null, map.Parent);
-                QuestGen_End.End(quest, QuestEndOutcome.Success);
-            });
-        });
-        quest.Signal(signalReject, delegate
-        {
-            QuestGen_End.End(quest, QuestEndOutcome.Fail);
-        });
-    }
-    public override Pawn GeneratePawn()
-    {
-        Slate slate = QuestGen.slate;
-        slate.TryGet("faction", out Faction fVar);
+        slate.TryGet("faction", out Faction faction);
         if (!slate.TryGet("overridePawnGenParams", out PawnGenerationRequest request))
         {
-            request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, fVar, forceNew: true);
+            request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction, forceNew: true);
         }
         request.ForceAddFreeWarmLayerIfNeeded = true;
         Pawn pawn = PawnGenerator.GeneratePawn(request);
@@ -45,42 +26,91 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode_Root_Single
         {
             Find.WorldPawns.PassToWorld(pawn);
         }
-        if (pawn.skills != null)
+        if (pawn.skills is not null)
         {
             pawn.skills.GetSkill(SkillDefOf.Intellectual).Level = 0;
         }
         TraitSet pawnTrait = pawn.story?.traits;
-        if (pawnTrait != null)
+        if (pawnTrait is not null)
         {
-            Trait trait = pawnTrait.GetTrait(OARatkin_RimWorldDefOf.NaturalMood);
-            if (trait != null)
+            Trait trait = pawnTrait.GetTrait(OARK_RimWorldDefOf.NaturalMood);
+            if (trait is not null)
             {
                 pawn.story.traits.RemoveTrait(trait);
             }
-            pawnTrait.GainTrait(new Trait(OARatkin_RimWorldDefOf.NaturalMood, 2));
+            pawnTrait.GainTrait(new Trait(OARK_RimWorldDefOf.NaturalMood, 2));
         }
         return pawn;
     }
-    public override void SendLetter(Quest quest, Pawn pawn)
+
+    protected override void RunInt()
+    {
+        Slate slate = QuestGen.slate;
+        if (!slate.TryGet("map", out Map map))
+        {
+            map = QuestGen_Get.GetMap();
+        }
+
+        Quest quest = QuestGen.quest;
+        Pawn pawn = GeneratePawn(slate);
+
+        acceptSignal = QuestGenUtility.HardcodedSignalWithQuestID("Accept");
+        rejectSignal = QuestGenUtility.HardcodedSignalWithQuestID("Reject");
+        quest.Signal(acceptSignal, delegate
+        {
+            quest.SetFaction([pawn], Faction.OfPlayer);
+            quest.Delay(120000, delegate
+            {
+                quest.PawnsArrive([pawn], null, map.Parent);
+                quest.End(QuestEndOutcome.Success);
+            });
+        });
+
+        quest.End(QuestEndOutcome.Fail, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, rejectSignal);
+        slate.Set("pawn", pawn);
+        SendLetter(quest, pawn);
+        string killedSignal = QuestGenUtility.HardcodedSignalWithQuestID("pawn.Killed");
+        string playerTended = QuestGenUtility.HardcodedSignalWithQuestID("pawn.PlayerTended");
+        string leftMapSignal = QuestGenUtility.HardcodedSignalWithQuestID("pawn.LeftMap");
+        string recruitedSignal = QuestGenUtility.HardcodedSignalWithQuestID("pawn.Recruited");
+        quest.End(QuestEndOutcome.Fail, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, killedSignal);
+        quest.End(QuestEndOutcome.Success, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, playerTended);
+        quest.End(QuestEndOutcome.Success, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, recruitedSignal);
+        quest.Signal(leftMapSignal, delegate
+        {
+            quest.AnyPawnUnhealthy([pawn],
+                                action: delegate
+                                {
+                                    quest.End(QuestEndOutcome.Fail);
+                                },
+                                elseAction: delegate
+                                {
+                                    quest.End(QuestEndOutcome.Success);
+                                });
+        });
+
+        quest.Delay(60000, delegate
+        {
+            quest.End(QuestEndOutcome.Fail);
+        }, inSignalEnable: null, inSignalDisable: acceptSignal);
+    }
+
+    private void SendLetter(Quest quest, Pawn pawn)
     {
         TaggedString title = "OA_LetterLabelResearchSummitSamePeopleJoin".Translate();
         TaggedString letterText = "OA_LetterResearchSummitSamePeopleJoin".Translate(pawn.Named("PAWN")).AdjustedFor(pawn);
         PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref letterText, ref title, pawn);
-        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARatkin_MiscDefOf.OA_RK_AcceptJoinerViewInfo);
-        choiceLetter_AcceptJoinerViewInfo.signalAccept = signalAccept;
-        choiceLetter_AcceptJoinerViewInfo.signalReject = signalReject;
+        ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARK_LetterDefOf.OA_RK_AcceptJoinerViewInfo);
+        choiceLetter_AcceptJoinerViewInfo.signalAccept = acceptSignal;
+        choiceLetter_AcceptJoinerViewInfo.signalReject = rejectSignal;
         choiceLetter_AcceptJoinerViewInfo.associatedPawn = pawn;
         choiceLetter_AcceptJoinerViewInfo.quest = quest;
         choiceLetter_AcceptJoinerViewInfo.StartTimeout(TimeoutTicks);
         Find.LetterStack.ReceiveLetter(choiceLetter_AcceptJoinerViewInfo);
     }
-    protected override void RunInt()
+
+    protected override bool TestRunInt(Slate slate)
     {
-        base.RunInt();
-        Quest quest = QuestGen.quest;
-        quest.Delay(60000, delegate
-        {
-            QuestGen_End.End(quest, QuestEndOutcome.Fail);
-        }, null, signalAccept);
+        return QuestGen_Get.GetMap() is not null;
     }
 }

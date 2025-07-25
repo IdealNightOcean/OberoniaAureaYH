@@ -53,7 +53,7 @@ public class CompChargedExplosion : ThingComp
     {
         if (chargeProgress < Props.chargeTicks)
         {
-            if (powerComp == null)
+            if (powerComp is null)
             {
                 chargeProgress++;
             }
@@ -66,7 +66,7 @@ public class CompChargedExplosion : ThingComp
                 powerComp.PowerOutput = 0f - powerComp.Props.PowerConsumption;
             }
         }
-        else if (powerComp != null)
+        else if (powerComp is not null)
         {
             powerComp.PowerOutput = 0f - powerComp.Props.idlePowerDraw;
         }
@@ -76,13 +76,63 @@ public class CompChargedExplosion : ThingComp
     {
         chargeProgress = 0;
         refuelComp?.ConsumeFuel(refuelComp.Fuel);
-        GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.explosiveDamageType, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, [parent]);
-        GenExplosion.DoExplosion(parent.Position, parent.Map, Props.explosiveRadius, Props.requiredDamageTypeToExplode, parent, Props.damageAmountBase, Props.armorPenetrationBase, Props.explosionSound, parent.def, null, null, Props.postExplosionSpawnThingDef, Props.postExplosionSpawnChance, Props.postExplosionSpawnThingCount, Props.postExplosionGasType, Props.applyDamageToExplosionCellsNeighbors, Props.preExplosionSpawnThingDef, Props.preExplosionSpawnChance, Props.preExplosionSpawnThingCount, Props.chanceToStartFire, Props.damageFalloff, null, [parent]);
+
+        GenExplosion.DoExplosion(center: parent.Position,
+            map: parent.Map,
+            radius: Props.explosiveRadius,
+            damType: Props.explosiveDamageType,
+            instigator: parent,
+            damAmount: Props.damageAmountBase,
+            armorPenetration: Props.armorPenetrationBase,
+            explosionSound: Props.explosionSound,
+            weapon: parent.def,
+            projectile: null,
+            intendedTarget: null,
+            postExplosionSpawnThingDef: Props.postExplosionSpawnThingDef,
+            postExplosionSpawnChance: Props.postExplosionSpawnChance,
+            postExplosionSpawnThingCount: Props.postExplosionSpawnThingCount,
+            postExplosionGasType: Props.postExplosionGasType,
+            postExplosionGasRadiusOverride: null,
+            postExplosionGasAmount: 255,
+            applyDamageToExplosionCellsNeighbors: Props.applyDamageToExplosionCellsNeighbors,
+            preExplosionSpawnThingDef: Props.preExplosionSpawnThingDef,
+            preExplosionSpawnChance: Props.preExplosionSpawnChance,
+            preExplosionSpawnThingCount: Props.preExplosionSpawnThingCount,
+            chanceToStartFire: Props.chanceToStartFire,
+            damageFalloff: Props.damageFalloff,
+            direction: null,
+            ignoredThings: [parent]);
+
+        GenExplosion.DoExplosion(center: parent.Position,
+            map: parent.Map,
+            radius: Props.explosiveRadius,
+            damType: Props.requiredDamageTypeToExplode,
+            instigator: parent,
+            damAmount: Props.damageAmountBase,
+            armorPenetration: Props.armorPenetrationBase,
+            explosionSound: Props.explosionSound,
+            weapon: parent.def,
+            projectile: null,
+            intendedTarget: null,
+            postExplosionSpawnThingDef: Props.postExplosionSpawnThingDef,
+            postExplosionSpawnChance: Props.postExplosionSpawnChance,
+            postExplosionSpawnThingCount: Props.postExplosionSpawnThingCount,
+            postExplosionGasType: Props.postExplosionGasType,
+            postExplosionGasRadiusOverride: null,
+            postExplosionGasAmount: 255,
+            applyDamageToExplosionCellsNeighbors: Props.applyDamageToExplosionCellsNeighbors,
+            preExplosionSpawnThingDef: Props.preExplosionSpawnThingDef,
+            preExplosionSpawnChance: Props.preExplosionSpawnChance,
+            preExplosionSpawnThingCount: Props.preExplosionSpawnThingCount,
+            chanceToStartFire: Props.chanceToStartFire,
+            damageFalloff: Props.damageFalloff,
+            direction: null,
+            ignoredThings: [parent]);
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
     {
-        if (parent.Faction == null || parent.Faction.IsPlayer)
+        if (parent.Faction is null || parent.Faction.IsPlayer)
         {
             Command_Action command_Action = new()
             {
@@ -92,11 +142,11 @@ public class CompChargedExplosion : ThingComp
                 action = Explosion
             };
 
-            if (powerComp != null && !powerComp.PowerOn)
+            if (powerComp is not null && !powerComp.PowerOn)
             {
                 command_Action.Disable(Props.noPowerReason);
             }
-            else if (refuelComp != null && !refuelComp.IsFull)
+            else if (refuelComp is not null && !refuelComp.IsFull)
             {
                 command_Action.Disable(Props.noFuelReason);
             }
@@ -104,7 +154,7 @@ public class CompChargedExplosion : ThingComp
             {
                 command_Action.Disable(Props.cooling);
             }
-            else if (breakdownComp != null && breakdownComp.BrokenDown)
+            else if (breakdownComp is not null && breakdownComp.BrokenDown)
             {
                 command_Action.Disable(Props.noFuelReason);
             }
@@ -120,7 +170,7 @@ public class CompChargedExplosion : ThingComp
             GenDraw.FillableBarRequest r = default;
             r.center = parent.TrueCenter() + Vector3.up;
             r.size = BarSize;
-            r.fillPercent = (float)chargeProgress / (float)Props.chargeTicks;
+            r.fillPercent = chargeProgress / (float)Props.chargeTicks;
             r.filledMat = filledMat;
             r.unfilledMat = emptyMat;
             r.margin = 0.15f;

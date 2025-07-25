@@ -13,7 +13,7 @@ public class RaidStrategyWorker_OAImmediateAttack : RaidStrategyWorker_Immediate
         {
             return false;
         }
-        if (parms.faction != null)
+        if (parms.faction is not null)
         {
             return parms.faction.IsOAFaction();
         }
@@ -22,7 +22,7 @@ public class RaidStrategyWorker_OAImmediateAttack : RaidStrategyWorker_Immediate
     protected override LordJob MakeLordJob(IncidentParms parms, Map map, List<Pawn> pawns, int raidSeed)
     {
         IntVec3 intVec = (parms.spawnCenter.IsValid ? parms.spawnCenter : pawns[0].PositionHeld);
-        Thing dropThing = ThingMaker.MakeThing(OARatkin_ThingDefOf.OA_RK_EMPInst);
+        Thing dropThing = ThingMaker.MakeThing(OARK_ThingDefOf.OA_RK_EMPInst);
         DropPodUtility.DropThingsNear(intVec, map, [dropThing]);
         return base.MakeLordJob(parms, map, pawns, raidSeed);
     }
@@ -35,7 +35,7 @@ public class RaidStrategyWorker_OAImmediateAttackFriendly : RaidStrategyWorker_O
         {
             return false;
         }
-        if (parms.faction != null)
+        if (parms.faction is not null)
         {
             return !parms.faction.HostileTo(Faction.OfPlayer);
         }

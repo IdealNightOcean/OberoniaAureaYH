@@ -65,7 +65,7 @@ public class CompCircuitRegulator : CompPowerTransmitter
     private float curLoadElectricity;
     protected float CurLoadElectricity(PowerNet powerNet) //当前负载
     {
-        if (powerNet == null)
+        if (powerNet is null)
         {
             curLoadElectricity = 0f;
         }
@@ -92,7 +92,7 @@ public class CompCircuitRegulator : CompPowerTransmitter
     {
         base.PostSpawnSetup(respawningAfterLoad);
         oaMapComp = null;
-        if (OAMapComp != null)
+        if (OAMapComp is not null)
         {
             if (!OAMapComp.circuitRegulators.Contains(this))
             {
@@ -101,9 +101,9 @@ public class CompCircuitRegulator : CompPowerTransmitter
         }
         ticksRemaining = 0;
     }
-    public override void PostDeSpawn(Map map)
+    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
     {
-        if (oaMapComp != null)
+        if (oaMapComp is not null)
         {
             if (oaMapComp.circuitRegulators.Contains(this))
             {
@@ -111,14 +111,14 @@ public class CompCircuitRegulator : CompPowerTransmitter
             }
         }
         MapComponent_OberoniaAurea deSpawnMapComp = map.GetOAMapComp();
-        if (deSpawnMapComp != null)
+        if (deSpawnMapComp is not null)
         {
             if (deSpawnMapComp.circuitRegulators.Contains(this))
             {
                 deSpawnMapComp.circuitRegulators.Remove(this);
             }
         }
-        base.PostDeSpawn(map);
+        base.PostDeSpawn(map, mode);
         Reset();
     }
 
@@ -181,7 +181,7 @@ public class CompCircuitRegulator : CompPowerTransmitter
 
     public static float CurrentPowerExport(PowerNet powerNet)
     {
-        if (powerNet == null)
+        if (powerNet is null)
         {
             return 0f;
         }

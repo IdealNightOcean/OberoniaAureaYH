@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,8 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
             }
             return;
         }
-        bool allowFood = parms.raidStrategy == null || parms.raidStrategy.pawnsCanBringFood || (parms.faction != null && !parms.faction.HostileTo(Faction.OfPlayer));
-        Predicate<Pawn> validatorPostGear = ((parms.raidStrategy != null) ? ((Pawn p) => parms.raidStrategy.Worker.CanUsePawn(parms.points, p, outPawns)) : null);
+        bool allowFood = parms.raidStrategy is null || parms.raidStrategy.pawnsCanBringFood || (parms.faction is not null && !parms.faction.HostileTo(Faction.OfPlayer));
+        Predicate<Pawn> validatorPostGear = ((parms.raidStrategy is not null) ? ((Pawn p) => parms.raidStrategy.Worker.CanUsePawn(parms.points, p, outPawns)) : null);
         bool flag = false;
 
         foreach (PawnGenOption pgo in groupMaker.options)
@@ -30,7 +30,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
             request.MustBeCapableOfViolence = true;
             request.Inhabitant = parms.inhabitants;
 
-            if (parms.raidAgeRestriction != null && parms.raidAgeRestriction.Worker.ShouldApplyToKind(pgo.kind))
+            if (parms.raidAgeRestriction is not null && parms.raidAgeRestriction.Worker.ShouldApplyToKind(pgo.kind))
             {
                 request.BiologicalAgeRange = parms.raidAgeRestriction.ageRange;
                 request.AllowedDevelopmentalStages = parms.raidAgeRestriction.developmentStage;
@@ -39,7 +39,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
             {
                 request.AllowedDevelopmentalStages = pgo.kind.pawnGroupDevelopmentStage.Value;
             }
-            if (!Find.Storyteller.difficulty.ChildRaidersAllowed && parms.faction != null && parms.faction.HostileTo(Faction.OfPlayer))
+            if (!Find.Storyteller.difficulty.ChildRaidersAllowed && parms.faction is not null && parms.faction.HostileTo(Faction.OfPlayer))
             {
                 request.AllowedDevelopmentalStages = DevelopmentalStage.Adult;
             }
@@ -50,7 +50,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
                 if (parms.forceOneDowned && !flag)
                 {
                     pawn.health.forceDowned = true;
-                    if (pawn.guest != null)
+                    if (pawn.guest is not null)
                     {
                         pawn.guest.Recruitable = true;
                     }

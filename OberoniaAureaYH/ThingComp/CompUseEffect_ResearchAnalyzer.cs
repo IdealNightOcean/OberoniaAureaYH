@@ -21,7 +21,7 @@ public class CompUseEffect_ResearchAnalyzer : CompUseEffect
     {
         base.DoEffect(usedBy);
         ResearchProjectDef curResearch = Find.ResearchManager.GetProject();
-        if (curResearch != null)
+        if (curResearch is not null)
         {
             Find.ResearchManager.AddProgress(curResearch, Props.researchAmount, usedBy);
             if (curResearch.IsFinished)
@@ -33,7 +33,7 @@ public class CompUseEffect_ResearchAnalyzer : CompUseEffect
 
     public override AcceptanceReport CanBeUsedBy(Pawn p)
     {
-        if (Find.ResearchManager.GetProject() == null)
+        if (Find.ResearchManager.GetProject() is null)
         {
             return "NoActiveResearchProjectToFinish".Translate();
         }

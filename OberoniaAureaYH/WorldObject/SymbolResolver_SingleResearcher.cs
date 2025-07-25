@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.BaseGen;
 using System.Linq;
@@ -14,11 +14,11 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
         {
             return false;
         }
-        if (rp.singlePawnToSpawn != null && rp.singlePawnToSpawn.Spawned)
+        if (rp.singlePawnToSpawn is not null && rp.singlePawnToSpawn.Spawned)
         {
             return true;
         }
-        if (!TryFindSpawnCell(rp, out var _))
+        if (!TryFindSpawnCell(rp, out IntVec3 _))
         {
             return false;
         }
@@ -27,21 +27,21 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
 
     public override void Resolve(ResolveParams rp)
     {
-        if (rp.singlePawnToSpawn != null && rp.singlePawnToSpawn.Spawned)
+        if (rp.singlePawnToSpawn is not null && rp.singlePawnToSpawn.Spawned)
         {
             return;
         }
         Map map = BaseGen.globalSettings.map;
-        if (!TryFindSpawnCell(rp, out var cell))
+        if (!TryFindSpawnCell(rp, out IntVec3 cell))
         {
-            if (rp.singlePawnToSpawn != null)
+            if (rp.singlePawnToSpawn is not null)
             {
                 Find.WorldPawns.PassToWorld(rp.singlePawnToSpawn);
             }
             return;
         }
         Pawn pawn;
-        if (rp.singlePawnToSpawn == null)
+        if (rp.singlePawnToSpawn is null)
         {
             PawnGenerationRequest request;
             if (rp.singlePawnGenerationRequest.HasValue)
@@ -50,19 +50,19 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
             }
             else
             {
-                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where((PawnKindDef x) => x.defaultFactionType == null || !x.defaultFactionType.isPlayer).RandomElement();
+                PawnKindDef pawnKindDef = rp.singlePawnKindDef ?? DefDatabase<PawnKindDef>.AllDefsListForReading.Where(p => p.defaultFactionDef is null || !p.defaultFactionDef.isPlayer).RandomElement();
                 Faction result = rp.faction;
-                if (result == null && pawnKindDef.RaceProps.Humanlike)
+                if (result is null && pawnKindDef.RaceProps.Humanlike)
                 {
-                    if (pawnKindDef.defaultFactionType != null)
+                    if (pawnKindDef.defaultFactionDef is not null)
                     {
-                        result = FactionUtility.DefaultFactionFrom(pawnKindDef.defaultFactionType);
-                        if (result == null)
+                        result = FactionUtility.DefaultFactionFrom(pawnKindDef.defaultFactionDef);
+                        if (result is null)
                         {
                             return;
                         }
                     }
-                    else if (!Find.FactionManager.AllFactions.Where((Faction x) => !x.IsPlayer).TryRandomElement(out result))
+                    else if (!Find.FactionManager.AllFactions.Where(f => !f.IsPlayer).TryRandomElement(out result))
                     {
                         return;
                     }
@@ -90,7 +90,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
     private static void AdjustPawnSkill(Pawn pawn)
     {
         SkillRecord intellectual = pawn.skills?.GetSkill(SkillDefOf.Intellectual);
-        if (intellectual != null && intellectual.Level < 8)
+        if (intellectual is not null && intellectual.Level < 8)
         {
             intellectual.Level = IntellectualSkill.RandomInRange;
         }
@@ -99,6 +99,6 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
     public static bool TryFindSpawnCell(ResolveParams rp, out IntVec3 cell)
     {
         Map map = BaseGen.globalSettings.map;
-        return CellFinder.TryFindRandomCellInsideWith(rp.rect, (IntVec3 x) => x.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate == null || rp.singlePawnSpawnCellExtraPredicate(x)), out cell);
+        return CellFinder.TryFindRandomCellInsideWith(rp.rect, c => c.Standable(map) && (rp.singlePawnSpawnCellExtraPredicate is null || rp.singlePawnSpawnCellExtraPredicate(c)), out cell);
     }
 }

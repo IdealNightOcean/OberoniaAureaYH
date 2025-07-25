@@ -12,19 +12,19 @@ public class PortableCommsConsole : Apparel
         {
             yield return gizmo;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
+        Faction oaFaction = ModUtility.OAFaction;
         Command_Action command_Use = new()
         {
             defaultLabel = "OA_PortableCommsConsoleLable".Translate(),
-            defaultDesc = "OA_PortableCommsConsoleDesc".Translate(this.Label),
+            defaultDesc = "OA_PortableCommsConsoleDesc".Translate(Label),
             action = delegate
             {
                 GizmoFloat_CommsConsoleList(Wearer, oaFaction);
             },
-            icon = this.def.uiIcon,
+            icon = def.uiIcon,
             activateSound = SoundDefOf.Tick_Tiny
         };
-        if (oaFaction == null)
+        if (oaFaction is null)
         {
             command_Use.Disable("OA_RK_FactionNonexistent".Translate());
         }
@@ -33,13 +33,13 @@ public class PortableCommsConsole : Apparel
 
     protected void GizmoFloat_CommsConsoleList(Pawn pawn, Faction faction)
     {
-        if (pawn == null)
+        if (pawn is null)
         {
             return;
         }
         FloatMenuOption floatMenuOption = GetFailureReason(pawn);
         floatMenuOption ??= CommFloatMenuOption(pawn, faction);
-        if (floatMenuOption != null)
+        if (floatMenuOption is not null)
         {
             Find.WindowStack.Add(new FloatMenu([floatMenuOption]));
         }
@@ -51,7 +51,7 @@ public class PortableCommsConsole : Apparel
         Pawn leader = faction.leader;
         if (!LeaderIsAvailableToTalk(leader))
         {
-            string text2 = ((leader == null) ? ((string)"LeaderUnavailableNoLeader".Translate()) : ((string)"LeaderUnavailable".Translate(leader.LabelShort, leader)));
+            string text2 = ((leader is null) ? ((string)"LeaderUnavailableNoLeader".Translate()) : ((string)"LeaderUnavailable".Translate(leader.LabelShort, leader)));
             return new FloatMenuOption(text + " (" + text2 + ")", null, faction.def.FactionIcon, faction.Color);
         }
         return FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate
@@ -71,7 +71,7 @@ public class PortableCommsConsole : Apparel
     }
     protected static bool LeaderIsAvailableToTalk(Pawn leader)
     {
-        if (leader == null)
+        if (leader is null)
         {
             return false;
         }

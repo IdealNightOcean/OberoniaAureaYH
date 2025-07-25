@@ -13,8 +13,8 @@ public class Verb_TargetCellAid : Verb_CastBase
         {
             return false;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction == null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
+        Faction oaFaction = ModUtility.OAFaction;
+        if (oaFaction is null || oaFaction.defeated || oaFaction.PlayerRelationKind == FactionRelationKind.Hostile)
         {
             return false;
         }
@@ -30,7 +30,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         };
         if (OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true))
         {
-            base.ReloadableCompSource?.UsedOnce();
+            ReloadableCompSource?.UsedOnce();
             return true;
         }
         else

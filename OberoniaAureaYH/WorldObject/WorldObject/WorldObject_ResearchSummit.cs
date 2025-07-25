@@ -27,10 +27,18 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesII = [];
     private static readonly List<Pair<Action, float>> tmpPossibleOutcomesIII = [];
 
+    private Settlement associateSettlement;
+    public Settlement AssociateSettlement => associateSettlement;
+
+    public void SetAssociateSettlement(Settlement settlement)
+    {
+        associateSettlement = settlement;
+    }
+
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
         Pawn pawn = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OA_MessageNoResearcher".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -38,12 +46,12 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         float researchSpeed = pawn.GetStatValue(StatDefOf.ResearchSpeed);
         MainOutcome(researchSpeed, caravan);
         EatChanwu(caravan);
-        AffectFactionGoodwill(base.Faction, participantFactions);
+        AffectFactionGoodwill(Faction, participantFactions);
         GetPossibleOutcomesI(researchSpeed, caravan);
         GetPossibleOutcomesII();
         GetPossibleOutcomesIII();
-        pawn.skills.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
-        Fair(this.Tile);
+        pawn.skills?.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
+        Fair(Tile);
         QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
         Destroy();
     }
@@ -76,16 +84,16 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     }
     private static void EatChanwu(Caravan caravan) //补满饥饿，获得吃花糕心情
     {
-        if (caravan == null)
+        if (caravan is null)
         {
             return;
         }
         else
         {
-            ThoughtDef thoughtDef = OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
+            ThoughtDef thoughtDef = OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB.ingestible.tasteThought;
             foreach (Pawn pawn in caravan.PawnsListForReading)
             {
-                if (pawn.needs.food != null)
+                if (pawn.needs.food is not null)
                 {
                     pawn.needs.food.CurLevelPercentage = 1f;
                 }
@@ -93,13 +101,13 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
     }
-    private static void Fair(int parentTile) //集市
+    private static void Fair(PlanetTile parentTile) //集市
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
-        ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_Fair);
+        ResearchSummit_Fair worldObject = (ResearchSummit_Fair)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummit_Fair);
         worldObject.Tile = tile;
         worldObject.InitInnerTrader();
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
@@ -116,7 +124,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         if (researchSpeed < BackfireNeedSpeed)
         {
             Faction fVar = participantFactions.RandomElement();
-            if (fVar != null)
+            if (fVar is not null)
             {
                 tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
@@ -126,15 +134,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            Bonus(caravan, base.Faction);
+            Bonus(caravan, Faction);
         }, 20f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherGift(caravan, associateWorldObject, base.Faction);
+            ResearcherGift(caravan, associateSettlement, Faction);
         }, 30f));
         tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
         {
-            ResearcherSite(this.Tile);
+            ResearcherSite(Tile);
         }, 20f));
         if (researchSpeed > NormalNeedSpeed)
         {
@@ -143,7 +151,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         if (researchSpeed > SuccessNeedSpeed)
         {
             Faction fVar = participantFactions.Where(f => f.HostileTo(Faction.OfPlayer)).RandomElementWithFallback(null);
-            if (fVar != null)
+            if (fVar is not null)
             {
                 tmpPossibleOutcomesI.Add(new Pair<Action, float>(delegate
                 {
@@ -155,20 +163,20 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
                 ScholarGift(caravan);
             }, 30f));
         }
-        tmpPossibleOutcomesI.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesI.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesII()
     {
         tmpPossibleOutcomesII.Clear();
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            MysteriousTrader(this.Tile);
+            MysteriousTrader(Tile);
         }, 35f));
         tmpPossibleOutcomesII.Add(new Pair<Action, float>(delegate
         {
-            AssistWork(this.Tile);
+            AssistWork(Tile);
         }, 35f));
-        tmpPossibleOutcomesII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesII.RandomElementByWeight(x => x.Second).First();
     }
     private void GetPossibleOutcomesIII()
     {
@@ -176,34 +184,35 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate { }, 45f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            AcademicDispute(this.Tile);
+            AcademicDispute(Tile);
         }, 35f));
         tmpPossibleOutcomesIII.Add(new Pair<Action, float>(delegate
         {
-            EccentricScholar(this.Tile);
+            EccentricScholar(Tile);
         }, 25f));
-        tmpPossibleOutcomesIII.RandomElementByWeight((Pair<Action, float> x) => x.Second).First();
+        tmpPossibleOutcomesIII.RandomElementByWeight(x => x.Second).First();
     }
     private static void SamePeople(Faction faction) //同道中人
     {
         Slate slate = new();
+        Map map = Find.AnyPlayerHomeMap;
         slate.Set("faction", faction);
-        if (OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
+        if (OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate, map))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
+            QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
         }
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
         Thing book = ThingMaker.MakeThing(ThingDefOf.Novel);
-        if (book != null)
+        if (book is not null)
         {
             CompQuality comp = book.TryGetComp<CompQuality>();
             comp.SetQuality(QualityCategory.Good, ArtGenerationContext.Outsider);
@@ -214,23 +223,23 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARatkin_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
-        things.Add(ThingMaker.MakeThing(OARatkin_ThingDefOf.Oberonia_Aurea_Tea));
+        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        things.Add(ThingMaker.MakeThing(OARK_ThingDefOf.Oberonia_Aurea_Tea));
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherSite(int parentTile) //落脚点
+    private static void ResearcherSite(PlanetTile parentTile) //落脚点
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
         Faction faction = ResearcherCampComp.GenerateTempCampFaction();
-        Site camp = SiteMaker.MakeSite(OARatkin_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
+        Site camp = SiteMaker.MakeSite(OARK_WorldObjectDefOf.OA_RK_ResearcherCamp, tile, faction);
         camp.GetComponent<ResearcherCampComp>()?.SetActivate(true);
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
@@ -240,9 +249,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private static void ResearcherVisit() //无势力学者的访问
     {
         Slate slate = new();
-        if (OARatkin_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
+        Map map = QuestGen_Get.GetMap();
+        slate.Set("map", map);
+        if (OARK_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate, map))
         {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_QuestScriptDefOf.OA_ResearcherVisit, slate);
+            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearcherVisit, slate);
             if (!quest.hidden && quest.root.sendAvailableLetter)
             {
                 QuestUtility.SendLetterQuestAvailable(quest);
@@ -253,9 +264,9 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate))
+        if (OARK_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate, Find.World))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARatkin_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
+            QuestUtility.GenerateQuestAndMakeAvailable(OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
         }
@@ -276,50 +287,50 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ScholarGift".Translate(), "OA_LetterResearchSummit_ScholarGift".Translate(), LetterDefOf.PositiveEvent, caravan);
     }
-    private static void MysteriousTrader(int parentTile) //神秘商人
+    private static void MysteriousTrader(PlanetTile parentTile) //神秘商人
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
-        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out int tile, (int t) => !worldObjects.AnyWorldObjectAt(t)))
+        if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
         {
             tile = parentTile;
         }
-        ResearchSummit_MysteriousTrader worldObject = (ResearchSummit_MysteriousTrader)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_MysteriousTrader);
+        ResearchSummit_MysteriousTrader worldObject = (ResearchSummit_MysteriousTrader)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummit_MysteriousTrader);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AcademicDispute(int parentTile) //学术约架
+    private static void AcademicDispute(PlanetTile parentTile) //学术约架
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
-        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
+        ResearchSummit_AcademicDispute worldObject = (ResearchSummit_AcademicDispute)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummit_AcademicDispute);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void EccentricScholar(int parentTile) //废品旁的学者
+    private static void EccentricScholar(PlanetTile parentTile) //废品旁的学者
     {
-        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out int tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
 
-        ResearchSummit_EccentricScholar worldObject = (ResearchSummit_EccentricScholar)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummitEccentricScholar);
+        ResearchSummit_EccentricScholar worldObject = (ResearchSummit_EccentricScholar)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummitEccentricScholar);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_EccentricScholar".Translate(), "OA_LetterResearchSummit_EccentricScholar".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AssistWork(int tile) //协助者募集点
+    private static void AssistWork(PlanetTile tile) //协助者募集点
     {
-        ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OARatkin_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
+        ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
         worldObject.Tile = tile;
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(180000);
@@ -329,46 +340,46 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private void Outcome_Disaster(Caravan caravan) //大失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(1, 200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(base.Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Backfire(Caravan caravan) //失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(2, 300);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(base.Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Flounder(Caravan caravan) //小失败事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(3, 500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(base.Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
     private void Outcome_Normal(Caravan caravan) //中立事件
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(4, 800);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(base.Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
     private void Outcome_Success(Caravan caravan) //成功谈判的结果
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(5, 1200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(base.Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
     private void Outcome_Triumph(Caravan caravan) //大成功谈判的结果
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(6, 1500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(base.Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, base.Faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
     private static void AffectFactionGoodwill(Faction oaFaction, List<Faction> factions)
     {
-        if (oaFaction != null)
+        if (oaFaction is not null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
         }
 
         if (!factions.NullOrEmpty())
         {
             foreach (Faction faction in factions)
             {
-                Faction.OfPlayer.TryAffectGoodwillWith(faction, 15, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_ResearchSummit);
+                Faction.OfPlayer.TryAffectGoodwillWith(faction, 15, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
             }
         }
     }
@@ -386,7 +397,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private string GetLetterText(string baseText, Caravan caravan, float amout, List<ResearchProjectDef> availableResearch)
     {
         StringBuilder sb = new(baseText);
-        if (availableResearch != null)
+        if (availableResearch is not null)
         {
             sb.AppendLine();
             sb.AppendLine();
@@ -397,8 +408,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         sb.AppendLine();
         sb.AppendLine();
-        sb.AppendInNewLine("OA_GoodWillChange".Translate(base.Faction.NameColored, 15));
-        if (participantFactions != null)
+        sb.AppendInNewLine("OA_GoodWillChange".Translate(Faction.NameColored, 15));
+        if (participantFactions is not null)
         {
             foreach (Faction f in participantFactions)
             {
@@ -406,7 +417,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
         Pawn pawn = BestCaravanPawnUtility.FindBestDiplomat(caravan);
-        if (pawn != null)
+        if (pawn is not null)
         {
             sb.AppendLine();
             sb.AppendLine();
@@ -427,6 +438,12 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         sb.AppendInNewLine("Success: " + 3.0f.ToStringPercent());
         sb.AppendInNewLine("Triumph: " + 4.0f.ToStringPercent());
         Log.Message(sb.ToString());
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_References.Look(ref associateSettlement, "associateSettlement");
     }
 
 }

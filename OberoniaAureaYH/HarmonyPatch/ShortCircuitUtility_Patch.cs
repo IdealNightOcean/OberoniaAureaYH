@@ -14,7 +14,7 @@ public static class ShortCircuitUtility_Patch
     {
         PowerNet powerNet = culprit.PowerComp.PowerNet;
         MapComponent_OberoniaAurea oaMapComp = culprit.Map.GetOAMapComp();
-        if (oaMapComp == null)
+        if (oaMapComp is null)
         {
             return true;
         }
@@ -30,12 +30,12 @@ public static class ShortCircuitUtility_Patch
     public static bool TryShortCircuitInRain_Prefix(ref bool __result, Thing thing)
     {
         PowerNet powerNet = thing.TryGetComp<CompPowerTrader>()?.PowerNet;
-        if (powerNet == null)
+        if (powerNet is null)
         {
             return true;
         }
         MapComponent_OberoniaAurea oaMapComp = thing.Map.GetOAMapComp();
-        if (oaMapComp == null)
+        if (oaMapComp is null)
         {
             return true;
         }

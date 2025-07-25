@@ -13,20 +13,20 @@ public static class MBW_TryStart_Patch
     [HarmonyPostfix]
     public static void Postfix(ref bool __result, Pawn pawn)
     {
-        if (!__result || !ModsConfig.IdeologyActive || pawn.Ideo == null)
+        if (!__result || !ModsConfig.IdeologyActive || pawn.Ideo is null)
         {
             return;
         }
         Ideo ideo = pawn.Ideo;
 
-        if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_MentalBreakProbability_Low))
+        if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_MentalBreakProbability_Low))
         {
-            MentalBreakProbability(pawn, 0.5f, OARatkin_PawnInfoDefOf.OA_RK_ResponsibilityConstraints);
+            MentalBreakProbability(pawn, 0.5f, OARK_ThoughtDefOf.OA_RK_ResponsibilityConstraints);
             Messages.Message("OA_ResponsibilityConstraints".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
         }
-        else if (ideo.HasPrecept(OARatkin_PreceptDefOf.OA_RK_MentalBreakProbability_Atonement))
+        else if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_MentalBreakProbability_Atonement))
         {
-            MentalBreakProbability(pawn, 0.8f, OARatkin_PawnInfoDefOf.OA_RK_Atonement);
+            MentalBreakProbability(pawn, 0.8f, OARK_ThoughtDefOf.OA_RK_Atonement);
             Messages.Message("OA_Atonement".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
         }
 
@@ -39,7 +39,7 @@ public static class MBW_TryStart_Patch
         {
             //拥有对应心情修正的情况下再次崩溃不会触发判定
             Thought_Memory tm = pawn.needs.mood?.thoughts?.memories?.GetFirstMemoryOfDef(thought);
-            if (tm != null)
+            if (tm is not null)
             {
                 return;
             }

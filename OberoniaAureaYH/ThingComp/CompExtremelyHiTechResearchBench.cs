@@ -14,7 +14,7 @@ public class CompProperties_ExtremelyHiTechResearchFacility : CompProperties_Fac
     public void AdjustStatOffsets(bool hiTechResearch)
     {
         StatModifier researchSpeedFactor = statOffsets.Where(s => s.stat == StatDefOf.ResearchSpeedFactor).First();
-        if (researchSpeedFactor != null)
+        if (researchSpeedFactor is not null)
         {
             researchSpeedFactor.value = hiTechResearch ? hiTechResearchOffect : normalTechResearchOffect;
         }
@@ -39,7 +39,7 @@ public class CompExtremelyHiTechResearchFacility : CompFacility
         get
         {
             ResearchProjectDef currentProj = Find.ResearchManager.GetProject();
-            if (currentProj != null)
+            if (currentProj is not null)
             {
                 if (currentProj.techLevel == TechLevel.Spacer || currentProj.techLevel == TechLevel.Ultra)
                 {

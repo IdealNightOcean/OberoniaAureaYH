@@ -19,13 +19,13 @@ public class Verb_SummonEMP : Verb
         {
             return false;
         }
-        CompApparelReloadable reloadableCompSource = base.ReloadableCompSource;
-        if (reloadableCompSource == null)
+        CompApparelReloadable reloadableCompSource = ReloadableCompSource;
+        if (reloadableCompSource is null)
         {
             TryShot();
             return true;
         }
-        else if (reloadableCompSource.CanBeUsed(out var _))
+        else if (reloadableCompSource.CanBeUsed(out string _))
         {
             TryShot();
             reloadableCompSource.UsedOnce();

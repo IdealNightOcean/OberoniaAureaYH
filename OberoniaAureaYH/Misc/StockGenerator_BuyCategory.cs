@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -10,18 +11,18 @@ public class StockGenerator_BuyCategory : StockGenerator
     public List<ThingDef> excludedThingDefs;
     public List<ThingCategoryDef> excludedCategories;
 
-    public override IEnumerable<Thing> GenerateThings(int forTile, Faction faction = null)
+    public override IEnumerable<Thing> GenerateThings(PlanetTile forTile, Faction faction = null)
     {
         return Enumerable.Empty<Thing>();
     }
 
     public override bool HandlesThingDef(ThingDef t)
     {
-        if (categoryDef.DescendantThingDefs.Contains(t) && (excludedThingDefs == null || !excludedThingDefs.Contains(t)))
+        if (categoryDef.DescendantThingDefs.Contains(t) && (excludedThingDefs is null || !excludedThingDefs.Contains(t)))
         {
-            if (excludedCategories != null)
+            if (excludedCategories is not null)
             {
-                return !excludedCategories.Any((ThingCategoryDef c) => c.DescendantThingDefs.Contains(t));
+                return !excludedCategories.Any(c => c.DescendantThingDefs.Contains(t));
             }
             return true;
         }

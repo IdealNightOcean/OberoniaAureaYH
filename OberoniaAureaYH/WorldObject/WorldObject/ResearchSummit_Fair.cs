@@ -11,10 +11,10 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public void InitInnerTrader()
     {
-        innerTrader = new(OARatkin_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
-        innerTrader.GenerateThings(this.Tile);
+        innerTrader = new(OARK_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
+        innerTrader.GenerateThings(Tile);
     }
-    public override void Tick()
+    protected override void Tick()
     {
         base.Tick();
         innerTrader?.Traderick();
@@ -22,7 +22,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
-        if (pawn == null)
+        if (pawn is null)
         {
             Messages.Message("OAFrame_MessageNoTrader".Translate(), caravan, MessageTypeDefOf.NegativeEvent, historical: false);
             return;
@@ -39,7 +39,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)
     {
-        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSFair".Translate(this.Label)))
+        foreach (FloatMenuOption floatMenuOption in CaravanArrivalAction_VisitInteractiveObject.GetFloatMenuOptions(caravan, this, "OA_Visit_RSFair".Translate(Label)))
         {
             yield return floatMenuOption;
         }

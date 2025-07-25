@@ -20,8 +20,8 @@ public class GenStep_OABasicGenStep : GenStep
         adventureRegion = new CellRect(minX, minZ, width, height);
         adventureRegion.ClipInsideMap(map);
         BaseGen.globalSettings.map = map;
-        CellFinder.TryFindRandomEdgeCellWith((IntVec3 v) => v.Standable(map), map, 0f, out var result);
-        MapGenerator.PlayerStartSpot = result;
+        CellFinder.TryFindRandomEdgeCellWith(c => c.Standable(map), map, 0f, out IntVec3 cell);
+        MapGenerator.PlayerStartSpot = cell;
         baseResolveParams = default;
         baseResolveParams.rect = adventureRegion;
     }

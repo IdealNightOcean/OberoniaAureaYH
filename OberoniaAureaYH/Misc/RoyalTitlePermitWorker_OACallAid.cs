@@ -17,7 +17,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
 
     public override IEnumerable<FloatMenuOption> GetRoyalAidOptions(Map map, Pawn pawn, Faction faction)
     {
-        if (AidDisabled(map, pawn, faction, out var reason))
+        if (AidDisabled(map, pawn, faction, out string reason))
         {
             yield return new FloatMenuOption(def.LabelCap + ": " + reason, null);
             yield break;
@@ -29,7 +29,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         }
         Action action = null;
         string description = def.LabelCap + ": ";
-        if (FillAidOption(pawn, faction, ref description, out var free))
+        if (FillAidOption(pawn, faction, ref description, out bool free))
         {
             action = delegate
             {
@@ -42,13 +42,16 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
     protected void BeginCallAid(Pawn caller, Map map, Faction faction, bool free, float biocodeChance = 1f)
     {
         IEnumerable<Faction> source = from f in (from p in map.mapPawns.AllPawnsSpawned
-                                                 where p.Faction != null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
+                                                 where p.Faction is not null && !p.Faction.IsPlayer && p.Faction != faction && !p.IsPrisonerOfColony
                                                  select p.Faction).Distinct()
                                       where f.HostileTo(Faction.OfPlayer) && !faction.HostileTo(f)
                                       select f;
         if (source.Any())
         {
-            Find.WindowStack.Add(new Dialog_MessageBox("CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select((Faction f) => f.NameColored.Resolve()).ToCommaList()), "Confirm".Translate(), Call, "GoBack".Translate()));
+            Find.WindowStack.Add(new Dialog_MessageBox(text: "CommandCallRoyalAidWarningNonHostileFactions".Translate(faction, source.Select(f => f.NameColored.Resolve()).ToCommaList()),
+                                                       buttonAText: "Confirm".Translate(),
+                                                       buttonAAction: Call,
+                                                       buttonBText: "GoBack".Translate()));
         }
         else
         {
@@ -74,7 +77,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
                     {
                         return false;
                     }
-                    return target.Cell.GetEdifice(map) == null && !target.Cell.Impassable(map);
+                    return target.Cell.GetEdifice(map) is null && !target.Cell.Impassable(map);
                 }
             };
             base.caller = caller;
@@ -95,7 +98,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         bool callSuccess = false;
         callSuccess = CallNormalAid(map, spawnPos, faction, biocodeChance) || callSuccess;
         OARatkinGroupExtension modEx_RG = ModEx_RG;
-        if (modEx_RG != null)
+        if (modEx_RG is not null)
         {
             foreach (OARatkinGroup ratkinGroup in modEx_RG.extraGroups)
             {
@@ -127,7 +130,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
             biocodeWeaponsChance = biocodeChance,
             spawnCenter = spawnPos
         };
-        if (def.royalAid.pawnKindDef != null)
+        if (def.royalAid.pawnKindDef is not null)
         {
             incidentParms.pawnKind = def.royalAid.pawnKindDef;
             incidentParms.pawnCount = def.royalAid.pawnCount;
@@ -150,7 +153,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
             biocodeWeaponsChance = biocodeChance,
             spawnCenter = spawnPos
         };
-        if (ratkinGroup.pawnKindDef != null)
+        if (ratkinGroup.pawnKindDef is not null)
         {
             incidentParms.pawnKind = ratkinGroup.pawnKindDef;
             incidentParms.pawnCount = ratkinGroup.pawnCount;

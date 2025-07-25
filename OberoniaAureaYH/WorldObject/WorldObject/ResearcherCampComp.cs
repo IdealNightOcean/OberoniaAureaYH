@@ -26,10 +26,10 @@ public class ResearcherCampComp : WorldObjectComp
         {
             return;
         }
-        Faction oaFaction = OARatkin_MiscUtility.OAFaction;
-        if (oaFaction != null)
+        Faction oaFaction = ModUtility.OAFaction;
+        if (oaFaction is not null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARatkin_HistoryEventDefOf.OA_AttackResearcherCamp);
+            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, ReduceGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_AttackResearcherCamp);
             Find.LetterStack.ReceiveLetter("OA_LetterLabelAttackResearcherCamp".Translate(), "OA_LetterAttackResearcherCamp".Translate(oaFaction.NameColored, oaFaction.leader, ReduceGoodwill), LetterDefOf.NegativeEvent, parent, oaFaction);
         }
     }
@@ -91,7 +91,7 @@ public class ResearcherCampComp : WorldObjectComp
 
     private static bool FactionDefUseable(FactionDef def)
     {
-        if (def.humanlikeFaction && !def.pawnGroupMakers.NullOrEmpty() && def.pawnGroupMakers.Any((PawnGroupMaker gm) => gm.kindDef == PawnGroupKindDefOf.Settlement))
+        if (def.humanlikeFaction && !def.pawnGroupMakers.NullOrEmpty() && def.pawnGroupMakers.Any(gm => gm.kindDef == PawnGroupKindDefOf.Settlement))
         {
             return true;
         }
@@ -119,14 +119,14 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     {
         Robbery(caravan, site);
     }
-    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, int destinationTile)
+    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, PlanetTile destinationTile)
     {
         FloatMenuAcceptanceReport floatMenuAcceptanceReport = base.StillValid(caravan, destinationTile);
         if (!floatMenuAcceptanceReport)
         {
             return floatMenuAcceptanceReport;
         }
-        if (site != null && site.Tile != destinationTile)
+        if (site is not null && site.Tile != destinationTile)
         {
             return false;
         }
@@ -151,12 +151,12 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
 
     public static FloatMenuAcceptanceReport CanVisit(WorldObject site)
     {
-        if (site == null || !site.Spawned)
+        if (site is null || !site.Spawned)
         {
             return false;
         }
         EnterCooldownComp enterCooldown = site.GetComponent<EnterCooldownComp>();
-        if (enterCooldown != null && enterCooldown.BlocksEntering)
+        if (enterCooldown is not null && enterCooldown.BlocksEntering)
         {
             return FloatMenuAcceptanceReport.WithFailMessage("MessageEnterCooldownBlocksEntering".Translate(enterCooldown.TicksLeft.ToStringTicksToPeriod()));
         }

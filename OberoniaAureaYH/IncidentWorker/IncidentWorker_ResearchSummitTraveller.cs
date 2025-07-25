@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame.Utility;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGroup
 {
-    protected static readonly TraderKindDef TraderKindDef = OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
+    protected static readonly TraderKindDef TraderKindDef = OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
 
     private static readonly SimpleCurve PointsCurve =
     [
@@ -21,10 +21,10 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
 
     protected LordJob_VisitColony CreateLordJob(IncidentParms parms, List<Pawn> pawns)
     {
-        RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out var result);
+        RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out IntVec3 result);
         return new LordJob_VisitColony(parms.faction, result);
     }
-    protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+    public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
     {
         if (f.IsPlayerSafe() || f.defeated || f.temporary || f.Hidden)
         {
@@ -35,7 +35,11 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         {
             return false;
         }
-
+        Map map = (Map)parms.target;
+        if (map is null)
+        {
+            return false;
+        }
         if (!desperate && (!f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) || !f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp)))
         {
             return false;
@@ -54,9 +58,9 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
         {
             return false;
         }
-        Settlement settlement = (Settlement)researchSummit.AssociateWorldObject;
+        Settlement settlement = researchSummit.AssociateSettlement;
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
-        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARatkin_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
+        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
         {
             return false;
         }
@@ -95,7 +99,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     private bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Map map, IncidentParms parms, out Pawn trader)
     {
         Faction faction = parms.faction;
-        IEnumerable<Pawn> source = pawns.Where((Pawn p) => p.DevelopmentalStage.Adult());
+        IEnumerable<Pawn> source = pawns.Where(p => p.DevelopmentalStage.Adult());
         if (!source.Any())
         {
             trader = null;
@@ -135,8 +139,8 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_NeutralGrou
     }
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
-        var obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARatkin_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
-        if (obj == null)
+        WorldObject obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARK_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);
+        if (obj is null)
         {
             researchSummit = null;
             return false;

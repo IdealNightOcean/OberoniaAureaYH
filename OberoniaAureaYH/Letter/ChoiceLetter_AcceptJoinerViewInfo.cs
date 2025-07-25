@@ -17,7 +17,7 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
     {
         get
         {
-            if (base.CanShowInLetterStack && quest != null)
+            if (base.CanShowInLetterStack && quest is not null)
             {
                 if (quest.State != QuestState.Ongoing)
                 {
@@ -33,9 +33,9 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
     {
         get
         {
-            if (base.ArchivedOnly)
+            if (ArchivedOnly)
             {
-                yield return base.Option_Close;
+                yield return Option_Close;
                 yield break;
             }
             DiaOption optionAccept = new("AcceptButton".Translate())
@@ -58,7 +58,7 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
             };
             yield return optionAccept;
             yield return optionReject;
-            if (associatedPawn != null)
+            if (associatedPawn is not null)
             {
                 DiaOption optionViewInfo = new("OA_ViewPawnInfoButton".Translate())
                 {
@@ -71,9 +71,9 @@ public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
             }
             if (lookTargets.IsValid())
             {
-                yield return base.Option_JumpToLocationAndPostpone;
+                yield return Option_JumpToLocationAndPostpone;
             }
-            yield return base.Option_Postpone;
+            yield return Option_Postpone;
         }
     }
 

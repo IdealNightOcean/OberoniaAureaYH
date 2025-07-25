@@ -17,7 +17,7 @@ public static class MakeRecipeProducts_Patch
         {
             yield return thing;
         }
-        if (dominantIngredient != null && billGiver is ThingWithComps WorkTable && AffectedBySpecialFacility(WorkTable))
+        if (dominantIngredient is not null && billGiver is ThingWithComps WorkTable && AffectedBySpecialFacility(WorkTable))
         {
             Thing recycleThing = ThingMaker.MakeThing(dominantIngredient.def);
             recycleThing.stackCount = Mathf.Max(dominantIngredient.stackCount / 10, 1);
@@ -28,13 +28,13 @@ public static class MakeRecipeProducts_Patch
     private static bool AffectedBySpecialFacility(ThingWithComps building)
     {
         CompAffectedByFacilities compABF = building?.GetComp<CompAffectedByFacilities>();
-        if (compABF == null)
+        if (compABF is null)
         {
             return false;
         }
         foreach (Thing facility in compABF.LinkedFacilitiesListForReading)
         {
-            if (facility.def == OARatkin_ThingDefOf.OA_RK_Cloth_Processing_B)
+            if (facility.def == OARK_ThingDefOf.OA_RK_Cloth_Processing_B)
             {
                 return true;
             }
