@@ -4,7 +4,6 @@ using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -27,8 +26,6 @@ public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProper
 [StaticConstructorOnStartup]
 public class SettlementDipComp : WorldObjectComp
 {
-    private static readonly Texture2D SettlementDipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
-
     private int diplomacyCoolingDays = 30;
 
     private Settlement Settlement => parent as Settlement;
@@ -72,7 +69,7 @@ public class SettlementDipComp : WorldObjectComp
         {
             defaultLabel = "OA_CommandDipAction".Translate(),
             defaultDesc = "OA_CommandDipActionDesc".Translate(),
-            icon = SettlementDipIcon,
+            icon = ModUtility.OADipIcon,
             action = delegate
             {
                 GizmoFloat_DipAction(caravan);

@@ -9,6 +9,8 @@ public static class OARK_RimWorldDefOf
     public static ThingDef Synthread;
     public static ThingDef VanometricPowerCell;
 
+    public static TraderKindDef Visitor_Outlander_Standard;
+
     public static WeatherDef SnowHard;
     public static WeatherDef SnowGentle;
 

@@ -80,17 +80,17 @@ public class CompBrokenPilotConsole : CompHackable
                 FinishHack();
                 break;
             default:
-                EndHack();
+                ForceEndHack();
                 return;
         }
     }
 
     public void AcceptOberoniaAureaRequest()
     {
-        EndHack();
-        hackPoint = 0;
-        acceptRequest = true;
         QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "AcceptOberoniaAureaRequest", MapParent.Named("SUBJECT"));
+        acceptRequest = true;
+        ForceEndHack();
+
         if (Rand.Chance(0.4f))
         {
             int delayTicks = (int)(Rand.Range(8f, 12f) * 60000);
@@ -131,7 +131,7 @@ public class CompBrokenPilotConsole : CompHackable
         {
             sb = new("OARK_Letter_BrokenPilotHacked".Translate());
             sb.AppendLine();
-            sb.AppendInNewLine("OAFrame_ResearchProgressAdded".Translate(2000.ToString("F0")));
+            sb.AppendInNewLine("OAFrame_ResearchProgressAdded".Translate(2000));
             foreach (ResearchProjectDef project in targetProjects)
             {
                 researchManager.AddProgress(project, 2000f);

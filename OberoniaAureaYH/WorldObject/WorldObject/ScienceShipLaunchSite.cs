@@ -12,10 +12,15 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
     private string shipName;
     public override int TicksNeeded => 12500;
 
-    public override void PostMake()
+    public override void PostAdd()
     {
-        base.PostMake();
+        base.PostAdd();
         shipName = ScienceShipRecord.GenerateShipName();
+    }
+
+    public void SetShipName(string shipName)
+    {
+        this.shipName = shipName;
     }
 
     public override string GetInspectString()

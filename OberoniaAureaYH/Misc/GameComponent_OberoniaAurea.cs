@@ -15,24 +15,22 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     public bool newYearEventTriggeredOnce;
 
-    public GameComponent_OberoniaAurea(Game game)
-    {
-        Instance = this;
-    }
+    public GameComponent_OberoniaAurea(Game game) => Instance = this;
 
     public override void StartedNewGame()
     {
-        EnsureComponentsInit();
         GameStart();
     }
     public override void LoadedGame()
     {
         GameStart();
+
+        TempNullParmsTargetFix();
     }
 
     public override void GameComponentTick()
     {
-        if (ticksRemaining-- < 0)
+        if (--ticksRemaining < 0)
         {
             ticksRemaining = 60000;
 
@@ -44,19 +42,33 @@ public class GameComponent_OberoniaAurea : GameComponent
         }
     }
 
-    private void EnsureComponentsInit()
+    private void GameStart()
     {
         interactHandler ??= new OAInteractHandler();
         if (ModsConfig.OdysseyActive)
         {
             sdInteractHandler ??= new ScienceDepartmentInteractHandler();
         }
-    }
-
-    private void GameStart()
-    {
         ModUtility.Notify_GameStart();
         TryAddNewYearEnent();
+    }
+
+    private void TempNullParmsTargetFix()
+    {
+        try
+        {
+            foreach (QueuedIncident queuedInc in Find.Storyteller.incidentQueue)
+            {
+                if (queuedInc.FiringIncident.parms.target is null)
+                {
+                    queuedInc.FiringIncident.parms.target = Find.World;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Failed to fix the null parms.target for QueuedIncident.firingInc: " + ex);
+        }
     }
 
     private void TryAddNewYearEnent()
@@ -87,10 +99,5 @@ public class GameComponent_OberoniaAurea : GameComponent
         Scribe_Deep.Look(ref interactHandler, "interactHandler");
         Scribe_Deep.Look(ref sdInteractHandler, "sdInteractHandler");
         Scribe_Values.Look(ref newYearEventTriggeredOnce, "newYearEventTriggeredOnce", defaultValue: false);
-
-        if (Scribe.mode == LoadSaveMode.PostLoadInit)
-        {
-            EnsureComponentsInit();
-        }
     }
 }

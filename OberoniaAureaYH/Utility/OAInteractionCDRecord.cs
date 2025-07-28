@@ -25,6 +25,8 @@ public struct OAInteractionCDRecord : IExposable
 
     public readonly bool IsInCooldown => nextAvailableTick > 0 && nextAvailableTick > Find.TickManager.TicksGame;
 
+    public override readonly string ToString() => $"LastActiveTick: {lastActiveTick}, NextAvailableTick: {nextAvailableTick}";
+
     public void ExposeData()
     {
         Scribe_Values.Look(ref lastActiveTick, "lastActiveTick", -1);

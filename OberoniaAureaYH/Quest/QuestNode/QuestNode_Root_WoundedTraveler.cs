@@ -52,9 +52,10 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         };
     }
 
-    protected override void SetPawnsLeaveComp(QuestParameter questParameter, List<Pawn> pawns, string inSignalEnable, string inSignalRemovePawn)
+    protected override void SetPawnsLeaveComp(string inSignalEnable, string inSignalRemovePawn)
     {
         Quest quest = questParameter.quest;
+        List<Pawn> pawns = questParameter.pawns;
 
         string travelerCanLeaveNowSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.TravelerCanLeaveNow");
         QuestPart_WoundedTravelerCanLeaveNow questPart_WoundedTravelerCanLeaveNow = new()
@@ -74,11 +75,11 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         if (questParameter.questDurationTicks > 0)
         {
-            DefaultDelayLeaveComp(questParameter, pawns, inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
+            DefaultDelayLeaveComp(inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
         }
     }
 
-    protected override void SetQuestEndComp(QuestParameter questParameter, QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
+    protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
     {
         questParameter.quest.AddPart(new QuestPart_OaAssistPointsChange(successSignal, AssistPoints));
     }

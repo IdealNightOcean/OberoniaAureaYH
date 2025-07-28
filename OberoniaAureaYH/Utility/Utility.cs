@@ -2,6 +2,7 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -11,6 +12,8 @@ public static class ModUtility
 {
     private static Faction OAFactionCache;
     public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
+
+    public static readonly Texture2D OADipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
 
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {
@@ -43,8 +46,6 @@ public static class ModUtility
         OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
-
-
     public static IEnumerable<Pawn> GetLendColonistsFromQuest(Quest quest)
     {
         return quest?.PartsListForReading?.OfType<QuestPart_LendColonistsToFaction>()
@@ -52,6 +53,16 @@ public static class ModUtility
                                          ?.LentColonistsListForReading
                                          ?.OfType<Pawn>()
                                          ?? [];
+    }
+
+    public static List<ResearchProjectDef> GetResearchableProjects(int targetCount, int maxPotentialCount)
+    {
+        return DefDatabase<ResearchProjectDef>.AllDefs.Where(p => !p.IsFinished && !p.IsHidden)?.Take(maxPotentialCount)?.TakeRandomDistinct(targetCount);
+    }
+
+    public static ResearchProjectDef GetSignalResearchableProject(int maxPotentialCount)
+    {
+        return DefDatabase<ResearchProjectDef>.AllDefs.Where(p => !p.IsFinished && !p.IsHidden)?.Take(maxPotentialCount)?.RandomElementWithFallback(null);
     }
 
     public static void Notify_GameStart()

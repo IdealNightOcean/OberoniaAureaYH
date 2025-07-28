@@ -19,4 +19,6 @@ public class DisplacementExplosionExtension : DefModExtension
     public bool doExplosion;
     public bool onlyTargetHostile;
     public bool canApplyOnSelf = true;
+
+    public EffecterDef effecter;
 }

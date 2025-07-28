@@ -53,10 +53,12 @@ public class CompGiveHediffsInRange : ThingComp
             }
             mote?.Maintain();
         }
+
         if (!parent.IsHashIntervalTick(Props.checkInterval))
         {
             return;
         }
+
         IReadOnlyList<Pawn> readOnlyList = ((!Props.onlyPawnsInSameFaction || wearer.Faction is null) ? wearer.Map.mapPawns.AllPawnsSpawned : wearer.Map.mapPawns.SpawnedPawnsInFaction(wearer.Faction));
         foreach (Pawn pawn in readOnlyList)
         {

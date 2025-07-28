@@ -58,7 +58,7 @@ public static class UnlockedFileUtility
         sb.AppendLine();
         sb.AppendInNewLine("OAFrame_PawnGainSkillXp".Translate(pawn, SkillDefOf.Intellectual.LabelCap, 2000));
 
-        ResearchProjectDef projectDef = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(r => !r.IsFinished && !r.IsHidden).Take(10).RandomElementWithFallback(null);
+        ResearchProjectDef projectDef = ModUtility.GetSignalResearchableProject(maxPotentialCount: 10);
         if (projectDef is not null)
         {
             Find.ResearchManager.FinishProject(projectDef, doCompletionDialog: false, researcher: pawn, doCompletionLetter: true);
@@ -137,7 +137,10 @@ public static class UnlockedFileUtility
                                                                                   : "OARK_UnlockedFile_DeletedFile".Translate(pawn)));
     }
 
-    private static void Result_Manuscript(Pawn pawn, bool isDelay) { }
+    private static void Result_Manuscript(Pawn pawn, bool isDelay)
+    {
+
+    }
 
     private static void Result_EncryptedFile(Pawn pawn)
     {

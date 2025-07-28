@@ -44,4 +44,12 @@ public class ChoiceLetter_UnlockedFile_Peep : ChoiceLetter
         this.fileType = fileType;
         this.detectionProp = detectionProp;
     }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_References.Look(ref pawn, "pawn");
+        Scribe_Values.Look(ref fileType, "fileType", defaultValue: DocumentType.TechDraft);
+        Scribe_Values.Look(ref detectionProp, "detectionProp", 0f);
+    }
 }

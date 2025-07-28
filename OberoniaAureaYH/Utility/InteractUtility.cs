@@ -1,6 +1,4 @@
 ﻿using RimWorld;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -46,21 +44,13 @@ public static class InteractUtility
 
     public static void SendGravTechStageUpgradeLetter(int curStage)
     {
+        int gainGTAP = Mathf.RoundToInt(ScienceDepartmentInteractHandler.Instance.PlayerTechPoints * 0.02f);
+        ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(gainGTAP);
+
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravTechStageUpgrade".Translate(),
-                                       text: "OARK_Letter_GravTechStageUpgrade".Translate(curStage),
+                                       text: "OARK_Letter_GravTechStageUpgrade".Translate(curStage, gainGTAP),
                                        textLetterDef: LetterDefOf.PositiveEvent,
                                        lookTargets: null,
                                        relatedFaction: ModUtility.OAFaction);
-    }
-
-    public static List<Thing> GetLendPawnForQuest(QuestScriptDef def)
-    {
-        Quest quest = Find.QuestManager.ActiveQuestsListForReading.FirstOrFallback(q => q.root == def);
-        if (quest is null)
-        {
-            return null;
-        }
-
-        return quest.PartsListForReading.OfType<QuestPart_LendColonistsToFaction>()?.FirstOrFallback(null)?.LentColonistsListForReading;
     }
 }

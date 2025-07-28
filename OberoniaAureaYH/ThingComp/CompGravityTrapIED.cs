@@ -3,12 +3,28 @@ using Verse;
 
 namespace OberoniaAurea;
 
+public class CompProperties_GravityTrapIED : CompProperties_DisplacementExplosive
+{
+    public HediffDef giveHediff;
+    public HediffDef immuneHediff;
+
+    public CompProperties_GravityTrapIED()
+    {
+        compClass = typeof(CompGravityTrapIED);
+    }
+}
+
 public class CompGravityTrapIED : CompDisplacementExplosive
 {
+    private new CompProperties_GravityTrapIED Props => (CompProperties_GravityTrapIED)props;
+
     protected override void PostPawnDisplaced(Pawn pawn)
     {
         base.PostPawnDisplaced(pawn);
-        pawn.health.GetOrAddHediff(OARK_HediffDefOf.OARK_Hediff_GravityTrapIEDShock);
+        if (!pawn.health.hediffSet.HasHediff(Props.immuneHediff))
+        {
+            pawn.health.GetOrAddHediff(Props.giveHediff);
+        }
     }
 
     public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -18,14 +34,17 @@ public class CompGravityTrapIED : CompDisplacementExplosive
             yield return gizmo;
         }
 
-        Command_Action command_TriggerStartWick = new()
+        if (!wickStarted)
         {
-            defaultLabel = "OARK_Command_TriggerStartWick".Translate(),
-            defaultDesc = "OARK_Command_TriggerStartWickDesc".Translate(),
-            icon = null,
-            action = delegate { StartWick(parent); },
-        };
+            Command_Action command_TriggerStartWick = new()
+            {
+                defaultLabel = "OARK_Command_TriggerStartWick".Translate(),
+                defaultDesc = "OARK_Command_TriggerStartWickDesc".Translate(),
+                icon = null,
+                action = delegate { StartWick(parent); },
+            };
 
-        yield return command_TriggerStartWick;
+            yield return command_TriggerStartWick;
+        }
     }
 }

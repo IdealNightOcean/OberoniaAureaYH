@@ -48,7 +48,9 @@ public abstract class CompHackable : ThingComp
 
     public virtual void FinishHack()
     {
+        isHacked = true;
         isHackable = false;
+
         QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", this.Named("SUBJECT"));
         if (Props.destoryOnHackComplete)
         {
@@ -56,18 +58,17 @@ public abstract class CompHackable : ThingComp
         }
     }
 
-    public virtual void EndHack()
+    public virtual void ForceEndHack()
     {
-        isHacked = true;
         isHackable = false;
-        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "HackEnded", MapParent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "HackForceEnded", MapParent.Named("SUBJECT"));
     }
 
     public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
     {
         if (!isHacked)
         {
-            QuestUtility.SendQuestTargetSignals(map.Parent.questTags, "DeSpawnedBeforeHacked", this.Named("SUBJECT"));
+            ForceEndHack();
         }
         base.PostDeSpawn(map, mode);
     }
@@ -76,7 +77,7 @@ public abstract class CompHackable : ThingComp
     {
         if (!isHacked)
         {
-            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestroyedBeforeHacked", this.Named("SUBJECT"));
+            ForceEndHack();
         }
         base.PostDestroy(mode, previousMap);
     }
@@ -105,7 +106,7 @@ public abstract class CompHackable : ThingComp
         }
     }
 
-    public AcceptanceReport CanHackNow(Pawn pawn)
+    protected virtual AcceptanceReport CanHackNow(Pawn pawn)
     {
         if (!isHackable)
         {
@@ -140,7 +141,7 @@ public abstract class CompHackable : ThingComp
         }
         sb.AppendInNewLine("HackProgress".Translate());
         sb.Append(": ");
-        sb.Append(hackPoint);
+        sb.Append(hackPoint.ToString("F2"));
         sb.Append(" / ");
         sb.Append(Props.maxHackPoint);
         if (isHacked)

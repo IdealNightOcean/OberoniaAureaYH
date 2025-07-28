@@ -37,7 +37,6 @@ public class JobDriver_SailorInvitation : JobDriver
     private static void Invitation(Pawn invitee, Pawn inviter)
     {
         QuestUtility.SendQuestTargetSignals(invitee.questTags, "Recruited", invitee.Named("SUBJECT"));
-        QuestUtility.SendQuestTargetSignals(invitee.questTags, "Recruited", invitee.Named("SUBJECT"));
 
         if (invitee.IsColonist || invitee.IsPrisonerOfColony || invitee.IsSlaveOfColony)
         {

@@ -5,7 +5,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public class QuestNode_GravTechAssistPointsChange : QuestNode
+public class QuestNode_GravTechPointsChange : QuestNode
 {
     [NoTranslate]
     public SlateRef<string> inSignal;
@@ -25,19 +25,19 @@ public class QuestNode_GravTechAssistPointsChange : QuestNode
         Slate slate = QuestGen.slate;
         Quest quest = QuestGen.quest;
 
-        QuestPart_GravTechAssistPointChange questPart_GravTechAssistPointChange = new(inSignalTrigger: QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
-                                                                                      change: change.GetValue(slate));
-        quest.AddPart(questPart_GravTechAssistPointChange);
+        QuestPart_GravTechPointChange questPart_GravTechPointChange = new(inSignalTrigger: QuestGenUtility.HardcodedSignalWithQuestID(inSignal.GetValue(slate)) ?? slate.Get<string>("inSignal"),
+                                                                          change: change.GetValue(slate));
+        quest.AddPart(questPart_GravTechPointChange);
 
         if (isReward.GetValue(slate))
         {
             QuestPart_Choice questPart_Choice;
-            Reward_GravTechAssistPoint reward = new() { amount = change.GetValue(slate) };
+            Reward_GravTechPoint reward = new() { amount = change.GetValue(slate) };
             if (isSingleReward.GetValue(slate))
             {
                 questPart_Choice = new QuestPart_Choice()
                 {
-                    inSignalChoiceUsed = questPart_GravTechAssistPointChange.inSignalTrigger,
+                    inSignalChoiceUsed = questPart_GravTechPointChange.inSignalTrigger,
                 };
 
                 questPart_Choice.choices.Add(new QuestPart_Choice.Choice() { rewards = [reward] });
@@ -58,14 +58,14 @@ public class QuestNode_GravTechAssistPointsChange : QuestNode
     }
 }
 
-public class QuestPart_GravTechAssistPointChange : QuestPart
+public class QuestPart_GravTechPointChange : QuestPart
 {
     public string inSignalTrigger;
 
     public int change;
 
-    private QuestPart_GravTechAssistPointChange() { }
-    public QuestPart_GravTechAssistPointChange(string inSignalTrigger, int change)
+    private QuestPart_GravTechPointChange() { }
+    public QuestPart_GravTechPointChange(string inSignalTrigger, int change)
     {
         this.inSignalTrigger = inSignalTrigger;
         this.change = change;
@@ -78,7 +78,7 @@ public class QuestPart_GravTechAssistPointChange : QuestPart
         {
             if (signal.tag == inSignalTrigger)
             {
-                ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(change);
+                ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(change, byPlayer: true);
             }
         }
     }

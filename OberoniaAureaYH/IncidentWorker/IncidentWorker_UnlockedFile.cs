@@ -16,7 +16,6 @@ public class IncidentWorker_UnlockedFile : IncidentWorker
 
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
-
         Quest quest = Find.QuestManager.ActiveQuestsListForReading.FirstOrFallback(q => q.root == OARK_QuestScriptDefOf.OARK_GravResearchAssistance, fallback: null);
         if (quest is null)
         {

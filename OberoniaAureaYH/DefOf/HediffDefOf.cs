@@ -16,7 +16,7 @@ public static class OARK_HediffDefOf
     [MayRequireOdyssey]
     public static HediffDef OARK_Hediff_SailorAssistance;
     [MayRequireOdyssey]
-    public static HediffDef OARK_Hediff_GravityTrapIEDShock;
+    public static HediffDef OARK_Hediff_GravFieldSuppress;
 
     static OARK_HediffDefOf()
     {

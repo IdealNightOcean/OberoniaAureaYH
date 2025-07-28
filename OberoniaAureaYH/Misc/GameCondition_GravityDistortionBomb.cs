@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
 using Verse;
+using Verse.Sound;
 
 namespace OberoniaAurea;
 
@@ -26,6 +27,15 @@ public class GameCondition_GravityDistortionBomb : GameCondition
 
     private static void ApplyGravityDistortionBomb(Map map)
     {
+        if (map is null)
+        {
+            return;
+        }
+
+        Find.CameraDriver.shaker.DoShake(6f);
+        FleckMaker.Static(map.Center, map, OARK_ModDefOf.OARK_Fleck_GravBomb);
+        OARK_ModDefOf.OARK_Sound_GravBomb.PlayOneShotOnCamera(map);
+
         int damageCount;
 
         IReadOnlyList<Pawn> potentialPawns = map.mapPawns.AllPawnsSpawned;

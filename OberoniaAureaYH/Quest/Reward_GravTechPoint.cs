@@ -7,7 +7,7 @@ using Verse.Grammar;
 
 namespace OberoniaAurea;
 
-public class Reward_AssistPoint : Reward
+public class Reward_GravTechPoint : Reward
 {
     public int amount;
 
@@ -15,13 +15,13 @@ public class Reward_AssistPoint : Reward
     {
         get
         {
-            yield return QuestPartUtility.GetStandardRewardStackElement(label: "OARK_AssistPoint".Translate() + " " + amount.ToStringWithSign(),
+            yield return QuestPartUtility.GetStandardRewardStackElement(label: "OARK_GravTechPoint".Translate() + " " + amount.ToStringWithSign(),
                                                                         iconDrawer: delegate (Rect r)
                                                                         {
                                                                             GUI.DrawTexture(r, ModUtility.OAFaction.def.RoyalFavorIcon);
                                                                             GUI.color = Color.white;
                                                                         },
-                                                                        tipGetter: () => "OARK_AssistPointTip".Translate(ModUtility.OAFaction).Resolve(), delegate
+                                                                        tipGetter: () => "OARK_GravTechPointTip".Translate(ModUtility.OAFaction).Resolve(), delegate
                                                                         {
                                                                             Find.WindowStack.Add(new Dialog_InfoCard(ModUtility.OAFaction));
                                                                         });
@@ -36,13 +36,13 @@ public class Reward_AssistPoint : Reward
 
     public override IEnumerable<QuestPart> GenerateQuestParts(int index, RewardsGeneratorParams parms, string customLetterLabel, string customLetterText, RulePack customLetterLabelRules, RulePack customLetterTextRules)
     {
-        yield return new QuestPart_OaAssistPointsChange(inSignalTrigger: QuestGen.slate.Get<string>("inSignal"),
-                                                        change: amount);
+        yield return new QuestPart_GravTechPointChange(inSignalTrigger: QuestGen.slate.Get<string>("inSignal"),
+                                                       change: amount);
     }
 
     public override string GetDescription(RewardsGeneratorParams parms)
     {
-        return "OARK_Reward_AssistPointTip".Translate(amount).Resolve();
+        return "OARK_Reward_GravTechPointTip".Translate(amount).Resolve();
     }
 
     public override string ToString()

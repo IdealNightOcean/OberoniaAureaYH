@@ -7,9 +7,7 @@ namespace OberoniaAurea;
 
 public class ChoiceLetter_OptionalQuest : ChoiceLetter
 {
-
     public QuestScriptDef questScriptDef;
-    public Slate slate;
     public override bool CanDismissWithRightClick => false;
 
     public override IEnumerable<DiaOption> Choices
@@ -25,7 +23,7 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
             {
                 action = delegate
                 {
-                    GiveQuest(questScriptDef, slate);
+                    GiveQuest(questScriptDef);
                     Find.LetterStack.RemoveLetter(this);
                 },
                 resolveTree = true
@@ -50,13 +48,19 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
         }
     }
 
-    public void GiveQuest(QuestScriptDef questDef, Slate vars)
+    public void GiveQuest(QuestScriptDef questDef)
     {
-        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questDef, vars ?? new Slate());
+        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questDef, new Slate());
         if (!quest.hidden && questDef.sendAvailableLetter)
         {
             QuestUtility.SendLetterQuestAvailable(quest);
         }
         this.quest = quest;
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Defs.Look(ref questScriptDef, "questScriptDef");
     }
 }

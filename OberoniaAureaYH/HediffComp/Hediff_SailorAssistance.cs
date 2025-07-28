@@ -5,6 +5,7 @@ using Verse.AI;
 
 namespace OberoniaAurea;
 
+[StaticConstructorOnStartup]
 public class Hediff_SailorAssistance : HediffWithComps
 {
     private static readonly TargetingParameters targetingParameters = new() { onlyTargetColonists = true };
@@ -36,7 +37,7 @@ public class Hediff_SailorAssistance : HediffWithComps
         {
             defaultLabel = "OARK_SailorAssistInvitation".Translate(),
             defaultDesc = "OARK_SailorAssistInvitationDesc".Translate(),
-            icon = default,
+            icon = ModUtility.OADipIcon,
             targetingParams = targetingParameters,
             action = delegate (LocalTargetInfo inviter) { Invitation(pawn, inviter); }
         };

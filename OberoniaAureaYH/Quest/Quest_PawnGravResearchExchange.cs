@@ -7,7 +7,6 @@ namespace OberoniaAurea;
 
 public class QuestNode_PawnGravResearchExchange : QuestNode
 {
-
     [NoTranslate]
     public SlateRef<string> inSignalComplete;
 
@@ -18,7 +17,7 @@ public class QuestNode_PawnGravResearchExchange : QuestNode
     protected override void RunInt()
     {
         Slate slate = QuestGen.slate;
-        QuestPart_PawnGravResearchExchange questPart_PawnGravResearchExchange = new QuestPart_PawnGravResearchExchange()
+        QuestPart_PawnGravResearchExchange questPart_PawnGravResearchExchange = new()
         {
             inSignalComplete = inSignalComplete.GetValue(slate) ?? slate.Get<string>("inSignal"),
         };

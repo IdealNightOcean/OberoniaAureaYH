@@ -147,7 +147,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
                     needAD: 360,
                     needAP: 200);
 
-        if (ModsConfig.OdysseyActive && ScienceDepartmentInteractHandler.Instance.CurGravTechStage >= 2)
+        if (ModsConfig.OdysseyActive && ScienceDepartmentInteractHandler.Instance is not null)
         {
             diaNode.options.Add(GravityDistortionBombOption(map, faction, negotiator));
         }
@@ -200,10 +200,16 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     private static DiaOption GravityDistortionBombOption(Map map, Faction faction, Pawn negotiator)
     {
         DiaOption diaOption = new("OARK_GravityDistortionBomb".Translate());
-        if (OAInteractHandler.Instance.AssistPoints < 60)
+
+        if (ScienceDepartmentInteractHandler.Instance.CurGravTechStage < 2)
         {
-            diaOption.Disable("OA_AlliancePointsNotEnough".Translate(60.ToString("F0")));
+            diaOption.Disable("OARK_GravTechStageNotEnough".Translate(2));
         }
+        else if (OAInteractHandler.Instance.AssistPoints < 60)
+        {
+            diaOption.Disable("OA_AlliancePointsNotEnough".Translate(60));
+        }
+
         else
         {
             diaOption.linkLateBind = () => GravityDistortionBombConfimNode(map, faction, negotiator);

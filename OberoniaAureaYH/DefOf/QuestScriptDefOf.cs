@@ -5,6 +5,7 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_QuestScriptDefOf
 {
+    public static QuestScriptDef OARK_ProspectingTeam; //路过的勘探队
     public static QuestScriptDef OA_BestowingCeremony; //金鸢尾兰授勋仪式
 
     public static QuestScriptDef OA_FestivalOrders; //节日订单
@@ -17,7 +18,7 @@ public static class OARK_QuestScriptDefOf
     [MayRequireOdyssey]
     public static QuestScriptDef OARK_InitGravQuest; //科学部初见
     [MayRequireOdyssey]
-    public static QuestScriptDef OARK_ScienceDepartment_SailorAssistance;
+    public static QuestScriptDef OARK_ScienceDepartment_SailorsAssistance;
     [MayRequireOdyssey]
     public static QuestScriptDef OARK_CrashedGravship; //坠毁的飞船
     [MayRequireOdyssey]

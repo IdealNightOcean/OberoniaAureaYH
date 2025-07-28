@@ -31,6 +31,8 @@ public class CompDisplacementExplosive : CompExplosive
             GravityWeaponUtility.GetPawnsInRadius(ctrPosition, map, parent, modEx_DE.displacementRadius, targetPawns, modEx_DE.onlyTargetHostile);
             GravityWeaponUtility.TryDisplacement(ctrPosition, map, modEx_DE, targetPawns, PostPawnDisplaced);
 
+            PostDisplaced(modEx_DE, map, ctrPosition);
+
             if (!modEx_DE.doExplosion && !parent.Destroyed)
             {
                 destroyedThroughDetonation = true;
@@ -40,6 +42,16 @@ public class CompDisplacementExplosive : CompExplosive
             }
         }
     }
+
+    protected virtual void PostDisplaced(DisplacementExplosionExtension modEx_DE, Map map, IntVec3 ctrPos)
+    {
+        if (modEx_DE.effecter is null) { return; }
+        Effecter effecter = modEx_DE.effecter.Spawn();
+        effecter.scale = modEx_DE.displacementRadius * 0.2f;
+        effecter.Trigger(new TargetInfo(ctrPos, map), new TargetInfo(ctrPos, map));
+        effecter.Cleanup();
+    }
+
     protected virtual void PostPawnDisplaced(Pawn pawn)
     {
         pawn.stances.stunner.StunFor(120, parent);

@@ -7,39 +7,51 @@ namespace OberoniaAurea;
 
 public class GravDataBeacon : Building
 {
+    public const string TakenEffectSignal = "GravDataBeaconTakenEffect";
+
     private bool isActive;
+
 
     public override void PostSwapMap()
     {
         base.PostSwapMap();
         if (isActive && Spawned)
         {
-            ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(1000, byPlayer: true);
-            ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(150);
-
-            OAInteractHandler.Instance.RegisterCDRecord("GravDataBeacon", cdTicks: 5 * 60000);
-
-            if (!OAInteractHandler.Instance.IsInCooldown("SDFriendlyEvent"))
-            {
-                OAInteractHandler.Instance.RegisterCDRecord("SDFriendlyEvent", cdTicks: 10 * 60000);
-                IncidentParms parms = new()
-                {
-                    target = Find.World
-                };
-                OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceDepartmentFriendly, Rand.RangeInclusive(8, 14) * 60000, parms);
-            }
-
-            Map map = MapHeld;
-            IncidentParms raidParms = new()
-            {
-                target = map,
-                faction = Faction.OfMechanoids,
-                raidStrategy = RaidStrategyDefOf.ImmediateAttack,
-                points = StorytellerUtility.DefaultThreatPointsNow(map),
-                forced = true
-            };
-            OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 5000, raidParms);
+            isActive = false;
+            DataBeaconTakenEffect();
         }
+    }
+
+    private void DataBeaconTakenEffect()
+    {
+        ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(1000, byPlayer: true);
+        ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(150);
+
+        QuestUtility.SendQuestTargetSignals(questTags, TakenEffectSignal, this.Named("SUBJECT"));
+        Find.SignalManager.SendSignal(new Signal(TakenEffectSignal, new SignalArgs(this.Named("SUBJECT")), global: true));
+
+        OAInteractHandler.Instance.RegisterCDRecord("GravDataBeacon", cdTicks: 5 * 60000);
+
+        if (!OAInteractHandler.Instance.IsInCooldown("SDFriendlyEvent"))
+        {
+            OAInteractHandler.Instance.RegisterCDRecord("SDFriendlyEvent", cdTicks: 10 * 60000);
+            IncidentParms parms = new()
+            {
+                target = Find.World
+            };
+            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceDepartmentFriendly, Rand.RangeInclusive(8, 14) * 60000, parms);
+        }
+
+        Map map = MapHeld;
+        IncidentParms raidParms = new()
+        {
+            target = map,
+            faction = Faction.OfMechanoids,
+            raidStrategy = RaidStrategyDefOf.ImmediateAttack,
+            points = StorytellerUtility.DefaultThreatPointsNow(map),
+            forced = true
+        };
+        OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 5000, raidParms);
     }
 
 

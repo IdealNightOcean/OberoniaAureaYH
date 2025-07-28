@@ -12,8 +12,6 @@ public class GameCondition_CrashedScienceShip : GameCondition
     private HediffDef curAffectHediff;
     private bool disableElectricity;
 
-
-
     private int ticksToNextHediffApply = 600;
     private string curLabel = string.Empty;
     private string curDescription = string.Empty;

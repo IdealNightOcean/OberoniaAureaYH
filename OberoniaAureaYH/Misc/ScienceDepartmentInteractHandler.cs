@@ -13,7 +13,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public static ScienceDepartmentInteractHandler Instance { get; private set; }
 
-    private int curGravTechStage;
+    private int curGravTechStageIndex;
     private int gravTechPoints;
     private int playerTechPoints;
     private int gravTechAssistPoints;
@@ -22,17 +22,16 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public ScienceShipRecord? ScienceShipRecord;
 
-    public int CurGravTechStage => curGravTechStage;
+    public int CurGravTechStage => curGravTechStageIndex + 1;
     public int GravTechPoints => gravTechPoints;
     public int PlayerTechPoints => playerTechPoints;
     public int GravTechAssistPoints => gravTechAssistPoints;
     public bool IsInitGravQuestCompleted => isInitGravQuestCompleted;
     public Pawn GravResearchAssistLendPawn => gravResearchAssistLendPawn;
 
-    public ScienceDepartmentInteractHandler()
-    {
-        Instance = this;
-    }
+    public ScienceDepartmentInteractHandler() => Instance = this;
+    public static void ClearStaticCache() => Instance = null;
+    public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_SDInteractHandler());
 
     public static bool IsScienceDepartmentInteractAvailable()
     {
@@ -77,12 +76,12 @@ public class ScienceDepartmentInteractHandler : IExposable
             Messages.Message("OARK_ScienceDepartment_GravTechPointsAdded".Translate(trueChange.ToString("F0")), MessageTypeDefOf.PositiveEvent);
         }
 
-        if (curGravTechStage < MaxGravTechStage && gravTechPoints > GravTechStageBoundary[curGravTechStage + 1])
+        if (curGravTechStageIndex < MaxGravTechStage && gravTechPoints > GravTechStageBoundary[curGravTechStageIndex + 1])
         {
-            curGravTechStage++;
+            curGravTechStageIndex++;
             if (isInitGravQuestCompleted)
             {
-                InteractUtility.SendGravTechStageUpgradeLetter(curGravTechStage);
+                InteractUtility.SendGravTechStageUpgradeLetter(curGravTechStageIndex);
             }
         }
     }
@@ -206,7 +205,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public void ExposeData()
     {
-        Scribe_Values.Look(ref curGravTechStage, "curGravTechStage", 0);
+        Scribe_Values.Look(ref curGravTechStageIndex, "curGravTechStageIndex", 0);
         Scribe_Values.Look(ref gravTechPoints, "gravTechPoints", 0);
         Scribe_Values.Look(ref playerTechPoints, "playerTechPoints", 0);
         Scribe_Values.Look(ref gravTechAssistPoints, "gravTechAssistPoints", 0);

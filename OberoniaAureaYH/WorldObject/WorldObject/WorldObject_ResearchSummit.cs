@@ -421,7 +421,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendInNewLine("OA_ResearchSummitIntellectualXPGain".Translate(pawn.LabelShort, 6000f.ToString("F0"), pawn.Named("PAWN")));
+            sb.AppendInNewLine("OA_ResearchSummitIntellectualXPGain".Translate(pawn.LabelShort, 6000, pawn.Named("PAWN")));
         }
         return sb.ToString();
     }

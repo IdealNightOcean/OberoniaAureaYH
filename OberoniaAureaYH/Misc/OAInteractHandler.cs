@@ -1,6 +1,8 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -31,10 +33,11 @@ public class OAInteractHandler : IExposable
 
     private Dictionary<string, OAInteractionCDRecord> interactionCDRecords = [];
 
-    public OAInteractHandler()
-    {
-        Instance = this;
-    }
+    public Pawn ProspectingLeader;
+
+    public OAInteractHandler() => Instance = this;
+    public static void ClearStaticCache() => Instance = null;
+    public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_OAInteractHandler());
 
     public void TickDay()
     {
@@ -114,6 +117,22 @@ public class OAInteractHandler : IExposable
         interactionCDRecords.Remove(key);
     }
 
+    public string GetInteractionCDRecordsDetailStr()
+    {
+        if (interactionCDRecords.NullOrEmpty())
+        {
+            return "None";
+        }
+
+        StringBuilder sb = new();
+        int i = 0;
+        foreach (KeyValuePair<string, OAInteractionCDRecord> kv in interactionCDRecords)
+        {
+            sb.AppendInNewLine($"{++i}. ({kv.Key}: {kv.Value})");
+        }
+        return sb.ToString();
+    }
+
     public void ExposeData()
     {
         Scribe_Values.Look(ref CurAllianceInitTick, "curAllianceInitTick", -1);
@@ -122,10 +141,15 @@ public class OAInteractHandler : IExposable
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
         Scribe_Values.Look(ref assistStoppageDays, "assistStoppageDays", 0);
 
+        Scribe_References.Look(ref ProspectingLeader, "prospectingLeader");
         Scribe_Collections.Look(ref interactionCDRecords, "interactionCDRecords", LookMode.Value, LookMode.Deep);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
+            if (ProspectingLeader is not null && ProspectingLeader.IsWorldPawn())
+            {
+                ProspectingLeader = null;
+            }
             interactionCDRecords.RemoveAll(kv => kv.Key is null || kv.Value.lastActiveTick < 0);
         }
     }

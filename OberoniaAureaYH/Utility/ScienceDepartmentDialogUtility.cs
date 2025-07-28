@@ -1,6 +1,7 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.QuestGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,18 @@ using Verse;
 
 namespace OberoniaAurea;
 
-internal static class ScienceDepartmentDialogUtility
+public static class ScienceDepartmentDialogUtility
 {
+    public static Action<DiaNode, FactionDialogCache> ExtendMainNode;
     private static int mapGravlitePanelCount = -1;
     private static int totalGTAP = -1;
+
+    public static void ClearStaticCache()
+    {
+        ExtendMainNode = null;
+        mapGravlitePanelCount = -1;
+        totalGTAP = -1;
+    }
 
     /// <summary>
     /// 科学部交互
@@ -39,7 +48,7 @@ internal static class ScienceDepartmentDialogUtility
         return diaOption;
     }
 
-    private static DiaNode AccessScienceDepartmentNode(FactionDialogCache dialogCache)
+    public static DiaNode AccessScienceDepartmentNode(FactionDialogCache dialogCache)
     {
         ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
         mapGravlitePanelCount = OAFrame_MapUtility.AmountSendableThing(dialogCache.Map, ThingDefOf.GravlitePanel);
@@ -86,6 +95,7 @@ internal static class ScienceDepartmentDialogUtility
 
             diaNode.options.Add(ExchangeForSDAssistance(dialogCache));
 
+            ExtendMainNode?.Invoke(diaNode, dialogCache);
 
             if (Prefs.DevMode)
             {
@@ -166,7 +176,7 @@ internal static class ScienceDepartmentDialogUtility
             {
                 Slate slate = new();
                 slate.Set("map", dialogCache.Map);
-                QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ScienceDepartment_SailorAssistance, slate);
+                QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ScienceDepartment_SailorsAssistance, slate);
 
                 ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-200);
             };
@@ -444,7 +454,7 @@ internal static class ScienceDepartmentDialogUtility
 
     private static DiaOption ExchangeForSDAssistance(FactionDialogCache dialogCache)
     {
-        DiaOption diaOption = new("OARK_ExchangeForSDAssistance");
+        DiaOption diaOption = new("OARK_ExchangeForSDAssistance".Translate());
 
         if (totalGTAP < 100)
         {
@@ -490,7 +500,7 @@ internal static class ScienceDepartmentDialogUtility
         stringBuilder.AppendLine();
         ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
         int gravTechPoints = sdInteractHandler.GravTechPoints;
-        int stageStrIndex = sdInteractHandler.CurGravTechStage;
+        int stageStrIndex = sdInteractHandler.CurGravTechStage - 1;
         if (stageStrIndex >= ScienceDepartmentInteractHandler.MaxGravTechStage)
         {
             stringBuilder.AppendInNewLine(gravTechPointsStageArr[gravTechPointsStageArr.Length - 1].Translate(gravTechPoints));
@@ -536,7 +546,7 @@ internal static class ScienceDepartmentDialogUtility
                 progressList.Add("OARK_ScienceDepartmentProgress_GravDataBeacon");
             }
 
-            return progressList.RandomElement();
+            return progressList.RandomElement().Translate();
         }
     }
 }

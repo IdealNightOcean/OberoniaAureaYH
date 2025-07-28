@@ -7,6 +7,8 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_PawnGenerateDefOf
 {
+    public static PawnKindDef OA_RK_Court_Member; //侍从
+
     public static PawnKindDef OA_RK_Traveller;
     [MayRequireRoyalty]
     public static PawnKindDef OA_RK_Noble_C; //金鼠鼠授勋官

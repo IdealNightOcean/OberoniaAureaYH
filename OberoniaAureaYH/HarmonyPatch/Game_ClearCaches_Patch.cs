@@ -11,6 +11,9 @@ public static class Game_ClearCaches_Patch
     public static void Postfix()
     {
         ModUtility.ClearStaticCache();
+        OAInteractHandler.ClearStaticCache();
+        ScienceDepartmentInteractHandler.ClearStaticCache();
+        ScienceDepartmentDialogUtility.ClearStaticCache();
         ThoughtWorker_SpaceTraveler.ClearStaticCache();
     }
 }
