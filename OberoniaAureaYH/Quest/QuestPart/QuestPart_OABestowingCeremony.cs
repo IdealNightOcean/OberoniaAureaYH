@@ -17,4 +17,3 @@ public class QuestPart_OABestowingCeremony : QuestPart_BestowingCeremony
         return lord;
     }
 }
-

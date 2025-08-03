@@ -15,6 +15,21 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         return f.IsOAFaction() && !f.HostileTo(Faction.OfPlayer);
     }
 
+    protected override bool CanFireNowSub(IncidentParms parms)
+    {
+        if (ModUtility.OAFaction is null || ModUtility.OAFaction.HostileTo(Faction.OfPlayer))
+        {
+            return false;
+        }
+        return base.CanFireNowSub(parms);
+    }
+
+    protected override bool TryExecuteWorker(IncidentParms parms)
+    {
+        parms.faction = ModUtility.OAFaction;
+        return base.TryExecuteWorker(parms);
+    }
+
     protected override LordJob_VisitColonyBase CreateLordJob(IncidentParms parms, List<Pawn> pawns)
     {
         RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out IntVec3 result);
@@ -40,7 +55,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         OAInteractHandler.Instance.ProspectingLeader = trader;
 
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_ProspectingTeam".Translate(),
-                                       text: "OARK_Letter_ProspectingTeam".Translate(),
+                                       text: "OARK_Letter_ProspectingTeam".Translate(trader),
                                        textLetterDef: LetterDefOf.PositiveEvent,
                                        lookTargets: new LookTargets(pawns),
                                        relatedFaction: parms.faction);
