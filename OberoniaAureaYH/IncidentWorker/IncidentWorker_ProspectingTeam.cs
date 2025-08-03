@@ -9,9 +9,25 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
 {
     protected override float TraderChance => 1f;
     protected override int? DurationTicks => 20000;
+
     public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
     {
         return f.IsOAFaction() && !f.HostileTo(Faction.OfPlayer);
+    }
+
+    protected override bool CanFireNowSub(IncidentParms parms)
+    {
+        if (ModUtility.OAFaction is null || ModUtility.OAFaction.HostileTo(Faction.OfPlayer))
+        {
+            return false;
+        }
+        return base.CanFireNowSub(parms);
+    }
+
+    protected override bool TryExecuteWorker(IncidentParms parms)
+    {
+        parms.faction = ModUtility.OAFaction;
+        return base.TryExecuteWorker(parms);
     }
 
     protected override LordJob_VisitColonyBase CreateLordJob(IncidentParms parms, List<Pawn> pawns)

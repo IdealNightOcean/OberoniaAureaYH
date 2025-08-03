@@ -1,5 +1,4 @@
-﻿
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using Verse;

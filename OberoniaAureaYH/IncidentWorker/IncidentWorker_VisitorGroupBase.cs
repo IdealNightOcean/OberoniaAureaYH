@@ -59,18 +59,18 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
         Map map = (Map)parms.target;
-        Log.Message("0");
+
         if (!TryResolveParms(parms))
         {
             return false;
         }
-        Log.Message("1");
+
         List<Pawn> pawns = GenerateAndSpawnPawns(parms);
         if (pawns.NullOrEmpty())
         {
             return false;
         }
-        Log.Message("2");
+
         LordMaker.MakeNewLord(parms.faction, CreateLordJob(parms, pawns), map, pawns);
         bool traderExists = false;
         Pawn trader = null;
@@ -78,7 +78,7 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
         {
             (traderExists, trader) = TryConvertOnePawnToSmallTrader(pawns, parms.faction, map);
         }
-        Log.Message("3");
+
         PostTraderResolved(parms, pawns, trader, traderExists);
         return true;
     }
