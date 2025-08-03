@@ -9,7 +9,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 {
     private const int MaxGravTechPoints = 100000000;
     public static readonly int[] GravTechStageBoundary = [0, 25000, 50000, 80000];
-    public static readonly int MaxGravTechStage = GravTechStageBoundary.Length - 1;
+    public static readonly int MaxGravTechStageIndex = GravTechStageBoundary.Length - 1;
 
     public static ScienceDepartmentInteractHandler Instance { get; private set; }
 
@@ -40,7 +40,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public void TickDay()
     {
-        AddGravTechPoints(Rand.RangeInclusive(50, 150), byPlayer: false);
+        AddGravTechPoints(Rand.RangeInclusive(50, 150), byPlayer: false, showMessage: false);
         if (!isInitGravQuestCompleted)
         {
             TryTriggerGravInitQuest();
@@ -76,7 +76,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             Messages.Message("OARK_ScienceDepartment_GravTechPointsAdded".Translate(trueChange.ToString("F0")), MessageTypeDefOf.PositiveEvent);
         }
 
-        if (curGravTechStageIndex < MaxGravTechStage && gravTechPoints > GravTechStageBoundary[curGravTechStageIndex + 1])
+        if (curGravTechStageIndex < MaxGravTechStageIndex && gravTechPoints > GravTechStageBoundary[curGravTechStageIndex + 1])
         {
             curGravTechStageIndex++;
             if (isInitGravQuestCompleted)

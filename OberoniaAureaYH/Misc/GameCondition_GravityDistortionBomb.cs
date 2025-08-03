@@ -76,12 +76,12 @@ public class GameCondition_GravityDistortionBomb : GameCondition
 
         if (pawn.BodySize >= 2f)
         {
-            damageAmount *= 2f;
+            damageAmount *= 3f;
         }
 
         if (pawn.Position.GetRoof(map) is not null)
         {
-            damageAmount *= 0.25f;
+            damageAmount *= 0.125f;
         }
 
         pawn.TakeDamage(new DamageInfo(DamageDefOf.Blunt, damageAmount, armorPenetration: 20f));

@@ -42,6 +42,7 @@ public abstract class CompHackable : ThingComp
 
         if (hackPoint >= Props.maxHackPoint)
         {
+            hackPoint = Props.maxHackPoint;
             FinishHack();
         }
     }

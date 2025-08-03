@@ -14,6 +14,7 @@ public static class Game_ClearCaches_Patch
         OAInteractHandler.ClearStaticCache();
         ScienceDepartmentInteractHandler.ClearStaticCache();
         ScienceDepartmentDialogUtility.ClearStaticCache();
+        ThoughtWorker_Precept_Snow.ClearStaticCache();
         ThoughtWorker_SpaceTraveler.ClearStaticCache();
     }
 }

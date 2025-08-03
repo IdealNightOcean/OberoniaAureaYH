@@ -2,22 +2,29 @@
 using RimWorld;
 using RimWorld.QuestGen;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using Verse.Grammar;
 
 namespace OberoniaAurea;
 
 public static class ScienceDepartmentDialogUtility
 {
+    public delegate void GrammarRequestAction(ref GrammarRequest request);
+
     public static Action<DiaNode, FactionDialogCache> ExtendMainNode;
+    public static GrammarRequestAction SalutationRequestProcesser;
+    public static GrammarRequestAction ProgressRequestProcesser;
+
     private static int mapGravlitePanelCount = -1;
     private static int totalGTAP = -1;
 
     public static void ClearStaticCache()
     {
         ExtendMainNode = null;
+        SalutationRequestProcesser = null;
+        ProgressRequestProcesser = null;
         mapGravlitePanelCount = -1;
         totalGTAP = -1;
     }
@@ -73,27 +80,12 @@ public static class ScienceDepartmentDialogUtility
 
             diaNode.options.Add(SailorAssistance(dialogCache));
 
-            diaNode.options.Add(new DiaOption("OARK_CovertGTAPToAP".Translate())
-            {
-                linkLateBind = () => CovertGTAPToAP(dialogCache)
-            });
-
-            diaNode.options.Add(new DiaOption("OARK_CovertGTAPToSliver".Translate())
-            {
-                linkLateBind = () => CovertGTAPToSliver(dialogCache)
-            });
-
-
-            diaNode.options.Add(new DiaOption("OARK_ExchangeForTechPrint".Translate())
-            {
-                linkLateBind = () => ExchangeForTechPrint(dialogCache)
-            });
-
-            diaNode.options.Add(FactionDialogUtility.DiaOptionWithCooldown(text: "OARK_ExchangeForSpecialEquipment".Translate(),
-                                                                           key: "ExchangeGravEquipment",
-                                                                           linkLateBind: () => ExchangeForSpecialEquipmentNode(dialogCache)));
-
             diaNode.options.Add(ExchangeForSDAssistance(dialogCache));
+
+            diaNode.options.Add(new DiaOption("OARK_CovertGTAP".Translate())
+            {
+                linkLateBind = () => CovertGTAPNode(dialogCache)
+            });
 
             ExtendMainNode?.Invoke(diaNode, dialogCache);
 
@@ -277,6 +269,39 @@ public static class ScienceDepartmentDialogUtility
         return diaOption;
     }
 
+    private static DiaNode CovertGTAPNode(FactionDialogCache dialogCache)
+    {
+        DiaNode diaNode = new("OARK_CovertGTAPInfo".Translate());
+
+        diaNode.options.Add(new DiaOption("OARK_CovertGTAPToAP".Translate())
+        {
+            linkLateBind = () => CovertGTAPToAP(dialogCache)
+        });
+
+        diaNode.options.Add(new DiaOption("OARK_CovertGTAPToSliver".Translate())
+        {
+            linkLateBind = () => CovertGTAPToSliver(dialogCache)
+        });
+
+
+        diaNode.options.Add(new DiaOption("OARK_ExchangeForTechPrint".Translate())
+        {
+            linkLateBind = () => ExchangeForTechPrint(dialogCache)
+        });
+
+        diaNode.options.Add(FactionDialogUtility.DiaOptionWithCooldown(text: "OARK_ExchangeForSpecialEquipment".Translate(),
+                                                                       key: "ExchangeGravEquipment",
+                                                                       linkLateBind: () => ExchangeForSpecialEquipmentNode(dialogCache)));
+
+        DiaOption backOpt = new("GoBack".Translate())
+        {
+            linkLateBind = () => AccessScienceDepartmentNode(dialogCache)
+        };
+        diaNode.options.Add(backOpt);
+
+        return diaNode;
+    }
+
     private static DiaNode CovertGTAPToAP(FactionDialogCache dialogCache)
     {
         DiaNode diaNode = new("OARK_CovertGTAPToAPInfo".Translate());
@@ -291,7 +316,7 @@ public static class ScienceDepartmentDialogUtility
 
         diaNode.options.Add(new DiaOption("GoBack".Translate())
         {
-            linkLateBind = () => AccessScienceDepartmentNode(dialogCache)
+            linkLateBind = () => CovertGTAPNode(dialogCache)
         });
 
         return diaNode;
@@ -334,7 +359,7 @@ public static class ScienceDepartmentDialogUtility
 
         diaNode.options.Add(new DiaOption("GoBack".Translate())
         {
-            linkLateBind = () => AccessScienceDepartmentNode(dialogCache)
+            linkLateBind = () => CovertGTAPNode(dialogCache)
         });
 
         return diaNode;
@@ -375,7 +400,7 @@ public static class ScienceDepartmentDialogUtility
 
         diaNode.options.Add(new DiaOption("GoBack".Translate())
         {
-            linkLateBind = () => AccessScienceDepartmentNode(dialogCache)
+            linkLateBind = () => CovertGTAPNode(dialogCache)
         });
         return diaNode;
 
@@ -413,18 +438,21 @@ public static class ScienceDepartmentDialogUtility
     {
         DiaNode diaNode = new("OARK_ExchangeForSpecialEquipmentInfo".Translate());
 
-
+        EquipmentOption(OARK_RimWorldDefOf.SentienceCatalyst, 100);
+        EquipmentOption(OARK_RimWorldDefOf.BroadshieldCore, 200);
         EquipmentOption(OARK_RimWorldDefOf.VanometricPowerCell, 300);
         EquipmentOption(ThingDefOf.PsychicAmplifier, 500);
 
         if (ModsConfig.BiotechActive)
         {
+            EquipmentOption(OARK_RimWorldDefOf.DeathrestCapacitySerum, 100);
+            EquipmentOption(ThingDefOf.ArchiteCapsule, 100);
             EquipmentOption(ThingDefOf.Mechlink, 1500);
         }
 
         diaNode.options.Add(new DiaOption("GoBack".Translate())
         {
-            linkLateBind = () => AccessScienceDepartmentNode(dialogCache)
+            linkLateBind = () => CovertGTAPNode(dialogCache)
         });
 
         return diaNode;
@@ -475,13 +503,6 @@ public static class ScienceDepartmentDialogUtility
         return diaOption;
     }
 
-    private static readonly string[] salutationArr =
-        [
-            "OARK_ScienceDepartmentSalutation_I",
-            "OARK_ScienceDepartmentSalutation_II",
-            "OARK_ScienceDepartmentSalutation_III",
-        ];
-
     private static readonly string[] gravTechPointsStageArr =
         [
             "OARK_GravTechPointsStage_I",
@@ -492,7 +513,7 @@ public static class ScienceDepartmentDialogUtility
 
     private static TaggedString GetScienceDepartmentSalutation()
     {
-        StringBuilder stringBuilder = new(salutationArr[Rand.Range(0, salutationArr.Length)].Translate());
+        StringBuilder stringBuilder = new(GetSalutationText());
 
         stringBuilder.AppendLine();
         stringBuilder.AppendInNewLine(GetProgressText());
@@ -501,7 +522,7 @@ public static class ScienceDepartmentDialogUtility
         ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
         int gravTechPoints = sdInteractHandler.GravTechPoints;
         int stageStrIndex = sdInteractHandler.CurGravTechStage - 1;
-        if (stageStrIndex >= ScienceDepartmentInteractHandler.MaxGravTechStage)
+        if (stageStrIndex >= ScienceDepartmentInteractHandler.MaxGravTechStageIndex)
         {
             stringBuilder.AppendInNewLine(gravTechPointsStageArr[gravTechPointsStageArr.Length - 1].Translate(gravTechPoints));
         }
@@ -516,37 +537,66 @@ public static class ScienceDepartmentDialogUtility
         return stringBuilder.ToTaggedString();
     }
 
+    private static string GetSalutationText()
+    {
+        GrammarRequest grammarRequest = new();
+        grammarRequest.Includes.Add(OARK_ModDefOf.OARK_RulePackSalutationText);
+
+        GrammarRequest backupRequest = grammarRequest;
+        try
+        {
+            SalutationRequestProcesser?.Invoke(ref grammarRequest);
+        }
+        catch (Exception ex)
+        {
+            Log.Error("An error occurred while processing the salutation GrammarRequest: " + ex);
+            grammarRequest = backupRequest;
+        }
+        return GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
+    }
+
     private static string GetProgressText()
     {
         if (Rand.Chance(0.2f) && ScienceDepartmentInteractHandler.Instance.GravResearchAssistLendPawn is not null)
         {
             return "OARK_ScienceDepartmentProgress_Assist".Translate(ScienceDepartmentInteractHandler.Instance.GravResearchAssistLendPawn);
         }
+
+        GrammarRequest grammarRequest = new();
+        grammarRequest.Includes.Add(OARK_ModDefOf.OARK_RulePackProgressText);
+
+        int ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("DonateGravlitePanel");
+        if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
+        {
+            grammarRequest.Constants.Add("gravlitePanel", true.ToString());
+        }
         else
         {
-            List<string> progressList = ["OARK_ScienceDepartmentProgress_I", "OARK_ScienceDepartmentProgress_II"];
-
-            int ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("DonateGravlitePanel");
+            ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("QuestGravlitePanel");
             if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
             {
-                progressList.Add("OARK_ScienceDepartmentProgress_GravlitePanel");
+                grammarRequest.Constants.Add("gravlitePanel", true.ToString());
             }
-            else
-            {
-                ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("QuestGravlitePanel");
-                if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
-                {
-                    progressList.Add("OARK_ScienceDepartmentProgress_GravlitePanel");
-                }
-            }
-
-            ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("GravDataBeacon");
-            if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
-            {
-                progressList.Add("OARK_ScienceDepartmentProgress_GravDataBeacon");
-            }
-
-            return progressList.RandomElement().Translate();
         }
+
+        ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("GravDataBeacon");
+        if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
+        {
+            grammarRequest.Constants.Add("gravDataBeacon", true.ToString());
+        }
+
+        GrammarRequest backupRequest = grammarRequest;
+        try
+        {
+            ProgressRequestProcesser?.Invoke(ref grammarRequest);
+        }
+        catch (Exception ex)
+        {
+            Log.Error("An error occurred while processing the progress GrammarRequest: " + ex);
+            grammarRequest = backupRequest;
+        }
+
+        return GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
+
     }
 }

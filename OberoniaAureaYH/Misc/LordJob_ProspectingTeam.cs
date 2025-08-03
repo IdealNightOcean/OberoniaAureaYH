@@ -11,20 +11,11 @@ public class LordJob_ProspectingTeam : LordJob_VisitColonyBase
 {
     public LordJob_ProspectingTeam() : base() { }
     public LordJob_ProspectingTeam(Faction faction, IntVec3 chillSpot, int? durationTicks = null) : base(faction, chillSpot, durationTicks) { }
-    protected override LordToil_DefendPoint GetDefendPointLordToil()
-    {
-        return new LordToil_TalkWithColony(chillSpot);
-    }
-}
 
-public class LordToil_TalkWithColony : LordToil_DefendPoint
-{
-    public LordToil_TalkWithColony(bool canSatisfyLongNeeds = true) : base(canSatisfyLongNeeds) { }
-    public LordToil_TalkWithColony(IntVec3 defendPoint, float? defendRadius = null, float? wanderRadius = null) : base(defendPoint, defendRadius, wanderRadius) { }
-
-    public override void Notify_PawnLost(Pawn victim, PawnLostCondition cond)
+    public override void Notify_PawnLost(Pawn p, PawnLostCondition condition)
     {
-        if (victim == OAInteractHandler.Instance.ProspectingLeader)
+        base.Notify_PawnLost(p, condition);
+        if (p == OAInteractHandler.Instance.ProspectingLeader)
         {
             OAInteractHandler.Instance.ProspectingLeader = null;
         }

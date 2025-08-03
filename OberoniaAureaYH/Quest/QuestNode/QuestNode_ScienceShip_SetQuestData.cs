@@ -25,12 +25,10 @@ public class QuestNode_ScienceShip_SetQuestData : QuestNode
         {
             ScienceShipRecord shipRecord = ScienceDepartmentInteractHandler.Instance.ScienceShipRecord.Value;
             QuestGen.slate.Set("shipName", shipRecord.ShipName);
-
-            (hasShipTypeText, string shipTypeText) = ScienceShipRecord.GetShipTypeText(shipRecord.TypeOfShip, fundDisaster: true);
-
-
-            if (hasShipTypeText)
+            string shipTypeText = ScienceShipRecord.GetShipTypeText(shipRecord.TypeOfShip);
+            if (!shipTypeText.NullOrEmpty())
             {
+                hasShipTypeText = true;
                 QuestGen.slate.Set("shipTypeText", shipTypeText.Translate());
             }
 

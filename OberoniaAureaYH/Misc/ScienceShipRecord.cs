@@ -13,7 +13,6 @@ public struct ScienceShipRecord : IExposable
     public enum ShipType : byte
     {
         Normal,
-        Settlement,
         TurbulentRegion,
         TravelRK,
         Fragile,
@@ -154,7 +153,6 @@ public struct ScienceShipRecord : IExposable
         List<(ShipType, float)> scienceShipChance =
             [
                 (ShipType.Normal, playerWealth < 180000 ? 120 : 30),
-                (ShipType.Settlement, 15),
                 (ShipType.TurbulentRegion, 15),
                 (ShipType.Fragile, 15),
                 (ShipType.HighSignal, 15),
@@ -229,19 +227,27 @@ public struct ScienceShipRecord : IExposable
         };
     }
 
-    public static (bool, string) GetShipTypeText(ShipType type, bool fundDisaster)
+    public static string GetShipLaunchText(ShipType type)
     {
-        if (fundDisaster && type == ShipType.Disaster)
-        {
-            return (true, "OARK_ScienceShipLaunch_DisasterText");
-        }
-
         return type switch
         {
-            ShipType.TravelRK => (true, "OARK_ScienceShipLaunch_TravelRKText"),
-            ShipType.Fragile => (true, "OARK_ScienceShipLaunch_FragileText"),
-            ShipType.HighSignal => (true, "OARK_ScienceShipLaunch_HighSignalText"),
-            _ => (false, null),
+            ShipType.TravelRK => "OARK_ScienceShipLaunch_TravelRK",
+            ShipType.Fragile => "OARK_ScienceShipLaunch_Fragile",
+            ShipType.HighSignal => "OARK_ScienceShipLaunch_HighSignal",
+            _ => "OARK_ScienceShipLaunch_Nothing",
+        };
+    }
+
+    public static string GetShipTypeText(ShipType type)
+    {
+        return type switch
+        {
+            ShipType.TravelRK => "OARK_ScienceShipType_TravelRKText",
+            ShipType.Fragile => "OARK_ScienceShipType_FragileText",
+            ShipType.HighSignal => "OARK_ScienceShipType_HighSignalText",
+            ShipType.TurbulentRegion => "OARK_ScienceShipType_TurbulentRegionText",
+            ShipType.Disaster => "OARK_ScienceShipType_DisasterText",
+            _ => null,
         };
     }
 }

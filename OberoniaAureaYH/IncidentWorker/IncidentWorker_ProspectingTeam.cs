@@ -42,7 +42,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         Faction oaFaction = ModUtility.OAFaction;
         for (int i = 0; i < 4; i++)
         {
-            PawnGenerationRequest genRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(OARK_PawnGenerateDefOf.OA_RK_Court_Member, oaFaction, forceNew: true);
+            PawnGenerationRequest genRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration, oaFaction, forceNew: true);
             Pawn pawn = PawnGenerator.GeneratePawn(genRequest);
             pawns.Add(pawn);
         }
@@ -55,7 +55,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         OAInteractHandler.Instance.ProspectingLeader = trader;
 
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_ProspectingTeam".Translate(),
-                                       text: "OARK_Letter_ProspectingTeam".Translate(),
+                                       text: "OARK_Letter_ProspectingTeam".Translate(trader),
                                        textLetterDef: LetterDefOf.PositiveEvent,
                                        lookTargets: new LookTargets(pawns),
                                        relatedFaction: parms.faction);

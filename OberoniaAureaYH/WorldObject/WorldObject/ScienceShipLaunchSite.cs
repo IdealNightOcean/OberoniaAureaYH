@@ -121,12 +121,8 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
 
             if (skillLevel >= 18)
             {
-                (bool hasShipTypeText, string shipTypeText) = ScienceShipRecord.GetShipTypeText(shipRecord.TypeOfShip, fundDisaster: false);
-                if (hasShipTypeText)
-                {
-                    sb.AppendLine();
-                    sb.AppendInNewLine(shipTypeText.Translate());
-                }
+                sb.AppendLine();
+                sb.AppendInNewLine(ScienceShipRecord.GetShipLaunchText(shipRecord.TypeOfShip).Translate());
             }
         }
 

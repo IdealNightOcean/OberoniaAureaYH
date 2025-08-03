@@ -117,6 +117,7 @@
     <Compile Include="JobAndWork\JobDriver_SailorInvitation.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_SetScienceShipName.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ProspectingTeam.cs" />
+    <Compile Include="Quest\QuestPart\QuestPart_ProspectingTeamReward.cs" />
     <Compile Include="ThingComp\CompGiveHediffInRange_GravField.cs" />
     <Compile Include="Utility\DevWin_OAInteractHandler.cs" />
     <Compile Include="Utility\DevWin_SDInteractHandler.cs" />

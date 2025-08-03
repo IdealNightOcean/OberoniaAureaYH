@@ -30,7 +30,7 @@ public class JobDriver_Hack : JobDriver
         toil.handlingFacing = true;
         toil.initAction = delegate
         {
-            hackingSpeed = pawn.GetStatValue(StatDefOf.HackingSpeed);
+            hackingSpeed = pawn.GetStatValue(StatDefOf.HackingSpeed) * 0.033f;
         };
         toil.tickAction = delegate
         {

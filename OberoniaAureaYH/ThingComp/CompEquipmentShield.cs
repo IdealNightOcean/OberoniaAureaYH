@@ -74,7 +74,7 @@ public class CompEquipmentShield : ThingComp
         Scribe_Values.Look(ref energy, "energy", 0f);
         Scribe_Values.Look(ref ticksToReset, "ticksToReset", -1);
         Scribe_Values.Look(ref lastKeepDisplayTick, "lastKeepDisplayTick", 0);
-        Scribe_Values.Look(ref pawnOwner, "pawnOwner");
+        Scribe_References.Look(ref pawnOwner, "pawnOwner");
     }
 
     public override void Notify_Equipped(Pawn pawn)

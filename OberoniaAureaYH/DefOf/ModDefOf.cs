@@ -9,6 +9,7 @@ public static class OARK_ModDefOf
     [MayRequireOdyssey]
     public static EffecterDef OARK_Effect_GravTrapIED; //重力陷阱爆炸
 
+    public static FactionDef OA_RK_PlayerFaction; //金鼠玩家派系
     public static FactionDef OA_RK_Faction; //金鼠鼠派系
     [MayRequire("OARK.RatkinFaction.GeneExpand")]
     public static FactionDef Rakinia_TravelRatkin; //旅鼠派系
@@ -35,6 +36,10 @@ public static class OARK_ModDefOf
 
     [MayRequireOdyssey]
     public static RulePackDef OARK_PackScienceShipName;
+    [MayRequireOdyssey]
+    public static RulePackDef OARK_RulePackSalutationText;
+    [MayRequireOdyssey]
+    public static RulePackDef OARK_RulePackProgressText;
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
     public static SoundDef OARK_Sound_GravBomb;

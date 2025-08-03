@@ -205,9 +205,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         {
             diaOption.Disable("OARK_GravTechStageNotEnough".Translate(2));
         }
-        else if (OAInteractHandler.Instance.AssistPoints < 60)
+        else if (OAInteractHandler.Instance.AssistPoints < 55)
         {
-            diaOption.Disable("OA_AlliancePointsNotEnough".Translate(60));
+            diaOption.Disable("OA_AlliancePointsNotEnough".Translate(55));
         }
 
         else
@@ -223,7 +223,11 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
 
         diaNode.options.Add(new DiaOption("Confirm".Translate().Colorize(Color.red))
         {
-            action = delegate { CallGravityDistortionBomb(map); },
+            action = delegate
+            {
+                OAInteractHandler.Instance.AdjustAssistPoints(-55);
+                CallGravityDistortionBomb(map);
+            },
             linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_GravityDistortionBombConfirm".Translate(faction.leader), faction, negotiator)
         });
 

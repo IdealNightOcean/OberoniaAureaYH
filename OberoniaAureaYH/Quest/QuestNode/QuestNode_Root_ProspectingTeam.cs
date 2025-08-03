@@ -2,7 +2,6 @@
 using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
-using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -39,7 +38,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
             rewardValueRange = new FloatRange(300f, 500f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
             questDurationTicks = 60000,
 
-            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Court_Member
+            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration
         };
     }
 
@@ -101,58 +100,25 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         SetSlateValue();
     }
 
-    protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
+    protected override void SetPawnsLeaveComp(string inSignalEnable, string inSignalRemovePawn)
     {
-        base.SetQuestEndComp(questPart_Interactions, failSignal, bigFailSignal, successSignal);
+        base.SetPawnsLeaveComp(inSignalEnable, inSignalRemovePawn);
+
         Quest quest = questParameter.quest;
-        quest.AnySignal(inSignals: [successSignal],
-                        action: delegate
-                        {
-                            GiveSpecialReward(questParameter.map, questParameter.faction, questParameter.quest);
-                        });
-    }
 
-    private static void GiveSpecialReward(Map map, Faction faction, Quest quest = null)
-    {
-        if (!CellFinderLoose.TryFindRandomNotEdgeCellWith(10, c => CanScatterAt(c, map), map, out IntVec3 centerCell))
-        {
-            Log.Error("Could not find a center cell for deep scanning lump generation!");
-        }
-        ThingDef thingDef = ThingDefOf.Uranium;
-        int numCells = Mathf.CeilToInt(thingDef.deepLumpSizeRange.RandomInRange);
-        Thing deepDrill = ThingMaker.MakeThing(ThingDefOf.DeepDrill);
-        if (deepDrill.def.CanHaveFaction)
-        {
-            deepDrill.SetFaction(Faction.OfPlayer);
-        }
-        Thing deepMini = MinifyUtility.MakeMinified(deepDrill);
-        GenPlace.TryPlaceThing(deepMini, centerCell, map, ThingPlaceMode.Near);
+        string specialRewardSignal = QuestGen.GenerateNewSignal("Lodger_GiveSpecialReward");
+        quest.Delay(questParameter.questDurationTicks, inner: null, inSignalEnable: inSignalEnable, outSignalComplete: specialRewardSignal);
 
-        foreach (IntVec3 cell in GridShapeMaker.IrregularLump(centerCell, map, numCells))
+        QuestPart_ProspectingTeamReward questPart_ProspectingTeamReward = new()
         {
-            if (CanScatterAt(cell, map) && !cell.InNoBuildEdgeArea(map))
-            {
-                map.deepResourceGrid.SetAt(cell, thingDef, thingDef.deepCountPerCell);
-            }
-        }
-
-        Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_ProspectingTeamReward".Translate(),
-                                       text: "OARK_Letter_ProspectingTeamReward".Translate(),
-                                       textLetterDef: LetterDefOf.PositiveEvent,
-                                       new LookTargets(deepMini),
-                                       relatedFaction: faction,
-                                       quest: quest);
-    }
-
-    private static bool CanScatterAt(IntVec3 pos, Map map)
-    {
-        int index = CellIndicesUtility.CellToIndex(pos, map.Size.x);
-        TerrainDef terrainDef = map.terrainGrid.BaseTerrainAt(pos);
-        if ((terrainDef is not null && terrainDef.IsWater && terrainDef.passability == Traversability.Impassable)
-            || !pos.GetAffordances(map).Contains(ThingDefOf.DeepDrill.terrainAffordanceNeeded))
-        {
-            return false;
-        }
-        return !map.deepResourceGrid.GetCellBool(index);
+            insSignal = specialRewardSignal,
+            inSignalRemovePawn = inSignalRemovePawn,
+            leader = questParameter.pawns[0],
+            mapParent = questParameter.map.Parent,
+            faction = questParameter.faction,
+            pawns = []
+        };
+        questPart_ProspectingTeamReward.pawns.AddRange(questParameter.pawns);
+        quest.AddPart(questPart_ProspectingTeamReward);
     }
 }
