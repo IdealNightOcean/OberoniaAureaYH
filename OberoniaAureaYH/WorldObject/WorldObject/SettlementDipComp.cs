@@ -69,7 +69,7 @@ public class SettlementDipComp : WorldObjectComp
         {
             defaultLabel = "OA_CommandDipAction".Translate(),
             defaultDesc = "OA_CommandDipActionDesc".Translate(),
-            icon = ModUtility.OADipIcon,
+            icon = IconUtility.OADipIcon,
             action = delegate
             {
                 GizmoFloat_DipAction(caravan);

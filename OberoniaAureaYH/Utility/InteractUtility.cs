@@ -52,5 +52,32 @@ public static class InteractUtility
                                        textLetterDef: LetterDefOf.PositiveEvent,
                                        lookTargets: null,
                                        relatedFaction: ModUtility.OAFaction);
+
+        if (curStage == 2)
+        {
+            GiveSpecialTechPrint("OARK_Odyssey_GravTrap");
+        }
+        if (curStage == 4)
+        {
+            GiveSpecialTechPrint("OARK_Odyssey_GravFieldCore");
+        }
+
+        static void GiveSpecialTechPrint(string defName)
+        {
+            Map map = Find.AnyPlayerHomeMap;
+            DiaBuyableTechPrintDef techPrintDef = DefDatabase<DiaBuyableTechPrintDef>.GetNamedSilentFail(defName);
+            if (techPrintDef is null)
+            {
+                return;
+            }
+            if (map is null)
+            {
+                ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(techPrintDef.gravTechAssistPoints);
+            }
+            else
+            {
+                OARK_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef.TechPrintDef, map, ModUtility.OAFaction);
+            }
+        }
     }
 }

@@ -37,7 +37,7 @@ public class Hediff_SailorAssistance : HediffWithComps
         {
             defaultLabel = "OARK_SailorAssistInvitation".Translate(),
             defaultDesc = "OARK_SailorAssistInvitationDesc".Translate(),
-            icon = ModUtility.OADipIcon,
+            icon = IconUtility.OADipIcon,
             targetingParams = targetingParameters,
             action = delegate (LocalTargetInfo inviter) { Invitation(pawn, inviter); }
         };

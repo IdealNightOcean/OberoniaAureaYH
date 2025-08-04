@@ -10,7 +10,7 @@ public class IncidentWorker_ScienceShip_OASupport : IncidentWorker_DropThingsOnM
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        return ScienceDepartmentInteractHandler.IsScienceDepartmentInteractAvailable() && base.CanFireNowSub(parms);
+        return ScienceDepartmentInteractHandler.IsInteractAvailable() && base.CanFireNowSub(parms);
     }
 
     protected override bool ResolveMap(IncidentParms parms)

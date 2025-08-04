@@ -8,7 +8,7 @@ public class IncidentWorker_ScienceDepartmentAnnualInteraction : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (!ScienceDepartmentInteractHandler.IsScienceDepartmentInteractAvailable())
+        if (!ScienceDepartmentInteractHandler.IsInteractAvailable())
         {
             return false;
         }

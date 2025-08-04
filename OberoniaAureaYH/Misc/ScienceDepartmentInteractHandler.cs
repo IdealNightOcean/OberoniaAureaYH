@@ -33,7 +33,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     public static void ClearStaticCache() => Instance = null;
     public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_SDInteractHandler());
 
-    public static bool IsScienceDepartmentInteractAvailable()
+    public static bool IsInteractAvailable()
     {
         return ModsConfig.OdysseyActive && Instance is not null && ModUtility.OAFaction is not null;
     }
@@ -76,12 +76,12 @@ public class ScienceDepartmentInteractHandler : IExposable
             Messages.Message("OARK_ScienceDepartment_GravTechPointsAdded".Translate(trueChange.ToString("F0")), MessageTypeDefOf.PositiveEvent);
         }
 
-        if (curGravTechStageIndex < MaxGravTechStageIndex && gravTechPoints > GravTechStageBoundary[curGravTechStageIndex + 1])
+        if (curGravTechStageIndex < MaxGravTechStageIndex && gravTechPoints >= GravTechStageBoundary[curGravTechStageIndex + 1])
         {
             curGravTechStageIndex++;
             if (isInitGravQuestCompleted)
             {
-                InteractUtility.SendGravTechStageUpgradeLetter(curGravTechStageIndex);
+                InteractUtility.SendGravTechStageUpgradeLetter(CurGravTechStage);
             }
         }
     }

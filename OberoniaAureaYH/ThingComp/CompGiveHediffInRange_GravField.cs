@@ -84,7 +84,7 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
             {
                 defaultLabel = "OARK_Command_GravSuppress".Translate(),
                 defaultDesc = "OARK_Command_GravSuppressDesc".Translate(),
-                icon = null,
+                icon = IconUtility.FlashIcon,
                 action = StartSuppress
             };
 

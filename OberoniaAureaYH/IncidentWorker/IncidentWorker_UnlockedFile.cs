@@ -7,7 +7,7 @@ public class IncidentWorker_UnlockedFile : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (!ScienceDepartmentInteractHandler.IsScienceDepartmentInteractAvailable())
+        if (!ScienceDepartmentInteractHandler.IsInteractAvailable())
         {
             return false;
         }

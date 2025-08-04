@@ -35,10 +35,6 @@ public class CompCrashedScienceShip : CompHackable
 {
     private static readonly int[] raidInterval = [50000, 40000, 30000, 22500, 15000];
 
-    private static readonly Texture2D increaseGravIcon = ContentFinder<Texture2D>.Get("UI/OARK_IncreaseGrav");
-    private static readonly Texture2D decreaseGravIcon = ContentFinder<Texture2D>.Get("UI/OARK_Decrease");
-    private static readonly Texture2D reassignmentGravIcon = ContentFinder<Texture2D>.Get("UI/OARK_ReassignmentGrav");
-
     private new CompProperties_CrashedScienceShip Props => (CompProperties_CrashedScienceShip)props;
 
     private ScienceShipRecord shipRecord;
@@ -320,7 +316,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_QuizResearcherJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_QuizResearcherJobDesc".Translate(),
-                icon = ModUtility.OADipIcon,
+                icon = IconUtility.OADipIcon,
                 action = QuizResearcher
             };
 
@@ -331,7 +327,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_IncreaseGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_IncreaseGravityJobDesc".Translate(),
-            icon = increaseGravIcon,
+            icon = IconUtility.IncreaseGravIcon,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(1);
@@ -341,7 +337,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_DecreaseGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_DecreaseGravityJobDesc".Translate(),
-            icon = decreaseGravIcon,
+            icon = IconUtility.DecreaseGravIcon,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(2);
@@ -351,7 +347,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_ReassignmentGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_ReassignmentGravityJobDesc".Translate(),
-            icon = reassignmentGravIcon,
+            icon = IconUtility.ReassignmentGravIcon,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(3);

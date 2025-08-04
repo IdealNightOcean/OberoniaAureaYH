@@ -122,6 +122,7 @@
     <Compile Include="Utility\DevWin_OAInteractHandler.cs" />
     <Compile Include="Utility\DevWin_SDInteractHandler.cs" />
     <Compile Include="Utility\DebugTools.cs" />
+    <Compile Include="Utility\IconUtility.cs" />
     <Compile Include="Utility\OAInteractionCDRecord.cs" />
     <Compile Include="Misc\OAInteractHandler.cs" />
     <Compile Include="Misc\RaidStrategyWorker_OAImmediateAttack.cs" />

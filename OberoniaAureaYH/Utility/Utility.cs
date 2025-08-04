@@ -2,7 +2,6 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -12,8 +11,6 @@ public static class ModUtility
 {
     private static Faction OAFactionCache;
     public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
-
-    public static readonly Texture2D OADipIcon = ContentFinder<Texture2D>.Get("World/OA_RK_SettlementDip");
 
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {

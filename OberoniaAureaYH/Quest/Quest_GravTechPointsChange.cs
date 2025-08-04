@@ -17,7 +17,7 @@ public class QuestNode_GravTechPointsChange : QuestNode
 
     protected override bool TestRunInt(Slate slate)
     {
-        return ScienceDepartmentInteractHandler.IsScienceDepartmentInteractAvailable();
+        return ScienceDepartmentInteractHandler.IsInteractAvailable();
     }
 
     protected override void RunInt()

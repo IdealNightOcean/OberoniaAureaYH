@@ -121,13 +121,14 @@ public static class ScienceDepartmentDialogUtility
     private static DiaOption DonateGravcore(FactionDialogCache dialogCache)
     {
         int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("DonateGravcore");
+        int count = dialogCache.Map.listerThings.ThingsOfDef(ThingDefOf.Gravcore).Count;
 
         DiaOption diaOption = new("OARK_DonateGravcore".Translate());
         if (cooldownTicksLeft > 0)
         {
             diaOption.Disable("WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod()));
         }
-        else if (!TradeUtility.AllLaunchableThingsForTrade(dialogCache.Map).Any(t => t.def == ThingDefOf.Gravcore))
+        else if (count < 1)
         {
             diaOption.Disable("OAFrame_NeedCount".Translate(1));
         }
@@ -135,7 +136,7 @@ public static class ScienceDepartmentDialogUtility
         {
             diaOption.action = delegate
             {
-                TradeUtility.LaunchThingsOfType(ThingDefOf.Gravcore, 1, dialogCache.Map, null);
+                dialogCache.Map.listerThings.ThingsOfDef(ThingDefOf.Gravcore)?.FirstOrFallback(null)?.SplitOff(1).Destroy();
                 ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
                 sdInteractHandler.AddGravTechPoints(500, byPlayer: true);
                 sdInteractHandler.AdjustGravTechAssistPoint(100);
@@ -304,7 +305,7 @@ public static class ScienceDepartmentDialogUtility
 
     private static DiaNode CovertGTAPToAP(FactionDialogCache dialogCache)
     {
-        DiaNode diaNode = new("OARK_CovertGTAPToAPInfo".Translate());
+        DiaNode diaNode = new("OARK_CovertGTAPToAPInfo".Translate() + "\n\n" + "OARK_GravTechAssistPoints".Translate(totalGTAP));
 
         CovertOption(10);
         CovertOption(50);
@@ -347,7 +348,7 @@ public static class ScienceDepartmentDialogUtility
 
     private static DiaNode CovertGTAPToSliver(FactionDialogCache dialogCache)
     {
-        DiaNode diaNode = new("OARK_CovertGTAPToSliverInfo".Translate());
+        DiaNode diaNode = new("OARK_CovertGTAPToSliverInfo".Translate() + "\n\n" + "OARK_GravTechAssistPoints".Translate(totalGTAP));
 
         CovertOption(10);
         CovertOption(50);
@@ -390,10 +391,11 @@ public static class ScienceDepartmentDialogUtility
 
     private static DiaNode ExchangeForTechPrint(FactionDialogCache dialogCache)
     {
-        DiaNode diaNode = new("OARK_ExchangeForTechPrintInfo".Translate());
+        DiaNode diaNode = new("OARK_ExchangeForTechPrintInfo".Translate() + "\n\n" + "OARK_GravTechAssistPoints".Translate(totalGTAP));
         int curGravTechStage = ScienceDepartmentInteractHandler.Instance.CurGravTechStage;
 
-        foreach (DiaBuyableTechPrintDef item in DefDatabase<DiaBuyableTechPrintDef>.AllDefs)
+        IOrderedEnumerable<DiaBuyableTechPrintDef> allBuyableTechPrintDefs = DefDatabase<DiaBuyableTechPrintDef>.AllDefsListForReading.OrderBy(d => d.gravTechAssistPoints);
+        foreach (DiaBuyableTechPrintDef item in allBuyableTechPrintDefs)
         {
             TechPrintOption(item);
         }
@@ -410,13 +412,13 @@ public static class ScienceDepartmentDialogUtility
             int gtapNeeded = dbtpDef.gravTechAssistPoints;
 
             DiaOption diaOption = new("OARK_ExchangeForTechPrintDetail".Translate(techPrint.label, gtapNeeded));
-            if (totalGTAP < gtapNeeded)
-            {
-                diaOption.Disable("OARK_GravTechAssistPointsNotEnough".Translate(gtapNeeded));
-            }
-            else if (curGravTechStage < dbtpDef.gravTechStage)
+            if (curGravTechStage < dbtpDef.gravTechStage)
             {
                 diaOption.Disable("OARK_GravTechStageNotEnough".Translate(dbtpDef.gravTechStage));
+            }
+            else if (totalGTAP < gtapNeeded)
+            {
+                diaOption.Disable(null);
             }
             else
             {
@@ -436,7 +438,13 @@ public static class ScienceDepartmentDialogUtility
 
     private static DiaNode ExchangeForSpecialEquipmentNode(FactionDialogCache dialogCache)
     {
-        DiaNode diaNode = new("OARK_ExchangeForSpecialEquipmentInfo".Translate());
+        DiaNode diaNode = new("OARK_ExchangeForSpecialEquipmentInfo".Translate() + "\n\n" + "OARK_GravTechAssistPoints".Translate(totalGTAP));
+
+        if (ModsConfig.BiotechActive)
+        {
+            EquipmentOption(OARK_RimWorldDefOf.DeathrestCapacitySerum, 100);
+            EquipmentOption(ThingDefOf.ArchiteCapsule, 100);
+        }
 
         EquipmentOption(OARK_RimWorldDefOf.SentienceCatalyst, 100);
         EquipmentOption(OARK_RimWorldDefOf.BroadshieldCore, 200);
@@ -445,8 +453,6 @@ public static class ScienceDepartmentDialogUtility
 
         if (ModsConfig.BiotechActive)
         {
-            EquipmentOption(OARK_RimWorldDefOf.DeathrestCapacitySerum, 100);
-            EquipmentOption(ThingDefOf.ArchiteCapsule, 100);
             EquipmentOption(ThingDefOf.Mechlink, 1500);
         }
 
@@ -462,7 +468,7 @@ public static class ScienceDepartmentDialogUtility
             DiaOption diaOption = new("OARK_ExchangeForSpecialEquipmentDetail".Translate(thingDef.LabelCap, gtap));
             if (totalGTAP < gtap)
             {
-                diaOption.Disable("OARK_GravTechAssistPointsNotEnough".Translate(gtap));
+                diaOption.Disable(null);
             }
             else
             {
@@ -532,7 +538,7 @@ public static class ScienceDepartmentDialogUtility
         }
 
         stringBuilder.AppendInNewLine("OARK_PlayerTechPoints".Translate(sdInteractHandler.PlayerTechPoints));
-        stringBuilder.AppendInNewLine("OARK_GravTechAssistPoints".Translate(sdInteractHandler.GravTechAssistPoints));
+        stringBuilder.AppendInNewLine("OARK_GravTechAssistPoints".Translate(totalGTAP));
 
         return stringBuilder.ToTaggedString();
     }

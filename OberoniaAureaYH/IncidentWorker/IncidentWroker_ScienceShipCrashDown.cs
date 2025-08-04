@@ -10,7 +10,7 @@ public class IncidentWroker_ScienceShipCrashDown : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (!ScienceDepartmentInteractHandler.IsScienceDepartmentInteractAvailable())
+        if (!ScienceDepartmentInteractHandler.IsInteractAvailable())
         {
             return false;
         }

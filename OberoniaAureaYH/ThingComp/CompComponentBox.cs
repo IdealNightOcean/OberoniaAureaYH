@@ -1,6 +1,5 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
-using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -24,16 +23,16 @@ public class CompComponentBox : ThingComp
         yield return new Command_Action
         {
             defaultLabel = "OARK_OpenOne".Translate(),
-            defaultDesc = "OARK_ComponentBoxDesc".Translate(),
-            icon = ContentFinder<Texture2D>.Get("UI/Commands/ComponentBox"),
+            defaultDesc = "OARK_ComponentBoxDesc".Translate(parent.Label),
+            icon = parent.def.uiIcon,
             action = OpenBoxOne
         };
 
         yield return new Command_Action
         {
             defaultLabel = "OARK_OpenAll".Translate(),
-            defaultDesc = "OARK_ComponentBoxDesc".Translate(),
-            icon = ContentFinder<Texture2D>.Get("UI/Commands/ComponentBox"),
+            defaultDesc = "OARK_ComponentBoxDesc".Translate(parent.Label),
+            icon = parent.def.uiIcon,
             action = OpenBoxAll
         };
     }
