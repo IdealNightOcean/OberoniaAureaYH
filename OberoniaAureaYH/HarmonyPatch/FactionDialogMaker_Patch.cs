@@ -2,6 +2,7 @@
 using OberoniaAurea_Frame;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using Verse;
@@ -221,7 +222,8 @@ public static class FactionDialogFor_Patch
 
         int negotiatorTitle = dialogCache.Negotiator.GetCurrentTitleSeniorityIn(dialogCache.Faction);
 
-        foreach (DiaBuyableTechPrintDef item in DefDatabase<DiaBuyableTechPrintDef>.AllDefs)
+        IOrderedEnumerable<DiaBuyableTechPrintDef> allBuyableTechPrintDefs = DefDatabase<DiaBuyableTechPrintDef>.AllDefsListForReading.OrderBy(d => d.price);
+        foreach (DiaBuyableTechPrintDef item in allBuyableTechPrintDefs)
         {
             AddDiaOption(item);
         }

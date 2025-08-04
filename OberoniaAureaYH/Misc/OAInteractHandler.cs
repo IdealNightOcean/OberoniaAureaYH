@@ -154,6 +154,7 @@ public class OAInteractHandler : IExposable
             {
                 ProspectingLeader = null;
             }
+            interactionCDRecords ??= [];
             interactionCDRecords.RemoveAll(kv => kv.Key is null || kv.Value.lastActiveTick < 0);
             if (!compatibled)
             {
