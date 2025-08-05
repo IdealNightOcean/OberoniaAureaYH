@@ -77,7 +77,24 @@ public class QuestPart_ProspectingTeamReward : QuestPart
 
     private static void GiveSpecialReward(Map map, Faction faction, Pawn leader, Quest quest = null)
     {
-        if (!CellFinderLoose.TryFindRandomNotEdgeCellWith(10, c => CanScatterAt(c, map), map, out IntVec3 centerCell))
+        IntVec3 centerCell = IntVec3.Invalid;
+        if (leader is not null && leader.Spawned && CanScatterAt(leader.Position, map))
+        {
+            centerCell = leader.Position;
+        }
+        else
+        {
+            List<Pawn> potentialPawns = map.mapPawns.FreeColonistsAndPrisonersSpawned;
+            foreach (Pawn p in potentialPawns)
+            {
+                if (CanScatterAt(p.Position, map))
+                {
+                    centerCell = p.Position;
+                    break;
+                }
+            }
+        }
+        if (!centerCell.IsValid && !CellFinderLoose.TryFindRandomNotEdgeCellWith(10, c => CanScatterAt(c, map), map, out centerCell))
         {
             Log.Error("Could not find a center cell for deep scanning lump generation!");
         }
