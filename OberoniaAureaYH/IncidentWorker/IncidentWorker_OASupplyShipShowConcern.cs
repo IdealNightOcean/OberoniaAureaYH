@@ -11,11 +11,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
     protected bool TryResolveParmsGeneral(IncidentParms parms)
     {
         Faction oaFaction = ModUtility.OAFaction;
-        if (oaFaction is null)
-        {
-            return false;
-        }
-        if (oaFaction.PlayerRelationKind != FactionRelationKind.Ally)
+        if (oaFaction is null || oaFaction.PlayerRelationKind != FactionRelationKind.Ally)
         {
             return false;
         }
@@ -34,10 +30,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
         List<List<Thing>> dropThings = OAFrame_MiscUtility.TryGengrateThingGroup(rawBerriesDef, count);
-        foreach (List<Thing> things in dropThings)
-        {
-            DropPodUtility.DropThingGroupsNear(intVec, map, [things], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
-        }
+        DropPodUtility.DropThingGroupsNear(intVec, map, dropThings, 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
         SendStandardLetter("OARatkin_LetterLabel_SupplyShipShowConcern".Translate(), "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count), LetterDefOf.PositiveEvent, parms, new TargetInfo(intVec, map));
         return true;
     }

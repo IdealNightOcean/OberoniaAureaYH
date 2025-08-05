@@ -149,13 +149,9 @@ public static class FactionDialogFor_Patch
             }
             else
             {
-                int gainAP = needSilver / 250;
-                int gainGTAP = needSilver / 10;
-                int gainFavor = needSilver / 1000;
-
                 diaOption.action = delegate
                 {
-                    DoSponsorOberoniaAurea(dialogCache, gainFavor);
+                    DoSponsorOberoniaAurea(dialogCache, needSilver);
                 };
                 diaOption.linkLateBind = () => SponsorOberoniaAureaConfirmNode(dialogCache, needSilver);
             }
@@ -175,7 +171,7 @@ public static class FactionDialogFor_Patch
 
         if (ModsConfig.OdysseyActive)
         {
-            ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(gainGTP, byPlayer: true);
+            ScienceDepartmentInteractHandler.Instance?.AddGravTechPoints(gainGTP, byPlayer: true);
         }
 
         dialogCache.Negotiator.royalty?.GainFavor(dialogCache.Faction, gainFavor);
@@ -190,11 +186,11 @@ public static class FactionDialogFor_Patch
 
         StringBuilder confirmSb = new("OA_SponsorThanks".Translate(dialogCache.Faction.leader).CapitalizeFirst());
         confirmSb.AppendLine();
-        confirmSb.AppendInNewLine("OA_SponsorAssistPointsGet".Translate(gainAP));
+        confirmSb.AppendInNewLine("OARK_AssistPointsAdded".Translate(gainAP));
         confirmSb.AppendInNewLine("OA_SponsorRoyaltyFavorGain".Translate(dialogCache.Negotiator.Named("NAME"), gainFavor));
         if (ModsConfig.OdysseyActive)
         {
-            confirmSb.AppendInNewLine("OARK_SponsorGravTechPointGain".Translate(gainGTP));
+            confirmSb.AppendInNewLine("OARK_ScienceDepartment_GravTechPointsAdded".Translate(gainGTP));
         }
 
         return FactionDialogUtility.FinallyConfirmNode(confirmSb.ToString(),

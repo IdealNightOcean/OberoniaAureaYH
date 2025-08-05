@@ -14,6 +14,8 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
 
     public override void CompTickInterval(int delta)
     {
+        if (!parent.Spawned) { return; }
+
         if (suppressTickLeft > 0 && (tickToNextFleck -= delta) < 0)
         {
             tickToNextFleck = 120;
@@ -44,6 +46,14 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
                 }
             }
         }
+    }
+
+    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+    {
+        base.PostDeSpawn(map, mode);
+        suppressTickLeft = -1;
+        tickToNextFleck = 120;
+        ticksToNextCheck = Props.checkInterval;
     }
 
     private void GiveHediff(Pawn pawn, HediffDef giveHediff, int overrideDisappearTicks)

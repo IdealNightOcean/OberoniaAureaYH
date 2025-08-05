@@ -18,6 +18,8 @@ public static class OARK_ThingDefOf
     public static ThingDef OARK_ComponentBox; //零部件盒
 
     [MayRequireOdyssey]
+    public static ThingDef OARK_GravDataBeacon; //科研部逆重数据信标
+    [MayRequireOdyssey]
     public static ThingDef OARK_SDCommunicationEquipment; //科技部通讯设备
     [MayRequireOdyssey]
     public static ThingDef OARK_AirportClearanceBeaconDeactive; //失效的空港许可信标

@@ -54,7 +54,7 @@ public class OAInteractHandler : IExposable
     {
         bool assistPointsStoppage = assistStoppageDays > 0;
         bool overCap = assistPoints > CurAssistPointsCap;
-        AdjustAssistPoints(InteractUtility.GetDailyAssistPointChange(assistPointsStoppage, overCap));
+        AdjustAssistPoints(InteractUtility.GetDailyAssistPointChange(assistPointsStoppage, overCap), showMessage: false);
     }
 
     public void AdjustAssistPoints(int change, bool showMessage = true)

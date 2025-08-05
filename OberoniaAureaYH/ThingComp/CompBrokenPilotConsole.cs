@@ -3,6 +3,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -11,6 +12,8 @@ public class CompBrokenPilotConsole : CompHackable
 {
     private static readonly int[] hackPointBoundary = [0, 60, 300, 540, 600];
     private static readonly int maxStageIndex = hackPointBoundary.Length - 1;
+
+    protected override bool SendMapParentQuestTagSignal => true;
     private CrashedGravship CrashedGravhip => MapParent as CrashedGravship;
     private Quest Quest => CrashedGravhip?.AssociatedQuest;
 
@@ -18,7 +21,7 @@ public class CompBrokenPilotConsole : CompHackable
     private bool acceptRequest;
     private int curStage;
 
-    public override void DoHack(float points)
+    public override void DoHack(float points, Pawn hackPawn)
     {
         if (!isHackable)
         {
@@ -26,10 +29,12 @@ public class CompBrokenPilotConsole : CompHackable
         }
 
         hackPoint += points;
-        if (curStage < maxStageIndex && hackPoint > hackPointBoundary[curStage + 1])
+        if (curStage < maxStageIndex && hackPoint >= hackPointBoundary[curStage + 1])
         {
             StageChange(++curStage);
         }
+
+        hackPoint = hackPoint > Props.maxHackPoint ? Props.maxHackPoint : hackPoint;
     }
 
     private void StageChange(int newStage)
@@ -46,7 +51,7 @@ public class CompBrokenPilotConsole : CompHackable
                 {
                     Find.LetterStack.ReceiveLetter("OARK_LetterLabel_NotNormalPilot".Translate(), "OARK_Letter_NotNormalPilot".Translate(), LetterDefOf.ThreatSmall, parent, ModUtility.OAFaction);
                 }
-                break;
+                return;
             case 2:
                 if (!isNormalPilot)
                 {
@@ -55,14 +60,15 @@ public class CompBrokenPilotConsole : CompHackable
                         target = parent.MapHeld,
                         faction = Find.FactionManager.RandomEnemyFaction(),
                         raidStrategy = RaidStrategyDefOf.ImmediateAttack,
-                        points = StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * 2.5f
+                        raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn,
+                        points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * 2.5f),
                     };
 
                     OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 2500, parms);
 
                     Find.LetterStack.ReceiveLetter("OARK_LetterLabel_BrokenPilotAttack".Translate(), "OARK_Letter_BrokenPilotAttack".Translate(), LetterDefOf.ThreatSmall, parent, ModUtility.OAFaction);
                 }
-                break;
+                return;
             case 3:
                 if (!isNormalPilot)
                 {
@@ -71,26 +77,27 @@ public class CompBrokenPilotConsole : CompHackable
                                                                                                                      def: OARK_LetterDefOf.OARK_BrokenPilotConsoleLetter,
                                                                                                                      lookTargets: parent,
                                                                                                                      relatedFaction: ModUtility.OAFaction,
-                                                                                                                     quest: (MapParent as CrashedGravship)?.AssociatedQuest);
+                                                                                                                     quest: (MapParent as IQuestAssociate)?.AssociatedQuest);
                     letter.brokenPilot = parent;
                     Find.LetterStack.ReceiveLetter(letter);
                 }
-                break;
+                return;
             case 4:
-                FinishHack();
-                break;
+                FinishHack(null);
+                return;
             default:
-                ForceEndHack();
+                if (!isHackForceEnded)
+                {
+                    ForceEndHack();
+                }
                 return;
         }
     }
 
     public void AcceptOberoniaAureaRequest()
     {
-        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "AcceptOberoniaAureaRequest", MapParent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "AcceptOberoniaAureaRequest", parent.Named("SUBJECT"));
         acceptRequest = true;
-        ForceEndHack();
-
         if (Rand.Chance(0.4f))
         {
             int delayTicks = (int)(Rand.Range(8f, 12f) * 60000);
@@ -100,12 +107,16 @@ public class CompBrokenPilotConsole : CompHackable
             };
             OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_CrashedGravship_FollowUp, delayTicks, parms);
         }
+
+        if (!isHackForceEnded)
+        {
+            ForceEndHack();
+        }
     }
 
-    public override void FinishHack()
+    public override void FinishHack(Pawn hackPawn)
     {
-        base.FinishHack();
-        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "HackCompleted", MapParent.Named("SUBJECT"));
+        base.FinishHack(hackPawn);
 
         ResearchManager researchManager = Find.ResearchManager;
         List<ResearchProjectDef> targetProjects = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(p => !p.IsFinished && !p.IsHidden).InRandomOrder().Take(2).ToList();
@@ -146,11 +157,6 @@ public class CompBrokenPilotConsole : CompHackable
                                        relatedFaction: ModUtility.OAFaction,
                                        quest: Quest);
 
-    }
-    public override void PostDestroy(DestroyMode mode, Map previousMap)
-    {
-        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "PilotDestoryBeforeHacked", MapParent.Named("SUBJECT"));
-        base.PostDestroy(mode, previousMap);
     }
 
     protected override StringBuilder CompInspectStringExtraBuilder()

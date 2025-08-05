@@ -84,6 +84,7 @@
     <Compile Include="IncidentWorker\IncidentWorker_DropThingsOnMap.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ScienceShip_TravelRKReward.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_VisitorGroupBase.cs" />
+    <Compile Include="JobAndWork\JobDriver_InteractWithThingAtOnce.cs" />
     <Compile Include="JobAndWork\JobDriver_TalkWithProspectingLeader.cs" />
     <Compile Include="Misc\Gizmo_EquipmentEnergyShieldStatus.cs" />
     <Compile Include="Misc\GameCondition_CrashedScienceShip.cs" />
@@ -108,13 +109,14 @@
     <Compile Include="HarmonyPatch\NegativeInteractionChanceFactor_Patch.cs" />
     <Compile Include="HarmonyPatch\GenerateBestowingCeremonyQuest_Patch.cs" />
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
-    <Compile Include="HediffComp\Hediff_SailorAssistance.cs" />
-    <Compile Include="HediffComp\HediffComp_TeaWithSkyWarmth.cs" />
+    <Compile Include="Hediff\Hediff_SailorAssistance.cs" />
+    <Compile Include="Hediff\HediffComp_TeaWithSkyWarmth.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_NewYearEvent.cs" />
     <Compile Include="DefModExtension\DisplacementExplosionExtension.cs" />
     <Compile Include="Misc\LordJob_ProspectingTeam.cs" />
     <Compile Include="Misc\ScienceDepartmentInteractHandler.cs" />
     <Compile Include="JobAndWork\JobDriver_SailorInvitation.cs" />
+    <Compile Include="Quest\Quest_SailorsAssistanceWatcher.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_SetScienceShipName.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ProspectingTeam.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_ProspectingTeamReward.cs" />
@@ -153,10 +155,10 @@
     <Compile Include="IncidentWorker\IncidentWorker_ResearchSummitTraveller.cs" />
     <Compile Include="Misc\CompAbilityEffect_PsychicSlaughter.cs" />
     <Compile Include="ThingComp\CompGiveHediffsInRange.cs" />
-    <Compile Include="HediffComp\HediffComp_TemperatureAdaptation.cs" />
+    <Compile Include="Hediff\HediffComp_TemperatureAdaptation.cs" />
     <Compile Include="Letter\ChoiceLetter_AcceptJoinerViewInfo.cs" />
     <Compile Include="Misc\Dialog_SimpleNegotiation.cs" />
-    <Compile Include="HediffComp\HediffComp_ExtraStun.cs" />
+    <Compile Include="Hediff\HediffComp_ExtraStun.cs" />
     <Compile Include="Misc\StockGenerator_BuyCategory.cs" />
     <Compile Include="Misc\Gene_HotAdaptation.cs" />
     <Compile Include="Misc\Gene_ColdAdaptation.cs" />
@@ -210,7 +212,8 @@
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
-    <Compile Include="WorldObject\GenStep_DoGravship.cs" />
+    <Compile Include="WorldObject\SketchResolver_CrashedGravship.cs" />
+    <Compile Include="WorldObject\GenStep_CrashedGravship.cs" />
     <Compile Include="WorldObject\WorldObject\DiplomaticSummitHandler.cs" />
     <Compile Include="WorldObject\WorldObject\CrashedGravship.cs" />
     <Compile Include="WorldObject\WorldObject\ScienceShipLaunchSite.cs" />
@@ -241,7 +244,7 @@
     <Compile Include="DefOf\RimWorldDefOf.cs" />
     <Compile Include="Misc\DiaBuyableTechPrintDef.cs" />
     <Compile Include="Misc\GameComponent_OberoniaAurea.cs" />
-    <Compile Include="HediffComp\HediffComp_GiveHediffWhenRemoved.cs" />
+    <Compile Include="Hediff\HediffComp_GiveHediffWhenRemoved.cs" />
     <Compile Include="Misc\PawnGroupKindWorker_OALargeScaleTrader.cs" />
     <Compile Include="Misc\PawnGroupKindWorker_FixPawnNumberRaid.cs" />
     <Compile Include="Misc\PlaceWorker_ShowFacilityRadius.cs" />

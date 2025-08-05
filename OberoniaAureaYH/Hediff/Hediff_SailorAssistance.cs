@@ -49,9 +49,9 @@ public class Hediff_SailorAssistance : HediffWithComps
         {
             command_Invitation.Disable("OA_AlliancePointsNotEnough".Translate(50));
         }
-        else if ((pawn.needs?.mood.CurLevelPercentage ?? 0f) < 0.9f)
+        else if ((pawn.needs?.mood.CurLevelPercentage ?? 0f) < 0.8f)
         {
-            command_Invitation.Disable();
+            command_Invitation.Disable("OARK_InsufficientMood".Translate(0.8f.ToStringPercent()));
         }
 
         yield return command_Invitation;
@@ -70,22 +70,26 @@ public class Hediff_SailorAssistance : HediffWithComps
             return;
         }
 
-        if (invitee.relations.OpinionOf(inviterPawn) < 20)
+        Job job = JobMaker.MakeJob(OARK_ModDefOf.OARK_Job_SailorInvitation, invitee);
+        job.count = 1;
+        job.playerForced = true;
+        inviterPawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+
+        /*
+        if (invitee.relations.OpinionOf(inviterPawn) < 50)
         {
-            Messages.Message("OARk_NeedBetterBothwayOpinion".Translate(20), MessageTypeDefOf.RejectInput, historical: false);
+            Messages.Message("OARk_NeedBetterBothwayOpinion".Translate(50), MessageTypeDefOf.RejectInput, historical: false);
             return;
         }
-        else if (inviterPawn.relations.OpinionOf(invitee) < 20)
+        else if (inviterPawn.relations.OpinionOf(invitee) < 50)
         {
-            Messages.Message("OARk_NeedBetterBothwayOpinion".Translate(20), MessageTypeDefOf.RejectInput, historical: false);
+            Messages.Message("OARk_NeedBetterBothwayOpinion".Translate(50), MessageTypeDefOf.RejectInput, historical: false);
             return;
         }
         else
         {
-            Job job = JobMaker.MakeJob(OARK_ModDefOf.OARK_Job_SailorInvitation, invitee);
-            job.count = 1;
-            job.playerForced = true;
-            inviterPawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+           
         }
+        */
     }
 }

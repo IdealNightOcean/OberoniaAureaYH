@@ -36,7 +36,7 @@ public class JobDriver_SailorInvitation : JobDriver
 
     private static void Invitation(Pawn invitee, Pawn inviter)
     {
-        QuestUtility.SendQuestTargetSignals(invitee.questTags, "Recruited", invitee.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(invitee.questTags, "Invited", invitee.Named("SUBJECT"));
 
         if (invitee.IsColonist || invitee.IsPrisonerOfColony || invitee.IsSlaveOfColony)
         {
@@ -46,6 +46,11 @@ public class JobDriver_SailorInvitation : JobDriver
         {
             invitee.SetFaction(Faction.OfPlayer);
         }
+
+        Find.LetterStack.ReceiveLetter(label: "LetterLabelMessageRecruitSuccess".Translate() + ": " + invitee.LabelShortCap,
+                                       text: "MessageRecruitSuccess".Translate(inviter, invitee, inviter.Named("RECRUITER"), invitee.Named("RECRUITEE")),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: invitee);
 
         OAFrame_PawnUtility.RemoveFirstHediffOfDef(invitee, OARK_HediffDefOf.OARK_Hediff_SailorAssistance);
     }

@@ -16,7 +16,6 @@ public static class UnlockedFileUtility
         LoveLetter,
         Dinner,
         DeletedFile,
-        Manuscript,
         EncryptedFile
     }
 
@@ -39,9 +38,6 @@ public static class UnlockedFileUtility
             case DocumentType.DeletedFile:
                 Result_DeletedFile(pawn, isDelay);
                 return;
-            case DocumentType.Manuscript:
-                Result_Manuscript(pawn, isDelay);
-                return;
             case DocumentType.EncryptedFile:
                 Result_EncryptedFile(pawn);
                 return;
@@ -51,8 +47,8 @@ public static class UnlockedFileUtility
 
     private static void Result_TechDesign(Pawn pawn, bool isDelay)
     {
-        StringBuilder sb = new(isDelay ? "OARK_UnlockedFile_TechDesignDelay".Translate()
-                                       : "OARK_UnlockedFile_TechDesign".Translate());
+        StringBuilder sb = new(isDelay ? "OARK_UnlockedFile_TechDesignDelay".Translate(pawn)
+                                       : "OARK_UnlockedFile_TechDesign".Translate(pawn));
 
         pawn.skills?.Learn(SkillDefOf.Intellectual, 2000f);
         sb.AppendLine();
@@ -72,8 +68,8 @@ public static class UnlockedFileUtility
 
     private static void Result_TechDraft(Pawn pawn, bool isDelay)
     {
-        StringBuilder sb = new(isDelay ? "OARK_UnlockedFile_TechDraftDelay".Translate()
-                                       : "OARK_UnlockedFile_TechDraft".Translate());
+        StringBuilder sb = new(isDelay ? "OARK_UnlockedFile_TechDraftDelay".Translate(pawn)
+                                       : "OARK_UnlockedFile_TechDraft".Translate(pawn));
 
         pawn.skills?.Learn(SkillDefOf.Intellectual, 6000f);
         sb.AppendLine();
@@ -135,11 +131,6 @@ public static class UnlockedFileUtility
 
         Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(isDelay ? "OARK_UnlockedFile_DeletedFileDelay".Translate(pawn)
                                                                                   : "OARK_UnlockedFile_DeletedFile".Translate(pawn)));
-    }
-
-    private static void Result_Manuscript(Pawn pawn, bool isDelay)
-    {
-
     }
 
     private static void Result_EncryptedFile(Pawn pawn)

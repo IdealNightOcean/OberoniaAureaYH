@@ -25,8 +25,8 @@ public class GameCondition_CrashedScienceShip : GameCondition
         curAffectHediff = affectHediff;
         disableElectricity = curEnvirType == ScienceShipRecord.EnvirAffectType.DisorderedMagnetism;
 
-        curLabel = ScienceShipRecord.GetShipEnvirLabel(curEnvirType);
-        curDescription = ScienceShipRecord.GetShipEnvirText(curEnvirType);
+        curLabel = ScienceShipRecord.GetShipEnvirLabel(curEnvirType).Translate();
+        curDescription = ScienceShipRecord.GetShipEnvirText(curEnvirType).Translate();
     }
 
     public override void GameConditionTick()

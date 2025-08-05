@@ -21,24 +21,37 @@ public class IncidentWorker_ScienceShipRecycle : IncidentWorker
         }
 
         ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(2000, byPlayer: false);
-
+        bool questValid = true;
         if (ModUtility.OAFaction is null
             || ModUtility.OAFaction.PlayerRelationKind != FactionRelationKind.Ally
-            || ScienceDepartmentInteractHandler.Instance.ScienceShipRecord is null)
+            || !ScienceDepartmentInteractHandler.Instance.ScienceShipRecord.HasValue)
         {
-
-            Find.LetterStack.ReceiveLetter(
-                "OARK_LetterLabel_ScienceShipRecycleTriggerFail".Translate(),
-                "OARK_Letter_ScienceShipRecycleTriggerFail".Translate(),
-                LetterDefOf.NeutralEvent);
-            return true;
+            questValid = false;
         }
 
-        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, 5000f);
-        if (!quest.hidden && OARK_QuestScriptDefOf.OARK_ScienceShipRecycle.sendAvailableLetter)
+        if (questValid)
         {
-            QuestUtility.SendLetterQuestAvailable(quest);
+            if (OARK_QuestScriptDefOf.OARK_ScienceShipRecycle.CanRun(new RimWorld.QuestGen.Slate(), Find.World))
+            {
+                Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, 5000f);
+                if (!quest.hidden && OARK_QuestScriptDefOf.OARK_ScienceShipRecycle.sendAvailableLetter)
+                {
+                    QuestUtility.SendLetterQuestAvailable(quest);
+                }
+            }
+            else
+            {
+                questValid = false;
+            }
         }
+
+        if (!questValid)
+        {
+            Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_ScienceShipRecycleTriggerFail".Translate(),
+                                           text: "OARK_Letter_ScienceShipRecycleTriggerFail".Translate(),
+                                           textLetterDef: LetterDefOf.NeutralEvent);
+        }
+
         return true;
     }
 }

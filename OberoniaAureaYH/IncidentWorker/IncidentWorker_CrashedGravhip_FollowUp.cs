@@ -58,6 +58,8 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
                                        lookTargets: null,
                                        relatedFaction: ModUtility.OAFaction);
 
+        Messages.Message("OARK_Message_CrashedGravshipFollowUp".Translate(), MessageTypeDefOf.PositiveEvent);
+
         return true;
     }
 

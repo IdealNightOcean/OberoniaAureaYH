@@ -67,6 +67,8 @@ public static class ScienceDepartmentDialogUtility
 
         if (sdInteractHandler.IsInitGravQuestCompleted)
         {
+            diaNode.options.Add(AcquireDataBeacon(dialogCache));
+
             diaNode.options.Add(DonateGravcore(dialogCache));
 
             diaNode.options.Add(FactionDialogUtility.DiaOptionWithCooldown(text: "OARK_DonateGravlitePanel".Translate(),
@@ -116,6 +118,36 @@ public static class ScienceDepartmentDialogUtility
         });
 
         return diaNode;
+    }
+
+    private static DiaOption AcquireDataBeacon(FactionDialogCache dialogCache)
+    {
+        int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("AcquireDataBeacon");
+
+        DiaOption diaOption = new("OARK_AcquireDataBeacon".Translate());
+        if (cooldownTicksLeft > 0)
+        {
+            diaOption.Disable("WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod()));
+        }
+        else
+        {
+            diaOption.action = delegate
+            {
+                Thing beacon = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_GravDataBeacon);
+                if (beacon.def.CanHaveFaction)
+                {
+                    beacon.SetFaction(Faction.OfPlayer);
+                }
+                Thing beaconMini = MinifyUtility.TryMakeMinified(beacon);
+                OARK_DropPodUtility.DefaultDropSingleThing(beaconMini, dialogCache.Map, dialogCache.Faction);
+                OAInteractHandler.Instance.RegisterCDRecord("AcquireDataBeacon", cdTicks: 120 * 60000);
+            };
+            diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OARK_AcquireDataBeaconConfirm".Translate(),
+                                                                                   faction: dialogCache.Faction,
+                                                                                   negotiator: dialogCache.Negotiator);
+        }
+
+        return diaOption;
     }
 
     private static DiaOption DonateGravcore(FactionDialogCache dialogCache)
@@ -414,7 +446,7 @@ public static class ScienceDepartmentDialogUtility
             DiaOption diaOption = new("OARK_ExchangeForTechPrintDetail".Translate(techPrint.label, gtapNeeded));
             if (curGravTechStage < dbtpDef.gravTechStage)
             {
-                diaOption.Disable("OARK_GravTechStageNotEnough".Translate(dbtpDef.gravTechStage));
+                diaOption.Disable("OARK_GravTechStageNeedAbove".Translate(dbtpDef.gravTechStage - 1));
             }
             else if (totalGTAP < gtapNeeded)
             {
@@ -544,6 +576,17 @@ public static class ScienceDepartmentDialogUtility
     }
 
     private static string GetSalutationText()
+    {
+        if (GenDate.DaysPassed >= ScienceDepartmentInteractHandler.Instance.NextShiftWorkDay)
+        {
+            ScienceDepartmentInteractHandler.Instance.NextShiftWorkDay = GenDate.DaysPassed + 1;
+            ScienceDepartmentInteractHandler.Instance.ToDayDutyText = GetNewSalutationText();
+        }
+
+        return ScienceDepartmentInteractHandler.Instance.ToDayDutyText;
+    }
+
+    private static string GetNewSalutationText()
     {
         GrammarRequest grammarRequest = new();
         grammarRequest.Includes.Add(OARK_ModDefOf.OARK_RulePackSalutationText);

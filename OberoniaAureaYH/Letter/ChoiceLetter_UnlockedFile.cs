@@ -76,9 +76,8 @@ public class ChoiceLetter_UnlockedFile : ChoiceLetter
     {
         if (Rand.Chance(0.1f) || fileType == DocumentType.LoveLetter || fileType == DocumentType.EncryptedFile)
         {
-
-            detectionProp = 0.5f;
             OpenLetter();
+            detectionProp = 0.5f;
             TaggedString diaText = fileType switch
             {
                 DocumentType.LoveLetter => "OARK_UnlockedFile_LoveLetterRefuse".Translate(pawn),
@@ -89,11 +88,10 @@ public class ChoiceLetter_UnlockedFile : ChoiceLetter
         }
         else
         {
+            Find.LetterStack.RemoveLetter(this);
             Find.WindowStack.Add(OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_UnlockedFile_QuizAllow".Translate(),
                                                                        acceptText: "OARK_Check".Translate(),
                                                                        acceptAction: delegate { DocumentResult(fileType, pawn, isDelay: false); }));
-
-            Find.LetterStack.RemoveLetter(this);
         }
     }
     private static DocumentType GetRandomDocumentType()

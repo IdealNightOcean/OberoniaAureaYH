@@ -182,11 +182,11 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             DiaOption diaOption = new(diaStr.Translate());
             if (allianceDuration < needAD)
             {
-                diaOption.Disable("OA_AllianceDurationShort".Translate(needAD.ToString("F0")));
+                diaOption.Disable("OA_AllianceDurationShort".Translate(needAD));
             }
             else if (assistPoints < needAP)
             {
-                diaOption.Disable("OA_AlliancePointsNotEnough".Translate(needAP.ToString("F0")));
+                diaOption.Disable("OA_AlliancePointsNotEnough".Translate(needAP));
             }
             else
             {
@@ -201,9 +201,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         DiaOption diaOption = new("OARK_GravityDistortionBomb".Translate());
 
-        if (ScienceDepartmentInteractHandler.Instance.CurGravTechStage < 2)
+        if (ScienceDepartmentInteractHandler.Instance.CurGravTechStage < 3)
         {
-            diaOption.Disable("OARK_GravTechStageNotEnough".Translate(2));
+            diaOption.Disable("OARK_GravTechStageNeedAbove".Translate(2));
         }
         else if (OAInteractHandler.Instance.AssistPoints < 55)
         {

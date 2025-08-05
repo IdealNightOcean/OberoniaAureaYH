@@ -9,6 +9,7 @@ namespace OberoniaAurea;
 
 public class CompProperties_Hackable : CompProperties
 {
+    public JobDef hackJob;
     public float maxHackPoint = 600;
     public int intellectualSkillPrerequisite = 0;
     public bool destoryOnHackComplete = false;
@@ -18,11 +19,15 @@ public abstract class CompHackable : ThingComp
 {
     public CompProperties_Hackable Props => (CompProperties_Hackable)props;
 
-    protected List<string> WorldObjectQuestTag => parent.MapHeld?.Parent.questTags;
+    protected List<string> MapParentQuestTag => parent.MapHeld?.Parent.questTags;
     protected MapParent MapParent => parent.MapHeld?.Parent;
+    protected virtual bool SendMapParentQuestTagSignal => false;
+
+    protected JobDef HackJob => Props.hackJob ?? OARK_ModDefOf.OARK_Job_Hack;
 
     protected bool isHacked;
     protected bool isHackable = true;
+    [Unsaved] protected bool isHackForceEnded;
 
     public bool IsHacked => isHacked;
     public bool IsHackable => isHackable;
@@ -31,7 +36,7 @@ public abstract class CompHackable : ThingComp
 
     public float ProgressPercent => hackPoint / Props.maxHackPoint;
 
-    public virtual void DoHack(float points)
+    public virtual void DoHack(float points, Pawn hackPawn)
     {
         if (!isHackable)
         {
@@ -43,16 +48,20 @@ public abstract class CompHackable : ThingComp
         if (hackPoint >= Props.maxHackPoint)
         {
             hackPoint = Props.maxHackPoint;
-            FinishHack();
+            FinishHack(hackPawn);
         }
     }
 
-    public virtual void FinishHack()
+    public virtual void FinishHack(Pawn hackPawn)
     {
         isHacked = true;
         isHackable = false;
 
-        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", this.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", parent.Named("SUBJECT"));
+        if (SendMapParentQuestTagSignal)
+        {
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named("SUBJECT"));
+        }
         if (Props.destoryOnHackComplete)
         {
             parent.Kill();
@@ -62,12 +71,17 @@ public abstract class CompHackable : ThingComp
     public virtual void ForceEndHack()
     {
         isHackable = false;
-        QuestUtility.SendQuestTargetSignals(WorldObjectQuestTag, "HackForceEnded", MapParent.Named("SUBJECT"));
+        isHackForceEnded = true;
+        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackForceEnded", parent.Named("SUBJECT"));
+        if (SendMapParentQuestTagSignal)
+        {
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackForceEnded", parent.Named("SUBJECT"));
+        }
     }
 
     public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
     {
-        if (!isHacked)
+        if (!isHacked && !isHackForceEnded)
         {
             ForceEndHack();
         }
@@ -76,7 +90,7 @@ public abstract class CompHackable : ThingComp
 
     public override void PostDestroy(DestroyMode mode, Map previousMap)
     {
-        if (!isHacked)
+        if (!isHacked && !isHackForceEnded)
         {
             ForceEndHack();
         }
@@ -94,7 +108,7 @@ public abstract class CompHackable : ThingComp
         {
             yield return new FloatMenuOption("Hack".Translate(parent.Label), delegate
             {
-                selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(OARK_ModDefOf.OARK_Job_Hack, parent), JobTag.Misc);
+                selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(HackJob, parent), JobTag.Misc);
             });
         }
         else if (!acceptanceReport.Reason.NullOrEmpty())
@@ -104,6 +118,18 @@ public abstract class CompHackable : ThingComp
         else
         {
             yield return new FloatMenuOption("CannotHack".Translate(parent.Label), null);
+        }
+    }
+
+    public override IEnumerable<Gizmo> CompGetGizmosExtra()
+    {
+        if (DebugSettings.ShowDevGizmos)
+        {
+            yield return new Command_Action()
+            {
+                defaultLabel = "DEV: Hack",
+                action = delegate { DoHack(Props.maxHackPoint, null); }
+            };
         }
     }
 

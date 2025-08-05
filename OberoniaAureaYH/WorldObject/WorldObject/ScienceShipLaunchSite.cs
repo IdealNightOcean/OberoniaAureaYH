@@ -117,7 +117,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
         {
             sb.AppendLine();
             sb.AppendInNewLine("OARK_ScienceShipEnvir".Translate(pawn));
-            sb.AppendInNewLine(ScienceShipRecord.GetShipEnvirText(shipRecord.EnvironmentAffect).Translate());
+            sb.AppendInNewLine(ScienceShipRecord.GetShipEnvirLabel(shipRecord.EnvironmentAffect).Translate());
 
             if (skillLevel >= 18)
             {

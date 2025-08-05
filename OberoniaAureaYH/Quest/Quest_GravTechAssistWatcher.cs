@@ -94,15 +94,15 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
         if (TotalGTP > 1500)
         {
             Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_GravTechAssist_RewardChoice".Translate(),
-                                                                              acceptText: ThingDefOf.Gravcore.LabelCap,
-                                                                              acceptAction: delegate { OARK_DropPodUtility.DefaultDropSingleThingOfDef(ThingDefOf.Gravcore, map, ModUtility.OAFaction); },
-                                                                              rejectText: OARK_RimWorldDefOf.VanometricPowerCell.LabelCap,
-                                                                              rejectAction: delegate
-                                                                              {
-                                                                                  Thing building = ThingMaker.MakeThing(OARK_RimWorldDefOf.VanometricPowerCell);
-                                                                                  Thing item = MinifyUtility.TryMakeMinified(building);
-                                                                                  OARK_DropPodUtility.DefaultDropSingleThing(item, map, ModUtility.OAFaction);
-                                                                              });
+                                                                             acceptText: ThingDefOf.Gravcore.LabelCap,
+                                                                             acceptAction: delegate { OARK_DropPodUtility.DefaultDropSingleThingOfDef(ThingDefOf.Gravcore, map, ModUtility.OAFaction); },
+                                                                             rejectText: OARK_RimWorldDefOf.VanometricPowerCell.LabelCap,
+                                                                             rejectAction: delegate
+                                                                             {
+                                                                                 Thing building = ThingMaker.MakeThing(OARK_RimWorldDefOf.VanometricPowerCell);
+                                                                                 Thing item = MinifyUtility.TryMakeMinified(building);
+                                                                                 OARK_DropPodUtility.DefaultDropSingleThing(item, map, ModUtility.OAFaction);
+                                                                             });
 
             Find.WindowStack.Add(nodeTree);
         }

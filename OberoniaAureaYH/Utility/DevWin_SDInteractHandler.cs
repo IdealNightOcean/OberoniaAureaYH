@@ -60,6 +60,9 @@ public class DevWin_SDInteractHandler : Window
         {
             listing_Rect.Label($"ScienceShipRecord: {shipName}");
         }
+        listing_Rect.Gap(3f);
+        listing_Rect.Label($"ToDayDutyText: {sdInteractHandler.ToDayDutyText}");
+        listing_Rect.Label($"NextShiftWorkDay: {sdInteractHandler.NextShiftWorkDay}");
 
         if (Event.current.type == EventType.Layout)
         {

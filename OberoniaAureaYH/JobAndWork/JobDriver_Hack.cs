@@ -8,12 +8,12 @@ namespace OberoniaAurea;
 
 public class JobDriver_Hack : JobDriver
 {
-    private Thing HackTarget => TargetThingA;
+    protected Thing HackTarget => TargetThingA;
 
     [Unsaved]
     private CompHackable compHackable;
-    private CompHackable CompHackable => compHackable ??= HackTarget.TryGetComp<CompHackable>();
-    private float hackingSpeed;
+    protected CompHackable CompHackable => compHackable ??= HackTarget.TryGetComp<CompHackable>();
+    protected float hackingSpeed;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
@@ -30,11 +30,11 @@ public class JobDriver_Hack : JobDriver
         toil.handlingFacing = true;
         toil.initAction = delegate
         {
-            hackingSpeed = pawn.GetStatValue(StatDefOf.HackingSpeed) * 0.033f;
+            hackingSpeed = GetHackingSpeed();
         };
         toil.tickAction = delegate
         {
-            CompHackable.DoHack(hackingSpeed);
+            CompHackable.DoHack(hackingSpeed, pawn);
             pawn.skills.Learn(SkillDefOf.Intellectual, 0.1f);
             pawn.rotationTracker.FaceTarget(HackTarget);
         };
@@ -58,6 +58,11 @@ public class JobDriver_Hack : JobDriver
         toil.defaultCompleteMode = ToilCompleteMode.Never;
         toil.activeSkill = () => SkillDefOf.Intellectual;
         yield return toil;
+    }
+
+    protected virtual float GetHackingSpeed()
+    {
+        return pawn.GetStatValue(StatDefOf.HackingSpeed) * 0.0199f;
     }
 
     public override void ExposeData()

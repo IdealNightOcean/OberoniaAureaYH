@@ -35,6 +35,7 @@ public class CompCrashedScienceShip : CompHackable
 {
     private static readonly int[] raidInterval = [50000, 40000, 30000, 22500, 15000];
 
+    protected override bool SendMapParentQuestTagSignal => true;
     private new CompProperties_CrashedScienceShip Props => (CompProperties_CrashedScienceShip)props;
 
     private ScienceShipRecord shipRecord;
@@ -193,7 +194,7 @@ public class CompCrashedScienceShip : CompHackable
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
         base.PostSpawnSetup(respawningAfterLoad);
-        QuestUtility.SendQuestTargetSignals(MapParent.questTags, "CrashShipSpawned", this.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "CrashShipSpawned", parent.Named("SUBJECT"));
         if (!respawningAfterLoad)
         {
             shipGameCondition = (GameCondition_CrashedScienceShip)GameConditionMaker.MakeCondition(Props.shipGameCondition, duration: 600000);
@@ -217,7 +218,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         if (!dataUploaded)
         {
-            QuestUtility.SendQuestTargetSignals(map.Parent.questTags, "DeSpawnedBeforeDataUpload", this.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DeSpawnedBeforeDataUpload", parent.Named("SUBJECT"));
         }
         shipGameCondition?.End();
         shipGameCondition = null;
@@ -228,7 +229,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         if (!dataUploaded)
         {
-            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestoryedBeforeDataUpload", this.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestoryedBeforeDataUpload", parent.Named("SUBJECT"));
         }
         shipGameCondition?.End();
         shipGameCondition = null;
@@ -285,42 +286,42 @@ public class CompCrashedScienceShip : CompHackable
 
         if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Hyperthermia))
         {
-            Command_Action Command_Gravitational = new()
+            Command_Action Command_Hyperthermia = new()
             {
                 defaultLabel = "OARK_ScienceShip_Hyperthermia".Translate(),
                 defaultDesc = "OARK_ScienceShip_HyperthermiaDesc".Translate(),
-                icon = null,
+                icon = IconUtility.HyperthermiaIcon,
                 action = delegate { JobFloatMenu(Props.hyperthermiaJob); }
             };
 
-            yield return Command_Gravitational;
+            yield return Command_Hyperthermia;
             yield break;
         }
 
         if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Mechanical))
         {
-            Command_Action Command_Gravitational = new()
+            Command_Action Command_Mechanical = new()
             {
                 defaultLabel = "OARK_ScienceShip_MechanicalJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_MechanicalJobDesc".Translate(),
-                icon = null,
+                icon = IconUtility.MechanicalRepaireIcon,
                 action = delegate { JobFloatMenu(Props.mechanicalJob); }
             };
 
-            yield return Command_Gravitational;
+            yield return Command_Mechanical;
         }
 
         if (!quizResearcher && shipRecord.HasTrouble(ScienceShipRecord.TroubleType.InformationBase))
         {
-            Command_Action Command_Gravitational = new()
+            Command_Action Command_QuizResearcher = new()
             {
                 defaultLabel = "OARK_ScienceShip_QuizResearcherJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_QuizResearcherJobDesc".Translate(),
-                icon = IconUtility.OADipIcon,
+                icon = IconUtility.InformationBaseIcon,
                 action = QuizResearcher
             };
 
-            yield return Command_Gravitational;
+            yield return Command_QuizResearcher;
         }
 
         Command_Action Command_IncreaseGravity = new()
@@ -360,7 +361,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_GravitationalJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_GravitationalJobDesc".Translate(),
-                icon = null,
+                icon = IconUtility.GravitationalRepaireIcon,
                 action = delegate { JobFloatMenu(Props.gravitationalJob); }
             };
 
@@ -485,16 +486,15 @@ public class CompCrashedScienceShip : CompHackable
     private void HyperthermiaSubsided()
     {
         RemoveTrouble(ScienceShipRecord.TroubleType.Hyperthermia);
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_HyperthermiaSubsided".Translate()));
         if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.InformationBase))
         {
             isHackable = true;
         }
     }
 
-    public override void FinishHack()
+    public override void FinishHack(Pawn hackPawn)
     {
-        base.FinishHack();
+        base.FinishHack(hackPawn);
         RemoveTrouble(ScienceShipRecord.TroubleType.InformationBase);
     }
 
@@ -532,7 +532,7 @@ public class CompCrashedScienceShip : CompHackable
             IncidentParms parms = new()
             {
                 target = parent.MapHeld,
-                points = StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti,
+                points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti),
                 faction = Find.FactionManager.RandomEnemyFaction(),
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
@@ -547,7 +547,7 @@ public class CompCrashedScienceShip : CompHackable
             IncidentParms parms = new()
             {
                 target = parent.MapHeld,
-                points = StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti,
+                points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti),
                 faction = Find.FactionManager.RandomEnemyFaction(),
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
@@ -704,6 +704,12 @@ public class CompCrashedScienceShip : CompHackable
 
     private void RemoveTrouble(ScienceShipRecord.TroubleType trouble)
     {
+        string troubleLabel = ScienceShipRecord.GetShipTroubleLabel(trouble).Translate();
+        Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShip_RemoveTroubleLabel".Translate(troubleLabel),
+                                       text: "OARK_ScienceShip_RemoveTrouble".Translate(troubleLabel),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: parent);
+
         shipRecord.RemoveTrouble(trouble);
         RecheckSignalStrength();
         if (shipRecord.TroubleCount == 0)
@@ -718,8 +724,8 @@ public class CompCrashedScienceShip : CompHackable
     private void FinishDataUpload()
     {
         dataUploaded = true;
-        QuestUtility.SendQuestTargetSignals(MapParent.questTags, "DataUploaded", this.Named("SUBJECT"));
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_UploadedDestory".Translate()));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DataUploaded", parent.Named("SUBJECT"));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_DataUploaded".Translate()));
         if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TravelRK)
         {
             IncidentParms parms = new()

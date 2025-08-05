@@ -43,6 +43,8 @@ public static class OARK_ModDefOf
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
     public static SoundDef OARK_Sound_GravBomb;
+    [MayRequireOdyssey]
+    public static SketchResolverDef OARK_Sketch_CrashedGravship;
 
     static OARK_ModDefOf()
     {

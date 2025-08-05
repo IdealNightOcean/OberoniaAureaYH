@@ -2,6 +2,7 @@
 using RimWorld;
 using System.Collections.Generic;
 using Verse;
+using Verse.Sound;
 
 namespace OberoniaAurea;
 
@@ -62,19 +63,27 @@ public class GravDataBeacon : Building
             yield return gizmo;
         }
 
-        if (!isActive && Spawned)
+        if (Spawned)
         {
-            Command_Action command_Active = new()
+            Command_Toggle command_Active = new()
             {
-                defaultLabel = "Active".Translate(),
-                defaultDesc = "OARK_ActiveGravDataBeaconDesc".Translate(),
-                icon = null,
-                action = delegate { isActive = true; }
+                defaultLabel = isActive ? "Close".Translate() : "Activate".Translate(),
+                defaultDesc = isActive ? "OARK_DeativeGravDataBeaconDesc".Translate(Label) : "OARK_ActiveGravDataBeaconDesc".Translate(Label),
+                icon = TexCommand.DesirePower,
+                isActive = () => isActive,
+                toggleAction = delegate
+                {
+                    isActive = !isActive;
+                    OARK_RimWorldDefOf.Emp_Crack.PlayOneShot(SoundInfo.InMap(this));
+                }
             };
-            AcceptanceReport report = CanActivateNow(resultOnly: false);
-            if (!report)
+            if (!isActive)
             {
-                command_Active.Disable(report.Reason);
+                AcceptanceReport report = CanActivateNow(resultOnly: false);
+                if (!report)
+                {
+                    command_Active.Disable(report.Reason);
+                }
             }
             yield return command_Active;
         }

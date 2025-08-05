@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.QuestGen;
 using UnityEngine;
 using Verse;
 
@@ -8,7 +9,7 @@ namespace OberoniaAurea;
 public class ScienceDepartmentInteractHandler : IExposable
 {
     private const int MaxGravTechPoints = 100000000;
-    public static readonly int[] GravTechStageBoundary = [0, 25000, 50000, 80000];
+    public static readonly int[] GravTechStageBoundary = [0, 20000, 40000, 60000];
     public static readonly int MaxGravTechStageIndex = GravTechStageBoundary.Length - 1;
 
     public static ScienceDepartmentInteractHandler Instance { get; private set; }
@@ -21,6 +22,8 @@ public class ScienceDepartmentInteractHandler : IExposable
     private Pawn gravResearchAssistLendPawn;
 
     public ScienceShipRecord? ScienceShipRecord;
+    public string ToDayDutyText = string.Empty;
+    public int NextShiftWorkDay = -1;
 
     public int CurGravTechStage => curGravTechStageIndex + 1;
     public int GravTechPoints => gravTechPoints;
@@ -36,6 +39,21 @@ public class ScienceDepartmentInteractHandler : IExposable
     public static bool IsInteractAvailable()
     {
         return ModsConfig.OdysseyActive && Instance is not null && ModUtility.OAFaction is not null;
+    }
+
+    public void ExposeData()
+    {
+        Scribe_Values.Look(ref curGravTechStageIndex, "curGravTechStageIndex", 0);
+        Scribe_Values.Look(ref gravTechPoints, "gravTechPoints", 0);
+        Scribe_Values.Look(ref playerTechPoints, "playerTechPoints", 0);
+        Scribe_Values.Look(ref gravTechAssistPoints, "gravTechAssistPoints", 0);
+        Scribe_Values.Look(ref isInitGravQuestCompleted, "isInitGravQuestCompleted", defaultValue: false);
+        Scribe_Values.Look(ref ToDayDutyText, "ToDayDutyText", string.Empty);
+        Scribe_Values.Look(ref NextShiftWorkDay, "NextShiftWorkDay", -1);
+
+        Scribe_References.Look(ref gravResearchAssistLendPawn, "gravResearchAssistLendPawn");
+
+        Scribe_Deep.Look(ref ScienceShipRecord, "scienceShipRecord");
     }
 
     public void TickDay()
@@ -73,7 +91,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (showMessage)
         {
-            Messages.Message("OARK_ScienceDepartment_GravTechPointsAdded".Translate(trueChange.ToString("F0")), MessageTypeDefOf.PositiveEvent);
+            Messages.Message("OARK_ScienceDepartment_GravTechPointsAdded".Translate(trueChange), MessageTypeDefOf.PositiveEvent);
         }
 
         if (curGravTechStageIndex < MaxGravTechStageIndex && gravTechPoints >= GravTechStageBoundary[curGravTechStageIndex + 1])
@@ -140,16 +158,14 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         OAInteractHandler.Instance.RegisterCDRecord("GravInitQuestTrigger", cdTicks: 3 * 60000);
 
-        IncidentParms parms = new()
+        if (OARK_QuestScriptDefOf.OARK_InitGravQuest.CanRun(new Slate(), Find.World))
         {
-            target = Find.World,
-            faction = ModUtility.OAFaction,
-            questScriptDef = OARK_QuestScriptDefOf.OARK_InitGravQuest,
-            points = 5000f, //不重要
-            forced = true
-        };
-
-        OAFrame_MiscUtility.TryFireIncidentNow(OAFrameDefOf.OAFrame_GiveQuest, parms, force: true);
+            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_InitGravQuest, 1000f);
+            if (quest is not null && !quest.hidden && OARK_QuestScriptDefOf.OARK_InitGravQuest.sendAvailableLetter)
+            {
+                QuestUtility.SendLetterQuestAvailable(quest);
+            }
+        }
 
         static bool CanTriggerGravInitQuest()
         {
@@ -182,11 +198,11 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
-            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(70, 90) * 60000);
+            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000);
         }
         else
         {
-            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: 5 * 60000);
+            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: 2 * 60000);
         }
 
         static bool CanTriggerGravInitQuest()
@@ -201,18 +217,5 @@ public class ScienceDepartmentInteractHandler : IExposable
             }
             return true;
         }
-    }
-
-    public void ExposeData()
-    {
-        Scribe_Values.Look(ref curGravTechStageIndex, "curGravTechStageIndex", 0);
-        Scribe_Values.Look(ref gravTechPoints, "gravTechPoints", 0);
-        Scribe_Values.Look(ref playerTechPoints, "playerTechPoints", 0);
-        Scribe_Values.Look(ref gravTechAssistPoints, "gravTechAssistPoints", 0);
-        Scribe_Values.Look(ref isInitGravQuestCompleted, "isInitGravQuestCompleted", defaultValue: false);
-
-        Scribe_References.Look(ref gravResearchAssistLendPawn, "gravResearchAssistLendPawn");
-
-        Scribe_Deep.Look(ref ScienceShipRecord, "scienceShipRecord");
     }
 }
