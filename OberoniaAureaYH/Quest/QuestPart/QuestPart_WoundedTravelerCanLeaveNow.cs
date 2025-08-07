@@ -66,7 +66,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         {
             return false;
         }
-        if (pawnHediffSet.HasHediff(OARK_HediffDefOf.OA_RK_SeriousInjury))
+        if (pawnHediffSet.HasHediff(OARK_HediffDefOf.OARK_Hediff_SeriousInjury))
         {
             return false;
         }

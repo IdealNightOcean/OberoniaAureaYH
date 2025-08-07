@@ -44,6 +44,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         {
             PawnGenerationRequest genRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(OARK_PawnGenerateDefOf.OA_RK_Court_Member, oaFaction, forceNew: true);
             Pawn pawn = PawnGenerator.GeneratePawn(genRequest);
+            pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_ExplorationFatigue);
             pawns.Add(pawn);
         }
         return pawns;
