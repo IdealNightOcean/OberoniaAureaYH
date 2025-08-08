@@ -144,13 +144,9 @@ public static class FactionDialogFor_Patch
             }
             else
             {
-                int gainAP = needSilver / 250;
-                int gainGTAP = needSilver / 10;
-                int gainFavor = needSilver / 1000;
-
                 diaOption.action = delegate
                 {
-                    DoSponsorOberoniaAurea(dialogCache, gainFavor);
+                    DoSponsorOberoniaAurea(dialogCache, needSilver);
                 };
                 diaOption.linkLateBind = () => SponsorOberoniaAureaConfirmNode(dialogCache, needSilver);
             }

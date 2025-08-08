@@ -16,11 +16,10 @@ public class ShotgunBullet : BulletBase
     private int splashCount;
     public override bool AnimalsFleeImpact => true;
 
-    public override void Launch(Thing launcher, Vector3 origin, LocalTargetInfo usedTarget, LocalTargetInfo intendedTarget, ProjectileHitFlags hitFlags, bool preventFriendlyFire = false, Thing equipment = null, ThingDef targetCoverDef = null)
+    protected override void Impact(Thing hitThing, bool blockedByShield = false)
     {
-        base.Launch(launcher, origin, usedTarget, intendedTarget, hitFlags, preventFriendlyFire, equipment, targetCoverDef);
-        firingDistance = Vector3.Distance(origin, intendedTarget.CenterVector3);
-        splashCount = 0;
+        firingDistance = Vector3.Distance(origin.Yto0(), ExactPosition.Yto0());
+        base.Impact(hitThing, blockedByShield);
     }
 
     protected override void ImpactCell(Map map, IntVec3 hitCell)
@@ -32,10 +31,10 @@ public class ShotgunBullet : BulletBase
     {
         DamageInfo dinfo = new(def.projectile.damageDef, DamageAmount, ArmorPenetration, exactRotation.eulerAngles.y, launcher, null, equipmentDef, DamageInfo.SourceCategory.ThingOrUnknown, intendedTarget.Thing, instigatorGuilty);
         dinfo.SetWeaponQuality(equipmentQuality);
-        HitThingTakeDamage(hitThing, dinfo, splashCount);
+        HitThingTakeDamage(hitThing, dinfo);
     }
 
-    protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo, int splashCount = 0)
+    protected void HitThingTakeDamage(Thing hitThing, DamageInfo dinfo)
     {
         int damageCount = 1;
         if (ModEx_SG is not null)
