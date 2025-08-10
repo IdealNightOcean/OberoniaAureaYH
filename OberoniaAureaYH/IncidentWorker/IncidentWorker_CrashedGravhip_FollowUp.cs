@@ -55,7 +55,7 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_CrashedGravshipFollowUp".Translate(),
                                        text: "OARK_Letter_CrashedGravshipFollowUp".Translate(),
                                        textLetterDef: LetterDefOf.PositiveEvent,
-                                       lookTargets: null,
+                                       lookTargets: new LookTargets(pos, map),
                                        relatedFaction: ModUtility.OAFaction);
 
         Messages.Message("OARK_Message_CrashedGravshipFollowUp".Translate(), MessageTypeDefOf.PositiveEvent);

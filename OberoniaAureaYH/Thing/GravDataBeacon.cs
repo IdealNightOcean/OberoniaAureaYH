@@ -53,6 +53,11 @@ public class GravDataBeacon : Building
             forced = true
         };
         OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 5000, raidParms);
+
+        Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravDataBeaconLanded".Translate(),
+                                       text: "OARK_Letter_GravDataBeaconLanded".Translate(),
+                                       textLetterDef: LetterDefOf.NeutralEvent,
+                                       lookTargets: this);
     }
 
 
@@ -114,7 +119,7 @@ public class GravDataBeacon : Building
         int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("GravDataBeacon");
         if (cooldownTicksLeft > 0)
         {
-            return resultOnly ? false : "OARK_GravDataBeacon_Cooling".Translate(cooldownTicksLeft.ToStringTicksToPeriod());
+            return resultOnly ? false : "WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod());
         }
 
         return true;

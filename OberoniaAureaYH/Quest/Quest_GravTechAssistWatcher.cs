@@ -38,7 +38,7 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
 
     public int TotalGTP;
     public int ExternalGTAP;
-    public int GainGTAP => Mathf.RoundToInt(TotalGTP / 25f) + ExternalGTAP;
+    public int GainGTAP => Mathf.RoundToInt(TotalGTP / 10f) + ExternalGTAP;
 
     protected override void Enable(SignalArgs receivedArgs)
     {
@@ -55,7 +55,7 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
         float dailyPoints = 0;
         foreach (Pawn pawn in LentColonists)
         {
-            dailyPoints += pawn.GetStatValue(StatDefOf.ResearchSpeed) * 20f;
+            dailyPoints += pawn.GetStatValue(StatDefOf.ResearchSpeed) * 40f;
         }
         dailyGTP = Mathf.Clamp((int)dailyPoints, 0, 200);
         ticksLeft = 60000;

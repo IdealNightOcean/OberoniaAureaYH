@@ -170,11 +170,11 @@ public static class ScienceDepartmentDialogUtility
             {
                 dialogCache.Map.listerThings.ThingsOfDef(ThingDefOf.Gravcore)?.FirstOrFallback(null)?.SplitOff(1).Destroy();
                 ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
-                sdInteractHandler.AddGravTechPoints(500, byPlayer: true);
-                sdInteractHandler.AdjustGravTechAssistPoint(100);
+                sdInteractHandler.AddGravTechPoints(1000, byPlayer: true);
+                sdInteractHandler.AdjustGravTechAssistPoint(150);
                 OAInteractHandler.Instance.RegisterCDRecord("DonateGravcore", cdTicks: 10 * 60000);
             };
-            diaOption.linkLateBind = () => new DiaNode("OARK_DonateGravcoreConfirm".Translate(500, 100))
+            diaOption.linkLateBind = () => new DiaNode("OARK_DonateGravcoreConfirm".Translate(1000, 150))
             {
                 options = { FactionDialogUtility.OKToRoot(dialogCache.Faction, dialogCache.Negotiator) }
             };
@@ -275,7 +275,7 @@ public static class ScienceDepartmentDialogUtility
         }
 
         diaOption.action = Donate;
-        diaOption.link = FactionDialogUtility.FinallyConfirmNode("OARK_QuestDonateGravlitePanelConfirm".Translate(250, 10),
+        diaOption.link = FactionDialogUtility.FinallyConfirmNode("OARK_QuestDonateGravlitePanelConfirm".Translate(500, 50),
                                                                  dialogCache.Faction,
                                                                  dialogCache.Negotiator);
 
@@ -283,8 +283,8 @@ public static class ScienceDepartmentDialogUtility
         {
             TradeUtility.LaunchThingsOfType(ThingDefOf.GravlitePanel, 20, dialogCache.Map, null);
             ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
-            sdInteractHandler.AddGravTechPoints(250, byPlayer: true);
-            sdInteractHandler.AdjustGravTechAssistPoint(10);
+            sdInteractHandler.AddGravTechPoints(500, byPlayer: true);
+            sdInteractHandler.AdjustGravTechAssistPoint(50);
             OAInteractHandler.Instance.RegisterCDRecord("QuestGravlitePanel", cdTicks: 5 * 60000);
 
             Quest quest = Find.QuestManager.QuestsListForReading.Where(q => q.root == OARK_QuestScriptDefOf.OARK_GravResearchAssistance).FirstOrFallback(null);
@@ -293,8 +293,8 @@ public static class ScienceDepartmentDialogUtility
                 QuestPart_GravTechAssistWatcher assistWatcher = quest.PartsListForReading.OfType<QuestPart_GravTechAssistWatcher>()?.FirstOrFallback(null);
                 if (assistWatcher is not null)
                 {
-                    assistWatcher.TotalGTP += 250;
-                    assistWatcher.ExternalGTAP += 10;
+                    assistWatcher.TotalGTP += 500;
+                    assistWatcher.ExternalGTAP += 50;
                 }
             }
         }

@@ -147,7 +147,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            Thing thing = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SpaceportAccessPermit);
+            Thing thing = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_AirportClearanceBeacon);
             if (thing.def.CanHaveFaction)
             {
                 thing.SetFactionDirect(Faction.OfPlayer);

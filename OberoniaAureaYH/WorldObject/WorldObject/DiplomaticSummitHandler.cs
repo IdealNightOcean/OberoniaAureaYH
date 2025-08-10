@@ -96,7 +96,6 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
     private void FinishWork()
     {
         DiplomaticSummitUtility.ApplyEffect(negotiatingTeamLevel, associatedFixedCaravan, settlement, negotiant);
-        OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
         settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
     }
 

@@ -16,17 +16,20 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
     {
         if (!parent.Spawned) { return; }
 
-        if (suppressTickLeft > 0 && (tickToNextFleck -= delta) < 0)
+        if (suppressTickLeft > 0)
         {
-            tickToNextFleck = 120;
-            FleckMaker.Static(parent.Position, parent.Map, OARK_ModDefOf.OARK_Fleck_GravBomb, 0.5f);
-            OARK_ModDefOf.OARK_Sound_GravBomb.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent)));
+            suppressTickLeft -= delta;
+            if ((tickToNextFleck -= delta) < 0)
+            {
+                tickToNextFleck = 180;
+                FleckMaker.Static(parent.Position, parent.Map, OARK_ModDefOf.OARK_Fleck_GravBomb, 0.5f);
+                OARK_ModDefOf.OARK_Sound_GravBomb.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent)));
+            }
         }
 
         if ((ticksToNextCheck -= delta) <= 0)
         {
             ticksToNextCheck = Props.checkInterval;
-            suppressTickLeft = suppressTickLeft > 0 ? suppressTickLeft - delta : -1;
 
             if (powerTrader is not null && !powerTrader.PowerOn)
             {
@@ -52,7 +55,7 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
     {
         base.PostDeSpawn(map, mode);
         suppressTickLeft = -1;
-        tickToNextFleck = 120;
+        tickToNextFleck = 180;
         ticksToNextCheck = Props.checkInterval;
     }
 
@@ -98,9 +101,9 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
                 action = StartSuppress
             };
 
-            if (powerTrader.PowerNet.CurrentStoredEnergy() < 30000f)
+            if (powerTrader.PowerNet.CurrentStoredEnergy() < 10000f)
             {
-                command_Suppress.Disable("OARK_LowStoredEnergy".Translate(30000f.ToString("F1")));
+                command_Suppress.Disable("OARK_LowStoredEnergy".Translate(10000));
             }
             yield return command_Suppress;
         }
@@ -108,9 +111,9 @@ public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
 
     private void StartSuppress()
     {
-        TryConsumeEnergy(powerTrader.PowerNet, 30000f);
+        TryConsumeEnergy(powerTrader.PowerNet, 10000f);
         suppressTickLeft = 7500;
-        tickToNextFleck = 120;
+        tickToNextFleck = 180;
         FleckMaker.Static(parent.Position, parent.Map, OARK_ModDefOf.OARK_Fleck_GravBomb, 0.5f);
         OARK_ModDefOf.OARK_Sound_GravBomb.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent)));
     }

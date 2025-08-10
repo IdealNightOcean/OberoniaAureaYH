@@ -28,7 +28,7 @@ public static class OARK_ThingDefOf
     [MayRequireOdyssey]
     public static ThingDef OARK_UnlockedFile_EncryptedFile; // 机密文件副本
     [MayRequireOdyssey]
-    public static ThingDef OARK_SpaceportAccessPermit; // 太空港通行许可
+    public static ThingDef OARK_AirportClearanceBeacon; // 金鸢尾兰空港许可信标
     [MayRequireOdyssey]
     public static ThingDef OARK_CrashedScienceShip; // 坠毁的科学舱
 

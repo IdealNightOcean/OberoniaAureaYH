@@ -11,7 +11,7 @@ public class JobExtensionRecord : IExposable
     public int defaultWorkAmount;
 
     public StatDef jobStat;
-    public float statFactorForTickAmount = 1f;
+    public float statFactorForTickAmount = 1f / 60f;
 
     public EffecterDef jobEffecter;
 

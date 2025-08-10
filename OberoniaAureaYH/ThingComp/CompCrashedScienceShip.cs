@@ -42,8 +42,10 @@ public class CompCrashedScienceShip : CompHackable
     public ScienceShipRecord ShipRecord => shipRecord;
 
     private int signalStrength = 1;
-    private float raidMulti = 2f;
     private int ticksToNextRaid = 30000;
+
+    private float RaidMulti => shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TurbulentRegion ? 4f : 2.5f;
+    private float MinRaidPoints => shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TurbulentRegion ? 450f : 300f;
 
     private int extaRaidRemaining;
     private int ticksToNextExtaRaid = 32500;
@@ -62,7 +64,7 @@ public class CompCrashedScienceShip : CompHackable
     private bool quizResearcher;
 
     private bool allTroubleResolved;
-    private int ticksToUpload = 10000;
+    private int ticksToUpload = 15000;
     private bool dataUploaded;
 
     private GameCondition_CrashedScienceShip shipGameCondition;
@@ -73,7 +75,6 @@ public class CompCrashedScienceShip : CompHackable
         Scribe_Deep.Look(ref shipRecord, "shipRecord");
 
         Scribe_Values.Look(ref signalStrength, "signalStrength", 1);
-        Scribe_Values.Look(ref raidMulti, "raidMulti", 2f);
         Scribe_Values.Look(ref ticksToNextRaid, "ticksToNextRaid", 0);
 
         Scribe_Values.Look(ref extaRaidRemaining, "extaRaidRemaining", 0);
@@ -90,7 +91,7 @@ public class CompCrashedScienceShip : CompHackable
         Scribe_Values.Look(ref quizResearcher, "quizResearcher", defaultValue: false);
 
         Scribe_Values.Look(ref allTroubleResolved, "allTroubleResolved", defaultValue: false);
-        Scribe_Values.Look(ref ticksToUpload, "ticksToUpload", 10000);
+        Scribe_Values.Look(ref ticksToUpload, "ticksToUpload", 15000);
         Scribe_Values.Look(ref dataUploaded, "dataUploaded", defaultValue: false);
 
         Scribe_References.Look(ref shipGameCondition, "shipGameCondition");
@@ -129,7 +130,6 @@ public class CompCrashedScienceShip : CompHackable
         {
             extaRaidRemaining = 5;
             ticksToNextExtaRaid = 32500;
-            raidMulti = 2.5f;
         }
         if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.Fragile)
         {
@@ -174,21 +174,25 @@ public class CompCrashedScienceShip : CompHackable
 
     public override void CompTickInterval(int delta)
     {
+        if (dataUploaded)
+        {
+            return;
+        }
+
         if (allTroubleResolved)
         {
-            if (!dataUploaded && (ticksToUpload -= delta) <= 0)
+            if ((ticksToUpload -= delta) <= 0)
             {
                 FinishDataUpload();
             }
         }
-        else
+
+        RaidTickInterval(delta);
+        if (hyperthermiaLeft > 0)
         {
-            RaidTickInterval(delta);
-            if (hyperthermiaLeft > 0)
-            {
-                HyperthermiaTickInterval(delta);
-            }
+            HyperthermiaTickInterval(delta);
         }
+
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -383,51 +387,54 @@ public class CompCrashedScienceShip : CompHackable
 
         if (allTroubleResolved)
         {
+            sb.AppendInNewLine("OARK_ScienceShip_SignalStrength".Translate(signalStrength));
+            sb.AppendInNewLine("--------");
             sb.AppendInNewLine("OARK_ScienceShip_AllTroubleResolved".Translate().Colorize(Color.green));
             if (!dataUploaded)
             {
                 sb.AppendInNewLine("OARK_ScienceShip_DataUploading".Translate(ticksToUpload.ToStringTicksToPeriod()));
             }
-            return sb;
         }
-
-        sb.AppendInNewLine("OARK_ScienceShip_SignalStrength".Translate(signalStrength));
-        sb.AppendInNewLine("--------");
-        if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Hyperthermia))
+        else
         {
-            sb.AppendInNewLine("OARK_ScienceShip_HyperthermiaInfo".Translate(hyperthermiaLeft, hyperthermiaReduceRate));
-            sb.AppendInNewLine("OARK_ScienceShip_HyperthermiaBlock".Translate().Colorize(new Color(1f, 0.5f, 0f)));
+            sb.AppendInNewLine("OARK_ScienceShip_SignalStrength".Translate(signalStrength));
             sb.AppendInNewLine("--------");
-        }
+            if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Hyperthermia))
+            {
+                sb.AppendInNewLine("OARK_ScienceShip_HyperthermiaInfo".Translate(hyperthermiaLeft, hyperthermiaReduceRate));
+                sb.AppendInNewLine("OARK_ScienceShip_HyperthermiaBlock".Translate().Colorize(new Color(1f, 0.5f, 0f)));
+                sb.AppendInNewLine("--------");
+            }
 
-        if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.InformationBase))
-        {
-            sb.AppendInNewLine(base.CompInspectStringExtraBuilder().ToString());
-        }
+            if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.InformationBase))
+            {
+                sb.AppendInNewLine(base.CompInspectStringExtraBuilder().ToString());
+            }
 
-        if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Mechanical))
-        {
-            sb.AppendInNewLine("OARK_ScienceShip_MechanicalInfo".Translate(6 - mechanicalCount, 6));
-        }
-        if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Gravitational))
-        {
-            sb.AppendInNewLine("OARK_ScienceShip_GravitationalInfo".Translate(3 - gravitationalCount, 3));
-        }
+            if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Mechanical))
+            {
+                sb.AppendInNewLine("OARK_ScienceShip_MechanicalInfo".Translate(6 - mechanicalCount, 6));
+            }
+            if (shipRecord.HasTrouble(ScienceShipRecord.TroubleType.Gravitational))
+            {
+                sb.AppendInNewLine("OARK_ScienceShip_GravitationalInfo".Translate(3 - gravitationalCount, 3));
+            }
 
-        if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.Disaster)
-        {
-            sb.AppendInNewLine("--------");
-            float workIncrease = shipRecord.TroubleCount * 0.25f;
-            sb.AppendInNewLine("OARK_ScienceShip_AllKeyTrouble".Translate(workIncrease.ToStringPercent()));
-        }
-        else if (shipRecord.MainTrouble != ScienceShipRecord.TroubleType.None)
-        {
-            sb.AppendInNewLine("--------");
-            sb.AppendInNewLine("OARK_ScienceShip_KeyTrouble".Translate());
-            sb.Append(": ");
-            sb.Append(ScienceShipRecord.GetShipTroubleLabel(shipRecord.MainTrouble).Translate().Colorize(Color.red));
-            float workIncrease = (shipRecord.TroubleCount - 1) * 0.25f;
-            sb.AppendInNewLine("OARK_ScienceShip_TroubleWorkIncrease".Translate(workIncrease.ToStringPercent()));
+            if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.Disaster)
+            {
+                sb.AppendInNewLine("--------");
+                float workIncrease = shipRecord.TroubleCount * 0.25f;
+                sb.AppendInNewLine("OARK_ScienceShip_AllKeyTrouble".Translate(workIncrease.ToStringPercent()));
+            }
+            else if (shipRecord.MainTrouble != ScienceShipRecord.TroubleType.None)
+            {
+                sb.AppendInNewLine("--------");
+                sb.AppendInNewLine("OARK_ScienceShip_KeyTrouble".Translate());
+                sb.Append(": ");
+                sb.Append(ScienceShipRecord.GetShipTroubleLabel(shipRecord.MainTrouble).Translate().Colorize(Color.red));
+                float workIncrease = (shipRecord.TroubleCount - 1) * 0.25f;
+                sb.AppendInNewLine("OARK_ScienceShip_TroubleWorkIncrease".Translate(workIncrease.ToStringPercent()));
+            }
         }
 
         if (Prefs.DevMode)
@@ -532,7 +539,7 @@ public class CompCrashedScienceShip : CompHackable
             IncidentParms parms = new()
             {
                 target = parent.MapHeld,
-                points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti),
+                points = Mathf.Max(MinRaidPoints, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * RaidMulti),
                 faction = Find.FactionManager.RandomEnemyFaction(),
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
@@ -547,7 +554,7 @@ public class CompCrashedScienceShip : CompHackable
             IncidentParms parms = new()
             {
                 target = parent.MapHeld,
-                points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * raidMulti),
+                points = Mathf.Max(MinRaidPoints, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * RaidMulti),
                 faction = Find.FactionManager.RandomEnemyFaction(),
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
