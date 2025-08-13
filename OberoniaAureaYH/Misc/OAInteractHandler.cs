@@ -1,5 +1,4 @@
 ﻿using RimWorld;
-using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -32,8 +31,6 @@ public class OAInteractHandler : IExposable
     public int CurAssistPointsCap => InteractUtility.GetCurAssistPointsCap(AllianceDuration());
 
     private Dictionary<string, OAInteractionCDRecord> interactionCDRecords = [];
-
-    public Pawn ProspectingLeader;
 
     public OAInteractHandler() => Instance = this;
     public static void ClearStaticCache() => Instance = null;
@@ -141,15 +138,10 @@ public class OAInteractHandler : IExposable
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
         Scribe_Values.Look(ref assistStoppageDays, "assistStoppageDays", 0);
 
-        Scribe_References.Look(ref ProspectingLeader, "prospectingLeader");
         Scribe_Collections.Look(ref interactionCDRecords, "interactionCDRecords", LookMode.Value, LookMode.Deep);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            if (ProspectingLeader is not null && ProspectingLeader.IsWorldPawn())
-            {
-                ProspectingLeader = null;
-            }
             interactionCDRecords ??= [];
             interactionCDRecords.RemoveAll(kv => kv.Key is null || kv.Value.lastActiveTick < 0);
         }

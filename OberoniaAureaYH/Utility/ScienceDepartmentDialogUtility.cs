@@ -275,7 +275,7 @@ public static class ScienceDepartmentDialogUtility
         }
 
         diaOption.action = Donate;
-        diaOption.link = FactionDialogUtility.FinallyConfirmNode("OARK_QuestDonateGravlitePanelConfirm".Translate(500, 50),
+        diaOption.link = FactionDialogUtility.FinallyConfirmNode("OARK_QuestDonateGravlitePanelConfirm".Translate(researcher, 20, 500, 50),
                                                                  dialogCache.Faction,
                                                                  dialogCache.Negotiator);
 
@@ -632,6 +632,11 @@ public static class ScienceDepartmentDialogUtility
         if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
         {
             grammarRequest.Constants.Add("gravDataBeacon", true.ToString());
+        }
+        ticksSinceLastActive = OAInteractHandler.Instance.GetTicksSinceLastActive("GravTechStageUpgrade");
+        if (ticksSinceLastActive > 0 && ticksSinceLastActive.TicksToDays() < 10f)
+        {
+            grammarRequest.Constants.Add("gravTechStageUpgrade", true.ToString());
         }
 
         GrammarRequest backupRequest = grammarRequest;

@@ -8,7 +8,6 @@ namespace OberoniaAurea;
 public static class OARK_PawnGenerateDefOf
 {
     public static PawnKindDef OA_RK_Court_Member_Exploration; //勘探队员
-    //public static PawnKindDef OA_RK_Court_Member; //侍从
 
     public static PawnKindDef OA_RK_Traveller;
     [MayRequireRoyalty]

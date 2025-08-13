@@ -4,10 +4,10 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public class QuestNode_SetScienceShipName : QuestNode
+public class QuestNode_InitScienceShip : QuestNode
 {
     [NoTranslate]
-    public SlateRef<string> storeAs;
+    public SlateRef<string> storeShipNameAs;
     public SlateRef<WorldObject> worldObject;
 
     protected override bool TestRunInt(Slate slate)
@@ -19,9 +19,9 @@ public class QuestNode_SetScienceShipName : QuestNode
     {
         Slate slate = QuestGen.slate;
         string shipName = ScienceShipRecord.GenerateShipName();
-        slate.Set(storeAs.GetValue(slate) ?? "shipName", shipName);
+        slate.Set(storeShipNameAs.GetValue(slate) ?? "shipName", shipName);
 
         ScienceShipLaunchSite launchSite = worldObject.GetValue(slate) as ScienceShipLaunchSite;
-        launchSite?.SetShipName(shipName);
+        launchSite?.InitShip(shipName);
     }
 }

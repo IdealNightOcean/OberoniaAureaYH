@@ -48,8 +48,16 @@ public struct ScienceShipRecord : IExposable
     private EnvirAffectType environmentAffect;
 
     public readonly ShipType TypeOfShip => shipType;
-    public readonly EnvirAffectType EnvironmentAffect => environmentAffect;
-    public readonly string ShipName => shipName;
+    public EnvirAffectType EnvironmentAffect
+    {
+        get { return environmentAffect; }
+        set { environmentAffect = value; }
+    }
+    public string ShipName
+    {
+        get { return shipName; }
+        set { shipName = value; }
+    }
     public readonly int TroubleCount => troubleCount;
     public readonly TroubleType MainTrouble => mainTrouble;
 
@@ -66,11 +74,6 @@ public struct ScienceShipRecord : IExposable
         this.environmentAffect = environmentAffect;
         troubles = TroubleType.None;
         mainTrouble = TroubleType.None;
-    }
-
-    public void SetEnvironmentAffect(EnvirAffectType environmentAffect)
-    {
-        this.environmentAffect = environmentAffect;
     }
 
     public void AddTrouble(TroubleType trouble)

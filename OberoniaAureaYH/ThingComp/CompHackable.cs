@@ -33,8 +33,9 @@ public abstract class CompHackable : ThingComp
     public bool IsHackable => isHackable;
 
     protected float hackPoint;
+    protected virtual float MaxHackPoint => Props.maxHackPoint;
 
-    public float ProgressPercent => hackPoint / Props.maxHackPoint;
+    public float ProgressPercent => hackPoint / MaxHackPoint;
 
     public virtual void DoHack(float points, Pawn hackPawn)
     {
@@ -45,9 +46,9 @@ public abstract class CompHackable : ThingComp
 
         hackPoint += points;
 
-        if (hackPoint >= Props.maxHackPoint)
+        if (hackPoint >= MaxHackPoint)
         {
-            hackPoint = Props.maxHackPoint;
+            hackPoint = MaxHackPoint;
             FinishHack(hackPawn);
         }
     }
@@ -128,7 +129,7 @@ public abstract class CompHackable : ThingComp
             yield return new Command_Action()
             {
                 defaultLabel = "DEV: Hack",
-                action = delegate { DoHack(Props.maxHackPoint, null); }
+                action = delegate { DoHack(MaxHackPoint, null); }
             };
         }
     }
@@ -170,7 +171,7 @@ public abstract class CompHackable : ThingComp
         sb.Append(": ");
         sb.Append(hackPoint.ToString("F2"));
         sb.Append(" / ");
-        sb.Append(Props.maxHackPoint);
+        sb.Append(MaxHackPoint);
         if (isHacked)
         {
             sb.AppendInNewLine("Hacked".Translate());

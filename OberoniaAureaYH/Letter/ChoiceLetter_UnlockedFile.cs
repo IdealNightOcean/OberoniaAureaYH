@@ -49,7 +49,7 @@ public class ChoiceLetter_UnlockedFile : ChoiceLetter
                                                                                                                relatedFaction: ModUtility.OAFaction);
 
                 letter.InitLetter(pawn, fileType, detectionProp);
-                Find.LetterStack.ReceiveLetter(letter, delayTicks: 30000);
+                Find.LetterStack.ReceiveLetter(letter, delayTicks: 15000);
                 Find.LetterStack.RemoveLetter(this);
             },
             resolveTree = true

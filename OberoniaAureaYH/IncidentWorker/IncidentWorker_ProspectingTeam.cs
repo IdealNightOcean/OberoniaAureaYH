@@ -10,6 +10,8 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
     protected override float TraderChance => 1f;
     protected override int? DurationTicks => 20000;
 
+    private LordJob_VisitColonyTalkable tempLordJob;
+
     public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
     {
         return f.IsOAFaction() && !f.HostileTo(Faction.OfPlayer);
@@ -27,13 +29,18 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
         parms.faction = ModUtility.OAFaction;
-        return base.TryExecuteWorker(parms);
+        tempLordJob = null;
+        bool result = base.TryExecuteWorker(parms);
+        tempLordJob = null;
+        return result;
     }
 
     protected override LordJob_VisitColonyBase CreateLordJob(IncidentParms parms, List<Pawn> pawns)
     {
         RCellFinder.TryFindRandomSpotJustOutsideColony(pawns[0], out IntVec3 result);
-        return new LordJob_ProspectingTeam(parms.faction, result, DurationTicks);
+        tempLordJob = null;
+        tempLordJob = new LordJob_VisitColonyTalkable(parms.faction, result, DurationTicks);
+        return tempLordJob;
     }
 
     protected override List<Pawn> GeneratePawns(IncidentParms parms)
@@ -53,7 +60,8 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
     protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader, bool traderExists)
     {
         trader ??= pawns.RandomElement();
-        OAInteractHandler.Instance.ProspectingLeader = trader;
+        tempLordJob.SetTalkAction(trader, OARK_ModDefOf.OARK_Job_TalkWithProspectingLeader);
+        tempLordJob = null;
 
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_ProspectingTeam".Translate(),
                                        text: "OARK_Letter_ProspectingTeam".Translate(trader),

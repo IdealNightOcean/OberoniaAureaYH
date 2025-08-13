@@ -16,7 +16,11 @@ public static class OARK_WorldObjectDefOf
 
     public static WorldObjectDef OA_FixedCaravan_DiplomaticSummit;
 
+    [MayRequireOdyssey]
     public static WorldObjectDef OARK_CrashedScienceShip;
+    [MayRequireOdyssey]
+    public static WorldObjectDef OARK_FixedCaravan_ScienceShipLaunch;
+
     static OARK_WorldObjectDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OARK_WorldObjectDefOf));

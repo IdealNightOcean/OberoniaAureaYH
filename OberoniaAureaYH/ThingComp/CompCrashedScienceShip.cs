@@ -34,6 +34,15 @@ public class CompProperties_CrashedScienceShip : CompProperties_Hackable
 public class CompCrashedScienceShip : CompHackable
 {
     private static readonly int[] raidInterval = [50000, 40000, 30000, 22500, 15000];
+    public static readonly CachedTexture MechanicalRepaireIcon = new("UI/OARK_MechanicalRepaire");
+    public static readonly CachedTexture GravitationalRepaireIcon = new("UI/OARK_GravitationalRepaire");
+    public static readonly CachedTexture HyperthermiaIcon = new("UI/OARK_Hyperthermia");
+    public static readonly CachedTexture InformationBaseIcon = new("UI/OARK_InformationBase");
+
+
+    public static readonly CachedTexture IncreaseGravIcon = new("UI/OARK_IncreaseGrav");
+    public static readonly CachedTexture DecreaseGravIcon = new("UI/OARK_Decrease");
+    public static readonly CachedTexture ReassignmentGravIcon = new("UI/OARK_ReassignmentGrav");
 
     protected override bool SendMapParentQuestTagSignal => true;
     private new CompProperties_CrashedScienceShip Props => (CompProperties_CrashedScienceShip)props;
@@ -294,7 +303,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_Hyperthermia".Translate(),
                 defaultDesc = "OARK_ScienceShip_HyperthermiaDesc".Translate(),
-                icon = IconUtility.HyperthermiaIcon,
+                icon = HyperthermiaIcon.Texture,
                 action = delegate { JobFloatMenu(Props.hyperthermiaJob); }
             };
 
@@ -308,7 +317,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_MechanicalJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_MechanicalJobDesc".Translate(),
-                icon = IconUtility.MechanicalRepaireIcon,
+                icon = MechanicalRepaireIcon.Texture,
                 action = delegate { JobFloatMenu(Props.mechanicalJob); }
             };
 
@@ -321,7 +330,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_QuizResearcherJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_QuizResearcherJobDesc".Translate(),
-                icon = IconUtility.InformationBaseIcon,
+                icon = InformationBaseIcon.Texture,
                 action = QuizResearcher
             };
 
@@ -332,7 +341,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_IncreaseGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_IncreaseGravityJobDesc".Translate(),
-            icon = IconUtility.IncreaseGravIcon,
+            icon = IncreaseGravIcon.Texture,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(1);
@@ -342,7 +351,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_DecreaseGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_DecreaseGravityJobDesc".Translate(),
-            icon = IconUtility.DecreaseGravIcon,
+            icon = DecreaseGravIcon.Texture,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(2);
@@ -352,7 +361,7 @@ public class CompCrashedScienceShip : CompHackable
         {
             defaultLabel = "OARK_ScienceShip_ReassignmentGravityJob".Translate(),
             defaultDesc = "OARK_ScienceShip_ReassignmentGravityJobDesc".Translate(),
-            icon = IconUtility.ReassignmentGravIcon,
+            icon = ReassignmentGravIcon.Texture,
             action = delegate
             {
                 GravityAdjustmentFloatMenu(3);
@@ -365,7 +374,7 @@ public class CompCrashedScienceShip : CompHackable
             {
                 defaultLabel = "OARK_ScienceShip_GravitationalJob".Translate(),
                 defaultDesc = "OARK_ScienceShip_GravitationalJobDesc".Translate(),
-                icon = IconUtility.GravitationalRepaireIcon,
+                icon = GravitationalRepaireIcon.Texture,
                 action = delegate { JobFloatMenu(Props.gravitationalJob); }
             };
 
@@ -778,22 +787,22 @@ public class CompCrashedScienceShip : CompHackable
         {
             if (mainGravIndex == 3)
             {
-                shipRecord.SetEnvironmentAffect(ScienceShipRecord.EnvirAffectType.None);
+                shipRecord.EnvironmentAffect = ScienceShipRecord.EnvirAffectType.None;
             }
             else
             {
-                shipRecord.SetEnvironmentAffect(mainGravIndex > 3 ? ScienceShipRecord.EnvirAffectType.StrongWeakGravity : ScienceShipRecord.EnvirAffectType.WeakGravity);
+                shipRecord.EnvironmentAffect = (mainGravIndex > 3 ? ScienceShipRecord.EnvirAffectType.StrongWeakGravity : ScienceShipRecord.EnvirAffectType.WeakGravity);
             }
         }
         else
         {
             if (mainGravIndex == 5 || subGravIndex == 5)
             {
-                shipRecord.SetEnvironmentAffect(ScienceShipRecord.EnvirAffectType.DisorderedMagnetism);
+                shipRecord.EnvironmentAffect = ScienceShipRecord.EnvirAffectType.DisorderedMagnetism;
             }
             else
             {
-                shipRecord.SetEnvironmentAffect(ScienceShipRecord.EnvirAffectType.DisorderedGravity);
+                shipRecord.EnvironmentAffect = ScienceShipRecord.EnvirAffectType.DisorderedGravity;
             }
         }
 

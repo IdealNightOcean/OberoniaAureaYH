@@ -122,7 +122,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            OARK_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 20, map, ModUtility.OAFaction);
+            OARK_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 2, map, ModUtility.OAFaction);
         }
         Find.LetterStack.RemoveLetter(this);
     }

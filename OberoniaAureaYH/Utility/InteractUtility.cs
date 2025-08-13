@@ -47,22 +47,25 @@ public static class InteractUtility
         int gainGTAP = Mathf.RoundToInt(ScienceDepartmentInteractHandler.Instance.PlayerTechPoints * 0.02f);
         ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(gainGTAP);
 
-        Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravTechStageUpgrade".Translate(),
-                                       text: "OARK_Letter_GravTechStageUpgrade".Translate(curStage, gainGTAP),
-                                       textLetterDef: LetterDefOf.PositiveEvent,
-                                       lookTargets: null,
-                                       relatedFaction: ModUtility.OAFaction);
+        Letter upgradeLetter = LetterMaker.MakeLetter(label: "OARK_LetterLabel_GravTechStageUpgrade".Translate(),
+                                               text: "OARK_Letter_GravTechStageUpgrade".Translate(curStage, gainGTAP),
+                                               def: LetterDefOf.PositiveEvent,
+                                               relatedFaction: ModUtility.OAFaction);
+
 
         if (curStage == 2)
         {
-            GiveSpecialTechPrint("OARK_Odyssey_GravTrap");
+            GiveSpecialTechPrint("OARK_Odyssey_GravTrap", upgradeLetter);
         }
         if (curStage == 4)
         {
-            GiveSpecialTechPrint("OARK_Odyssey_GravFieldCore");
+            GiveSpecialTechPrint("OARK_Odyssey_GravFieldCore", upgradeLetter);
         }
 
-        static void GiveSpecialTechPrint(string defName)
+        Find.LetterStack.ReceiveLetter(upgradeLetter);
+        OAInteractHandler.Instance.RegisterCDRecord("GravTechStageUpgrade", cdTicks: 0);
+
+        static void GiveSpecialTechPrint(string defName, Letter letter)
         {
             Map map = Find.AnyPlayerHomeMap;
             DiaBuyableTechPrintDef techPrintDef = DefDatabase<DiaBuyableTechPrintDef>.GetNamedSilentFail(defName);
@@ -76,7 +79,9 @@ public static class InteractUtility
             }
             else
             {
-                OARK_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef.TechPrintDef, map, ModUtility.OAFaction);
+                Thing techPrint = ThingMaker.MakeThing(techPrintDef.TechPrintDef);
+                OARK_DropPodUtility.DefaultDropSingleThing(techPrint, map, ModUtility.OAFaction);
+                letter.lookTargets = techPrint;
             }
         }
     }

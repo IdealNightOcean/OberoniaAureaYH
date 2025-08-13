@@ -8,7 +8,7 @@ using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
-public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCarvanBase
+public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBase
 {
     private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 

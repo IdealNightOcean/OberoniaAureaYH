@@ -43,7 +43,7 @@ public class IncidentWorker_DropThingsOnMap : IncidentWorker
         Map map = (Map)parms.target;
         if (ResolveDropthings(parms))
         {
-            parms.spawnCenter = OARK_DropPodUtility.DefaultDropThingGroups([parms.gifts], map, parms.faction);
+            parms.spawnCenter = OARK_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction);
             PostThingDroped(parms);
             return true;
         }

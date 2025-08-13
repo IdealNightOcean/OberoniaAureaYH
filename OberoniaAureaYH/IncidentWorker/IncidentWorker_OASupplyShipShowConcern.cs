@@ -10,6 +10,14 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 {
     protected bool TryResolveParmsGeneral(IncidentParms parms)
     {
+        Map map = (Map)parms.target;
+        map ??= Find.AnyPlayerHomeMap;
+        if (map is null)
+        {
+            return false;
+        }
+        parms.target = map;
+
         Faction oaFaction = ModUtility.OAFaction;
         if (oaFaction is null || oaFaction.PlayerRelationKind != FactionRelationKind.Ally)
         {
@@ -29,9 +37,13 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         int count = map.mapPawns.FreeColonistsSpawnedCount * 100;
         IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
-        List<List<Thing>> dropThings = OAFrame_MiscUtility.TryGengrateThingGroup(rawBerriesDef, count);
-        DropPodUtility.DropThingGroupsNear(intVec, map, dropThings, 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
-        SendStandardLetter("OARatkin_LetterLabel_SupplyShipShowConcern".Translate(), "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count), LetterDefOf.PositiveEvent, parms, new TargetInfo(intVec, map));
+        List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(rawBerriesDef, count);
+        DropPodUtility.DropThingGroupsNear(intVec, map, [dropThings], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
+        SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
+                           baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count),
+                           baseLetterDef: LetterDefOf.PositiveEvent,
+                           parms: parms,
+                           lookTargets: new TargetInfo(intVec, map));
         return true;
     }
 }

@@ -34,7 +34,7 @@ public class CompBrokenPilotConsole : CompHackable
             StageChange(++curStage);
         }
 
-        hackPoint = hackPoint > Props.maxHackPoint ? Props.maxHackPoint : hackPoint;
+        hackPoint = hackPoint > MaxHackPoint ? MaxHackPoint : hackPoint;
     }
 
     private void StageChange(int newStage)

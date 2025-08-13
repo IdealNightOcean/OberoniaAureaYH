@@ -37,11 +37,15 @@ public static class OARK_ModDefOf
     [MayRequireOdyssey]
     public static RulePackDef OARK_PackScienceShipName;
     [MayRequireOdyssey]
+    public static RulePackDef OARK_PackScienceShipQuiz;
+    [MayRequireOdyssey]
     public static RulePackDef OARK_RulePackSalutationText;
     [MayRequireOdyssey]
     public static RulePackDef OARK_RulePackProgressText;
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
+
+    [MayRequireOdyssey]
     public static SoundDef OARK_Sound_GravBomb;
     [MayRequireOdyssey]
     public static SketchResolverDef OARK_Sketch_CrashedGravship;

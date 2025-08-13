@@ -1,26 +1,38 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Verse;
+using Verse.Grammar;
 
 namespace OberoniaAurea;
 
-public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
+public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
 {
-    private bool shipLaunched;
     private string shipName;
+    private ScienceShipRecord? scienceShip;
+    private bool shipLaunched;
+    private int quizCount;
+    private bool quizDialogOpen;
     public override int TicksNeeded => 12500;
+    protected override WorldObjectDef FixedCaravanDef => OARK_WorldObjectDefOf.OARK_FixedCaravan_ScienceShipLaunch;
 
-    public override void PostAdd()
+    public override void ExposeData()
     {
-        base.PostAdd();
-        shipName = ScienceShipRecord.GenerateShipName();
+        base.ExposeData();
+        Scribe_Values.Look(ref shipLaunched, "shipLaunched", defaultValue: false);
+        Scribe_Values.Look(ref quizCount, "quizCount", 0);
+        Scribe_Values.Look(ref quizDialogOpen, "quizDialogOpen", defaultValue: false);
+        Scribe_Values.Look(ref shipName, "shipName");
+
+        Scribe_Deep.Look(ref scienceShip, "scienceShip");
     }
 
-    public void SetShipName(string shipName)
+    public void InitShip(string shipName)
     {
         this.shipName = shipName;
+        scienceShip = ScienceShipRecord.GenerateShip(shipName);
     }
 
     public override string GetInspectString()
@@ -81,7 +93,10 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
     private void LaunchShip()
     {
         shipLaunched = true;
-        ScienceShipRecord scienceShip = ScienceShipRecord.GenerateShip(shipName);
+        if (!scienceShip.HasValue)
+        {
+            scienceShip = ScienceShipRecord.GenerateShip(shipName);
+        }
         ScienceDepartmentInteractHandler.Instance.ScienceShipRecord = scienceShip;
         IncidentParms parms = new()
         {
@@ -100,17 +115,115 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCarvanBase
         base.Destroy();
     }
 
-    public override void ExposeData()
+    public Command_Action QuizCommand()
     {
-        base.ExposeData();
-        Scribe_Values.Look(ref shipLaunched, "shipLaunched", defaultValue: false);
-        Scribe_Values.Look(ref shipName, "shipName");
+        Command_Action command_Quiz = null;
+        if (isWorking && !quizDialogOpen && scienceShip.HasValue)
+        {
+            command_Quiz = new()
+            {
+                defaultLabel = "OARK_ScienceShipLaunch_Quiz".Translate(),
+                defaultDesc = "OARK_ScienceShipLaunch_QuizDesc".Translate(),
+                action = QuizResult,
+                icon = IconUtility.OADipIcon
+            };
+        }
+        return command_Quiz;
+    }
+
+    private void QuizResult()
+    {
+        if (associatedFixedCaravan is null)
+        {
+            return;
+        }
+
+        quizCount++;
+
+        bool sendLetter = false;
+        TaggedString letterLabel = TaggedString.Empty;
+        TaggedString letterText = TaggedString.Empty;
+        LetterDef letterDef = LetterDefOf.PositiveEvent;
+
+        if (quizCount < 6)
+        {
+            letterLabel = "OARK_ScienceShipLaunch_QuizLabel".Translate();
+
+            GrammarRequest grammarRequest = new();
+            grammarRequest.Includes.Add(OARK_ModDefOf.OARK_PackScienceShipQuiz);
+            grammarRequest.Constants.Add("envirType", scienceShip.Value.EnvironmentAffect.ToString());
+            grammarRequest.Constants.Add("shipType", scienceShip.Value.TypeOfShip.ToString());
+            letterText = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
+            sendLetter = true;
+        }
+        else if (quizCount == 6)
+        {
+            float maxNegotiationAbility = associatedFixedCaravan.PawnsListForReading.Where(p => p.IsColonist && p.Awake())?.Select(p => p.GetStatValue(StatDefOf.NegotiationAbility))?.Max() ?? 0f;
+            if (maxNegotiationAbility >= 3f)
+            {
+                sendLetter = false;
+                quizDialogOpen = true;
+                Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_ScienceShipLaunch_Quiz6Special".Translate(),
+                                                                                 acceptText: "OARK_ScienceShipLaunch_FlowCake".Translate(),
+                                                                                 acceptAction: delegate
+                                                                                 {
+                                                                                     quizDialogOpen = false;
+                                                                                     if (associatedFixedCaravan is not null)
+                                                                                     {
+                                                                                         List<Thing> flowCakes = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
+                                                                                         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
+                                                                                         Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShipLaunch_Quiz6GainLabel".Translate(5),
+                                                                                                                        text: "OARK_ScienceShipLaunch_Quiz6Gain".Translate(),
+                                                                                                                        textLetterDef: LetterDefOf.PositiveEvent,
+                                                                                                                        lookTargets: associatedFixedCaravan,
+                                                                                                                        relatedFaction: Faction,
+                                                                                                                        quest: quest);
+                                                                                     }
+                                                                                 },
+                                                                                 rejectText: "Close".Translate(),
+                                                                                 rejectAction: delegate { quizDialogOpen = false; });
+                Find.WindowStack.Add(nodeTree);
+            }
+            else
+            {
+                sendLetter = true;
+                letterLabel = "OARK_ScienceShipLaunch_QuizLabelAbove6".Translate();
+                letterText = "OARK_ScienceShipLaunch_QuizAbove6".Translate();
+            }
+        }
+        else
+        {
+            sendLetter = true;
+            letterLabel = "OARK_ScienceShipLaunch_QuizLabelAbove6".Translate();
+            letterText = "OARK_ScienceShipLaunch_QuizAbove6".Translate();
+        }
+
+        if (quizCount <= 6)
+        {
+            foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
+            {
+                pawn.skills?.GetSkill(SkillDefOf.Intellectual).Learn(50f, direct: true);
+            }
+
+            letterText += ("\n\n" + "OARK_ScienceShipLaunch_QuizGainXP".Translate(50f));
+        }
+
+        if (sendLetter)
+        {
+            Find.LetterStack.ReceiveLetter(label: letterLabel,
+                                           text: letterText,
+                                           textLetterDef: letterDef,
+                                           lookTargets: this,
+                                           relatedFaction: Faction,
+                                           quest: quest);
+        }
+
+
     }
 
     private static string GetShipLaunchText(Pawn pawn, int skillLevel)
     {
         StringBuilder sb = new("OARK_ScienceShipLaunchFinished".Translate(3000, 3));
-
         ScienceShipRecord shipRecord = ScienceDepartmentInteractHandler.Instance.ScienceShipRecord.Value;
 
         if (skillLevel >= 15)

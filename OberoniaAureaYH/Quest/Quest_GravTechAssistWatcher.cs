@@ -93,9 +93,13 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
 
         if (TotalGTP > 1500)
         {
+            ThingDef techCore = DefDatabase<ThingDef>.GetNamedSilentFail("TechprofSubpersonaCore");
             Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_GravTechAssist_RewardChoice".Translate(),
-                                                                             acceptText: ThingDefOf.Gravcore.LabelCap,
-                                                                             acceptAction: delegate { OARK_DropPodUtility.DefaultDropSingleThingOfDef(ThingDefOf.Gravcore, map, ModUtility.OAFaction); },
+                                                                             acceptText: techCore.LabelCap,
+                                                                             acceptAction: delegate
+                                                                             {
+                                                                                 OARK_DropPodUtility.DefaultDropSingleThingOfDef(techCore, map, ModUtility.OAFaction);
+                                                                             },
                                                                              rejectText: OARK_RimWorldDefOf.VanometricPowerCell.LabelCap,
                                                                              rejectAction: delegate
                                                                              {

@@ -42,6 +42,11 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         };
     }
 
+    protected override List<Pawn> GeneratePawns(string lodgerRecruitedSignal = null)
+    {
+        return questParameter.slate.Get<List<Pawn>>("pawns");
+    }
+
     protected override void RunInt()
     {
         questParameter = null;
@@ -60,7 +65,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         string lodgerArrestedOrRecruited = QuestGen.GenerateNewSignal("Lodger_ArrestedOrRecruited");
         quest.AnySignal(inSignals: [lodgerRecruitedSignal, lodgerArrestedSignal], outSignals: [lodgerArrestedOrRecruited]);
 
-        List<Pawn> pawns = questParameter.slate.Get<List<Pawn>>("pawns");
+        List<Pawn> pawns = GeneratePawns(lodgerRecruitedSignal);
         if (pawns.NullOrEmpty())
         {
             quest.End(QuestEndOutcome.Unknown, sendLetter: true, playSound: false);
@@ -69,9 +74,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         questParameter.pawns = pawns;
 
         quest.ExtraFaction(faction, pawns, ExtraFactionType.MiniFaction, areHelpers: false, [lodgerRecruitedSignal, lodgerBecameMutantSignal]);
-
-        string lodgerArrivalSignal = null;
-
+        quest.SetAllApparelLocked(pawns);
         quest.JoinPlayer(questParameter.map.Parent, pawns, joinPlayer: true);
 
         SetQuestAward();
@@ -96,7 +99,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         quest.AddMemoryThought(pawns, ThoughtDefOf.OtherTravelerSurgicallyViolated, questPart_RefugeeInteractions.outSignalSurgeryViolation_LeaveColony);
 
         SetQuestEndCompCommon(questPart_RefugeeInteractions);
-        SetPawnsLeaveComp(lodgerArrivalSignal, lodgerArrestedOrRecruited);
+        SetPawnsLeaveComp(inSignalEnable: null, lodgerArrestedOrRecruited);
         SetSlateValue();
     }
 

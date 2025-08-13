@@ -113,7 +113,6 @@
     <Compile Include="Hediff\HediffComp_TeaWithSkyWarmth.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_NewYearEvent.cs" />
     <Compile Include="DefModExtension\DisplacementExplosionExtension.cs" />
-    <Compile Include="Misc\LordJob_ProspectingTeam.cs" />
     <Compile Include="Misc\ScienceDepartmentInteractHandler.cs" />
     <Compile Include="JobAndWork\JobDriver_SailorInvitation.cs" />
     <Compile Include="Quest\Quest_SailorsAssistanceWatcher.cs" />
@@ -212,6 +211,7 @@
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
+    <Compile Include="WorldObject\WorldObject\FixedCaravan_ScienceShipLaunch.cs" />
     <Compile Include="WorldObject\SketchResolver_CrashedGravship.cs" />
     <Compile Include="WorldObject\GenStep_CrashedGravship.cs" />
     <Compile Include="WorldObject\WorldObject\DiplomaticSummitHandler.cs" />
