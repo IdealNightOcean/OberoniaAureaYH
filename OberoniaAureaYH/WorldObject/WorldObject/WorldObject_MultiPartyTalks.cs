@@ -26,7 +26,6 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 
 
     private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
-    private static GameComponent_OberoniaAurea GC_OA => Current.Game.GetComponent<GameComponent_OberoniaAurea>();
 
     public override void Notify_CaravanArrived(Caravan caravan)
     {
