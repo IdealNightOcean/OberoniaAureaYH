@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using Verse;
@@ -9,24 +10,24 @@ namespace OberoniaAurea;
 
 public class JobDriver_TalkWithProspectingLeader : JobDriver
 {
-    private Pawn Leader => TargetPawnA;
+    private Pawn TalkWith => TargetPawnA;
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
     {
-        return pawn.Reserve(Leader, job, 1, -1, null, errorOnFailed);
+        return pawn.Reserve(TalkWith, job, 1, -1, null, errorOnFailed);
     }
 
     protected override IEnumerable<Toil> MakeNewToils()
     {
         this.FailOnDespawnedOrNull(TargetIndex.A);
-        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(() => Leader != OAInteractHandler.Instance.ProspectingLeader);
+        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(() => TalkWith.DeadOrDowned);
         Toil talk = ToilMaker.MakeToil("MakeNewToils");
         talk.initAction = delegate
         {
             Pawn actor = talk.actor;
-            if (Leader == OAInteractHandler.Instance.ProspectingLeader)
+            if (!TalkWith.DeadOrDowned)
             {
-                Find.WindowStack.Add(TalkTree(actor, Leader));
+                Find.WindowStack.Add(TalkTree(actor, TalkWith));
             }
         };
         yield return talk;
@@ -64,10 +65,12 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver
         else
         {
             pawns.AddRange(lord.ownedPawns);
+            if (lord.LordJob is LordJob_VisitColonyTalkable talkJob)
+            {
+                talkJob.SetTalkAvailable(false);
+            }
             lord.RemoveAllPawns();
         }
-
-        OAInteractHandler.Instance.ProspectingLeader = null;
 
         int index = pawns.IndexOf(leader);
         pawns.Swap(0, index);
@@ -87,7 +90,6 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver
 
     private static void IgnoreResult(Pawn leader)
     {
-        OAInteractHandler.Instance.ProspectingLeader = null;
         Lord lord = leader.GetLord();
         List<Pawn> pawns = [];
         if (lord is null)

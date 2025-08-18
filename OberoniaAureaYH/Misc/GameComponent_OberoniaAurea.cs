@@ -7,14 +7,10 @@ namespace OberoniaAurea;
 
 public class GameComponent_OberoniaAurea : GameComponent
 {
+    private int ticksRemaining;
     public static GameComponent_OberoniaAurea Instance { get; private set; }
 
     private OAInteractHandler interactHandler;
-
-    protected int ticksRemaining;
-    public int initAllianceTick = -1; //本次结盟的起始时刻
-    public float oldAllianceDuration; //记录旧结盟时间
-    public int assistPoints;
 
     public bool newYearEventTriggeredOnce;
 
@@ -76,10 +72,6 @@ public class GameComponent_OberoniaAurea : GameComponent
 
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", -1);
         Scribe_Deep.Look(ref interactHandler, "interactHandler");
-
-        Scribe_Values.Look(ref oldAllianceDuration, "oldAllianceDuration", 0f);
-        Scribe_Values.Look(ref initAllianceTick, "initAllianceTick", -1);
-        Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
 
         Scribe_Values.Look(ref newYearEventTriggeredOnce, "newYearEventTriggeredOnce", defaultValue: false);
     }

@@ -92,7 +92,6 @@
     <Compile Include="IncidentWorker\IncidentWorker_ProspectingTeam.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_VisitorGroupBase.cs" />
     <Compile Include="JobAndWork\JobDriver_TalkWithProspectingLeader.cs" />
-    <Compile Include="Misc\LordJob_ProspectingTeam.cs" />
     <Compile Include="Misc\OAInteractHandler.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_ProspectingTeam.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_ProspectingTeamReward.cs" />

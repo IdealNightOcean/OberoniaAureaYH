@@ -6,7 +6,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCarvanBase
+public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCaravanBase
 {
     private static readonly IntRange ComponentCountRange = new(4, 10);
     private static readonly IntRange SteelCountRange = new(20, 50);
