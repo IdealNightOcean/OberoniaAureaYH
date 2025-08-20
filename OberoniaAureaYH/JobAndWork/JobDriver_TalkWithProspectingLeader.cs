@@ -3,36 +3,16 @@ using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using Verse;
-using Verse.AI;
 using Verse.AI.Group;
 
 namespace OberoniaAurea;
 
-public class JobDriver_TalkWithProspectingLeader : JobDriver
+public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
 {
-    private Pawn TalkWith => TargetPawnA;
-
-    public override bool TryMakePreToilReservations(bool errorOnFailed)
+    protected override void TalkAction(Pawn talker, Pawn talkWith)
     {
-        return pawn.Reserve(TalkWith, job, 1, -1, null, errorOnFailed);
+        Find.WindowStack.Add(TalkTree(talker, talkWith));
     }
-
-    protected override IEnumerable<Toil> MakeNewToils()
-    {
-        this.FailOnDespawnedOrNull(TargetIndex.A);
-        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(() => TalkWith.DeadOrDowned);
-        Toil talk = ToilMaker.MakeToil("MakeNewToils");
-        talk.initAction = delegate
-        {
-            Pawn actor = talk.actor;
-            if (!TalkWith.DeadOrDowned)
-            {
-                Find.WindowStack.Add(TalkTree(actor, TalkWith));
-            }
-        };
-        yield return talk;
-    }
-
 
     private static Dialog_NodeTree TalkTree(Pawn pawn, Pawn leader)
     {
@@ -76,15 +56,9 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver
         pawns.Swap(0, index);
         Slate slate = new();
         slate.Set("pawns", pawns);
-        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ProspectingTeam, slate);
-
-        if (quest is null)
+        if (!OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_ProspectingTeam, slate, forced: true))
         {
             LordMaker.MakeNewLord(leader.Faction, new LordJob_ExitMapBest(), leader.MapHeld, pawns);
-        }
-        else if (!quest.hidden && quest.root.sendAvailableLetter)
-        {
-            QuestUtility.SendLetterQuestAvailable(quest);
         }
     }
 

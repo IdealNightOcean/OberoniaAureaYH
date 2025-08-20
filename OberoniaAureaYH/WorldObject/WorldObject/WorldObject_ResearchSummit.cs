@@ -196,10 +196,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate))
-        {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
@@ -247,23 +244,14 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     }
     private static void ResearcherVisit() //无势力学者的访问
     {
-        Slate slate = new();
-        if (OARK_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate))
-        {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearcherVisit, slate);
-            if (!quest.hidden && quest.root.sendAvailableLetter)
-            {
-                QuestUtility.SendLetterQuestAvailable(quest);
-            }
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, new Slate());
     }
     private static void ResearcherPeacetalk(Faction faction) //敌对势力和平谈判
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OARK_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate))
+        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
         }

@@ -1,7 +1,6 @@
-﻿using RimWorld;
-using System.Collections.Generic;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using System.Runtime.CompilerServices;
-using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -31,9 +30,16 @@ public class OAInteractHandler : IExposable
 
     public int CurAssistPointsCap => InteractUtility.GetCurAssistPointsCap(AllianceDuration());
 
-    private Dictionary<string, OAInteractionCDRecord> interactionCDRecords = [];
+    private CooldownRecordManager cooldownManager;
+    public CooldownRecordManager CooldownManager => cooldownManager;
 
-    public OAInteractHandler() => Instance = this;
+    public OAInteractHandler()
+    {
+        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        Instance = this;
+        cooldownManager ??= new();
+    }
+
     public static void ClearStaticCache() => Instance = null;
     public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_OAInteractHandler());
 
@@ -80,58 +86,6 @@ public class OAInteractHandler : IExposable
         }
     }
 
-    public bool IsInCooldown(string key)
-    {
-        if (interactionCDRecords.TryGetValue(key, out OAInteractionCDRecord record))
-        {
-            return record.IsInCooldown;
-        }
-        return false;
-    }
-
-    public int GetCooldownTicksLeft(string key)
-    {
-        if (interactionCDRecords.TryGetValue(key, out OAInteractionCDRecord record))
-        {
-            return record.CooldownTicksLeft;
-        }
-        return -1;
-    }
-
-    public int GetTicksSinceLastActive(string key)
-    {
-        if (interactionCDRecords.TryGetValue(key, out OAInteractionCDRecord record))
-        {
-            return record.TicksSinceLastActive;
-        }
-        return -1;
-    }
-
-    public void RegisterCDRecord(string key, int cdTicks)
-    {
-        interactionCDRecords[key] = new OAInteractionCDRecord(cdTicks);
-    }
-    public void DeregisterCDRecord(string key)
-    {
-        interactionCDRecords.Remove(key);
-    }
-
-    public string GetInteractionCDRecordsDetailStr()
-    {
-        if (interactionCDRecords.NullOrEmpty())
-        {
-            return "None";
-        }
-
-        StringBuilder sb = new();
-        int i = 0;
-        foreach (KeyValuePair<string, OAInteractionCDRecord> kv in interactionCDRecords)
-        {
-            sb.AppendInNewLine($"{++i}. ({kv.Key}: {kv.Value})");
-        }
-        return sb.ToString();
-    }
-
     public void ExposeData()
     {
         Scribe_Values.Look(ref compatibled, "compatibled", defaultValue: false);
@@ -142,12 +96,11 @@ public class OAInteractHandler : IExposable
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
         Scribe_Values.Look(ref assistStoppageDays, "assistStoppageDays", 0);
 
-        Scribe_Collections.Look(ref interactionCDRecords, "interactionCDRecords", LookMode.Value, LookMode.Deep);
+        Scribe_Deep.Look(ref cooldownManager, "cooldownManager");
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            interactionCDRecords ??= [];
-            interactionCDRecords.RemoveAll(kv => kv.Key is null || kv.Value.lastActiveTick < 0);
+            cooldownManager ??= new();
         }
     }
 }

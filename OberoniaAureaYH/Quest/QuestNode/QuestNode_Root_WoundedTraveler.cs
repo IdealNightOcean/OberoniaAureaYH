@@ -31,11 +31,11 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         return ModUtility.OAFaction;
     }
 
-    protected override QuestParameter InitQuestParameter(Faction faction)
+    protected override void InitQuestParameter()
     {
         curPawnIndex = 0;
         int lodgerCount = Rand.RangeInclusive(2, 3);
-        return new QuestParameter(faction, QuestGen_Get.GetMap())
+        questParameter = new QuestParameter()
         {
             allowAssaultColony = false,
             allowLeave = true,
@@ -52,15 +52,21 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         };
     }
 
-    protected override void SetPawnsLeaveComp(string inSignalEnable, string inSignalRemovePawn)
+    protected override void ClearQuestParameter()
     {
-        Quest quest = questParameter.quest;
+        base.ClearQuestParameter();
+        curPawnIndex = 0;
+    }
+
+    protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)
+    {
+        Quest quest = QuestGen.quest;
         List<Pawn> pawns = questParameter.pawns;
 
         string travelerCanLeaveNowSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.TravelerCanLeaveNow");
         QuestPart_WoundedTravelerCanLeaveNow questPart_WoundedTravelerCanLeaveNow = new()
         {
-            inSignalEnable = questParameter.slate.Get<string>("inSignal"),
+            inSignalEnable = QuestGen.slate.Get<string>("inSignal"),
             outSignal = travelerCanLeaveNowSignal,
             map = questParameter.map,
         };
@@ -75,13 +81,13 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
         if (questParameter.questDurationTicks > 0)
         {
-            DefaultDelayLeaveComp(inSignalEnable, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
+            DefaultDelayLeaveComp(lodgerArrivalSignal, inSignalDisable: travelerCanLeaveNowSignal, inSignalRemovePawn);
         }
     }
 
     protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
     {
-        questParameter.quest.AddPart(new QuestPart_OaAssistPointsChange(successSignal, AssistPoints));
+        QuestGen.quest.AddPart(new QuestPart_OaAssistPointsChange(successSignal, AssistPoints));
     }
 
     protected override void PostPawnGenerated(Pawn pawn)

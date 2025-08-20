@@ -44,7 +44,7 @@ public class DevWin_OAInteractHandler : Window
         listing_Rect.Gap(3f);
         if (listing_Rect.ButtonText("Interaction CD Records", null, 0.6f))
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(interactHandler.GetInteractionCDRecordsDetailStr()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(interactHandler.CooldownManager.GetCDRecordsDetailInfo()));
         }
 
         if (Event.current.type == EventType.Layout)

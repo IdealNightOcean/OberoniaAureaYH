@@ -1,6 +1,5 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
-using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
@@ -8,9 +7,9 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 {
     private static readonly IntRange IntellectualSkill = new(8, 18);
 
-    protected override QuestParameter InitQuestParameter(Faction faction)
+    protected override void InitQuestParameter()
     {
-        return new QuestParameter(faction, QuestGen_Get.GetMap())
+        questParameter = new QuestParameter()
         {
             allowAssaultColony = true,
             allowBadThought = false,

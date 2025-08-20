@@ -250,11 +250,7 @@ public static class DeepExchangeUtility
                 {
                     slate.Set("settlement", settlement);
                 }
-                Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(questScript, slate);
-                if (!quest.hidden && quest.root.sendAvailableLetter)
-                {
-                    QuestUtility.SendLetterQuestAvailable(quest);
-                }
+                OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, questScript, slate, forced: true);
                 text += "\n\n" + "OA_LetterResearchDeepExchangeAdditional".Translate(settlement.Named("SETTLEMENT"), quest.name);
             }
         }

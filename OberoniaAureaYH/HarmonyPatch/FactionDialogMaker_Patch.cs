@@ -58,7 +58,7 @@ public static class FactionDialogFor_Patch
             return diaOption;
         }
 
-        int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("LargeScaleTrader");
+        int cooldownTicksLeft = OAInteractHandler.Instance.CooldownManager.GetCooldownTicksLeft("LargeScaleTrader");
         if (dialogCache.AllianceDuration < 75)
         {
             diaOption.Disable("OA_AllianceDurationShort".Translate(75.ToString("F0")));
@@ -86,7 +86,7 @@ public static class FactionDialogFor_Patch
 
         void CallTrader()
         {
-            OAInteractHandler.Instance.RegisterCDRecord("LargeScaleTrader", cdTicks: 60 * 60000);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("LargeScaleTrader", cdTicks: 60 * 60000, shouldRemoveWhenExpired: true);
             TraderKindDef traderKind = DefDatabase<TraderKindDef>.GetNamed("OA_RK_Caravan_TraderGeneral_B");
             IncidentParms parms = new()
             {
@@ -108,7 +108,7 @@ public static class FactionDialogFor_Patch
         TaggedString taggedString = "OA_SponsorOberoniaAurea".Translate();
         DiaOption diaOption = new(taggedString);
 
-        if (OAInteractHandler.Instance.IsInCooldown("SponsorOA")) //冷却时不需要更多的帮助
+        if (OAInteractHandler.Instance.CooldownManager.IsInCooldown("SponsorOA")) //冷却时不需要更多的帮助
         {
             string cdConfirmStr = "OA_SponsorThanksAgain".Translate(dialogCache.Faction.leader).CapitalizeFirst();
             diaOption.link = new DiaNode(cdConfirmStr)
@@ -165,7 +165,7 @@ public static class FactionDialogFor_Patch
         OAInteractHandler.Instance.AdjustAssistPoints(gainAP);
 
         dialogCache.Negotiator.royalty?.GainFavor(dialogCache.Faction, gainFavor);
-        OAInteractHandler.Instance.RegisterCDRecord("SponsorOA", cdTicks: 30 * 60000);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("SponsorOA", cdTicks: 30 * 60000, shouldRemoveWhenExpired: true);
     }
 
     private static DiaNode SponsorOberoniaAureaConfirmNode(FactionDialogCache dialogCache, int silverCount)
@@ -201,7 +201,7 @@ public static class FactionDialogFor_Patch
             diaOption.Disable("OA_AllianceDurationShort".Translate(45.ToString("F0")));
             return diaOption;
         }
-        int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("BuyTechPrint");
+        int cooldownTicksLeft = OAInteractHandler.Instance.CooldownManager.GetCooldownTicksLeft("BuyTechPrint");
         if (cooldownTicksLeft > 0)
         {
             diaOption.Disable("WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod()));
@@ -264,7 +264,7 @@ public static class FactionDialogFor_Patch
                 diaOption.action = delegate
                 {
                     GetTechPrint(dialogCache.Map, dialogCache.Faction, dbtpDef.TechPrintDef, dbtpDef.price);
-                    OAInteractHandler.Instance.RegisterCDRecord("BuyTechPrint", cdTicks: 30 * 60000);
+                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("BuyTechPrint", cdTicks: 30 * 60000, shouldRemoveWhenExpired: true);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OA_TechPrintChoiceConfirm".Translate(dialogCache.Faction.leader).CapitalizeFirst(),
                                                                                        faction: dialogCache.Faction,
