@@ -1,4 +1,6 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
+using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
@@ -29,21 +31,7 @@ public class IncidentWorker_ScienceShipRecycle : IncidentWorker
             questValid = false;
         }
 
-        if (questValid)
-        {
-            if (OARK_QuestScriptDefOf.OARK_ScienceShipRecycle.CanRun(new RimWorld.QuestGen.Slate(), Find.World))
-            {
-                Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, 5000f);
-                if (!quest.hidden && OARK_QuestScriptDefOf.OARK_ScienceShipRecycle.sendAvailableLetter)
-                {
-                    QuestUtility.SendLetterQuestAvailable(quest);
-                }
-            }
-            else
-            {
-                questValid = false;
-            }
-        }
+        questValid = questValid && OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, new Slate());
 
         if (!questValid)
         {

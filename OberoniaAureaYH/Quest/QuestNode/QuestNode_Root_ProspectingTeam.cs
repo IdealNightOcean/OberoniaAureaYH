@@ -23,9 +23,9 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         return ModUtility.OAFaction;
     }
 
-    protected override QuestParameter InitQuestParameter(Faction faction)
+    protected override void InitQuestParameter()
     {
-        return new QuestParameter(faction, QuestGen_Get.GetMap())
+        questParameter = new QuestParameter()
         {
             allowAssaultColony = false,
             allowLeave = true,
@@ -44,73 +44,23 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 
     protected override List<Pawn> GeneratePawns(string lodgerRecruitedSignal = null)
     {
-        return questParameter.slate.Get<List<Pawn>>("pawns");
+        return QuestGen.slate.Get<List<Pawn>>("pawns");
     }
 
-    protected override void RunInt()
+    protected override void PawnArrival(string lodgerArrivalSignal)
     {
-        questParameter = null;
-        Faction faction = GetOrGenerateFaction();
-        if (faction is null || faction.HostileTo(Faction.OfPlayer))
-        {
-            return;
-        }
-
-        questParameter = InitQuestParameter(faction);
-        Quest quest = questParameter.quest;
-
-        string lodgerArrestedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Arrested");
-        string lodgerRecruitedSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.Recruited");
-        string lodgerBecameMutantSignal = QuestGenUtility.HardcodedSignalWithQuestID("lodgers.BecameMutant");
-        string lodgerArrestedOrRecruited = QuestGen.GenerateNewSignal("Lodger_ArrestedOrRecruited");
-        quest.AnySignal(inSignals: [lodgerRecruitedSignal, lodgerArrestedSignal], outSignals: [lodgerArrestedOrRecruited]);
-
-        List<Pawn> pawns = GeneratePawns(lodgerRecruitedSignal);
-        if (pawns.NullOrEmpty())
-        {
-            quest.End(QuestEndOutcome.Unknown, sendLetter: true, playSound: false);
-            return;
-        }
-        questParameter.pawns = pawns;
-
-        quest.ExtraFaction(faction, pawns, ExtraFactionType.MiniFaction, areHelpers: false, [lodgerRecruitedSignal, lodgerBecameMutantSignal]);
-        quest.SetAllApparelLocked(pawns);
-        quest.JoinPlayer(questParameter.map.Parent, pawns, joinPlayer: true);
-
-        SetQuestAward();
-
-        QuestPart_OARefugeeInteractions questPart_RefugeeInteractions = new()
-        {
-            inSignalEnable = questParameter.slate.Get<string>("inSignal"),
-            faction = faction,
-            mapParent = questParameter.map.Parent,
-            inSignalArrested = lodgerArrestedSignal,
-            inSignalRecruited = lodgerRecruitedSignal,
-            signalListenMode = QuestPart.SignalListenMode.Always
-        };
-        questPart_RefugeeInteractions.InitWithDefaultSingals(questParameter.allowAssaultColony, questParameter.allowLeave, questParameter.allowBadThought);
-        questPart_RefugeeInteractions.pawns.AddRange(pawns);
-        quest.AddPart(questPart_RefugeeInteractions);
-
-        SetQuestEndLetters(questPart_RefugeeInteractions);
-
-        quest.AddMemoryThought(pawns, ThoughtDefOf.OtherTravelerDied, questPart_RefugeeInteractions.outSignalDestroyed_LeaveColony);
-        quest.AddMemoryThought(pawns, ThoughtDefOf.OtherTravelerArrested, questPart_RefugeeInteractions.outSignalArrested_LeaveColony);
-        quest.AddMemoryThought(pawns, ThoughtDefOf.OtherTravelerSurgicallyViolated, questPart_RefugeeInteractions.outSignalSurgeryViolation_LeaveColony);
-
-        SetQuestEndCompCommon(questPart_RefugeeInteractions);
-        SetPawnsLeaveComp(inSignalEnable: null, lodgerArrestedOrRecruited);
-        SetSlateValue();
+        QuestGen.quest.JoinPlayer(questParameter.map.Parent, questParameter.pawns, joinPlayer: true);
+        QuestGen.quest.SendSignals(outSignals: [lodgerArrivalSignal]);
     }
 
-    protected override void SetPawnsLeaveComp(string inSignalEnable, string inSignalRemovePawn)
+    protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)
     {
-        base.SetPawnsLeaveComp(inSignalEnable, inSignalRemovePawn);
+        base.SetPawnsLeaveComp(lodgerArrivalSignal, inSignalRemovePawn);
 
-        Quest quest = questParameter.quest;
+        Quest quest = QuestGen.quest;
 
         string specialRewardSignal = QuestGen.GenerateNewSignal("Lodger_GiveSpecialReward");
-        quest.Delay(questParameter.questDurationTicks, inner: null, inSignalEnable: inSignalEnable, outSignalComplete: specialRewardSignal);
+        quest.Delay(questParameter.questDurationTicks, inner: null, inSignalEnable: lodgerArrivalSignal, outSignalComplete: specialRewardSignal);
 
         QuestPart_ProspectingTeamReward questPart_ProspectingTeamReward = new()
         {

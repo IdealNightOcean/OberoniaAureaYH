@@ -7,14 +7,6 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public enum NegotiatingTeamLevel
-{
-    Beginner,
-    Standard,
-    Sophistication,
-    Excellence
-}
-
 public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixedCaravanAssociate
 {
     public const int TicksNeeded = 5000;

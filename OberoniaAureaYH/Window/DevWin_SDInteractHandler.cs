@@ -15,6 +15,7 @@ public class DevWin_SDInteractHandler : Window
     public DevWin_SDInteractHandler()
     {
         doCloseX = true;
+        draggable = true;
         sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
         if (sdInteractHandler.ScienceShipRecord.HasValue)
         {
@@ -35,12 +36,12 @@ public class DevWin_SDInteractHandler : Window
         listing_Rect.Label($"CurGravTechStageIndex: {sdInteractHandler.CurGravTechStage - 1}");
         listing_Rect.Label($"CurGravTechStage: {sdInteractHandler.CurGravTechStage}");
 
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
         listing_Rect.Label($"GravTechPoints: {sdInteractHandler.GravTechPoints}");
         listing_Rect.Label($"PlayerTechPoints: {sdInteractHandler.PlayerTechPoints}");
         listing_Rect.Label($"GravTechAssistPoints: {sdInteractHandler.GravTechAssistPoints}");
 
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
         listing_Rect.Label($"IsInitGravQuestCompleted: {sdInteractHandler.IsInitGravQuestCompleted}");
         if (sdInteractHandler.GravResearchAssistLendPawn is null)
         {
@@ -51,7 +52,12 @@ public class DevWin_SDInteractHandler : Window
             listing_Rect.Label($"GravResearchAssistLendPawn: {sdInteractHandler.GravResearchAssistLendPawn}");
         }
 
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
+        listing_Rect.Label($"GravTechPointEMBlockDays: {sdInteractHandler.GravTechPointEMBlockDays}");
+        listing_Rect.Label($"LastEconomyReviewOutcome: {sdInteractHandler.LastEconomyReviewOutcome}");
+        listing_Rect.Label($"LastEconomyReviewTick: {sdInteractHandler.LastEconomyReviewTick}");
+
+        listing_Rect.Gap(6f);
         if (shipName is null)
         {
             listing_Rect.Label("ScienceShipRecord: None");
@@ -60,8 +66,8 @@ public class DevWin_SDInteractHandler : Window
         {
             listing_Rect.Label($"ScienceShipRecord: {shipName}");
         }
-        listing_Rect.Gap(3f);
-        listing_Rect.Label($"ToDayDutyText: {sdInteractHandler.ToDayDutyText}");
+        listing_Rect.Gap(6f);
+        listing_Rect.Label($"ToDayDutyText: {sdInteractHandler.TodayDutyText}");
         listing_Rect.Label($"NextShiftWorkDay: {sdInteractHandler.NextShiftWorkDay}");
 
         if (Event.current.type == EventType.Layout)

@@ -31,6 +31,10 @@ public static class OARK_ThingDefOf
     public static ThingDef OARK_AirportClearanceBeacon; // 金鸢尾兰空港许可信标
     [MayRequireOdyssey]
     public static ThingDef OARK_CrashedScienceShip; // 坠毁的科学舱
+    [MayRequireOdyssey]
+    public static ThingDef OARK_SDAccountingRecord; // 科研部账目资料
+    [MayRequireOdyssey]
+    public static ThingDef OARO_Mote_Referendary; // 统筹官气泡
 
     public static ThingDef OA_RK_EMPInst;
     static OARK_ThingDefOf()

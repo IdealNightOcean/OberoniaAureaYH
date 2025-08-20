@@ -54,7 +54,7 @@ public static class UnlockedFileUtility
         sb.AppendLine();
         sb.AppendInNewLine("OAFrame_PawnGainSkillXp".Translate(pawn, SkillDefOf.Intellectual.LabelCap, 2000));
 
-        ResearchProjectDef projectDef = ModUtility.GetSignalResearchableProject(maxPotentialCount: 10);
+        ResearchProjectDef projectDef = ResearchUtility.GetSignalResearchableProject(maxPotentialCount: 10);
         if (projectDef is not null)
         {
             Find.ResearchManager.FinishProject(projectDef, doCompletionDialog: false, researcher: pawn, doCompletionLetter: true);

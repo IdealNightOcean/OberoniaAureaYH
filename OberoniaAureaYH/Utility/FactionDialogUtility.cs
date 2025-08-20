@@ -25,7 +25,7 @@ public static class FactionDialogUtility
 
     public static DiaOption DiaOptionWithCooldown(TaggedString text, string key, Func<DiaNode> linkLateBind)
     {
-        int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft(key);
+        int cooldownTicksLeft = OAInteractHandler.Instance.CooldownManager.GetCooldownTicksLeft(key);
 
         DiaOption diaOption = new(text);
         if (cooldownTicksLeft > 0)

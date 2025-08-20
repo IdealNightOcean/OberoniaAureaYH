@@ -18,6 +18,8 @@ public static class OARK_HediffDefOf
     public static HediffDef OARK_Hediff_SailorAssistance;
     [MayRequireOdyssey]
     public static HediffDef OARK_Hediff_GravFieldSuppress;
+    [MayRequireOdyssey]
+    public static HediffDef OARK_Hediff_Referendary;
 
     static OARK_HediffDefOf()
     {

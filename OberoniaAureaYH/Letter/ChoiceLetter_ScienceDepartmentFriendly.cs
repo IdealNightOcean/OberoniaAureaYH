@@ -103,11 +103,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
 
     private void Result_I()
     {
-        Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_GravResearchExchange, 1000f);
-        if (!quest.hidden && OARK_QuestScriptDefOf.OARK_GravResearchExchange.sendAvailableLetter)
-        {
-            QuestUtility.SendLetterQuestAvailable(quest);
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_GravResearchExchange, 1000f, forced: true);
 
         Find.LetterStack.RemoveLetter(this);
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravResearchExchange".Translate(),

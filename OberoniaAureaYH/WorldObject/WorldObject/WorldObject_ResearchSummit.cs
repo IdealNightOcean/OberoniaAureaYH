@@ -197,10 +197,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Slate slate = new();
         Map map = Find.AnyPlayerHomeMap;
         slate.Set("faction", faction);
-        if (OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin.CanRun(slate, map))
-        {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate);
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate, forced: false, target: map);
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
@@ -251,22 +248,15 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Slate slate = new();
         Map map = QuestGen_Get.GetMap();
         slate.Set("map", map);
-        if (OARK_QuestScriptDefOf.OA_ResearcherVisit.CanRun(slate, map))
-        {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OA_ResearcherVisit, slate);
-            if (!quest.hidden && quest.root.sendAvailableLetter)
-            {
-                QuestUtility.SendLetterQuestAvailable(quest);
-            }
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: map);
     }
     private static void ResearcherPeacetalk(Faction faction) //敌对势力和平谈判
     {
         Slate slate = new();
         slate.Set("faction", faction);
-        if (OARK_RimWorldDefOf.OpportunitySite_PeaceTalks.CanRun(slate, Find.World))
+
+        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: Find.World))
         {
-            QuestUtility.GenerateQuestAndMakeAvailable(OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate);
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
         }

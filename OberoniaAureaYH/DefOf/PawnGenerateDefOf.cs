@@ -9,12 +9,11 @@ public static class OARK_PawnGenerateDefOf
 {
     public static PawnKindDef OA_RK_Court_Member_Exploration; //勘探队员
 
+
     public static PawnKindDef OA_RK_Traveller;
-    [MayRequireRoyalty]
+    public static PawnKindDef OA_RK_Noble_B; //统筹审查官
     public static PawnKindDef OA_RK_Noble_C; //金鼠鼠授勋官
-    [MayRequireRoyalty]
     public static PawnKindDef OA_RK_Guard_Member;  //金鼠鼠授勋官护卫
-    [MayRequireRoyalty]
     public static PawnKindDef OA_RK_Assault_B;  //金鼠鼠授勋官护卫（突袭）
 
     public static PawnGroupKindDef OA_Rk_LargeScaleTrader;

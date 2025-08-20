@@ -31,11 +31,11 @@ public class GravDataBeacon : Building
         QuestUtility.SendQuestTargetSignals(questTags, TakenEffectSignal, this.Named("SUBJECT"));
         Find.SignalManager.SendSignal(new Signal(TakenEffectSignal, new SignalArgs(this.Named("SUBJECT")), global: true));
 
-        OAInteractHandler.Instance.RegisterCDRecord("GravDataBeacon", cdTicks: 5 * 60000);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravDataBeacon", cdTicks: 5 * 60000, shouldRemoveWhenExpired: false);
 
-        if (!OAInteractHandler.Instance.IsInCooldown("SDFriendlyEvent"))
+        if (!OAInteractHandler.Instance.CooldownManager.IsInCooldown("SDFriendlyEvent"))
         {
-            OAInteractHandler.Instance.RegisterCDRecord("SDFriendlyEvent", cdTicks: 10 * 60000);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDFriendlyEvent", cdTicks: 10 * 60000, shouldRemoveWhenExpired: true);
             IncidentParms parms = new()
             {
                 target = Find.World
@@ -116,7 +116,7 @@ public class GravDataBeacon : Building
             return false;
         }
 
-        int cooldownTicksLeft = OAInteractHandler.Instance.GetCooldownTicksLeft("GravDataBeacon");
+        int cooldownTicksLeft = OAInteractHandler.Instance.CooldownManager.GetCooldownTicksLeft("GravDataBeacon");
         if (cooldownTicksLeft > 0)
         {
             return resultOnly ? false : "WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod());

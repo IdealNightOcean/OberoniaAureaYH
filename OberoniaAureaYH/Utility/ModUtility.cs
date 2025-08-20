@@ -2,6 +2,7 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Verse;
 
 namespace OberoniaAurea;
@@ -12,6 +13,7 @@ public static class ModUtility
     private static Faction OAFactionCache;
     public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {
         return map?.GetComponent<MapComponent_OberoniaAurea>();
@@ -28,6 +30,12 @@ public static class ModUtility
             return allowTemp || !faction.temporary;
         }
         return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsOAFactionAlly()
+    {
+        return OAFaction?.PlayerRelationKind == FactionRelationKind.Ally;
     }
 
     public static void CallForAidFixedPoints(Map map, Faction faction, float points, PawnsArrivalModeDef raidArrivalMode = null) //呼叫固定点数支援，固定方式的工作支援
@@ -50,16 +58,6 @@ public static class ModUtility
                                          ?.LentColonistsListForReading
                                          ?.OfType<Pawn>()
                                          ?? [];
-    }
-
-    public static List<ResearchProjectDef> GetResearchableProjects(int targetCount, int maxPotentialCount)
-    {
-        return DefDatabase<ResearchProjectDef>.AllDefs.Where(p => !p.IsFinished && !p.IsHidden)?.Take(maxPotentialCount)?.TakeRandomDistinct(targetCount);
-    }
-
-    public static ResearchProjectDef GetSignalResearchableProject(int maxPotentialCount)
-    {
-        return DefDatabase<ResearchProjectDef>.AllDefs.Where(p => !p.IsFinished && !p.IsHidden)?.Take(maxPotentialCount)?.RandomElementWithFallback(null);
     }
 
     public static void Notify_GameStart()

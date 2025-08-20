@@ -22,6 +22,10 @@ public static class OARK_RimWorldDefOf
     public static WeatherDef SnowGentle;
 
     public static QuestScriptDef OpportunitySite_PeaceTalks;
+    [MayRequireOdyssey]
+    public static QuestScriptDef Opportunity_AncientStructureGarrison; //任务-远古军械库
+    [MayRequireOdyssey]
+    public static QuestScriptDef OpportunitySite_AlphaThrumbo_Giver; //任务-阿尔法敲击兽
 
     public static TraitDef NaturalMood;
 

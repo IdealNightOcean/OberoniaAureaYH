@@ -142,7 +142,7 @@ public struct ScienceShipRecord : IExposable
     public static string GenerateShipName()
     {
         GrammarRequest grammarRequest = new();
-        grammarRequest.Includes.Add(OARK_ModDefOf.OARK_PackScienceShipName);
+        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_RulePack_ScienceShipName);
         string shipName = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("shipName_root", grammarRequest));
         shipName += Rand.RangeInclusive(1, 99);
 

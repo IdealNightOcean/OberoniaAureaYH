@@ -21,6 +21,8 @@ public static class OARK_IncidentDefOf
     public static IncidentDef OARK_ScienceShip_OASupport; //冲突地带 - OA支援武装
     [MayRequireOdyssey]
     public static IncidentDef OARK_ScienceShip_TravelRKReward; //科研舱后续 - 旅鼠感激
+    [MayRequireOdyssey]
+    public static IncidentDef OARK_EconomyMinistryReview_Outcome; //统筹部审查结果
 
     static OARK_IncidentDefOf()
     {

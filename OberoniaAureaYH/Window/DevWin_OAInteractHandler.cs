@@ -16,6 +16,7 @@ public class DevWin_OAInteractHandler : Window
     public DevWin_OAInteractHandler()
     {
         doCloseX = true;
+        draggable = true;
         interactHandler = OAInteractHandler.Instance;
         curAssistPointsCap = interactHandler.CurAssistPointsCap;
         allianceDuration = interactHandler.AllianceDuration();
@@ -35,16 +36,16 @@ public class DevWin_OAInteractHandler : Window
         listing_Rect.Label($"CurAllianceInitTick: {interactHandler.CurAllianceInitTick}");
         listing_Rect.Label($"CurAllianceDuration: {allianceDuration:F2}");
         listing_Rect.Label($"OldAllianceDuration: {interactHandler.OldAllianceDuration:F2}");
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
         listing_Rect.Label($"AssistPoints: {interactHandler.AssistPoints}");
         listing_Rect.Label($"CurAssistPointsCap: {curAssistPointsCap}");
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
         listing_Rect.Label("BaseAssistPointCap: 40");
         listing_Rect.Label("MaxAssistPointCap: 300");
-        listing_Rect.Gap(3f);
+        listing_Rect.Gap(6f);
         if (listing_Rect.ButtonText("Interaction CD Records", null, 0.6f))
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(interactHandler.GetInteractionCDRecordsDetailStr()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(interactHandler.CooldownManager.GetCDRecordsDetailInfo()));
         }
 
         if (Event.current.type == EventType.Layout)

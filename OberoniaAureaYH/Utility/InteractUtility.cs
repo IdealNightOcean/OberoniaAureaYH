@@ -63,7 +63,7 @@ public static class InteractUtility
         }
 
         Find.LetterStack.ReceiveLetter(upgradeLetter);
-        OAInteractHandler.Instance.RegisterCDRecord("GravTechStageUpgrade", cdTicks: 0);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravTechStageUpgrade", cdTicks: 0, shouldRemoveWhenExpired: false); //由于记录提升时间，非冷却
 
         static void GiveSpecialTechPrint(string defName, Letter letter)
         {

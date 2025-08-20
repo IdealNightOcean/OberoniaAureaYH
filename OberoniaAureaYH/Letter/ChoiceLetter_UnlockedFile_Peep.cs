@@ -5,7 +5,7 @@ using static OberoniaAurea.UnlockedFileUtility;
 
 namespace OberoniaAurea;
 
-public class ChoiceLetter_UnlockedFile_Peep : ChoiceLetter
+internal class ChoiceLetter_UnlockedFile_Peep : ChoiceLetter
 {
     private DocumentType fileType;
     private Pawn pawn;

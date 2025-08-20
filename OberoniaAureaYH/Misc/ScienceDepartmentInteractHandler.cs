@@ -1,6 +1,5 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
-using RimWorld.QuestGen;
 using UnityEngine;
 using Verse;
 
@@ -21,10 +20,6 @@ public class ScienceDepartmentInteractHandler : IExposable
     private bool isInitGravQuestCompleted;
     private Pawn gravResearchAssistLendPawn;
 
-    public ScienceShipRecord? ScienceShipRecord;
-    public string ToDayDutyText = string.Empty;
-    public int NextShiftWorkDay = -1;
-
     public int CurGravTechStage => curGravTechStageIndex + 1;
     public int GravTechPoints => gravTechPoints;
     public int PlayerTechPoints => playerTechPoints;
@@ -32,7 +27,25 @@ public class ScienceDepartmentInteractHandler : IExposable
     public bool IsInitGravQuestCompleted => isInitGravQuestCompleted;
     public Pawn GravResearchAssistLendPawn => gravResearchAssistLendPawn;
 
-    public ScienceDepartmentInteractHandler() => Instance = this;
+    private int nextEMReviewPointBoundary = 20000;
+    private float emReviewChance = 0.25f;
+    private int gravTechPointEMBlockDays;
+    private EconomyMinistryReviewOutcome lastEconomyReviewOutcome = EconomyMinistryReviewOutcome.Unknown;
+    private int lastEconomyReviewTick;
+
+    public int GravTechPointEMBlockDays => gravTechPointEMBlockDays;
+    internal EconomyMinistryReviewOutcome LastEconomyReviewOutcome => lastEconomyReviewOutcome;
+    public int LastEconomyReviewTick => lastEconomyReviewTick;
+
+    public ScienceShipRecord? ScienceShipRecord;
+    public string TodayDutyText = string.Empty;
+    public int NextShiftWorkDay = -1;
+
+    public ScienceDepartmentInteractHandler()
+    {
+        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        Instance = this;
+    }
     public static void ClearStaticCache() => Instance = null;
     public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_SDInteractHandler());
 
@@ -48,8 +61,14 @@ public class ScienceDepartmentInteractHandler : IExposable
         Scribe_Values.Look(ref playerTechPoints, "playerTechPoints", 0);
         Scribe_Values.Look(ref gravTechAssistPoints, "gravTechAssistPoints", 0);
         Scribe_Values.Look(ref isInitGravQuestCompleted, "isInitGravQuestCompleted", defaultValue: false);
-        Scribe_Values.Look(ref ToDayDutyText, "ToDayDutyText", string.Empty);
+        Scribe_Values.Look(ref TodayDutyText, "TodayDutyText", string.Empty);
         Scribe_Values.Look(ref NextShiftWorkDay, "NextShiftWorkDay", -1);
+
+        Scribe_Values.Look(ref nextEMReviewPointBoundary, "nextEMReviewPointBoundary", 20000);
+        Scribe_Values.Look(ref emReviewChance, "emReviewChance", 0.25f);
+        Scribe_Values.Look(ref gravTechPointEMBlockDays, "gravTechPointEMBlockDays", 0);
+        Scribe_Values.Look(ref lastEconomyReviewOutcome, "lastEconomyReviewOutcome", EconomyMinistryReviewOutcome.Unknown);
+        Scribe_Values.Look(ref lastEconomyReviewTick, "lastEconomyReviewTick", -1);
 
         Scribe_References.Look(ref gravResearchAssistLendPawn, "gravResearchAssistLendPawn");
 
@@ -58,7 +77,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public void TickDay()
     {
-        AddGravTechPoints(Rand.RangeInclusive(50, 150), byPlayer: false, showMessage: false);
+        DailyGravTechPointsChange();
         if (!isInitGravQuestCompleted)
         {
             TryTriggerGravInitQuest();
@@ -102,6 +121,12 @@ public class ScienceDepartmentInteractHandler : IExposable
                 InteractUtility.SendGravTechStageUpgradeLetter(CurGravTechStage);
             }
         }
+
+        if (gravTechPoints > nextEMReviewPointBoundary)
+        {
+            nextEMReviewPointBoundary += 10000;
+            TryTriggerEMReview();
+        }
     }
 
     public void AdjustGravTechAssistPoint(int change, bool showMessage = true)
@@ -131,7 +156,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     public void Notify_InitGravQuestCompleted()
     {
         isInitGravQuestCompleted = true;
-        OAInteractHandler.Instance.DeregisterCDRecord("GravInitQuestTrigger");
+        OAInteractHandler.Instance.CooldownManager.DeregisterRecord("GravInitQuestTrigger");
 
         AddGravTechPoints(100, byPlayer: true);
         AdjustGravTechAssistPoint(100);
@@ -145,8 +170,66 @@ public class ScienceDepartmentInteractHandler : IExposable
             return;
         }
 
-        OAInteractHandler.Instance.DeregisterCDRecord("QuestGravlitePanel");
+        OAInteractHandler.Instance.CooldownManager.DeregisterRecord("QuestGravlitePanel");
         gravResearchAssistLendPawn = active ? pawn : null;
+    }
+
+    internal void SetEconomyReviewOutcome(EconomyMinistryReviewOutcome outcome)
+    {
+        lastEconomyReviewOutcome = outcome;
+        lastEconomyReviewTick = Find.TickManager.TicksGame;
+    }
+
+    public void StartEMReviewBlock()
+    {
+        gravTechPointEMBlockDays = 15;
+    }
+
+    private void DailyGravTechPointsChange()
+    {
+        if (gravTechPointEMBlockDays > 0)
+        {
+            gravTechPointEMBlockDays--;
+            if (gravTechPointEMBlockDays == 0)
+            {
+                AddGravTechPoints(1200, byPlayer: false, showMessage: false);
+                Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_EMBlockEnd".Translate(),
+                                               text: "OARK_LetterLabel_EMBlockEnd".Translate(),
+                                               textLetterDef: LetterDefOf.NegativeEvent,
+                                               lookTargets: null,
+                                               relatedFaction: ModUtility.OAFaction);
+            }
+        }
+        else
+        {
+            AddGravTechPoints(Rand.RangeInclusive(50, 150), byPlayer: false, showMessage: false);
+        }
+    }
+
+    private void TryTriggerEMReview()
+    {
+        if (!IsInitGravQuestCompleted || !ModUtility.IsOAFactionAlly() || OAInteractHandler.Instance.CooldownManager.IsInCooldown("EconomyMinistryReview"))
+        {
+            emReviewChance += 0.25f;
+            return;
+        }
+
+        if (Rand.Chance(emReviewChance))
+        {
+            emReviewChance = 0.25f;
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, shouldRemoveWhenExpired: false);
+            ChoiceLetter_EMReview letter = (ChoiceLetter_EMReview)LetterMaker.MakeLetter(label: "OARK_LetterLabel_EMReview".Translate(),
+                                                                                         text: "OARK_Letter_EMReview".Translate(),
+                                                                                         def: OARK_LetterDefOf.OARK_EMReviewLetter,
+                                                                                         relatedFaction: ModUtility.OAFaction);
+            int delayTicks = Rand.RangeInclusive(1 * 60000, 3 * 60000);
+            letter.StartTimeout(delayTicks + 30000);
+            Find.LetterStack.ReceiveLetter(letter, delayTicks: delayTicks);
+        }
+        else
+        {
+            emReviewChance += 0.25f;
+        }
     }
 
     private void TryTriggerGravInitQuest()
@@ -156,16 +239,9 @@ public class ScienceDepartmentInteractHandler : IExposable
             return;
         }
 
-        OAInteractHandler.Instance.RegisterCDRecord("GravInitQuestTrigger", cdTicks: 3 * 60000);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, shouldRemoveWhenExpired: true);
 
-        if (OARK_QuestScriptDefOf.OARK_InitGravQuest.CanRun(new Slate(), Find.World))
-        {
-            Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(OARK_QuestScriptDefOf.OARK_InitGravQuest, 1000f);
-            if (quest is not null && !quest.hidden && OARK_QuestScriptDefOf.OARK_InitGravQuest.sendAvailableLetter)
-            {
-                QuestUtility.SendLetterQuestAvailable(quest);
-            }
-        }
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, 1000f);
 
         static bool CanTriggerGravInitQuest()
         {
@@ -173,7 +249,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             {
                 return false;
             }
-            if (OAInteractHandler.Instance.IsInCooldown("GravInitQuestTrigger"))
+            if (OAInteractHandler.Instance.CooldownManager.IsInCooldown("GravInitQuestTrigger"))
             {
                 return false;
             }
@@ -198,11 +274,11 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
-            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, shouldRemoveWhenExpired: false);
         }
         else
         {
-            OAInteractHandler.Instance.RegisterCDRecord("SDAnnualInteraction", cdTicks: 2 * 60000);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: 2 * 60000, shouldRemoveWhenExpired: false);
         }
 
         static bool CanTriggerGravInitQuest()
@@ -211,7 +287,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             {
                 return false;
             }
-            if (OAInteractHandler.Instance.IsInCooldown("SDAnnualInteraction"))
+            if (OAInteractHandler.Instance.CooldownManager.IsInCooldown("SDAnnualInteraction"))
             {
                 return false;
             }

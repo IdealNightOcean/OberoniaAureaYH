@@ -13,9 +13,14 @@ public class CompProperties_Hackable : CompProperties
     public float maxHackPoint = 600;
     public int intellectualSkillPrerequisite = 0;
     public bool destoryOnHackComplete = false;
+
+    public CompProperties_Hackable()
+    {
+        compClass = typeof(CompHackable);
+    }
 }
 
-public abstract class CompHackable : ThingComp
+public class CompHackable : ThingComp
 {
     public CompProperties_Hackable Props => (CompProperties_Hackable)props;
 
@@ -58,10 +63,10 @@ public abstract class CompHackable : ThingComp
         isHacked = true;
         isHackable = false;
 
-        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", parent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", parent.Named("SUBJECT"), hackPawn.Named("HACKER"));
         if (SendMapParentQuestTagSignal)
         {
-            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named("SUBJECT"), hackPawn.Named("HACKER"));
         }
         if (Props.destoryOnHackComplete)
         {
@@ -192,6 +197,5 @@ public abstract class CompHackable : ThingComp
         Scribe_Values.Look(ref isHacked, "isHacked", defaultValue: false);
         Scribe_Values.Look(ref isHackable, "isHackable", defaultValue: true);
         Scribe_Values.Look(ref hackPoint, "hackPoint", 0f);
-
     }
 }

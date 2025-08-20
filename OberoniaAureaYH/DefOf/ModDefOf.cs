@@ -34,15 +34,6 @@ public static class OARK_ModDefOf
     [MayRequireIdeology]
     public static MemeDef OA_RK_meme_Friendly; //和谐团体
 
-    [MayRequireOdyssey]
-    public static RulePackDef OARK_PackScienceShipName;
-    [MayRequireOdyssey]
-    public static RulePackDef OARK_PackScienceShipQuiz;
-    [MayRequireOdyssey]
-    public static RulePackDef OARK_RulePackSalutationText;
-    [MayRequireOdyssey]
-    public static RulePackDef OARK_RulePackProgressText;
-
     public static StorytellerDef Begonia_Oberonia_Aurea;
 
     [MayRequireOdyssey]

@@ -27,6 +27,8 @@ public static class OARK_QuestScriptDefOf
     public static QuestScriptDef OARK_GravResearchAssistance; //回收科学船
     [MayRequireOdyssey]
     public static QuestScriptDef OARK_GravResearchExchange; //友好事件：研究交流
+    [MayRequireOdyssey]
+    public static QuestScriptDef OARK_EconomyMinistryReview; //统筹部的审查
 
 
 

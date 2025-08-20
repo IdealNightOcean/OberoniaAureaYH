@@ -12,10 +12,12 @@ public class FixedCaravan_ScienceShipLaunch : FixedCaravan
         {
             yield return gizmo;
         }
-        Command_Action command_Quiz = (associatedWorldObject as ScienceShipLaunchSite).QuizCommand();
-        if (command_Quiz is not null)
+        if (associatedWorldObject is ScienceShipLaunchSite launchSite)
         {
-            yield return command_Quiz;
+            foreach (Gizmo interactGizmo in launchSite.InteractGizmos())
+            {
+                yield return interactGizmo;
+            }
         }
     }
 }
