@@ -13,5 +13,3 @@ public class OA_DropPodIncoming : DropPodIncoming
         base.Impact();
     }
 }
-
-

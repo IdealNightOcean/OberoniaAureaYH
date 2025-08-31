@@ -35,15 +35,15 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         Map map = (Map)parms.target;
         Faction faction = parms.faction;
         int count = map.mapPawns.FreeColonistsSpawnedCount * 100;
-        IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
+
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
         List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(rawBerriesDef, count);
-        DropPodUtility.DropThingGroupsNear(intVec, map, [dropThings], 110, leaveSlag: true, forbid: false, allowFogged: false, faction: faction);
+        IntVec3 dropCell = OARK_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
         SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
                            baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count),
                            baseLetterDef: LetterDefOf.PositiveEvent,
                            parms: parms,
-                           lookTargets: new TargetInfo(intVec, map));
+                           lookTargets: new TargetInfo(dropCell, map));
         return true;
     }
 }

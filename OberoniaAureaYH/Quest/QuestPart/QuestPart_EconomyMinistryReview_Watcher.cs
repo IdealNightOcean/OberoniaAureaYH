@@ -153,14 +153,6 @@ public class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
 
     private void Settle()
     {
-        if (referendary is not null)
-        {
-            if (referendary.DeadOrDowned || referendary.Destroyed || referendary.IsPrisoner || referendary.IsMutant)
-            {
-
-            }
-        }
-
         if (playerDecodeCount >= 5)
         {
             TriggerOutcomeIncident(outcome: EconomyMinistryReviewOutcome.ScienceDepartment,
@@ -216,7 +208,7 @@ public class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
     private DiaNode AccountInquiryReplyNode(FactionDialogCache dialogCache)
     {
         GrammarRequest grammarRequest = new();
-        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_RulePack_SalutationText);
+        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_RulePack_AccountInquiryText);
 
         TaggedString text = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
 

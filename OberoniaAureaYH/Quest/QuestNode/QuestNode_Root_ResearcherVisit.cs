@@ -11,11 +11,12 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
     {
         questParameter = new QuestParameter()
         {
-            allowAssaultColony = true,
             allowBadThought = false,
             allowLeave = false,
+
             LodgerCount = Rand.RangeInclusive(2, 3),
             ChildCount = 0,
+
             questDurationTicks = 240000,
             arrivalDelayTicks = 120000,
             goodwillFailure = 0,

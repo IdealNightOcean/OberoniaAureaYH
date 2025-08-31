@@ -85,15 +85,6 @@ public class CompHackable : ThingComp
         }
     }
 
-    public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
-    {
-        if (!isHacked && !isHackForceEnded)
-        {
-            ForceEndHack();
-        }
-        base.PostDeSpawn(map, mode);
-    }
-
     public override void PostDestroy(DestroyMode mode, Map previousMap)
     {
         if (!isHacked && !isHackForceEnded)
@@ -143,7 +134,7 @@ public class CompHackable : ThingComp
     {
         if (!isHackable)
         {
-            return false;
+            return "OARK_NotHackableNow".Translate();
         }
         if (!HackUtility.IsCapableOfHacking(pawn))
         {

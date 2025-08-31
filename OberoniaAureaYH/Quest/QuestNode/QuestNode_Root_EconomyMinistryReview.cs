@@ -22,7 +22,8 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
         {
             allowAssaultColony = false,
             allowBadThought = false,
-            allowLeave = true,
+            allowJoinOffer = false,
+            allowFutureReward = false,
 
             LodgerCount = 1,
             ChildCount = 0,
@@ -30,7 +31,7 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
             questDurationTicks = 10 * 60000,
             arrivalDelayTicks = 2500,
 
-            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Noble_B
+            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B
         };
 
         outSignalSettled = QuestGenUtility.HardcodedSignalWithQuestID("Review_Settlde");

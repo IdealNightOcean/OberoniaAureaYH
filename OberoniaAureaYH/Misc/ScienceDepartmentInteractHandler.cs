@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.QuestGen;
 using UnityEngine;
 using Verse;
 
@@ -241,11 +242,11 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, shouldRemoveWhenExpired: true);
 
-        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, 1000f);
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, new Slate(), forced: false);
 
         static bool CanTriggerGravInitQuest()
         {
-            if (ModUtility.OAFaction is null || ModUtility.OAFaction.PlayerRelationKind != FactionRelationKind.Ally)
+            if (!ModUtility.IsOAFactionAlly())
             {
                 return false;
             }
