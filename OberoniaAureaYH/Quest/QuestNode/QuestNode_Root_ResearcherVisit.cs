@@ -11,7 +11,6 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
     {
         questParameter = new QuestParameter()
         {
-            allowAssaultColony = true,
             allowBadThought = false,
             allowLeave = false,
             LodgerCount = Rand.RangeInclusive(2, 3),

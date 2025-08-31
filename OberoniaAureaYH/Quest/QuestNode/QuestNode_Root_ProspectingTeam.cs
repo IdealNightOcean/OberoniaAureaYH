@@ -28,8 +28,9 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         questParameter = new QuestParameter()
         {
             allowAssaultColony = false,
-            allowLeave = true,
             allowBadThought = false,
+            allowJoinOffer = false,
+
             LodgerCount = 4,
             ChildCount = 0,
 
