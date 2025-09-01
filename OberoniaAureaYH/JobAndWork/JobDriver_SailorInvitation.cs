@@ -52,6 +52,6 @@ public class JobDriver_SailorInvitation : JobDriver
                                        textLetterDef: LetterDefOf.PositiveEvent,
                                        lookTargets: invitee);
 
-        OAFrame_PawnUtility.RemoveFirstHediffOfDef(invitee, OARK_HediffDefOf.OARK_Hediff_SailorAssistance);
+        invitee.RemoveFirstHediffOfDef(OARK_HediffDefOf.OARK_Hediff_SailorAssistance);
     }
 }

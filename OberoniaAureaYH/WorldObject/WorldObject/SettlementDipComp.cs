@@ -137,7 +137,7 @@ public class SettlementDipComp : WorldObjectComp
 
     protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
     {
-        if (!OAFrame_CaravanUtility.IsExactTypeCaravan(caravan))
+        if (!caravan.IsExactTypeCaravan())
         {
             return;
         }

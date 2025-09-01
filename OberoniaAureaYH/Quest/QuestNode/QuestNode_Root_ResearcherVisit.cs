@@ -3,6 +3,7 @@ using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 {
     private static readonly IntRange IntellectualSkill = new(8, 18);

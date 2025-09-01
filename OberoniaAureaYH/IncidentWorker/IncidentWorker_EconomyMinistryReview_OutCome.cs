@@ -21,7 +21,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         {
             return false;
         }
-
+        parms.faction ??= ModUtility.OAFaction;
         OutcomeNodeTree(parms);
         return true;
     }
@@ -44,7 +44,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         };
         rootNode.options.Add(rootOpt);
 
-        Dialog_NodeTree nodeTree = new(rootNode)
+        Dialog_NodeTreeWithFactionInfo nodeTree = new(rootNode, parms.faction)
         {
             draggable = true
         };

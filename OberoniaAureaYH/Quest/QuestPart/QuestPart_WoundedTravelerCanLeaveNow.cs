@@ -99,4 +99,3 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         }
     }
 }
-

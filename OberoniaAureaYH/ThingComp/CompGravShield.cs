@@ -20,7 +20,7 @@ public class CompGravShield : CompEquipmentShield
     protected override void Break()
     {
         base.Break();
-        OAFrame_PawnUtility.RemoveFirstHediffOfDef(pawnOwner, Props.hediffOnActive);
+        pawnOwner.RemoveFirstHediffOfDef(Props.hediffOnActive);
     }
 
     protected override void Reset()
@@ -38,6 +38,6 @@ public class CompGravShield : CompEquipmentShield
     public override void Notify_Unequipped(Pawn pawn)
     {
         base.Notify_Unequipped(pawn);
-        OAFrame_PawnUtility.RemoveFirstHediffOfDef(pawn, Props.hediffOnActive);
+        pawn.RemoveFirstHediffOfDef(Props.hediffOnActive);
     }
 }

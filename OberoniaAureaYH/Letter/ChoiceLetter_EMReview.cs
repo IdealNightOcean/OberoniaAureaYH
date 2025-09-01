@@ -45,11 +45,11 @@ internal class ChoiceLetter_EMReview : ChoiceLetter
         Slate slate = new();
         if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_EconomyMinistryReview, new Slate()))
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_EMReviewAcceptInfo".Translate()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptInfo".Translate(), ModUtility.OAFaction));
         }
         else
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_EMReviewAcceptFailInfo".Translate()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptFailInfo".Translate(), ModUtility.OAFaction));
         }
     }
 

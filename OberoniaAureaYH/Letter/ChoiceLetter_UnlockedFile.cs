@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,14 +85,18 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
                 DocumentType.EncryptedFile => "OARK_UnlockedFile_EncryptedFileRefuse".Translate(pawn),
                 _ => "OARK_UnlockedFile_NormalRefuse".Translate(pawn),
             };
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(diaText));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(diaText, ModUtility.OAFaction));
         }
         else
         {
             Find.LetterStack.RemoveLetter(this);
-            Find.WindowStack.Add(OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_UnlockedFile_QuizAllow".Translate(),
-                                                                       acceptText: "OARK_Check".Translate(),
-                                                                       acceptAction: delegate { DocumentResult(fileType, pawn, isDelay: false); }));
+
+            Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+                text: "OARK_UnlockedFile_QuizAllow".Translate(),
+                faction: ModUtility.OAFaction,
+                acceptText: "OARK_Check".Translate(),
+                acceptAction: delegate { DocumentResult(fileType, pawn, isDelay: false); });
+            Find.WindowStack.Add(nodeTree);
         }
     }
     private static DocumentType GetRandomDocumentType()

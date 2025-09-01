@@ -15,11 +15,14 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
 
     public override bool StartWork(Caravan caravan)
     {
-        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarText".Translate(),
-                                                                         "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
-                                                                         delegate { base.StartWork(caravan); },
-                                                                         "OA_ResearchSummit_EccentricScholarIngore".Translate(),
-                                                                         Destroy);
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+            text: "OA_ResearchSummit_EccentricScholarText".Translate(),
+            faction: Faction,
+            acceptText: "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
+            acceptAction: delegate { base.StartWork(caravan); },
+            rejectText: "OA_ResearchSummit_EccentricScholarIngore".Translate(),
+            rejectAction: Destroy);
+
         Find.WindowStack.Add(nodeTree);
         return true;
     }
@@ -39,7 +42,9 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
 
         string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
         string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
-        Dialog_NodeTree nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000));
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
+            text: "OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000),
+            faction: Faction);
         Find.WindowStack.Add(nodeTree);
         Destroy();
     }

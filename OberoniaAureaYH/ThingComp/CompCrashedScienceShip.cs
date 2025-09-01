@@ -705,16 +705,16 @@ public class CompCrashedScienceShip : CompHackable
         float chance = Rand.Value;
         if (chance < 0.4f)
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_QuizSuccess".Translate()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizSuccess".Translate(), ModUtility.OAFaction));
             RemoveTrouble(ScienceShipRecord.TroubleType.InformationBase);
         }
         else if (chance < 0.9f)
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_QuizFail".Translate()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizFail".Translate(), ModUtility.OAFaction));
         }
         else
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_QuizEndlessWaiting".Translate()));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizEndlessWaiting".Translate(), ModUtility.OAFaction));
         }
     }
 
@@ -741,7 +741,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         dataUploaded = true;
         QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DataUploaded", parent.Named("SUBJECT"));
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_DataUploaded".Translate()));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_DataUploaded".Translate(), ModUtility.OAFaction));
         if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TravelRK)
         {
             IncidentParms parms = new()

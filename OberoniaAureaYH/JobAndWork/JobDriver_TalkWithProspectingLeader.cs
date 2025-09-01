@@ -14,7 +14,7 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         Find.WindowStack.Add(TalkTree(talker, talkWith));
     }
 
-    private static Dialog_NodeTree TalkTree(Pawn pawn, Pawn talkWith)
+    private static Dialog_NodeTreeWithFactionInfo TalkTree(Pawn pawn, Pawn talkWith)
     {
         DiaNode rootNode = new("OARK_TalkWithProspectingLeader".Translate(pawn, talkWith));
         DiaOption acceptOpt = new("OARK_ProspectingLeader_Serve".Translate())
@@ -31,7 +31,7 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         rootNode.options.Add(acceptOpt);
         rootNode.options.Add(rejectOpt);
 
-        return new Dialog_NodeTree(rootNode);
+        return new Dialog_NodeTreeWithFactionInfo(rootNode, talkWith.Faction);
     }
 
     private static void AcceptResult(Pawn leader)
@@ -45,9 +45,9 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         else
         {
             pawns.AddRange(lord.ownedPawns);
-            if (lord.LordJob is LordJob_VisitColonyTalkable talkJob)
+            if (lord.LordJob is ILordJobWithTalk talkILordJob)
             {
-                talkJob.SetTalkAvailable(false);
+                talkILordJob.DisableTalk();
             }
             lord.RemoveAllPawns();
         }

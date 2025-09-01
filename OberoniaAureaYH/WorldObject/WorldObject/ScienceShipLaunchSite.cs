@@ -113,7 +113,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
 
         LaunchShip();
 
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(GetShipLaunchText(maxSkillPawn, maxLevel)));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(GetShipLaunchText(maxSkillPawn, maxLevel), ModUtility.OAFaction));
 
         Destroy();
     }
@@ -121,7 +121,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
     protected override void InterruptWork()
     {
         LaunchShip();
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShipLaunch_Interrupt".Translate()));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShipLaunch_Interrupt".Translate(), ModUtility.OAFaction));
         Destroy();
     }
 
@@ -249,25 +249,27 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             {
                 sendLetter = false;
                 quizDialogOpen = true;
-                Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_ScienceShipLaunch_Quiz6Special".Translate(),
-                                                                                 acceptText: "OARK_ScienceShipLaunch_FlowCake".Translate(),
-                                                                                 acceptAction: delegate
-                                                                                 {
-                                                                                     quizDialogOpen = false;
-                                                                                     if (associatedFixedCaravan is not null)
-                                                                                     {
-                                                                                         List<Thing> flowCakes = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
-                                                                                         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
-                                                                                         Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShipLaunch_Quiz6GainLabel".Translate(5),
-                                                                                                                        text: "OARK_ScienceShipLaunch_Quiz6Gain".Translate(),
-                                                                                                                        textLetterDef: LetterDefOf.PositiveEvent,
-                                                                                                                        lookTargets: associatedFixedCaravan,
-                                                                                                                        relatedFaction: Faction,
-                                                                                                                        quest: quest);
-                                                                                     }
-                                                                                 },
-                                                                                 rejectText: "Close".Translate(),
-                                                                                 rejectAction: delegate { quizDialogOpen = false; });
+                Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+                    text: "OARK_ScienceShipLaunch_Quiz6Special".Translate(),
+                    faction: Faction,
+                    acceptText: "OARK_ScienceShipLaunch_FlowCake".Translate(),
+                    acceptAction: delegate
+                    {
+                        quizDialogOpen = false;
+                        if (associatedFixedCaravan is not null)
+                        {
+                            List<Thing> flowCakes = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
+                            OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
+                            Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShipLaunch_Quiz6GainLabel".Translate(5),
+                                                           text: "OARK_ScienceShipLaunch_Quiz6Gain".Translate(),
+                                                           textLetterDef: LetterDefOf.PositiveEvent,
+                                                           lookTargets: associatedFixedCaravan,
+                                                           relatedFaction: Faction,
+                                                           quest: quest);
+                        }
+                    },
+                    rejectText: "Close".Translate(),
+                    rejectAction: delegate { quizDialogOpen = false; });
                 Find.WindowStack.Add(nodeTree);
             }
             else
@@ -316,7 +318,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             return;
         }
 
-        StringBuilder sb = new("OARK_ScienceShipLaunch_Inquiry".Translate());
+        StringBuilder sb = new("OARK_ScienceShipLaunch_InquiryInfo".Translate());
         sb.AppendLine();
         foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
         {
@@ -373,12 +375,12 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
         sb.AppendLine("OARK_ScienceShipLaunch_PryRewardChance_Settlement".Translate(nearSettleCount, (nearSettleCount * 0.025f).ToStringPercent()));
         sb.AppendLine("OARK_ScienceShipLaunch_PryRewardChance_Skill".Translate(maxSocialSkill, (maxSocialSkill * 0.01f).ToStringPercent()));
 
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(text: sb.ToString(),
-                                                                          acceptAction:
-                                                                          delegate
-                                                                          {
-                                                                              PryResult(questScriptDef, chance);
-                                                                          }));
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
+            text: sb.ToString(),
+            faction: Faction,
+            acceptAction: delegate { PryResult(questScriptDef, chance); });
+
+        Find.WindowStack.Add(nodeTree);
     }
     private void PryResult(QuestScriptDef questScriptDef, float chance)
     {

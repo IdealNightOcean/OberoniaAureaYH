@@ -147,7 +147,7 @@ public class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
         Thing accountingRecord = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDAccountingRecord);
         accountingRecord.TryGetComp<CompSDAccountingRecord>()?.SetReferendary(referendary);
         QuestUtility.AddQuestTag(accountingRecord, recordTag);
-        OARK_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, referendary?.Faction);
+        OARK_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, ModUtility.OAFaction);
         dropCount++;
     }
 
@@ -211,6 +211,8 @@ public class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
         grammarRequest.Includes.Add(OARK_RulePackDef.OARK_RulePack_AccountInquiryText);
 
         TaggedString text = GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
+        text += "\n";
+        text += "OARK_AccountInquiryCount".Translate(accountInquiryCount + 1);
 
         DiaNode diaNode = new(text);
 

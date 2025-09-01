@@ -31,6 +31,8 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
             questDurationTicks = 10 * 60000,
             arrivalDelayTicks = 2500,
 
+            goodwillFailure = -50,
+
             fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B
         };
 
@@ -50,6 +52,12 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
     protected override void PostPawnGenerated(Pawn pawn)
     {
         pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_Referendary);
+    }
+
+    protected override void PawnArrival(string lodgerArrivalSignal)
+    {
+        QuestGen.quest.Letter(LetterDefOf.NeutralEvent, text: "OARK_Letter_EconomyMinistryReviewRemind".Translate(), label: "OARK_LetterLabel_EconomyMinistryReviewRemind".Translate());
+        base.PawnArrival(lodgerArrivalSignal);
     }
 
     protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)

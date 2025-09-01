@@ -94,23 +94,25 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
         if (TotalGTP > 1500)
         {
             ThingDef techCore = DefDatabase<ThingDef>.GetNamedSilentFail("TechprofSubpersonaCore");
-            Dialog_NodeTree nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTree(text: "OARK_GravTechAssist_RewardChoice".Translate(),
-                                                                             acceptText: techCore.LabelCap,
-                                                                             acceptAction: delegate
-                                                                             {
-                                                                                 OARK_DropPodUtility.DefaultDropSingleThingOfDef(techCore, map, ModUtility.OAFaction);
-                                                                             },
-                                                                             rejectText: OARK_RimWorldDefOf.VanometricPowerCell.LabelCap,
-                                                                             rejectAction: delegate
-                                                                             {
-                                                                                 Thing building = ThingMaker.MakeThing(OARK_RimWorldDefOf.VanometricPowerCell);
-                                                                                 Thing item = MinifyUtility.TryMakeMinified(building);
-                                                                                 OARK_DropPodUtility.DefaultDropSingleThing(item, map, ModUtility.OAFaction);
-                                                                             });
-
+            Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+                text: "OARK_GravTechAssist_RewardChoice".Translate(),
+                faction: ModUtility.OAFaction,
+                acceptText: techCore.LabelCap,
+                acceptAction: delegate
+                {
+                    OARK_DropPodUtility.DefaultDropSingleThingOfDef(techCore, map, ModUtility.OAFaction);
+                },
+                rejectText: OARK_RimWorldDefOf.VanometricPowerCell.LabelCap,
+                rejectAction: delegate
+                {
+                    Thing building = ThingMaker.MakeThing(OARK_RimWorldDefOf.VanometricPowerCell);
+                    Thing item = MinifyUtility.TryMakeMinified(building);
+                    OARK_DropPodUtility.DefaultDropSingleThing(item, map, ModUtility.OAFaction);
+                });
             Find.WindowStack.Add(nodeTree);
         }
     }
+
 
     public override void ExposeData()
     {

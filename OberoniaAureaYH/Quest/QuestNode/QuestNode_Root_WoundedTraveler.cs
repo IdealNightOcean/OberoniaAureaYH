@@ -8,6 +8,7 @@ using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 {
     private static readonly IntRange InjuryCount = new(2, 3);
@@ -150,5 +151,4 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
                where !pawn.health.hediffSet.hediffs.Any(y => y.Part == x && y.CurStage is not null && y.CurStage.partEfficiencyOffset < 0f)
                select x;
     }
-
 }
