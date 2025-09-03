@@ -51,7 +51,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
     protected override void PawnArrival(string lodgerArrivalSignal)
     {
         QuestGen.quest.JoinPlayer(questParameter.map.Parent, questParameter.pawns, joinPlayer: true);
-        QuestGen.quest.SendSignals([lodgerArrivalSignal]);
+        QuestGen.quest.SendSignals(outSignals: [lodgerArrivalSignal]);
     }
 
     protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)

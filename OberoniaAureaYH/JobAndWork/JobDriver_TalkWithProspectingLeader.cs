@@ -45,9 +45,9 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         else
         {
             pawns.AddRange(lord.ownedPawns);
-            if (lord.LordJob is LordJob_VisitColonyTalkable talkJob)
+            if (lord.LordJob is ILordJobWithTalk talkLordJob)
             {
-                talkJob.SetTalkAvailable(false);
+                talkLordJob.DisableTalk();
             }
             lord.RemoveAllPawns();
         }

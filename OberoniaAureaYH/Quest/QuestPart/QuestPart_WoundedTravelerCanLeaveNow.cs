@@ -39,18 +39,17 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
 
     public override void QuestPartTick()
     {
-        base.QuestPartTick();
-
-        if (--ticksRemaining <= 0)
+        if (State == QuestPartState.Enabled && --ticksRemaining <= 0)
         {
             ticksRemaining = HealthCheckInterval;
             if (CanLeaveNow)
             {
-                Complete();
                 Find.SignalManager.SendSignal(new Signal(outSignal));
+                Complete();
             }
         }
     }
+
     public static bool HealthyPawn(Pawn pawn) //判断一个Pawn是否健康
     {
         if (pawn.Destroyed || pawn.InMentalState)
@@ -76,11 +75,16 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         }
         return true;
     }
+
     public override void Cleanup()
     {
         base.Cleanup();
+        outSignal = null;
+
         pawns = null;
+        map = null;
     }
+
     public override void ExposeData()
     {
         base.ExposeData();
@@ -95,4 +99,3 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         }
     }
 }
-

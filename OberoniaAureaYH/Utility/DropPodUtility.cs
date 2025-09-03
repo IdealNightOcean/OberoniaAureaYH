@@ -11,7 +11,7 @@ public static class OARK_DropPodUtility
     {
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(def, count);
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
-        DropPodUtility.DropThingsNear(dropCell, map, things, forbid: false, allowFogged: false, faction: faction);
+        DropPodUtility.DropThingsNear(dropCell, map, things, canRoofPunch: false, forbid: false, allowFogged: false, faction: faction);
         if (sendLetter)
         {
             SendDropLetter(things, map, dropCell, faction);
@@ -22,7 +22,7 @@ public static class OARK_DropPodUtility
     public static IntVec3 DefaultDropThing(IEnumerable<Thing> things, Map map, Faction faction = null, bool sendLetter = true)
     {
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
-        DropPodUtility.DropThingsNear(dropCell, map, things, forbid: false, allowFogged: false, faction: faction);
+        DropPodUtility.DropThingsNear(dropCell, map, things, canRoofPunch: false, forbid: false, allowFogged: false, faction: faction);
         if (sendLetter)
         {
             SendDropLetter(things, map, dropCell, faction);
@@ -33,7 +33,7 @@ public static class OARK_DropPodUtility
     public static IntVec3 DefaultDropThingGroups(List<List<Thing>> thingGroups, Map map, Faction faction = null)
     {
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
-        DropPodUtility.DropThingGroupsNear(dropCell, map, thingGroups, forbid: false, allowFogged: false, faction: faction);
+        DropPodUtility.DropThingGroupsNear(dropCell, map, thingGroups, canRoofPunch: false, forbid: false, allowFogged: false, faction: faction);
         return dropCell;
     }
 
@@ -41,7 +41,7 @@ public static class OARK_DropPodUtility
     {
         thing.stackCount = 1;
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
-        DropPodUtility.DropThingsNear(dropCell, map, [thing], forbid: false, allowFogged: false, faction: faction);
+        DropPodUtility.DropThingsNear(dropCell, map, [thing], canRoofPunch: false, forbid: false, allowFogged: false, faction: faction);
         if (sendLetter)
         {
             SendDropLetter([thing], map, dropCell, faction);
@@ -54,7 +54,7 @@ public static class OARK_DropPodUtility
         Thing thing = ThingMaker.MakeThing(def);
         thing.stackCount = 1;
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
-        DropPodUtility.DropThingsNear(dropCell, map, [thing], forbid: false, allowFogged: false, faction: faction);
+        DropPodUtility.DropThingsNear(dropCell, map, [thing], canRoofPunch: false, forbid: false, allowFogged: false, faction: faction);
         if (sendLetter)
         {
             SendDropLetter([thing], map, dropCell, faction);
