@@ -257,7 +257,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)
     {
-        if (OAFrame_MapUtility.ThreatsCountOfPlayerOnMap(map) > 0)
+        if (map.ThreatsCountOfPlayer() > 0)
         {
             ModUtility.CallForAidFixedPoints(map, faction, 4500);
         }

@@ -29,7 +29,7 @@ public class Gene_HotAdaptation : Gene
         float ambientTemperature = pawn.AmbientTemperature;
         if (ambientTemperature > 45f)
         {
-            OAFrame_PawnUtility.AdjustOrAddHediff(pawn, OARK_HediffDefOf.OA_RK_Hediff_HotAdaptation, -1, 500);
+            pawn.AdjustOrAddHediff(OARK_HediffDefOf.OA_RK_Hediff_HotAdaptation, -1, 500);
         }
     }
 }
