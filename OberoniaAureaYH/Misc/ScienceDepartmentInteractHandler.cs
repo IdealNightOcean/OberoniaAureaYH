@@ -29,7 +29,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     public Pawn GravResearchAssistLendPawn => gravResearchAssistLendPawn;
 
     private int nextEMReviewPointBoundary = 20000;
-    private float emReviewChance = 0.25f;
+    private float emReviewChance = 0f;
     private int gravTechPointEMBlockDays;
     private EconomyMinistryReviewOutcome lastEconomyReviewOutcome = EconomyMinistryReviewOutcome.Unknown;
     private int lastEconomyReviewTick;
@@ -66,7 +66,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         Scribe_Values.Look(ref NextShiftWorkDay, "NextShiftWorkDay", -1);
 
         Scribe_Values.Look(ref nextEMReviewPointBoundary, "nextEMReviewPointBoundary", 20000);
-        Scribe_Values.Look(ref emReviewChance, "emReviewChance", 0.25f);
+        Scribe_Values.Look(ref emReviewChance, "emReviewChance", 0f);
         Scribe_Values.Look(ref gravTechPointEMBlockDays, "gravTechPointEMBlockDays", 0);
         Scribe_Values.Look(ref lastEconomyReviewOutcome, "lastEconomyReviewOutcome", EconomyMinistryReviewOutcome.Unknown);
         Scribe_Values.Look(ref lastEconomyReviewTick, "lastEconomyReviewTick", -1);
@@ -217,7 +217,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (Rand.Chance(emReviewChance))
         {
-            emReviewChance = 0.25f;
+            emReviewChance = 0f;
             OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, shouldRemoveWhenExpired: false);
             ChoiceLetter_EMReview letter = (ChoiceLetter_EMReview)LetterMaker.MakeLetter(label: "OARK_LetterLabel_EMReview".Translate(),
                                                                                          text: "OARK_Letter_EMReview".Translate(),

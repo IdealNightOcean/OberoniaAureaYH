@@ -63,10 +63,10 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
         }
     }
 
-    protected override void WorkTick()
+    protected override void WorkTickInterval(int delta)
     {
-        allTicksRemaining--;
-        if (--ticksRemaining <= 0)
+        allTicksRemaining -= delta;
+        if ((ticksRemaining -= delta) <= 0)
         {
             if (associatedFixedCaravan is null)
             {

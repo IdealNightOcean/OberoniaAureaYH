@@ -8,6 +8,7 @@ namespace OberoniaAurea;
 public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
 {
     private string outSignalSettled;
+    public override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B;
     protected override bool TestRunInt(Slate slate)
     {
         return ScienceDepartmentInteractHandler.IsInteractAvailable()
@@ -31,13 +32,14 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
             questDurationTicks = 10 * 60000,
             arrivalDelayTicks = 2500,
 
-            goodwillFailure = -50,
-
-            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B
+            goodwillFailure = -50
         };
 
+        QuestGen.slate.Set(UniqueQuestDescSlate, true);
+        QuestGen.slate.Set(UniqueLeavingLetterSlate, true);
         outSignalSettled = QuestGenUtility.HardcodedSignalWithQuestID("Review_Settlde");
     }
+
     protected override void ClearQuestParameter()
     {
         base.ClearQuestParameter();
@@ -46,6 +48,7 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
 
     protected override Faction GetOrGenerateFaction()
     {
+        QuestGen.slate.Set(IsMainFactionSlate, true);
         return ModUtility.OAFaction;
     }
 
@@ -60,11 +63,17 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
         base.PawnArrival(lodgerArrivalSignal);
     }
 
-    protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string bigFailSignal, string successSignal)
+    protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)
+    {
+        QuestGen.quest.Leave(questParameter.pawns, inSignal: outSignalSettled, sendStandardLetter: false, leaveOnCleanup: false, inSignalRemovePawn, wakeUp: true);
+        base.SetPawnsLeaveComp(lodgerArrivalSignal, inSignalRemovePawn);
+    }
+
+    protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string delayFailSignal, string successSignal)
     {
         Quest quest = QuestGen.quest;
         string inSignalReviewDisable = QuestGenUtility.HardcodedSignalWithQuestID("Review_Disabled");
-        quest.SignalPassAny(inSignals: [failSignal, bigFailSignal], outSignal: inSignalReviewDisable);
+        quest.SignalPassAny(inSignals: [failSignal, delayFailSignal], outSignal: inSignalReviewDisable);
         QuestPart_EconomyMinistryReview_Watcher questPart_EconomyMinistryReview_Watcher = new()
         {
             recordTag = QuestGenUtility.HardcodedTargetQuestTagWithQuestID("record"),
@@ -82,13 +91,6 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
         };
         quest.AddPart(questPart_EconomyMinistryReview_Watcher);
 
-        base.SetQuestEndComp(questPart_Interactions, failSignal, bigFailSignal, successSignal);
+        base.SetQuestEndComp(questPart_Interactions, failSignal, delayFailSignal, successSignal);
     }
-
-    protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)
-    {
-        QuestGen.quest.Leave(questParameter.pawns, inSignal: outSignalSettled, sendStandardLetter: false, leaveOnCleanup: false, inSignalRemovePawn, wakeUp: true);
-        base.SetPawnsLeaveComp(lodgerArrivalSignal, inSignalRemovePawn);
-    }
-
 }

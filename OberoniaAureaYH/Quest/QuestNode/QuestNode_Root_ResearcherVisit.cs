@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
@@ -7,6 +8,8 @@ namespace OberoniaAurea;
 public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 {
     private static readonly IntRange IntellectualSkill = new(8, 18);
+
+    public override PawnKindDef FixedPawnKind => PawnKindDefOf.Empire_Common_Lodger;
 
     protected override void InitQuestParameter()
     {
@@ -21,10 +24,12 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
             questDurationTicks = 240000,
             arrivalDelayTicks = 120000,
             goodwillFailure = 0,
-            goodwillSuccess = 0,
-
-            fixedPawnKind = PawnKindDefOf.Empire_Common_Lodger
+            goodwillSuccess = 0
         };
+
+        QuestGen.slate.Set(IsMainFactionSlate, false);
+        QuestGen.slate.Set(UniqueQuestDescSlate, true);
+        QuestGen.slate.Set(UniqueLeavingLetterSlate, true);
     }
 
     protected override void PostPawnGenerated(Pawn pawn)

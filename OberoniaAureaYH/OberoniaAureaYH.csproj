@@ -74,7 +74,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefModExtension\JobExtension.cs" />
     <Compile Include="DefModExtension\MemeTraitOpinionExtension.cs" />
     <Compile Include="DefModExtension\OARatkinGroupExtension.cs" />
     <Compile Include="DefOf\IncidentDefOf.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="IncidentWorker\IncidentWorker_CrashedGravhip_FollowUp.cs" />
     <Compile Include="IncidentWorker\IncidentWroker_ScienceShipCrashDown.cs" />
     <Compile Include="JobAndWork\JobDriver_CrashedScienceShip.cs" />
-    <Compile Include="JobAndWork\JobDriver_InteractWithThing.cs" />
     <Compile Include="Letter\ChoiceLetter_BrokenPilotConsole.cs" />
     <Compile Include="Letter\ChoiceLetter_UnlockedFile.cs" />
     <Compile Include="Letter\ChoiceLetter_UnlockedFile_Peep.cs" />

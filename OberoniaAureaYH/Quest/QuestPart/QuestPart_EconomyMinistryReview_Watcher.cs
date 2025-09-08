@@ -6,7 +6,7 @@ using Verse.Grammar;
 
 namespace OberoniaAurea;
 
-public class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
+internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivable
 {
     public string recordTag;
     public string inSignaRecordDecode;

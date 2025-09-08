@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using OberoniaAurea_Frame;
+using Verse;
 
 namespace OberoniaAurea;
 
@@ -29,7 +30,7 @@ public abstract class JobDriver_CrashedScienceShip : JobDriver_InteractWithThing
 public class JobDriver_ScienceShip_GravityAdjuestment : JobDriver_CrashedScienceShip
 {
     protected override ScienceShipRecord.TroubleType TroubleType => ScienceShipRecord.TroubleType.Gravitational;
-    protected override void JobFinishResult(Pawn pawn)
+    protected override void InteractionResult(Pawn pawn)
     {
         Target.TryGetComp<CompCrashedScienceShip>()?.DoGravityAdjuestment();
     }
@@ -38,7 +39,7 @@ public class JobDriver_ScienceShip_GravityAdjuestment : JobDriver_CrashedScience
 public class JobDriver_ScienceShip_GravitationalRepaire : JobDriver_CrashedScienceShip
 {
     protected override ScienceShipRecord.TroubleType TroubleType => ScienceShipRecord.TroubleType.Gravitational;
-    protected override void JobFinishResult(Pawn pawn)
+    protected override void InteractionResult(Pawn pawn)
     {
         Target.TryGetComp<CompCrashedScienceShip>()?.GravitationalRepaired(pawn);
     }
@@ -47,7 +48,7 @@ public class JobDriver_ScienceShip_GravitationalRepaire : JobDriver_CrashedScien
 public class JobDriver_ScienceShip_MechanicalRepaire : JobDriver_CrashedScienceShip
 {
     protected override ScienceShipRecord.TroubleType TroubleType => ScienceShipRecord.TroubleType.Mechanical;
-    protected override void JobFinishResult(Pawn pawn)
+    protected override void InteractionResult(Pawn pawn)
     {
         Target.TryGetComp<CompCrashedScienceShip>()?.MechanicalRepaired(pawn);
     }
@@ -56,7 +57,7 @@ public class JobDriver_ScienceShip_MechanicalRepaire : JobDriver_CrashedScienceS
 public class JobDriver_ScienceShip_ActivateCoolingDevice : JobDriver_CrashedScienceShip
 {
     protected override ScienceShipRecord.TroubleType TroubleType => ScienceShipRecord.TroubleType.Hyperthermia;
-    protected override void JobFinishResult(Pawn pawn)
+    protected override void InteractionResult(Pawn pawn)
     {
         Target.TryGetComp<CompCrashedScienceShip>()?.ActivateCoolingDevice();
     }

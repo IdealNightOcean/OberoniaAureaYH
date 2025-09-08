@@ -3,7 +3,6 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 using Verse;
@@ -618,14 +617,12 @@ public class CompCrashedScienceShip : CompHackable
         Find.WindowStack.Add(new FloatMenu(list));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void MakeGravityAdjustmentJob(Pawn pawn, int adjuestType)
     {
         gravityAdjuestType = adjuestType;
         pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(Props.gravityAdjustmentJob, parent), JobTag.Misc);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void MakeJob(Pawn pawn, JobDef jobDef)
     {
         pawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(jobDef, parent), JobTag.Misc);

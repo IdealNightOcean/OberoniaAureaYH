@@ -14,6 +14,7 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
     private Pawn pawn;
 
     private float detectionProp = 0.2f;
+    private bool quizRefused;
 
     public void InitLetter(Pawn pawn)
     {
@@ -32,7 +33,10 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
             }
 
             yield return Option_Peep();
-            yield return Option_Quiz;
+            if (!quizRefused)
+            {
+                yield return Option_Quiz;
+            }
             yield return Option_Ignore;
             yield return Option_Postpone;
         }
@@ -77,8 +81,9 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
     {
         if (Rand.Chance(0.1f) || fileType == DocumentType.LoveLetter || fileType == DocumentType.EncryptedFile)
         {
-            OpenLetter();
+            quizRefused = true;
             detectionProp = 0.5f;
+            OpenLetter();
             TaggedString diaText = fileType switch
             {
                 DocumentType.LoveLetter => "OARK_UnlockedFile_LoveLetterRefuse".Translate(pawn),
@@ -111,5 +116,6 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
         Scribe_References.Look(ref pawn, "pawn");
         Scribe_Values.Look(ref fileType, "fileType", defaultValue: DocumentType.TechDraft);
         Scribe_Values.Look(ref detectionProp, "detectionProp", 0f);
+        Scribe_Values.Look(ref quizRefused, "quizRefused", defaultValue: false);
     }
 }

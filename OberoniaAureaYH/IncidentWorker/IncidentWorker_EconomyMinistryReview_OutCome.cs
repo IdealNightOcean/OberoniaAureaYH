@@ -116,7 +116,9 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
 
         if (map is not null)
         {
-            OARK_DropPodUtility.DefaultDropSingleThingOfDef(OARK_ThingDefOf.OARK_SDCommunicationEquipment, map, faction);
+            Thing equipments = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment);
+            equipments.stackCount = 2;
+            OARK_DropPodUtility.DefaultDropSingleThing(equipments, map, faction);
         }
     }
 
@@ -138,7 +140,9 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         if (map is not null)
         {
             List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
-            rewards.Add(ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment));
+            Thing equipments = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment);
+            equipments.stackCount = 2;
+            rewards.Add(equipments);
             OARK_DropPodUtility.DefaultDropThing(rewards, map, faction);
         }
     }
