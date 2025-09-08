@@ -8,6 +8,8 @@ namespace OberoniaAurea;
 
 public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 {
+    public override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Court_Member;
+
     protected override bool TestRunInt(Slate slate)
     {
         Faction faction = ModUtility.OAFaction;
@@ -20,6 +22,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 
     protected override Faction GetOrGenerateFaction()
     {
+        QuestGen.slate.Set(IsMainFactionSlate, true);
         return ModUtility.OAFaction;
     }
 
@@ -37,10 +40,10 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
             goodwillSuccess = 12,
             goodwillFailure = -12,
             rewardValueRange = new FloatRange(300f, 500f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
-            questDurationTicks = 60000,
-
-            fixedPawnKind = OARK_PawnGenerateDefOf.OA_RK_Court_Member
+            questDurationTicks = 60000
         };
+
+        QuestGen.slate.Set(UniqueQuestDescSlate, true);
     }
 
     protected override List<Pawn> GeneratePawns(string lodgerRecruitedSignal = null)

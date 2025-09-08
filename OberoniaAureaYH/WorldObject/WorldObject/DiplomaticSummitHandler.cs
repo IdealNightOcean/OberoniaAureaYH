@@ -106,6 +106,8 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
         EndWork(interrupt: true, convertToCaravan: false);
     }
 
+    public void PostConvertToCaravan(Caravan caravan) { }
+
     private void EndWork(bool interrupt, bool convertToCaravan)
     {
         if (isWorking)

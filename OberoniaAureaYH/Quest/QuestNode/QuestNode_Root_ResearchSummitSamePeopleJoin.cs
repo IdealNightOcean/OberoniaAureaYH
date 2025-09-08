@@ -5,20 +5,17 @@ using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
 {
-    private const int TimeoutTicks = 60000;
-
     protected string acceptSignal;
     protected string rejectSignal;
 
     public Pawn GeneratePawn(Slate slate)
     {
         slate.TryGet("faction", out Faction faction);
-        if (!slate.TryGet("overridePawnGenParams", out PawnGenerationRequest request))
-        {
-            request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction, forceNew: true);
-        }
+
+        PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction, forceNew: true);
         request.ForceAddFreeWarmLayerIfNeeded = true;
         Pawn pawn = PawnGenerator.GeneratePawn(request);
 
@@ -63,11 +60,11 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
             quest.Delay(120000, delegate
             {
                 quest.PawnsArrive([pawn], null, map.Parent);
-                QuestGen_End.End(quest, QuestEndOutcome.Success);
+                QuestGen_End.End(quest, QuestEndOutcome.Fail);
             });
         });
 
-        quest.End(QuestEndOutcome.Fail, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, rejectSignal);
+        quest.End(QuestEndOutcome.Fail, inSignal: rejectSignal);
 
         SendLetter(quest, pawn);
         string killedSignal = QuestGenUtility.HardcodedSignalWithQuestID("pawn.Killed");
@@ -79,15 +76,15 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         quest.End(QuestEndOutcome.Success, goodwillChangeAmount: 0, goodwillChangeFactionOf: null, recruitedSignal);
         quest.Signal(leftMapSignal, delegate
         {
-            quest.AnyPawnUnhealthy([pawn],
-                                action: delegate
-                                {
-                                    QuestGen_End.End(quest, QuestEndOutcome.Fail);
-                                },
-                                elseAction: delegate
-                                {
-                                    QuestGen_End.End(quest, QuestEndOutcome.Success);
-                                });
+            quest.AnyPawnUnhealthy(pawns: [pawn],
+                                   action: delegate
+                                   {
+                                       QuestGen_End.End(quest, QuestEndOutcome.Fail);
+                                   },
+                                   elseAction: delegate
+                                   {
+                                       QuestGen_End.End(quest, QuestEndOutcome.Success);
+                                   });
         });
 
         quest.Delay(60000, delegate
@@ -106,7 +103,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
         choiceLetter_AcceptJoinerViewInfo.signalReject = rejectSignal;
         choiceLetter_AcceptJoinerViewInfo.associatedPawn = pawn;
         choiceLetter_AcceptJoinerViewInfo.quest = quest;
-        choiceLetter_AcceptJoinerViewInfo.StartTimeout(TimeoutTicks);
+        choiceLetter_AcceptJoinerViewInfo.StartTimeout(60000);
         Find.LetterStack.ReceiveLetter(choiceLetter_AcceptJoinerViewInfo);
     }
 
