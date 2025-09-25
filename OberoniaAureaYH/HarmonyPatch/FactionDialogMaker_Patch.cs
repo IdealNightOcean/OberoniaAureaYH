@@ -292,7 +292,7 @@ public static class FactionDialogFor_Patch
     private static void GetTechPrint(Map map, Faction faction, ThingDef tDef, int price)
     {
         TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, price, map, null);
-        IntVec3 dropCell = OARK_DropPodUtility.DefaultDropSingleThingOfDef(tDef, map, faction);
+        IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(tDef, map, faction);
         Messages.Message("OA_TechPrintArrive".Translate(faction.Named("FACTION"), tDef.label), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
     }
 

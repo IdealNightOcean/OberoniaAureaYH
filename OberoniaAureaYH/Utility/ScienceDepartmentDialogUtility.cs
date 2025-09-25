@@ -147,7 +147,7 @@ public static class ScienceDepartmentDialogUtility
                     beacon.SetFaction(Faction.OfPlayer);
                 }
                 Thing beaconMini = MinifyUtility.TryMakeMinified(beacon);
-                OARK_DropPodUtility.DefaultDropSingleThing(beaconMini, dialogCache.Map, dialogCache.Faction);
+                OAFrame_DropPodUtility.DefaultDropSingleThing(beaconMini, dialogCache.Map, dialogCache.Faction);
                 OAInteractHandler.Instance.CooldownManager.RegisterRecord("AcquireDataBeacon", cdTicks: 120 * 60000, shouldRemoveWhenExpired: true);
             };
             diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OARK_AcquireDataBeaconConfirm".Translate(),
@@ -417,7 +417,7 @@ public static class ScienceDepartmentDialogUtility
             {
                 diaOption.action = delegate
                 {
-                    OARK_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, gainSliver, dialogCache.Map, dialogCache.Faction);
+                    OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, gainSliver, dialogCache.Map, dialogCache.Faction);
                     ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-gtap);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_CovertGTAPToSliverConfirm".Translate(gtap, gainSliver),
@@ -464,7 +464,7 @@ public static class ScienceDepartmentDialogUtility
             {
                 diaOption.action = delegate
                 {
-                    OARK_DropPodUtility.DefaultDropSingleThingOfDef(techPrint, dialogCache.Map, dialogCache.Faction);
+                    OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(techPrint, dialogCache.Map, dialogCache.Faction);
                     ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-gtapNeeded);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_ExchangeForTechPrintConfirm".Translate(techPrint.LabelCap, gtapNeeded),
@@ -514,7 +514,7 @@ public static class ScienceDepartmentDialogUtility
             {
                 diaOption.action = delegate
                 {
-                    OARK_DropPodUtility.DefaultDropSingleThingOfDef(thingDef, dialogCache.Map, dialogCache.Faction);
+                    OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(thingDef, dialogCache.Map, dialogCache.Faction);
                     ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-gtap);
                     OAInteractHandler.Instance.CooldownManager.RegisterRecord("ExchangeGravEquipment", cdTicks: 15 * 60000, shouldRemoveWhenExpired: true);
                 };
@@ -538,7 +538,7 @@ public static class ScienceDepartmentDialogUtility
         {
             diaOption.action = delegate
             {
-                OARK_DropPodUtility.DefaultDropSingleThingOfDef(OARK_ThingDefOf.OARK_SDCommunicationEquipment, dialogCache.Map, dialogCache.Faction);
+                OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(OARK_ThingDefOf.OARK_SDCommunicationEquipment, dialogCache.Map, dialogCache.Faction);
                 ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-100);
             };
             diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_ExchangeForSDAssistanceConfirm".Translate(OARK_ThingDefOf.OARK_SDCommunicationEquipment.LabelCap, 100),

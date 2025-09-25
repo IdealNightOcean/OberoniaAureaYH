@@ -245,7 +245,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int count = Mathf.Min(pawnNum * preCount, maxCount);
         if (count > 0)
         {
-            IntVec3 dropCell = OARK_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.MealSurvivalPack, count, map, faction);
+            IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.MealSurvivalPack, count, map, faction);
             Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }
@@ -263,7 +263,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         if (count > 0)
         {
-            IntVec3 dropCell = OARK_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, count, map, faction);
+            IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, count, map, faction);
             Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }

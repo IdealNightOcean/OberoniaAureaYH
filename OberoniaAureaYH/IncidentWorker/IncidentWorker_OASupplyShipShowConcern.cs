@@ -38,7 +38,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
         List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(rawBerriesDef, count);
-        IntVec3 dropCell = OARK_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
+        IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
         SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
                            baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count),
                            baseLetterDef: LetterDefOf.PositiveEvent,

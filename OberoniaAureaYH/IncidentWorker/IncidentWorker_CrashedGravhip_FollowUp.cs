@@ -41,7 +41,7 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
             }
         }
 
-        OARK_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, 2000, map);
+        OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, 2000, map);
 
         Find.FactionManager.OfTradersGuild?.TryAffectGoodwillWith(Faction.OfPlayer, 20, reason: OARK_HistoryEventDefOf.OARK_CrashedGravshipHelp);
         ModUtility.OAFaction?.TryAffectGoodwillWith(Faction.OfPlayer, 10, reason: OARK_HistoryEventDefOf.OARK_CrashedGravshipHelp);

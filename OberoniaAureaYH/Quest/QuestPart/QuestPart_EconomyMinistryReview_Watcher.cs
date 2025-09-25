@@ -147,7 +147,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
         Thing accountingRecord = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDAccountingRecord);
         accountingRecord.TryGetComp<CompSDAccountingRecord>()?.SetReferendary(referendary);
         QuestUtility.AddQuestTag(accountingRecord, recordTag);
-        OARK_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, ModUtility.OAFaction);
+        OAFrame_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, ModUtility.OAFaction);
         dropCount++;
     }
 

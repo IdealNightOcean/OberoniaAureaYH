@@ -210,7 +210,6 @@
     <Compile Include="Utility\FactionDialogUtility.cs" />
     <Compile Include="Utility\GravityWeaponUtility.cs" />
     <Compile Include="Utility\InteractUtility.cs" />
-    <Compile Include="Utility\DropPodUtility.cs" />
     <Compile Include="Utility\ResearchUtility.cs" />
     <Compile Include="Utility\ScienceDepartmentDialogUtility.cs" />
     <Compile Include="Utility\UnlockedFileUtility.cs" />

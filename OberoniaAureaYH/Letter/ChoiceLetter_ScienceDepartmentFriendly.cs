@@ -118,7 +118,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            OARK_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 2, map, ModUtility.OAFaction);
+            OAFrame_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 2, map, ModUtility.OAFaction);
         }
         Find.LetterStack.RemoveLetter(this);
     }
@@ -162,7 +162,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
             ThingDef techPrintDef = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(p => p.techprintCount > 0 && !p.TechprintRequirementMet).Take(5)?.RandomElementWithFallback(null)?.Techprint;
             if (techPrintDef is not null)
             {
-                OARK_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef, map, ModUtility.OAFaction);
+                OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef, map, ModUtility.OAFaction);
             }
         }
         Find.LetterStack.RemoveLetter(this);
