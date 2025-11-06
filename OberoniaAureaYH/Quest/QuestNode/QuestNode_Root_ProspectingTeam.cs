@@ -59,13 +59,10 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 
     protected override void SetPawnsLeaveComp(string lodgerArrivalSignal, string inSignalRemovePawn)
     {
-        base.SetPawnsLeaveComp(lodgerArrivalSignal, inSignalRemovePawn);
-
         Quest quest = QuestGen.quest;
 
         string specialRewardSignal = QuestGen.GenerateNewSignal("Lodger_GiveSpecialReward");
         quest.Delay(questParameter.questDurationTicks, inner: null, inSignalEnable: lodgerArrivalSignal, outSignalComplete: specialRewardSignal);
-
         QuestPart_ProspectingTeamReward questPart_ProspectingTeamReward = new()
         {
             insSignal = specialRewardSignal,
@@ -77,5 +74,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         };
         questPart_ProspectingTeamReward.pawns.AddRange(questParameter.pawns);
         quest.AddPart(questPart_ProspectingTeamReward);
+
+        base.SetPawnsLeaveComp(lodgerArrivalSignal, inSignalRemovePawn);
     }
 }

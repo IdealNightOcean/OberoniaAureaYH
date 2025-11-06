@@ -43,7 +43,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
     protected override List<Pawn> GeneratePawns(IncidentParms parms)
     {
         PawnGroupMakerParms groupMakerParms = IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, ensureCanGenerateAtLeastOnePawn: true);
-        if (!OAFrame_PawnGenerateUtility.TryGetRandomPawnGroupMaker(groupMakerParms, OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker, out PawnGroupMaker groupMaker))
+        if (!OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerMaker.TryGetRandomAvailablePawnGroupMaker(groupMakerParms, out PawnGroupMaker groupMaker))
         {
             return null;
         }

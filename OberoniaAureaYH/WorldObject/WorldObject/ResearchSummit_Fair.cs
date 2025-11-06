@@ -14,11 +14,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
         innerTrader = new(OARK_PawnGenerateDefOf.OA_ResearchSummit_FairTrader, this);
         innerTrader.GenerateThings(Tile);
     }
-    protected override void Tick()
-    {
-        base.Tick();
-        innerTrader?.Traderick();
-    }
+
     public override void Notify_CaravanArrived(Caravan caravan)
     {
         Pawn pawn = BestCaravanPawnUtility.FindBestNegotiator(caravan);
@@ -34,7 +30,6 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     {
         innerTrader?.Destory();
         base.Destroy();
-
     }
 
     public override IEnumerable<FloatMenuOption> GetSpecificFloatMenuOptions(Caravan caravan)

@@ -37,6 +37,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             allowAssaultColony = false,
             allowBadThought = false,
+
             LodgerCount = lodgerCount,
             ChildCount = 0,
 
