@@ -46,8 +46,6 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
             rewardValueRange = new FloatRange(1200f, 1800f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
             questDurationTicks = Rand.RangeInclusive(6, 8) * 60000
         };
-
-        QuestGen.slate.Set(UniqueQuestDescSlate, true);
     }
 
     protected override void ClearQuestParameter()

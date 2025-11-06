@@ -80,7 +80,6 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
     {
         base.Cleanup();
         outSignal = null;
-
         pawns = null;
         map = null;
     }
@@ -90,6 +89,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         base.ExposeData();
 
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 2500);
+        Scribe_Values.Look(ref outSignal, "outSignal");
         Scribe_References.Look(ref map, "map");
         Scribe_Collections.Look(ref pawns, "pawns", LookMode.Reference);
 
