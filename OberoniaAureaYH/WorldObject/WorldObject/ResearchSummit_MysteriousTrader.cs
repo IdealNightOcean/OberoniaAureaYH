@@ -8,6 +8,7 @@ using Verse;
 using static RimWorld.ResearchManager;
 
 namespace OberoniaAurea;
+
 public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
 {
     protected const int NeedSilver = 1500;

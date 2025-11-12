@@ -223,7 +223,7 @@ public static class DeepExchangeUtility
     private const int ChanwuNum = 10;
     private const int AddAssistPoints = 5;
 
-    private readonly static List<(QuestScriptDef, float)> tmpPossibleOutcomes = [];
+    private static readonly List<(QuestScriptDef, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {

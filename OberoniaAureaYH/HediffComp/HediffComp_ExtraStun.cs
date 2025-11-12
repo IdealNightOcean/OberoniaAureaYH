@@ -3,6 +3,7 @@ using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class HediffCompProperties_ExtraStun : HediffCompProperties
 {
     public int extraStunTicks = 300;
@@ -17,7 +18,7 @@ public class HediffCompProperties_ExtraStun : HediffCompProperties
 public class HediffComp_ExtraStun : HediffComp
 {
     public int ticksRemaining = 60;
-    HediffCompProperties_ExtraStun Props => (HediffCompProperties_ExtraStun)props;
+    private HediffCompProperties_ExtraStun Props => (HediffCompProperties_ExtraStun)props;
     public override void CompPostPostAdd(DamageInfo? dinfo)
     {
         if (Pawn.RaceProps.IsFlesh)

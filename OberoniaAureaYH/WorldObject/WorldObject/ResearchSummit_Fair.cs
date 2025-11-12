@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class ResearchSummit_Fair : WorldObject_InteractiveBase
 {
     protected SiteTrader innerTrader;

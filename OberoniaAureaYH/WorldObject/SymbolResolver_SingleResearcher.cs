@@ -5,6 +5,7 @@ using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class SymbolResolver_SingleResearcher : SymbolResolver
 {
     private static readonly IntRange IntellectualSkill = new(8, 18);

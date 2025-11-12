@@ -9,6 +9,7 @@ using System.Text;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 {
 
@@ -25,7 +26,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     private const int TriumphAssistPoints = 25;
 
 
-    private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
+    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 
     public override void Notify_CaravanArrived(Caravan caravan)
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class StockGenerator_BuyCategory : StockGenerator
 {
     public ThingCategoryDef categoryDef;

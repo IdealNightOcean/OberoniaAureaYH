@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class ChoiceLetter_AcceptJoinerViewInfo : ChoiceLetter
 {
     public string signalAccept;

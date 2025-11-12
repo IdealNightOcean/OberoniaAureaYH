@@ -5,6 +5,7 @@ using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
 {
     protected Faction calledFaction;
