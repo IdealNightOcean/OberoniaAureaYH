@@ -3,6 +3,7 @@ using Verse;
 using Verse.AI;
 
 namespace OberoniaAurea;
+
 public class WorkGiver_CircuitRegulator : WorkGiver_Scanner
 {
     public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(OARK_ThingDefOf.OA_RK_CircuitRegulator);

@@ -11,7 +11,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     private const int AssistPoints = 15;
     private int curPawnIndex;
 
-    public override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Traveller;
+    protected override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Traveller;
 
     protected override bool TestRunInt(Slate slate)
     {
@@ -29,7 +29,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         return ModUtility.OAFaction;
     }
 
-    protected override void InitQuestParameter()
+    protected override bool InitQuestParameter()
     {
         curPawnIndex = 0;
         int lodgerCount = Rand.RangeInclusive(2, 3);
@@ -46,6 +46,8 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
             rewardValueRange = new FloatRange(1200f, 1800f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
             questDurationTicks = Rand.RangeInclusive(6, 8) * 60000
         };
+
+        return true;
     }
 
     protected override void ClearQuestParameter()
@@ -54,8 +56,9 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         curPawnIndex = 0;
     }
 
-    protected override void PostPawnGenerated(Pawn pawn)
+    protected override void PostPawnGenerated(Pawn pawn, string lodgerRecruitedSignal)
     {
+        base.PostPawnGenerated(pawn, lodgerRecruitedSignal);
         if (curPawnIndex++ == 1)
         {
             pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_SeriousInjury);
@@ -81,9 +84,9 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         QuestPart_WoundedTravelerCanLeaveNow questPart_WoundedTravelerCanLeaveNow = new()
         {
             inSignalEnable = QuestGen.slate.Get<string>("inSignal"),
-            outSignal = travelerCanLeaveNowSignal,
-            map = questParameter.map,
+            outSignal = travelerCanLeaveNowSignal
         };
+        questPart_WoundedTravelerCanLeaveNow.pawns ??= new(pawns.Count);
         questPart_WoundedTravelerCanLeaveNow.pawns.AddRange(pawns);
         quest.AddPart(questPart_WoundedTravelerCanLeaveNow);
         //提前离开
@@ -91,7 +94,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         {
             quest.Letter(letterDef: LetterDefOf.PositiveEvent, text: "[lodgersLeavingEarlyLetterText]", label: "[lodgersLeavingEarlyLetterLabel]");
         }, inSignal: travelerCanLeaveNowSignal);
-        quest.Leave(pawns, travelerCanLeaveNowSignal, sendStandardLetter: false, leaveOnCleanup: false, inSignalRemovePawn, wakeUp: true);
+        quest.Leave(pawns, inSignal: travelerCanLeaveNowSignal, sendStandardLetter: false, leaveOnCleanup: false, inSignalRemovePawn, wakeUp: true);
 
         if (questParameter.questDurationTicks > 0)
         {
@@ -101,6 +104,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 
     protected override void SetQuestEndComp(QuestPart_OARefugeeInteractions questPart_Interactions, string failSignal, string delayFailSignal, string successSignal)
     {
+        base.SetQuestEndComp(questPart_Interactions, failSignal, delayFailSignal, successSignal);
         QuestGen.quest.AddPart(new QuestPart_OaAssistPointsChange(successSignal, AssistPoints));
     }
 }

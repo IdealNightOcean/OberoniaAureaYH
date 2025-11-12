@@ -31,11 +31,11 @@ public class GravDataBeacon : Building
         QuestUtility.SendQuestTargetSignals(questTags, TakenEffectSignal, this.Named("SUBJECT"));
         Find.SignalManager.SendSignal(new Signal(TakenEffectSignal, new SignalArgs(this.Named("SUBJECT")), global: true));
 
-        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravDataBeacon", cdTicks: 5 * 60000, shouldRemoveWhenExpired: false);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravDataBeacon", cdTicks: 5 * 60000, removeWhenExpired: false);
 
         if (!OAInteractHandler.Instance.CooldownManager.IsInCooldown("SDFriendlyEvent"))
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDFriendlyEvent", cdTicks: 10 * 60000, shouldRemoveWhenExpired: true);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDFriendlyEvent", cdTicks: 10 * 60000, removeWhenExpired: true);
             IncidentParms parms = new()
             {
                 target = Find.World

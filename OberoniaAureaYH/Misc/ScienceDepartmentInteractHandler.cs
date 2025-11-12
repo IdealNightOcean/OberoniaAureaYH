@@ -218,7 +218,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         if (Rand.Chance(emReviewChance))
         {
             emReviewChance = 0f;
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, shouldRemoveWhenExpired: false);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, removeWhenExpired: false);
             ChoiceLetter_EMReview letter = (ChoiceLetter_EMReview)LetterMaker.MakeLetter(label: "OARK_LetterLabel_EMReview".Translate(),
                                                                                          text: "OARK_Letter_EMReview".Translate(),
                                                                                          def: OARK_LetterDefOf.OARK_EMReviewLetter,
@@ -240,7 +240,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             return;
         }
 
-        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, shouldRemoveWhenExpired: true);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, removeWhenExpired: true);
 
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, new Slate(), forced: false);
 
@@ -275,11 +275,11 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, shouldRemoveWhenExpired: false);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, removeWhenExpired: false);
         }
         else
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: 2 * 60000, shouldRemoveWhenExpired: false);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: 2 * 60000, removeWhenExpired: false);
         }
 
         static bool CanTriggerGravInitQuest()

@@ -3,6 +3,7 @@ using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class BarrageEnhancedBullet : Bullet
 {
 

@@ -8,7 +8,7 @@ namespace OberoniaAurea;
 
 public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 {
-    public override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration;
+    protected override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration;
 
     protected override bool TestRunInt(Slate slate)
     {
@@ -26,7 +26,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         return ModUtility.OAFaction;
     }
 
-    protected override void InitQuestParameter()
+    protected override bool InitQuestParameter()
     {
         questParameter = new QuestParameter()
         {
@@ -44,6 +44,8 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         };
 
         QuestGen.slate.Set(UniqueQuestDescSlate, true);
+
+        return true;
     }
 
     protected override List<Pawn> GeneratePawns(string lodgerRecruitedSignal = null)

@@ -5,6 +5,7 @@ using RimWorld.QuestGen;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
 {
     protected string acceptSignal;

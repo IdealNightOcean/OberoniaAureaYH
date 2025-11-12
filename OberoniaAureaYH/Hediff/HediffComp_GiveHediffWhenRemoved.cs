@@ -1,6 +1,7 @@
 ﻿using Verse;
 
 namespace OberoniaAurea;
+
 public class HediffCompProperties_GiveHediffWhenRemoved : HediffCompProperties
 {
     public HediffDef hediffDef;

@@ -255,7 +255,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Slate slate = new();
         slate.Set("faction", faction);
 
-        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: Find.World))
+        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate, forced: false, target: Find.World))
         {
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);

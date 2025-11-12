@@ -169,7 +169,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
 
         string shuttleKilledSignal = QuestGenUtility.HardcodedSignalWithQuestID("shuttle.Killed");
         quest.FactionGoodwillChange(bestowingFaction, 0, shuttleKilledSignal, canSendMessage: true, canSendHostilityLetter: true, getLookTargetFromSignal: true, HistoryEventDefOf.ShuttleDestroyed, QuestPart.SignalListenMode.OngoingOnly, ensureMakesHostile: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, shuttleKilledSignal, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
+        quest.End(outcome: QuestEndOutcome.Fail, inSignal: shuttleKilledSignal, sendStandardLetter: true);
 
         QuestPart_RequirementsToAcceptThroneRoom questPart_RequirementsToAcceptThroneRoom = new()
         {
@@ -199,20 +199,35 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
         string hostileSignal = QuestGenUtility.HardcodedSignalWithQuestID("bestowingFaction.BecameHostileToPlayer");
         quest.Signal(recruitedSignal, delegate
         {
-            quest.End(QuestEndOutcome.Fail, 0, null, null, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
+            quest.End(QuestEndOutcome.Fail, sendStandardLetter: true);
         });
 
         quest.Bestowing_TargetChangedTitle(pawn, bestower, titleAwardedWhenUpdating, awardChangedSignal);
-        quest.Letter(LetterDefOf.NegativeEvent, expiredSignal, null, null, null, useColonistsFromCaravanArg: false, QuestPart.SignalListenMode.OngoingOnly, null, filterDeadPawnsFromLookTargets: false, label: "LetterLabelBestowingCeremonyExpired".Translate(), text: "LetterTextBestowingCeremonyExpired".Translate(pawn.Named("TARGET")));
+        quest.Letter(
+            letterDef: LetterDefOf.NegativeEvent,
+            inSignal: expiredSignal,
+            label: "LetterLabelBestowingCeremonyExpired".Translate(),
+            text: "LetterTextBestowingCeremonyExpired".Translate(pawn.Named("TARGET")));
 
-        quest.End(QuestEndOutcome.Fail, 0, null, QuestGenUtility.HardcodedSignalWithQuestID("target.Killed"), QuestPart.SignalListenMode.OngoingOrNotYetAccepted, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, QuestGenUtility.HardcodedSignalWithQuestID("bestower.Killed"), QuestPart.SignalListenMode.OngoingOrNotYetAccepted, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, expiredSignal);
-        quest.End(QuestEndOutcome.Fail, 0, null, hostileSignal, QuestPart.SignalListenMode.OngoingOrNotYetAccepted, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, failedSignal, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, attackedSignal, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Fail, 0, null, fleeingSignal, QuestPart.SignalListenMode.OngoingOnly, sendStandardLetter: true);
-        quest.End(QuestEndOutcome.Success, 0, null, doneSignal);
+        quest.End(
+            outcome: QuestEndOutcome.Fail,
+            inSignal: QuestGenUtility.HardcodedSignalWithQuestID("target.Killed"),
+            signalListenMode: QuestPart.SignalListenMode.OngoingOrNotYetAccepted,
+            sendStandardLetter: true);
+        quest.End(
+            outcome: QuestEndOutcome.Fail,
+            inSignal: QuestGenUtility.HardcodedSignalWithQuestID("bestower.Killed"),
+            signalListenMode: QuestPart.SignalListenMode.OngoingOrNotYetAccepted,
+            sendStandardLetter: true);
+        quest.End(outcome: QuestEndOutcome.Fail,
+                  inSignal: hostileSignal,
+                  signalListenMode: QuestPart.SignalListenMode.OngoingOrNotYetAccepted,
+                  sendStandardLetter: true);
+        quest.End(QuestEndOutcome.Fail, inSignal: expiredSignal);
+        quest.End(QuestEndOutcome.Fail, inSignal: failedSignal, sendStandardLetter: true);
+        quest.End(QuestEndOutcome.Fail, inSignal: attackedSignal, sendStandardLetter: true);
+        quest.End(QuestEndOutcome.Fail, inSignal: fleeingSignal, sendStandardLetter: true);
+        quest.End(QuestEndOutcome.Success, inSignal: doneSignal);
 
         QuestPart_Choice questPart_Choice = quest.RewardChoice();
         QuestPart_Choice.Choice rewardChoice = new()

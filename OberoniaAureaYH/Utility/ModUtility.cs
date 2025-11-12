@@ -10,8 +10,8 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public static class ModUtility
 {
-    private static Faction OAFactionCache;
-    public static Faction OAFaction => OAFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
+    private static Faction oaFactionCache;
+    public static Faction OAFaction => oaFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
@@ -62,12 +62,12 @@ public static class ModUtility
 
     public static void Notify_GameStart()
     {
-        OAFactionCache = Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
+        oaFactionCache = Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
     }
 
     public static void ClearStaticCache()
     {
-        OAFactionCache = null;
+        oaFactionCache = null;
     }
 }
 

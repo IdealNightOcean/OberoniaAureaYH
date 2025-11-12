@@ -198,7 +198,7 @@ public static class DiplomaticSummitUtility
     private const int TriumphAssistPoints = 60;
     private const float TriumphXP = 8000f;
 
-    private readonly static List<(Action, float)> tmpPossibleOutcomes = [];
+    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(NegotiatingTeamLevel negotiatingTeamLevel, FixedCaravan fixedCaravan, Settlement settlement, Pawn pawn)
     {

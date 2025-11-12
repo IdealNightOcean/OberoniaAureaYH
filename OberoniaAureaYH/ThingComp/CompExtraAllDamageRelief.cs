@@ -2,6 +2,7 @@
 using Verse;
 
 namespace OberoniaAurea;
+
 public class CompProperties_ExtraAllDamageRelief : CompProperties
 {
     public float reliefFactor;

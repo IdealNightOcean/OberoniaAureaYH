@@ -9,8 +9,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
     private const int HealthCheckInterval = 30000;
     public string outSignal;
 
-    public List<Pawn> pawns = [];
-    public Map map;
+    public List<Pawn> pawns;
 
     private int ticksRemaining = 2500;
 
@@ -20,15 +19,16 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         {
             if (pawns.NullOrEmpty())
             {
-                return true;
-            }
-            if (map.weatherManager.curWeather?.favorability == Favorability.VeryBad)
-            {
                 return false;
             }
             for (int i = 0; i < pawns.Count; i++)
             {
-                if (!HealthyPawn(pawns[i]))
+                Pawn p = pawns[i];
+                if (p.Map?.weatherManager.curWeather?.favorability == Favorability.VeryBad)
+                {
+                    return false;
+                }
+                if (!HealthyPawn(p))
                 {
                     return false;
                 }
@@ -39,7 +39,7 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
 
     public override void QuestPartTick()
     {
-        if (State == QuestPartState.Enabled && --ticksRemaining <= 0)
+        if ((--ticksRemaining) <= 0)
         {
             ticksRemaining = HealthCheckInterval;
             if (CanLeaveNow)
@@ -82,7 +82,6 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         outSignal = null;
 
         pawns = null;
-        map = null;
     }
 
     public override void ExposeData()
@@ -91,12 +90,11 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
 
         Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 2500);
         Scribe_Values.Look(ref outSignal, "outSignal");
-        Scribe_References.Look(ref map, "map");
         Scribe_Collections.Look(ref pawns, "pawns", LookMode.Reference);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            pawns.RemoveAll(p => p is null);
+            pawns?.RemoveAll(p => p is null);
         }
     }
 }

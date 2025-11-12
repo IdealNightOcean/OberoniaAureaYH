@@ -148,7 +148,7 @@ public static class ScienceDepartmentDialogUtility
                 }
                 Thing beaconMini = MinifyUtility.TryMakeMinified(beacon);
                 OAFrame_DropPodUtility.DefaultDropSingleThing(beaconMini, dialogCache.Map, dialogCache.Faction);
-                OAInteractHandler.Instance.CooldownManager.RegisterRecord("AcquireDataBeacon", cdTicks: 120 * 60000, shouldRemoveWhenExpired: true);
+                OAInteractHandler.Instance.CooldownManager.RegisterRecord("AcquireDataBeacon", cdTicks: 120 * 60000, removeWhenExpired: true);
             };
             diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OARK_AcquireDataBeaconConfirm".Translate(),
                                                                                    faction: dialogCache.Faction,
@@ -180,7 +180,7 @@ public static class ScienceDepartmentDialogUtility
                 ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
                 sdInteractHandler.AddGravTechPoints(1000, byPlayer: true);
                 sdInteractHandler.AdjustGravTechAssistPoint(150);
-                OAInteractHandler.Instance.CooldownManager.RegisterRecord("DonateGravcore", cdTicks: 10 * 60000, shouldRemoveWhenExpired: true);
+                OAInteractHandler.Instance.CooldownManager.RegisterRecord("DonateGravcore", cdTicks: 10 * 60000, removeWhenExpired: true);
             };
             diaOption.linkLateBind = () => new DiaNode("OARK_DonateGravcoreConfirm".Translate(1000, 150))
             {
@@ -253,7 +253,7 @@ public static class ScienceDepartmentDialogUtility
                     ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
                     sdInteractHandler.AddGravTechPoints(gainGTP, byPlayer: true);
                     sdInteractHandler.AdjustGravTechAssistPoint(gainGTAP);
-                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("DonateGravlitePanel", cdTicks: 10 * 60000, shouldRemoveWhenExpired: false);
+                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("DonateGravlitePanel", cdTicks: 10 * 60000, removeWhenExpired: false);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_DonateGravlitePanelDetailConfirm".Translate(count, gainGTP, gainGTAP),
                                                                                        dialogCache.Faction,
@@ -293,7 +293,7 @@ public static class ScienceDepartmentDialogUtility
             ScienceDepartmentInteractHandler sdInteractHandler = ScienceDepartmentInteractHandler.Instance;
             sdInteractHandler.AddGravTechPoints(500, byPlayer: true);
             sdInteractHandler.AdjustGravTechAssistPoint(50);
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("QuestGravlitePanel", cdTicks: 5 * 60000, shouldRemoveWhenExpired: false);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("QuestGravlitePanel", cdTicks: 5 * 60000, removeWhenExpired: false);
 
             Quest quest = Find.QuestManager.QuestsListForReading.Where(q => q.root == OARK_QuestScriptDefOf.OARK_GravResearchAssistance).FirstOrFallback(null);
             if (quest is not null)
@@ -516,7 +516,7 @@ public static class ScienceDepartmentDialogUtility
                 {
                     OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(thingDef, dialogCache.Map, dialogCache.Faction);
                     ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(-gtap);
-                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("ExchangeGravEquipment", cdTicks: 15 * 60000, shouldRemoveWhenExpired: true);
+                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("ExchangeGravEquipment", cdTicks: 15 * 60000, removeWhenExpired: true);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("OARK_ExchangeForSpecialEquipmentConfirm".Translate(thingDef.LabelCap),
                                                                                        dialogCache.Faction,

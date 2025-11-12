@@ -8,7 +8,7 @@ namespace OberoniaAurea;
 public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
 {
     private string outSignalSettled;
-    public override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B;
+    protected override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Elite_Court_Member_B;
     protected override bool TestRunInt(Slate slate)
     {
         return ScienceDepartmentInteractHandler.IsInteractAvailable()
@@ -17,7 +17,7 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
             && base.TestRunInt(slate);
     }
 
-    protected override void InitQuestParameter()
+    protected override bool InitQuestParameter()
     {
         questParameter = new QuestParameter()
         {
@@ -38,6 +38,8 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
         QuestGen.slate.Set(UniqueQuestDescSlate, true);
         QuestGen.slate.Set(UniqueLeavingLetterSlate, true);
         outSignalSettled = QuestGenUtility.HardcodedSignalWithQuestID("Review_Settlde");
+
+        return true;
     }
 
     protected override void ClearQuestParameter()
@@ -52,8 +54,9 @@ public class QuestNode_Root_EconomyMinistryReview : QuestNode_Root_RefugeeBase
         return ModUtility.OAFaction;
     }
 
-    protected override void PostPawnGenerated(Pawn pawn)
+    protected override void PostPawnGenerated(Pawn pawn, string lodgerRecruitedSignal)
     {
+        base.PostPawnGenerated(pawn, lodgerRecruitedSignal);
         pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_Referendary);
     }
 

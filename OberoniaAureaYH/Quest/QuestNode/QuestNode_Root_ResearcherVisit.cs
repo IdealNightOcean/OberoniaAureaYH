@@ -9,9 +9,9 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
 {
     private static readonly IntRange IntellectualSkill = new(8, 18);
 
-    public override PawnKindDef FixedPawnKind => PawnKindDefOf.Empire_Common_Lodger;
+    protected override PawnKindDef FixedPawnKind => PawnKindDefOf.Empire_Common_Lodger;
 
-    protected override void InitQuestParameter()
+    protected override bool InitQuestParameter()
     {
         questParameter = new QuestParameter()
         {
@@ -30,10 +30,13 @@ public class QuestNode_Root_ResearcherVisit : QuestNode_Root_RefugeeBase
         QuestGen.slate.Set(IsMainFactionSlate, false);
         QuestGen.slate.Set(UniqueQuestDescSlate, true);
         QuestGen.slate.Set(UniqueLeavingLetterSlate, true);
+
+        return true;
     }
 
-    protected override void PostPawnGenerated(Pawn pawn)
+    protected override void PostPawnGenerated(Pawn pawn, string lodgerRecruitedSignal)
     {
+        base.PostPawnGenerated(pawn, lodgerRecruitedSignal);
         SkillRecord intellectual = pawn.skills?.GetSkill(SkillDefOf.Intellectual);
         if (intellectual is not null && intellectual.Level < 8)
         {

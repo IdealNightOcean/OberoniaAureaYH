@@ -91,7 +91,7 @@ public static class FactionDialogFor_Patch
 
         void CallTrader()
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("LargeScaleTrader", cdTicks: 60 * 60000, shouldRemoveWhenExpired: true);
+            OAInteractHandler.Instance.CooldownManager.RegisterRecord("LargeScaleTrader", cdTicks: 60 * 60000, removeWhenExpired: true);
             TraderKindDef traderKind = DefDatabase<TraderKindDef>.GetNamed("OA_RK_Caravan_TraderGeneral_B");
             IncidentParms parms = new()
             {
@@ -175,7 +175,7 @@ public static class FactionDialogFor_Patch
         }
 
         dialogCache.Negotiator.royalty?.GainFavor(dialogCache.Faction, gainFavor);
-        OAInteractHandler.Instance.CooldownManager.RegisterRecord("SponsorOA", cdTicks: 30 * 60000, shouldRemoveWhenExpired: true);
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("SponsorOA", cdTicks: 30 * 60000, removeWhenExpired: true);
     }
 
     private static DiaNode SponsorOberoniaAureaConfirmNode(FactionDialogCache dialogCache, int silverCount)
@@ -278,7 +278,7 @@ public static class FactionDialogFor_Patch
                 diaOption.action = delegate
                 {
                     GetTechPrint(dialogCache.Map, dialogCache.Faction, dbtpDef.TechPrintDef, dbtpDef.price);
-                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("BuyTechPrint", cdTicks: 30 * 60000, shouldRemoveWhenExpired: true);
+                    OAInteractHandler.Instance.CooldownManager.RegisterRecord("BuyTechPrint", cdTicks: 30 * 60000, removeWhenExpired: true);
                 };
                 diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OA_TechPrintChoiceConfirm".Translate(dialogCache.Faction.leader).CapitalizeFirst(),
                                                                                        faction: dialogCache.Faction,

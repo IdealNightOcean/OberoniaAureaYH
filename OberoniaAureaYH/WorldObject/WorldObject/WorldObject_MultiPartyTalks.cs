@@ -9,6 +9,7 @@ using System.Text;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 {
     private static readonly SimpleCurve BadOutcomeChanceFactorByNegotiationAbility =

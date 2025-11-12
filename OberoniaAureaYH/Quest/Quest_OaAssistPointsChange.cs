@@ -4,6 +4,7 @@ using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
+
 public class QuestNode_OaAssistPointsChange : QuestNode
 {
     [NoTranslate]
