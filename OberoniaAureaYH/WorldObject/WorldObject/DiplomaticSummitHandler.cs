@@ -241,7 +241,7 @@ public static class DiplomaticSummitUtility
     {
         Faction faction = settlement.Faction;
         Faction.OfPlayer.TryAffectGoodwillWith(faction, DisasterGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_DiplomaticSummit_Disaster);
-        OAInteractHandler.Instance.AssistStoppageDays = DisasterStoppageDays;
+        OAInteractHandler.Instance.CooldownManager.RegisterRecord("AssistStoppage", cdTicks: DisasterStoppageDays * 60000, shouldRemoveWhenExpired: true);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDiplomaticSummit_Disaster".Translate(), "OA_LetterDiplomaticSummit_Disaster".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, DisasterGoodwill, DisasterStoppageDays), LetterDefOf.NegativeEvent, settlement, faction);
     }
     private static void Outcome_Flounder(Settlement settlement, Pawn pawn)
