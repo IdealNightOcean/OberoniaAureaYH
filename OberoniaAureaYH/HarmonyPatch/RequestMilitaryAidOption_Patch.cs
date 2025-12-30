@@ -55,17 +55,18 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int assistPoints = interactHandler.AssistPoints;
         int curAssistPointsCap = interactHandler.CurAssistPointsCap;
         float allianceDuration = interactHandler.AllianceDuration();
-        int assistStoppageDays = interactHandler.AssistStoppageDays;
+        int assistStoppageCooldownTicksLeft = interactHandler.CooldownManager.GetCooldownTicksLeft("AssistStoppage");
 
         StringBuilder taggedStringInfo = new("OA_AssistWithTrouble".Translate());
         taggedStringInfo.AppendLine();
         taggedStringInfo.AppendLine();
         taggedStringInfo.AppendInNewLine("OA_AssistWithTroubleInfo".Translate(assistPoints, curAssistPointsCap));
-        if (assistStoppageDays > 0)
+
+        if (assistStoppageCooldownTicksLeft > 0)
         {
             taggedStringInfo.AppendLine();
             taggedStringInfo.AppendLine();
-            taggedStringInfo.AppendInNewLine("OA_AssistPointsStoppage".Translate(assistStoppageDays.ToString().Colorize(Color.red)));
+            taggedStringInfo.AppendInNewLine("OA_AssistPointsStoppage".Translate(assistStoppageCooldownTicksLeft.ToStringTicksToPeriod().Colorize(Color.red)));
         }
         DiaNode diaNode = new(taggedStringInfo.ToString());
 

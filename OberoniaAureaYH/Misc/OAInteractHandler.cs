@@ -24,9 +24,6 @@ public class OAInteractHandler : IExposable
     private int assistPoints;
     public int AssistPoints => assistPoints;
 
-    private int assistStoppageDays = 0;
-    public int AssistStoppageDays { get { return assistStoppageDays; } set { assistStoppageDays = Mathf.Max(0, value); } }
-
     public int CurAssistPointsCap => InteractUtility.GetCurAssistPointsCap(AllianceDuration());
 
     private CooldownRecordManager cooldownManager;
@@ -54,7 +51,7 @@ public class OAInteractHandler : IExposable
 
     private void DailyAssistPointChange()
     {
-        bool assistPointsStoppage = assistStoppageDays > 0;
+        bool assistPointsStoppage = cooldownManager.IsInCooldown("AssistStoppage");
         bool overCap = assistPoints > CurAssistPointsCap;
         AdjustAssistPoints(InteractUtility.GetDailyAssistPointChange(assistPointsStoppage, overCap), showMessage: false);
     }
@@ -89,7 +86,6 @@ public class OAInteractHandler : IExposable
         Scribe_Values.Look(ref oldAllianceDuration, "oldAllianceDuration", 0f);
 
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
-        Scribe_Values.Look(ref assistStoppageDays, "assistStoppageDays", 0);
 
         Scribe_Deep.Look(ref cooldownManager, "cooldownManager");
 
