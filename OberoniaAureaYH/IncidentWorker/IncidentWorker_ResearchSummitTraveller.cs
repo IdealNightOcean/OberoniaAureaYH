@@ -7,17 +7,19 @@ using Verse;
 
 namespace OberoniaAurea;
 
-//研究峰会 - 参会旅行者到达
+//研究峰会 - 参会旅行者商队
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGroupBase
 {
     protected override TraderKindDef FixedTraderKind => OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
 
     private static readonly SimpleCurve TravellerPointsCurve =
-    [
-        new CurvePoint(0f, 200f),
-        new CurvePoint(10000f, 500f)
-    ];
+        [
+            new CurvePoint(200f, 1f),
+            new CurvePoint(300f, 1f),
+            new CurvePoint(400f, 0.5f),
+            new CurvePoint(500f, 0.25f)
+        ];
 
     private Settlement settlement;
 

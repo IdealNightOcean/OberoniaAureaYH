@@ -30,7 +30,10 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
         {
             return false;
         }
-
+        if (f.HostileTo(Faction.OfPlayer))
+        {
+            return false;
+        }
         Map map = (Map)parms.target;
         if (NeutralGroupIncidentUtility.AnyBlockingHostileLord(map, f))
         {
@@ -192,19 +195,16 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
 
     protected static bool BaseFactionCanBeGroupSource(Faction f, IncidentParms parms, bool mustHaveSettlementOnLayer, bool desperate = false)
     {
-        Map map = (Map)parms.target;
+        if (f.defeated || f.temporary || f.Hidden)
+        {
+            return false;
+        }
         if (f.IsPlayer)
         {
             return false;
         }
-        if (f.defeated)
-        {
-            return false;
-        }
-        if (f.temporary)
-        {
-            return false;
-        }
+
+        Map map = (Map)parms.target;
         if (!desperate && (!f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) || !f.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp)))
         {
             return false;
