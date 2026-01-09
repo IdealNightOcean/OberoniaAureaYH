@@ -7,7 +7,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
-//研究峰会 - 参会旅行者到达
+//研究峰会 - 参会旅行者商队
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGroupBase
 {
@@ -15,8 +15,10 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
 
     private static readonly SimpleCurve TravellerPointsCurve =
     [
-        new CurvePoint(0f, 200f),
-        new CurvePoint(10000f, 500f)
+        new CurvePoint(200f, 1f),
+        new CurvePoint(300f, 1f),
+        new CurvePoint(400f, 0.5f),
+        new CurvePoint(500f, 0.25f)
     ];
 
     private Settlement settlement;
@@ -72,5 +74,4 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
             return true;
         }
     }
-
 }
