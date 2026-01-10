@@ -16,30 +16,30 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         {
             if (errorOnZeroResults)
             {
-                Log.Error(string.Concat("Cannot generate trader caravan for ", parms.faction, "."));
+                Log.Error(string.Concat("[OARK] Cannot generate trader caravan for ", parms.faction, "."));
             }
             return;
         }
         if (!parms.faction.def.caravanTraderKinds.Any())
         {
-            Log.Error(string.Concat("Cannot generate trader caravan for ", parms.faction, " because it has no trader kinds."));
+            Log.Error(string.Concat("[OARK] Cannot generate trader caravan for ", parms.faction, " because it has no trader kinds."));
             return;
         }
         PawnGenOption pawnGenOption = groupMaker.traders.FirstOrDefault(p => !p.kind.trader);
         if (pawnGenOption is not null)
         {
-            Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption.kind.LabelCap + ") who is not a trader but is in a traders list.");
+            Log.Error(string.Concat("[OARK] Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption.kind.LabelCap + ") who is not a trader but is in a traders list.");
             return;
         }
         PawnGenOption pawnGenOption2 = groupMaker.carriers.FirstOrDefault(p => !p.kind.RaceProps.packAnimal);
         if (pawnGenOption2 is not null)
         {
-            Log.Error(string.Concat("Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption2.kind.LabelCap + ") who is not a carrier but is in a carriers list.");
+            Log.Error(string.Concat("[OARK] Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption2.kind.LabelCap + ") who is not a carrier but is in a carriers list.");
             return;
         }
         if (parms.seed.HasValue)
         {
-            Log.Warning("Deterministic seed not implemented for this pawn group kind worker. The result will be random anyway.");
+            Log.Warning("[OARK] Deterministic seed not implemented for this pawn group kind worker. The result will be random anyway.");
         }
         TraderKindDef traderKindDef = (parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight(traderDef => traderDef.CalculatedCommonality));
         Pawn pawn = GenerateTrader(parms, groupMaker, traderKindDef);

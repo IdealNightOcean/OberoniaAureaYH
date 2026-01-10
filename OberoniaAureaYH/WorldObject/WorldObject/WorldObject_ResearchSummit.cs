@@ -419,7 +419,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     [DebugOutput("Incidents", false)]
     private static void ResearchSummitChances()
     {
-        StringBuilder sb = new();
+        StringBuilder sb = new("[OARK]");
         sb.AppendLine();
         sb.AppendInNewLine("Disaster: " + 1f.ToStringPercent());
         sb.AppendInNewLine("Backfire: " + 1.25f.ToStringPercent());

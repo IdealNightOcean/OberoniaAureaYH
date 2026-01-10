@@ -68,7 +68,7 @@ public class CompGiveHediffInRange_Building : ThingComp
                 HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
                 if (hediffComp_Disappears is null)
                 {
-                    Log.Error($"{nameof(parent)} has a hediff in props which does not have a HediffComp_Disappears");
+                    Log.Error($"[OARK] {nameof(parent)} has a hediff in props which does not have a HediffComp_Disappears");
                 }
                 else
                 {

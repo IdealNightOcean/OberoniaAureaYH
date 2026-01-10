@@ -33,42 +33,58 @@ public class DevWin_SDInteractHandler : Window
         };
         Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
         listing_Rect.Begin(viewRect);
-        listing_Rect.Label($"CurGravTechStageIndex: {sdInteractHandler.CurGravTechStage - 1}");
-        listing_Rect.Label($"CurGravTechStage: {sdInteractHandler.CurGravTechStage}");
+        listing_Rect.Label($"当前科研阶段索引: {sdInteractHandler.CurGravTechStage - 1}");
+        listing_Rect.Label($"当前科研阶段: {sdInteractHandler.CurGravTechStage}");
 
         listing_Rect.Gap(6f);
-        listing_Rect.Label($"GravTechPoints: {sdInteractHandler.GravTechPoints}");
-        listing_Rect.Label($"PlayerTechPoints: {sdInteractHandler.PlayerTechPoints}");
-        listing_Rect.Label($"GravTechAssistPoints: {sdInteractHandler.GravTechAssistPoints}");
+        listing_Rect.Label($"当前科研点数: {sdInteractHandler.GravTechPoints}");
+        listing_Rect.Label($"玩家贡献科研点数: {sdInteractHandler.PlayerTechPoints}");
+        listing_Rect.Label($"当前科研贡献点: {sdInteractHandler.GravTechAssistPoints}");
 
+        if (listing_Rect.ButtonText("+2000 科技点", widthPct: 0.5f))
+        {
+            sdInteractHandler.AddGravTechPoints(2000, byPlayer: false);
+        }
+        if (listing_Rect.ButtonText("-2000 科技点", widthPct: 0.5f))
+        {
+            sdInteractHandler.AddGravTechPoints(-2000, byPlayer: false);
+        }
+        if (listing_Rect.ButtonText("+100 科技贡献点", widthPct: 0.5f))
+        {
+            sdInteractHandler.AdjustGravTechAssistPoint(100);
+        }
+        if (listing_Rect.ButtonText("-100 科技贡献点", widthPct: 0.5f))
+        {
+            sdInteractHandler.AdjustGravTechAssistPoint(-100);
+        }
         listing_Rect.Gap(6f);
-        listing_Rect.Label($"IsInitGravQuestCompleted: {sdInteractHandler.IsInitGravQuestCompleted}");
+        listing_Rect.Label($"科技部初见任务是否已完成: {sdInteractHandler.IsInitGravQuestCompleted}");
         if (sdInteractHandler.GravResearchAssistLendPawn is null)
         {
-            listing_Rect.Label("GravResearchAssistLendPawn: None");
+            listing_Rect.Label("科技部借调人员: 无");
         }
         else
         {
-            listing_Rect.Label($"GravResearchAssistLendPawn: {sdInteractHandler.GravResearchAssistLendPawn}");
+            listing_Rect.Label($"科技部借调人员: {sdInteractHandler.GravResearchAssistLendPawn}");
         }
 
         listing_Rect.Gap(6f);
-        listing_Rect.Label($"GravTechPointEMBlockDays: {sdInteractHandler.GravTechPointEMBlockDays}");
-        listing_Rect.Label($"LastEconomyReviewOutcome: {sdInteractHandler.LastEconomyReviewOutcome}");
-        listing_Rect.Label($"LastEconomyReviewTick: {sdInteractHandler.LastEconomyReviewTick}");
+        listing_Rect.Label($"统筹部审查冻结科研点增长（天）: {sdInteractHandler.GravTechPointEMBlockDays}");
+        listing_Rect.Label($"上次统筹部审查结果: {sdInteractHandler.LastEconomyReviewOutcome}");
+        listing_Rect.Label($"上次统筹部审查结果: {sdInteractHandler.LastEconomyReviewTick}");
 
         listing_Rect.Gap(6f);
         if (shipName is null)
         {
-            listing_Rect.Label("ScienceShipRecord: None");
+            listing_Rect.Label("存在的科研船: 无");
         }
         else
         {
-            listing_Rect.Label($"ScienceShipRecord: {shipName}");
+            listing_Rect.Label($"存在的科研船: {shipName}");
         }
         listing_Rect.Gap(6f);
-        listing_Rect.Label($"ToDayDutyText: {sdInteractHandler.TodayDutyText}");
-        listing_Rect.Label($"NextShiftWorkDay: {sdInteractHandler.NextShiftWorkDay}");
+        listing_Rect.Label($"今日通讯台值班文本: {sdInteractHandler.TodayDutyText}");
+        listing_Rect.Label($"距离通讯台值班文本切换（天）: {sdInteractHandler.NextShiftWorkDay}");
 
         if (Event.current.type == EventType.Layout)
         {

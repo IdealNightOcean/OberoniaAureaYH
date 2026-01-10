@@ -77,7 +77,7 @@ public static class GravityWeaponUtility
     {
         if (modEx_DE is null)
         {
-            Log.Error("Tried to cause displacement at" + ctrPosition.ToString() + ", But got a null DisplacedExplosionExtension.");
+            Log.Error("[OARK] Tried to cause displacement at" + ctrPosition.ToString() + ", But got a null DisplacedExplosionExtension.");
             return;
         }
 

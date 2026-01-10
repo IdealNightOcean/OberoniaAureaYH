@@ -1,6 +1,7 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using System;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -16,7 +17,15 @@ public class GameComponent_OberoniaAurea : GameComponent
     private int cachedYear = 2025;
     public bool newYearEventTriggeredOnce;
 
-    public GameComponent_OberoniaAurea(Game game) => Instance = this;
+    public GameComponent_OberoniaAurea(Game game)
+    {
+        // OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance)); 
+        if (Instance != this)
+        {
+            Log.Message($"[OARK] {nameof(GameComponent_OberoniaAurea)} Instance switched.".Colorize(Color.cyan));
+        }
+        Instance = this;
+    }
 
     public override void StartedNewGame() => GameStart();
     public override void LoadedGame() => GameStart();
@@ -37,10 +46,28 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     private void GameStart()
     {
-        interactHandler ??= new OAInteractHandler();
+        try
+        {
+            interactHandler ??= new OAInteractHandler();
+        }
+        catch (System.Exception ex)
+        {
+            Log.Error($"[OARK] An exception occurred during initializing {nameof(OAInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(GameStart)}. \nException: \n{ex}");
+            OAInteractHandler.ClearStaticCache();
+            interactHandler = new OAInteractHandler();
+        }
         if (ModsConfig.OdysseyActive)
         {
-            sdInteractHandler ??= new ScienceDepartmentInteractHandler();
+            try
+            {
+                sdInteractHandler ??= new ScienceDepartmentInteractHandler();
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error($"[OARK] An exception occurred during initializing {nameof(ScienceDepartmentInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(GameStart)}. \nException: \n{ex}");
+                ScienceDepartmentInteractHandler.ClearStaticCache();
+                sdInteractHandler = new ScienceDepartmentInteractHandler();
+            }
         }
         ModUtility.Notify_GameStart();
         TryAddNewYearEnent();

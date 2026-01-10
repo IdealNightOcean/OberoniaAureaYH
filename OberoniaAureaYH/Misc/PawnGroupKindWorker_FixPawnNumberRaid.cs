@@ -14,7 +14,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
         {
             if (errorOnZeroResults)
             {
-                Log.Error(string.Concat("Cannot generate pawns for ", parms.faction, " with ", parms.points, ". Defaulting to a single random cheap group."));
+                Log.Error(string.Concat("[OARK] Cannot generate pawns for ", parms.faction, " with ", parms.points, ". Defaulting to a single random cheap group."));
             }
             return;
         }

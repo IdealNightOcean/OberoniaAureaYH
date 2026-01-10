@@ -35,7 +35,7 @@ public class CrashedGravship : MapParent_Enterable
         }
         catch (Exception ex)
         {
-            Log.Error($"Exception occurred in {nameof(PostMapGenerate)}: {ex}");
+            Log.Error($"[OARK] Exception occurred in {nameof(PostMapGenerate)}: {ex}");
         }
     }
 }

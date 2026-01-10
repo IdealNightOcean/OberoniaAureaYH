@@ -81,7 +81,7 @@ public class CompGiveHediffsInRange : ThingComp
             HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
             if (hediffComp_Disappears is null)
             {
-                Log.Error("HediffComp_GiveHediffsInRange has a hediff in props which does not have a HediffComp_Disappears");
+                Log.Error("[OARK] HediffComp_GiveHediffsInRange has a hediff in props which does not have a HediffComp_Disappears");
             }
             else
             {

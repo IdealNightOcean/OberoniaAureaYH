@@ -86,7 +86,7 @@ public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
     [DebugOutput("Incidents", false)]
     private static void DiplomaticOfficesChances()
     {
-        StringBuilder stringBuilder = new();
+        StringBuilder stringBuilder = new("[OARK]");
         AppendDebugChances(stringBuilder, 0f);
         AppendDebugChances(stringBuilder, 1f);
         AppendDebugChances(stringBuilder, 2.2f);

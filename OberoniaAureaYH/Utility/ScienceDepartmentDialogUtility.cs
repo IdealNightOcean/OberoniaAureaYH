@@ -610,7 +610,7 @@ public static class ScienceDepartmentDialogUtility
         }
         catch (Exception ex)
         {
-            Log.Error("An error occurred while processing the salutation GrammarRequest: " + ex);
+            Log.Error("[OARK] An error occurred while processing the salutation GrammarRequest: " + ex);
             grammarRequest = backupRequest;
         }
         return GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
@@ -670,7 +670,7 @@ public static class ScienceDepartmentDialogUtility
         }
         catch (Exception ex)
         {
-            Log.Error("An error occurred while processing the progress GrammarRequest: " + ex);
+            Log.Error("[OARK] An error occurred while processing the progress GrammarRequest: " + ex);
             grammarRequest = backupRequest;
         }
 

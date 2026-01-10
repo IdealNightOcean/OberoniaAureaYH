@@ -91,7 +91,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     {
         if (change <= 0)
         {
-            Log.Warning("Try to add a non positive gravity tech point.");
+            Log.Warning("[OARK] Try to add a non positive gravity tech point.");
             return;
         }
 
@@ -167,7 +167,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     {
         if (active && pawn is null)
         {
-            Log.Error("Try active gravResearchAssistLendPawn with a null pawn.");
+            Log.Error("[OARK] Try active gravResearchAssistLendPawn with a null pawn.");
             return;
         }
 

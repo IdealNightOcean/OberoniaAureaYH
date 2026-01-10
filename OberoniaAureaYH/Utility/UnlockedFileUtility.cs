@@ -62,7 +62,6 @@ public static class UnlockedFileUtility
             sb.AppendInNewLine("OAFrame_ResearchFinished".Translate());
             sb.AppendInNewLine(projectDef.LabelCap);
         }
-        Log.Message(sb.ToString());
         Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
     }
 
@@ -139,7 +138,7 @@ public static class UnlockedFileUtility
         Map map = Find.AnyPlayerHomeMap;
         if (map is null)
         {
-            Log.Error("OARK_UnlockedFile_EncryptedFile: No player home map found.");
+            Log.Error("[OARK] OARK_UnlockedFile_EncryptedFile: No player home map found.");
             return;
         }
 
