@@ -157,7 +157,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             }
             catch (Exception ex)
             {
-                Log.Error(ex.ToString());
+                Log.Error($"[OARK] {ex}");
             }
         }
 

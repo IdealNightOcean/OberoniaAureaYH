@@ -96,7 +96,7 @@ public class QuestPart_ProspectingTeamReward : QuestPart
         }
         if (!centerCell.IsValid && !CellFinderLoose.TryFindRandomNotEdgeCellWith(10, c => CanScatterAt(c, map), map, out centerCell))
         {
-            Log.Error("Could not find a center cell for deep scanning lump generation!");
+            Log.Error("[OARK] Could not find a center cell for deep scanning lump generation!");
         }
         ThingDef thingDef = ThingDefOf.Uranium;
         int numCells = Mathf.CeilToInt(thingDef.deepLumpSizeRange.RandomInRange);

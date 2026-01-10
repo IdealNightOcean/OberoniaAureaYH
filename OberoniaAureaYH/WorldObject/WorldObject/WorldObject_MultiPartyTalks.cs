@@ -12,7 +12,6 @@ namespace OberoniaAurea;
 
 public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
 {
-
     private static readonly SimpleCurve BadOutcomeChanceFactorByNegotiationAbility =
     [
         new CurvePoint(0f, 4f),
@@ -212,7 +211,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
     [DebugOutput("Incidents", false)]
     private static void MultiPartyTalksChances()
     {
-        StringBuilder stringBuilder = new();
+        StringBuilder stringBuilder = new("[OARK]");
         AppendDebugChances(stringBuilder, 0f);
         AppendDebugChances(stringBuilder, 1f);
         AppendDebugChances(stringBuilder, 1.5f);

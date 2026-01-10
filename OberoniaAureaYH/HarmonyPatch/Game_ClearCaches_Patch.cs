@@ -10,8 +10,6 @@ public static class Game_ClearCaches_Patch
     [HarmonyPostfix]
     public static void Postfix()
     {
-        ModUtility.ClearStaticCache();
-        OAInteractHandler.ClearStaticCache();
-        ThoughtWorker_Precept_Snow.ClearStaticCache();
+        GameComponent_OberoniaAurea.ClearStaticCache();
     }
 }

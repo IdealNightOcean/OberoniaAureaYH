@@ -56,7 +56,7 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
         Scribe_Defs.Look(ref questScriptDef, "questScriptDef");
         if (Scribe.mode == LoadSaveMode.Saving && slate is not null)
         {
-            Log.Error("Try saving a ChoiceLetter_OptionalQuest with a non-null slate.");
+            Log.Error("[OARK] Try saving a ChoiceLetter_OptionalQuest with a non-null slate.");
         }
     }
 }

@@ -32,7 +32,6 @@ public class OAInteractHandler : IExposable
 
     public OAInteractHandler()
     {
-        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
         cooldownManager ??= new();
     }

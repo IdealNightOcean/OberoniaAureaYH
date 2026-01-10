@@ -35,7 +35,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         }
         else
         {
-            Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", oaFaction));
+            Log.Error(string.Concat("[OARK] Could not send aid to map ", map, " from faction ", oaFaction));
             return false;
         }
     }

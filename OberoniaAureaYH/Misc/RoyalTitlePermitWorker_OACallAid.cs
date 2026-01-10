@@ -117,7 +117,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         }
         else
         {
-            Log.Error(string.Concat("Could not send aid to map ", map, " from faction ", faction));
+            Log.Error(string.Concat("[OARK] Could not send aid to map ", map, " from faction ", faction));
         }
     }
     protected bool CallNormalAid(Map map, IntVec3 spawnPos, Faction faction, float biocodeChance = 1f)

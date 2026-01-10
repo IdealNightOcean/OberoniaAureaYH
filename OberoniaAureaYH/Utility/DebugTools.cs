@@ -7,7 +7,7 @@ namespace OberoniaAurea;
 public static class DebugTools
 {
     [DebugAction(category: "OberoniaAurea",
-                 name: "DevWin-OAInteractHandler",
+                 name: "金鸢尾兰贡献调试",
                  requiresRoyalty: false,
                  requiresIdeology: false,
                  requiresBiotech: false,
