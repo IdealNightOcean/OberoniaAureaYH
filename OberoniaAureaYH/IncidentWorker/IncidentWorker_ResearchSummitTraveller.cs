@@ -11,34 +11,35 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGroupBase
 {
-    protected override TraderKindDef FixedTraderKind => OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
-
     private static readonly SimpleCurve TravellerPointsCurve =
-        [
-            new CurvePoint(200f, 1f),
-            new CurvePoint(300f, 1f),
-            new CurvePoint(400f, 0.5f),
-            new CurvePoint(500f, 0.25f)
-        ];
+    [
+        new CurvePoint(100f, 0f),
+        new CurvePoint(200f, 1f),
+        new CurvePoint(300f, 1f),
+        new CurvePoint(400f, 0.5f),
+        new CurvePoint(500f, 0.25f),
+        new CurvePoint(1000f, 0.1f),
+        new CurvePoint(2000f, 0.05f),
+        new CurvePoint(2000f, 0f)
+    ];
 
-    private Settlement settlement;
+    private Settlement Settlement { get; set; }
+    protected override float TraderChance => 1f;
+    protected override TraderKindDef FixedTraderKind => OARK_PawnGenerateDefOf.OA_ResearchSummit_TravellerTrader;
 
     protected override void ResolveParmsPoints(IncidentParms parms)
     {
-        if (parms.points < 0f)
-        {
-            parms.points = Rand.ByCurve(TravellerPointsCurve);
-        }
+        parms.points = Rand.ByCurve(TravellerPointsCurve);
     }
 
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
-        settlement = null;
+        Settlement = null;
         if (!TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit))
         {
             return false;
         }
-        settlement = researchSummit.AssociateSettlement;
+        Settlement = researchSummit.AssociateSettlement;
         return base.TryExecuteWorker(parms);
     }
 
@@ -53,13 +54,14 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
         return OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
     }
 
-    protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader, bool traderExists)
+    protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader)
     {
-        if (traderExists)
+        if (trader is not null)
         {
-            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
+            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, Settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
         }
     }
+
     private static bool TryFindResearchSummit(out WorldObject_ResearchSummit researchSummit)
     {
         WorldObject obj = Find.WorldObjects.AllWorldObjects.Where(w => w.def == OARK_WorldObjectDefOf.OA_RK_ResearchSummit).RandomElementWithFallback(null);

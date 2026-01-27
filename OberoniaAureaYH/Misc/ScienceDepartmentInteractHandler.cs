@@ -188,18 +188,14 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     private void DailyGravTechPointsChange()
     {
-        if (gravTechPointEMBlockDays > 0)
+        if (gravTechPointEMBlockDays > 0 && (--gravTechPointEMBlockDays) == 0)
         {
-            gravTechPointEMBlockDays--;
-            if (gravTechPointEMBlockDays == 0)
-            {
-                AddGravTechPoints(1200, byPlayer: false, showMessage: false);
-                Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_EMBlockEnd".Translate(),
-                                               text: "OARK_LetterLabel_EMBlockEnd".Translate(),
-                                               textLetterDef: LetterDefOf.NegativeEvent,
-                                               lookTargets: null,
-                                               relatedFaction: ModUtility.OAFaction);
-            }
+            AddGravTechPoints(1200, byPlayer: false, showMessage: false);
+            Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_EMBlockEnd".Translate(),
+                                           text: "OARK_LetterText_EMBlockEnd".Translate(1200),
+                                           textLetterDef: LetterDefOf.PositiveEvent,
+                                           lookTargets: null,
+                                           relatedFaction: ModUtility.OAFaction);
         }
         else
         {

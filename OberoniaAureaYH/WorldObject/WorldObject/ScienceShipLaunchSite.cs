@@ -5,7 +5,6 @@ using RimWorld.QuestGen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 using Verse;
 using Verse.Grammar;
 
@@ -14,9 +13,9 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
 {
-    private static readonly Texture2D quizIcon = ContentFinder<Texture2D>.Get("UI/OARK_ScienceShipLaunch_Quiz");
-    private static readonly Texture2D inquiryIcon = ContentFinder<Texture2D>.Get("UI/OARK_ScienceShipLaunch_Inquiry");
-    private static readonly Texture2D pryIcon = ContentFinder<Texture2D>.Get("UI/OARK_ScienceShipLaunch_Pry");
+    private static readonly CachedTexture quizIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Quiz");
+    private static readonly CachedTexture inquiryIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Inquiry");
+    private static readonly CachedTexture pryIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Pry");
 
     private string shipName;
     private ScienceShipRecord? scienceShip;
@@ -162,7 +161,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
                     defaultLabel = "OARK_ScienceShipLaunch_Quiz".Translate(),
                     defaultDesc = "OARK_ScienceShipLaunch_QuizDesc".Translate(),
                     action = QuizResult,
-                    icon = quizIcon
+                    icon = quizIcon.Texture
                 };
                 if (blockInteraction)
                 {
@@ -180,7 +179,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
                 defaultLabel = "OARK_ScienceShipLaunch_Inquiry".Translate(),
                 defaultDesc = "OARK_ScienceShipLaunch_InquiryDesc".Translate(),
                 action = InquiryResult,
-                icon = inquiryIcon
+                icon = inquiryIcon.Texture
             };
             if (ScienceDepartmentInteractHandler.Instance.GravTechAssistPoints < 5)
             {
@@ -192,7 +191,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
                 defaultLabel = "OARK_ScienceShipLaunch_Pry".Translate(),
                 defaultDesc = "OARK_ScienceShipLaunch_PryDesc".Translate(),
                 action = PryDialog,
-                icon = pryIcon
+                icon = pryIcon.Texture
             };
 
             if (blockInteraction)
