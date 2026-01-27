@@ -14,7 +14,7 @@ public static class OARK_RimWorldDefOf
     [MayRequireOdyssey]
     public static ThingDef SentienceCatalyst; //感知催化剂
 
-    public static SoundDef Emp_Crack;
+    public static SoundDef RK_Sound_Emp_Crack;
 
     public static TraderKindDef Visitor_Outlander_Standard;
 

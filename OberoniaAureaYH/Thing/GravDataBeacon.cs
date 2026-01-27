@@ -79,7 +79,7 @@ public class GravDataBeacon : Building
                 toggleAction = delegate
                 {
                     isActive = !isActive;
-                    OARK_RimWorldDefOf.Emp_Crack.PlayOneShot(SoundInfo.InMap(this));
+                    OARK_RimWorldDefOf.RK_Sound_Emp_Crack.PlayOneShot(SoundInfo.InMap(this));
                 }
             };
             if (!isActive)

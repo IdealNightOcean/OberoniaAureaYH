@@ -40,8 +40,8 @@
       <HintPath>..\..\..\RimWorldReference\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NewRatkin-Temp">
-      <HintPath>..\..\..\RimWorldReference\NewRatkin-Temp.dll</HintPath>
+    <Reference Include="NewRatkin">
+      <HintPath>..\..\..\RimWorldReference\NewRatkin.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">

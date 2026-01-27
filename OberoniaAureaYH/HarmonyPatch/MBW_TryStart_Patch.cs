@@ -7,7 +7,7 @@ namespace OberoniaAurea;
 
 //精神崩溃Patch
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(MentalBreakWorker), "TryStart")]
+[HarmonyPatch(typeof(MentalBreakWorker), nameof(MentalBreakWorker.TryStart))]
 public static class MBW_TryStart_Patch
 {
     [HarmonyPostfix]
@@ -21,18 +21,21 @@ public static class MBW_TryStart_Patch
 
         if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_MentalBreakProbability_Low))
         {
-            MentalBreakProbability(pawn, 0.5f, OARK_ThoughtDefOf.OA_RK_ResponsibilityConstraints);
-            Messages.Message("OA_ResponsibilityConstraints".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
+            MentalBreakProbability(pawn: pawn,
+                                   chance: 0.5f,
+                                   thought: OARK_ThoughtDefOf.OA_RK_ResponsibilityConstraints,
+                                   message: "OA_ResponsibilityConstraints");
         }
         else if (ideo.HasPrecept(OARK_PreceptDefOf.OA_RK_MentalBreakProbability_Atonement))
         {
-            MentalBreakProbability(pawn, 0.8f, OARK_ThoughtDefOf.OA_RK_Atonement);
-            Messages.Message("OA_Atonement".Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
+            MentalBreakProbability(pawn: pawn,
+                                   chance: 0.8f,
+                                   thought: OARK_ThoughtDefOf.OA_RK_Atonement,
+                                   message: "OA_Atonement");
         }
-
     }
 
-    private static void MentalBreakProbability(Pawn pawn, float chance, ThoughtDef thought)
+    private static void MentalBreakProbability(Pawn pawn, float chance, ThoughtDef thought, string message)
     {
         //有戒律崩溃后概率恢复
         if (Rand.Chance(chance))
@@ -46,6 +49,7 @@ public static class MBW_TryStart_Patch
             pawn.mindState.mentalStateHandler.Reset();
 
             pawn.needs.mood?.thoughts?.memories?.TryGainMemory(thought);
+            Messages.Message(message.Translate(pawn.Named("NAME")), MessageTypeDefOf.PositiveEvent);
         }
     }
 
