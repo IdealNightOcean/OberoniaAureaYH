@@ -59,14 +59,13 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
         }
 
         LordMaker.MakeNewLord(parms.faction, CreateLordJob(parms, pawns), map, pawns);
-        bool traderExists = false;
         Pawn trader = null;
         if (Rand.Value < TraderChance)
         {
-            (traderExists, trader) = TryConvertOnePawnToSmallTrader(pawns, parms.faction, map);
+            trader = TryConvertOnePawnToSmallTrader(pawns, parms.faction, map);
         }
 
-        PostTraderResolved(parms, pawns, trader, traderExists);
+        PostTraderResolved(parms, pawns, trader);
         return true;
     }
 
@@ -90,11 +89,14 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
 
     protected abstract List<Pawn> GeneratePawns(IncidentParms parms);
 
-    protected virtual void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader, bool traderExists)
+    protected virtual void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader)
     {
+        bool traderExists = trader is not null;
+
         TaggedString letterLabel;
         TaggedString letterText;
         TaggedString taggedString;
+
         if (pawns.Count == 1)
         {
             taggedString = traderExists ? ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0])) : ((TaggedString)"");
@@ -119,17 +121,17 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
         }
     }
 
-    protected virtual (bool, Pawn) TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, bool force = false)
+    protected virtual Pawn TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, bool force = false)
     {
         if (!force && faction.def.visitorTraderKinds.NullOrEmpty())
         {
-            return (false, null);
+            return null;
         }
 
         Pawn trader = pawns.Where(p => p.DevelopmentalStage.Adult())?.RandomElementWithFallback(null);
         if (trader is null)
         {
-            return (false, null);
+            return null;
         }
 
         trader.mindState.wantsToTradeWithColony = true;
@@ -172,9 +174,8 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
             }
         }
         PawnInventoryGenerator.GiveRandomFood(trader);
-        return (false, trader);
+        return trader;
     }
-
 
     protected static bool BaseFactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
     {

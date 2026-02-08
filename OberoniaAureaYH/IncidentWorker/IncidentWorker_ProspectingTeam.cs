@@ -57,7 +57,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         return pawns;
     }
 
-    protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader, bool traderExists)
+    protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader)
     {
         trader ??= pawns.RandomElement();
         tempLordJob.SetTalkAction(trader, OARK_ModDefOf.OARK_Job_TalkWithProspectingLeader);
