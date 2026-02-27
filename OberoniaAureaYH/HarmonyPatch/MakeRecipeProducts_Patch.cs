@@ -7,7 +7,7 @@ using Verse;
 namespace OberoniaAurea;
 //布料回收装置，返还部分主要材料
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(GenRecipe), "MakeRecipeProducts")]
+[HarmonyPatch(typeof(GenRecipe), nameof(GenRecipe.MakeRecipeProducts))]
 public static class MakeRecipeProducts_Patch
 {
     [HarmonyPostfix]
