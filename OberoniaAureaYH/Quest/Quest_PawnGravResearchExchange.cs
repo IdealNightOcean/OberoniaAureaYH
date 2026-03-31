@@ -40,7 +40,7 @@ public class QuestPart_PawnGravResearchExchange : QuestPart
 
     private void ApplyExchangeResults()
     {
-        IEnumerable<Pawn> LentColonists = ModUtility.GetLendColonistsFromQuest(quest);
+        IEnumerable<Pawn> LentColonists = PawnUtility.GetLendColonistsFromQuest(quest);
 
         foreach (Pawn pawn in LentColonists)
         {

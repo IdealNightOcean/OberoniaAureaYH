@@ -6,8 +6,10 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_HediffDefOf
 {
-    public static HediffDef OARK_Hediff_ExplorationFatigue; //体力耗竭
-    public static HediffDef OARK_Hediff_SeriousInjury; //严重受伤
+    ///<summary>体力耗竭</summary>
+    public static HediffDef OARK_Hediff_ExplorationFatigue;
+    ///<summary>严重受伤</summary>
+    public static HediffDef OARK_Hediff_SeriousInjury;
 
     [MayRequireBiotech]
     public static HediffDef OA_RK_Hediff_ColdAdaptation;

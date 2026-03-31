@@ -1,14 +1,17 @@
-﻿using RimWorld;
+using RimWorld;
 
 namespace OberoniaAurea;
 
 [DefOf]
 public static class OARK_WorldObjectDefOf
 {
-    public static SitePartDef OA_RK_ResearcherCamp; //科研峰会：落脚点
+    ///<summary>科研峰会：落脚点</summary>
+    public static SitePartDef OA_RK_ResearcherCamp;
 
-    public static WorldObjectDef OA_RK_ResearchSummit; //科研峰会
-    public static WorldObjectDef OA_ResearchSummit_AcademicDispute; //科研峰会：约架
+    ///<summary>科研峰会</summary>
+    public static WorldObjectDef OA_RK_ResearchSummit;
+    ///<summary>科研峰会：约架</summary>
+    public static WorldObjectDef OA_ResearchSummit_AcademicDispute;
     public static WorldObjectDef OA_ResearchSummitEccentricScholar;
     public static WorldObjectDef OA_ResearchSummit_Fair;
     public static WorldObjectDef OA_ResearchSummit_MysteriousTrader;
