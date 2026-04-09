@@ -1,7 +1,5 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Verse;
 
@@ -13,10 +11,19 @@ public static class ModUtility
     private static Faction oaFactionCache;
     public static Faction OAFaction => oaFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
 
+    public static CooldownRecordManager CooldownManager => GameComponent_OberoniaAurea.Instance.CooldownManager;
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static MapComponent_OberoniaAurea GetOAMapComp(this Map map)
     {
         return map?.GetComponent<MapComponent_OberoniaAurea>();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsHashIntervalTick(int tickHashOffset, int interval)
+    {
+        return (Find.TickManager.TicksGame + tickHashOffset) % interval == 0;
     }
 
     public static bool IsOAFaction(this Faction faction, bool allowTemp = false)
@@ -51,21 +58,14 @@ public static class ModUtility
         OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
-    public static IEnumerable<Pawn> GetLendColonistsFromQuest(Quest quest)
-    {
-        return quest?.PartsListForReading?.OfType<QuestPart_LendColonistsToFaction>()
-                                          .FirstOrFallback(null)
-                                         ?.LentColonistsListForReading
-                                         ?.OfType<Pawn>()
-                                         ?? [];
-    }
 
-    public static void Notify_GameStart()
+
+    internal static void Notify_GameStart()
     {
         oaFactionCache = Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
     }
 
-    public static void ClearStaticCache()
+    internal static void ClearStaticCache()
     {
         oaFactionCache = null;
     }

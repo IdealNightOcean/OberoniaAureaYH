@@ -76,7 +76,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         Scribe_Deep.Look(ref ScienceShipRecord, "scienceShipRecord");
     }
 
-    public void TickDay()
+    internal void TickDay()
     {
         DailyGravTechPointsChange();
         if (!isInitGravQuestCompleted)
@@ -157,7 +157,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     public void Notify_InitGravQuestCompleted()
     {
         isInitGravQuestCompleted = true;
-        OAInteractHandler.Instance.CooldownManager.DeregisterRecord("GravInitQuestTrigger");
+        ModUtility.CooldownManager.DeregisterRecord("GravInitQuestTrigger");
 
         AddGravTechPoints(100, byPlayer: true);
         AdjustGravTechAssistPoint(100);
@@ -171,7 +171,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             return;
         }
 
-        OAInteractHandler.Instance.CooldownManager.DeregisterRecord("QuestGravlitePanel");
+        ModUtility.CooldownManager.DeregisterRecord("QuestGravlitePanel");
         gravResearchAssistLendPawn = active ? pawn : null;
     }
 
@@ -205,7 +205,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     private void TryTriggerEMReview()
     {
-        if (!IsInitGravQuestCompleted || !ModUtility.IsOAFactionAlly() || OAInteractHandler.Instance.CooldownManager.IsInCooldown("EconomyMinistryReview"))
+        if (!IsInitGravQuestCompleted || !ModUtility.IsOAFactionAlly() || ModUtility.CooldownManager.IsInCooldown("EconomyMinistryReview"))
         {
             emReviewChance += 0.25f;
             return;
@@ -214,7 +214,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         if (Rand.Chance(emReviewChance))
         {
             emReviewChance = 0f;
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, removeWhenExpired: false);
+            ModUtility.CooldownManager.RegisterRecord("EconomyMinistryReview", cdTicks: 15 * 60000, removeWhenExpired: false);
             ChoiceLetter_EMReview letter = (ChoiceLetter_EMReview)LetterMaker.MakeLetter(label: "OARK_LetterLabel_EMReview".Translate(),
                                                                                          text: "OARK_Letter_EMReview".Translate(),
                                                                                          def: OARK_LetterDefOf.OARK_EMReviewLetter,
@@ -236,7 +236,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             return;
         }
 
-        OAInteractHandler.Instance.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, removeWhenExpired: true);
+        ModUtility.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, removeWhenExpired: true);
 
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, new Slate(), forced: false);
 
@@ -246,7 +246,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             {
                 return false;
             }
-            if (OAInteractHandler.Instance.CooldownManager.IsInCooldown("GravInitQuestTrigger"))
+            if (ModUtility.CooldownManager.IsInCooldown("GravInitQuestTrigger"))
             {
                 return false;
             }
@@ -271,11 +271,11 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, removeWhenExpired: false);
+            ModUtility.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, removeWhenExpired: false);
         }
         else
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: 2 * 60000, removeWhenExpired: false);
+            ModUtility.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: 2 * 60000, removeWhenExpired: false);
         }
 
         static bool CanTriggerGravInitQuest()
@@ -284,7 +284,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             {
                 return false;
             }
-            if (OAInteractHandler.Instance.CooldownManager.IsInCooldown("SDAnnualInteraction"))
+            if (ModUtility.CooldownManager.IsInCooldown("SDAnnualInteraction"))
             {
                 return false;
             }

@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -7,32 +7,40 @@ namespace OberoniaAurea;
 public static class OARK_ModDefOf
 {
     [MayRequireOdyssey]
-    public static EffecterDef OARK_Effect_GravTrapIED; //重力陷阱爆炸
+    ///<summary>重力陷阱爆炸</summary>
+    public static EffecterDef OARK_Effect_GravTrapIED;
 
-    public static FactionDef OA_RK_PlayerFaction; //金鼠玩家派系
-    public static FactionDef OA_RK_Faction; //金鼠鼠派系
+    ///<summary>金鼠玩家派系</summary>
+    public static FactionDef OA_RK_PlayerFaction;
+    ///<summary>金鼠鼠派系</summary>
+    public static FactionDef OA_RK_Faction;
     [MayRequire("OARK.RatkinFaction.GeneExpand")]
-    public static FactionDef Rakinia_TravelRatkin; //旅鼠派系
+    ///<summary>旅鼠派系</summary>
+    public static FactionDef Rakinia_TravelRatkin;
 
     [MayRequireOdyssey]
     public static FleckDef OARK_Fleck_GravBomb;
 
-    public static GameConditionDef OA_MilitaryDeployment; //军事部署
+    ///<summary>军事部署</summary>
+    public static GameConditionDef OA_MilitaryDeployment;
     [MayRequireOdyssey]
-    public static GameConditionDef OARK_GravityDistortionBomb; //引力扭曲轰炸
+    ///<summary>引力扭曲轰炸</summary>
+    public static GameConditionDef OARK_GravityDistortionBomb;
 
     [MayRequireBiotech]
     public static GeneDef RK_OA_gene_Social;
 
     public static JobDef OARK_Job_TalkWithProspectingLeader;
-    public static JobDef OA_RK_RepairCircuitRegulator; //整修电路调控
+    ///<summary>整修电路调控</summary>
+    public static JobDef OA_RK_RepairCircuitRegulator;
     [MayRequireOdyssey]
     public static JobDef OARK_Job_SailorInvitation;
     [MayRequireOdyssey]
     public static JobDef OARK_Job_Hack;
 
     [MayRequireIdeology]
-    public static MemeDef OA_RK_meme_Friendly; //和谐团体
+    ///<summary>和谐团体</summary>
+    public static MemeDef OA_RK_meme_Friendly;
 
     public static StorytellerDef Begonia_Oberonia_Aurea;
 

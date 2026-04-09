@@ -9,7 +9,7 @@ namespace OberoniaAurea;
 public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
 {
     private const int AssistPoints = 15;
-    private int curPawnIndex;
+    private int CurPawnIndex { get; set; }
 
     protected override PawnKindDef FixedPawnKind => OARK_PawnGenerateDefOf.OA_RK_Traveller;
 
@@ -26,12 +26,12 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     protected override Faction GetOrGenerateFaction()
     {
         QuestGen.slate.Set(IsMainFactionSlate, true);
-        return ModUtility.OAFaction;
+        return QuestGen.slate.Get<Faction>("faction") ?? ModUtility.OAFaction;
     }
 
     protected override bool InitQuestParameter()
     {
-        curPawnIndex = 0;
+        CurPawnIndex = 0;
         int lodgerCount = Rand.RangeInclusive(2, 3);
         questParameter = new QuestParameter()
         {
@@ -53,13 +53,13 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
     protected override void ClearQuestParameter()
     {
         base.ClearQuestParameter();
-        curPawnIndex = 0;
+        CurPawnIndex = 0;
     }
 
     protected override void PostPawnGenerated(Pawn pawn, string lodgerRecruitedSignal)
     {
         base.PostPawnGenerated(pawn, lodgerRecruitedSignal);
-        if (curPawnIndex++ == 1)
+        if (CurPawnIndex++ == 1)
         {
             pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_SeriousInjury);
             OAFrame_PawnUtility.TakeNonLethalDamage(pawn, Rand.RangeInclusive(2, 3), DamageDefOf.Blunt);

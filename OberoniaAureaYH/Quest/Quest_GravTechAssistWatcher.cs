@@ -45,7 +45,7 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
         base.Enable(receivedArgs);
         enabled = true;
 
-        IEnumerable<Pawn> LentColonists = ModUtility.GetLendColonistsFromQuest(quest);
+        IEnumerable<Pawn> LentColonists = PawnUtility.GetLendColonistsFromQuest(quest);
         Pawn researcher = LentColonists.FirstOrFallback(null);
         if (researcher is not null)
         {

@@ -26,19 +26,15 @@ public class OAInteractHandler : IExposable
 
     public int CurAssistPointsCap => InteractUtility.GetCurAssistPointsCap(AllianceDuration());
 
-    private CooldownRecordManager cooldownManager;
-    public CooldownRecordManager CooldownManager => cooldownManager;
-
     public OAInteractHandler()
     {
         OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
-        cooldownManager ??= new();
     }
     public static void ClearStaticCache() => Instance = null;
     public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_OAInteractHandler());
 
-    public void TickDay()
+    internal void TickDay()
     {
         DailyAssistPointChange();
     }
@@ -51,7 +47,7 @@ public class OAInteractHandler : IExposable
 
     private void DailyAssistPointChange()
     {
-        bool assistPointsStoppage = cooldownManager.IsInCooldown("AssistStoppage");
+        bool assistPointsStoppage = ModUtility.CooldownManager.IsInCooldown("AssistStoppage");
         bool overCap = assistPoints > CurAssistPointsCap;
         AdjustAssistPoints(InteractUtility.GetDailyAssistPointChange(assistPointsStoppage, overCap), showMessage: false);
     }
@@ -86,12 +82,5 @@ public class OAInteractHandler : IExposable
         Scribe_Values.Look(ref oldAllianceDuration, "oldAllianceDuration", 0f);
 
         Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
-
-        Scribe_Deep.Look(ref cooldownManager, "cooldownManager");
-
-        if (Scribe.mode == LoadSaveMode.PostLoadInit)
-        {
-            cooldownManager ??= new();
-        }
     }
 }

@@ -45,7 +45,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>..\..\OberoniaAurea_Frame\Release\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>..\..\..\RimWorldReference\OAFrame\1.6\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefModExtension\OberoniaAureaBackstoryFlag.cs" />
     <Compile Include="DefModExtension\MemeTraitOpinionExtension.cs" />
     <Compile Include="DefModExtension\OARatkinGroupExtension.cs" />
     <Compile Include="DefOf\IncidentDefOf.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Enum_Independent\EconomyMinistryReviewOutcome.cs" />
     <Compile Include="Enum_Independent\NegotiatingTeamLevel.cs" />
     <Compile Include="Enum_Independent\SettlementDipVisitType.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_BirthdayWishes.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_EconomyMinistryReview_Outcome.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ProspectingTeam.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ScienceShip_OASupport.cs" />
@@ -114,10 +116,14 @@
     <Compile Include="HarmonyPatch\GetPriceTooltip_Patch.cs" />
     <Compile Include="Hediff\Hediff_SailorAssistance.cs" />
     <Compile Include="Hediff\HediffComp_TeaWithSkyWarmth.cs" />
-    <Compile Include="IncidentWorker\IncidentWorker_NewYearEvent.cs" />
+    <Compile Include="IncidentWorker\IncidentWorker_SpecialGlobalEvent_GiftLetter.cs" />
     <Compile Include="DefModExtension\DisplacementExplosionExtension.cs" />
+    <Compile Include="Misc\InteractionWorker_BirthdayWishes.cs" />
+    <Compile Include="Misc\ModMain.cs" />
     <Compile Include="Misc\ScienceDepartmentInteractHandler.cs" />
     <Compile Include="JobAndWork\JobDriver_SailorInvitation.cs" />
+    <Compile Include="Misc\SpecialGlobalManager.cs" />
+    <Compile Include="Quest\QuestNode\QuestNode_Root_SDBirthdayVisit.cs" />
     <Compile Include="Quest\QuestNode\QuestNode_Root_EconomyMinistryReview.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_EconomyMinistryReview_Watcher.cs" />
     <Compile Include="Quest\Quest_SailorsAssistanceWatcher.cs" />
@@ -126,6 +132,8 @@
     <Compile Include="Quest\QuestPart\QuestPart_ProspectingTeamReward.cs" />
     <Compile Include="ThingComp\CompSDAccountingRecord.cs" />
     <Compile Include="ThingComp\CompGiveHediffInRange_GravField.cs" />
+    <Compile Include="Thought\ThoughtWorker_Precept_Birthday.cs" />
+    <Compile Include="Utility\PawnUtility.cs" />
     <Compile Include="Window\DevWin_OAInteractHandler.cs" />
     <Compile Include="Window\DevWin_SDInteractHandler.cs" />
     <Compile Include="Utility\DebugTools.cs" />

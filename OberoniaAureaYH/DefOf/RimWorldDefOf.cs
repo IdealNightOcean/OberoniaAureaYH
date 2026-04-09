@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -6,13 +6,18 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_RimWorldDefOf
 {
-    public static ThingDef Synthread; //合成纤维
-    public static ThingDef BroadshieldCore; //护盾核心
-    public static ThingDef VanometricPowerCell; //虚空电池
+    ///<summary>合成纤维</summary>
+    public static ThingDef Synthread;
+    ///<summary>护盾核心</summary>
+    public static ThingDef BroadshieldCore;
+    ///<summary>虚空电池</summary>
+    public static ThingDef VanometricPowerCell;
     [MayRequireBiotech]
-    public static ThingDef DeathrestCapacitySerum; //死眠扩容血清
+    ///<summary>死眠扩容血清</summary>
+    public static ThingDef DeathrestCapacitySerum;
     [MayRequireOdyssey]
-    public static ThingDef SentienceCatalyst; //感知催化剂
+    ///<summary>感知催化剂</summary>
+    public static ThingDef SentienceCatalyst;
 
     public static SoundDef RK_Sound_Emp_Crack;
 
@@ -23,9 +28,11 @@ public static class OARK_RimWorldDefOf
 
     public static QuestScriptDef OpportunitySite_PeaceTalks;
     [MayRequireOdyssey]
-    public static QuestScriptDef Opportunity_AncientStructureGarrison; //任务-远古军械库
+    ///<summary>任务-远古军械库</summary>
+    public static QuestScriptDef Opportunity_AncientStructureGarrison;
     [MayRequireOdyssey]
-    public static QuestScriptDef OpportunitySite_AlphaThrumbo_Giver; //任务-阿尔法敲击兽
+    ///<summary>任务-阿尔法敲击兽</summary>
+    public static QuestScriptDef OpportunitySite_AlphaThrumbo_Giver;
 
     public static TraitDef NaturalMood;
 

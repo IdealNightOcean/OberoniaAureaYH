@@ -1,6 +1,4 @@
 ﻿using OberoniaAurea_Frame;
-using RimWorld;
-using System;
 using UnityEngine;
 using Verse;
 
@@ -8,23 +6,34 @@ namespace OberoniaAurea;
 
 public class GameComponent_OberoniaAurea : GameComponent
 {
-    private int ticksRemaining = 60000;
+    private readonly int interactHashOffset;
     public static GameComponent_OberoniaAurea Instance { get; private set; }
+
+    private CooldownRecordManager cooldownManager;
+    public CooldownRecordManager CooldownManager => cooldownManager;
 
     private OAInteractHandler interactHandler;
     private ScienceDepartmentInteractHandler sdInteractHandler;
-
-    private int cachedYear = 2025;
-    public bool newYearEventTriggeredOnce;
+    private SpecialGlobalEventManager specialGlobalEventManager;
 
     public GameComponent_OberoniaAurea(Game game)
     {
-        // OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance)); 
         if (Instance != this)
         {
-            Log.Message($"[OARK] {nameof(GameComponent_OberoniaAurea)} Instance switched.".Colorize(Color.cyan));
+            Log.Message($"[OARK] {nameof(GameComponent_OberoniaAurea)} 实例已正确切换。".Colorize(Color.cyan));
         }
         Instance = this;
+        interactHashOffset = Rand.Range(0, int.MaxValue).HashOffset();
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Deep.Look(ref cooldownManager, nameof(cooldownManager));
+
+        Scribe_Deep.Look(ref interactHandler, nameof(interactHandler));
+        Scribe_Deep.Look(ref sdInteractHandler, nameof(sdInteractHandler));
+        Scribe_Deep.Look(ref specialGlobalEventManager, nameof(specialGlobalEventManager));
     }
 
     public override void StartedNewGame() => GameStart();
@@ -32,30 +41,52 @@ public class GameComponent_OberoniaAurea : GameComponent
 
     public override void GameComponentTick()
     {
-        if (--ticksRemaining < 0)
+        if (ModUtility.IsHashIntervalTick(interactHashOffset, 60000))
         {
-            ticksRemaining = 60000;
-
             interactHandler.TickDay();
             if (ModsConfig.OdysseyActive)
             {
                 sdInteractHandler.TickDay();
             }
         }
+
+        specialGlobalEventManager.Tick();
     }
 
     private void GameStart()
     {
+        EnsureComponentsInit();
+
+        ModUtility.Notify_GameStart();
+        specialGlobalEventManager.Notify_GameStart();
+    }
+
+    private void EnsureComponentsInit()
+    {
+        cooldownManager ??= new();
+
         try
         {
             interactHandler ??= new OAInteractHandler();
         }
         catch (System.Exception ex)
         {
-            Log.Error($"[OARK] An exception occurred during initializing {nameof(OAInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(GameStart)}. \nException: \n{ex}");
+            Log.Error($"[OARK] An exception occurred during initializing {nameof(OAInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)}. \nException: \n{ex}");
             OAInteractHandler.ClearStaticCache();
             interactHandler = new OAInteractHandler();
         }
+
+        try
+        {
+            specialGlobalEventManager ??= new SpecialGlobalEventManager();
+        }
+        catch (System.Exception ex)
+        {
+            Log.Error($"[OARK] An exception occurred during initializing {nameof(SpecialGlobalEventManager)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)}. \nException: \n{ex}");
+            SpecialGlobalEventManager.ClearStaticCache();
+            specialGlobalEventManager = new SpecialGlobalEventManager();
+        }
+
         if (ModsConfig.OdysseyActive)
         {
             try
@@ -69,45 +100,5 @@ public class GameComponent_OberoniaAurea : GameComponent
                 sdInteractHandler = new ScienceDepartmentInteractHandler();
             }
         }
-        ModUtility.Notify_GameStart();
-        TryAddNewYearEnent();
-    }
-
-    private void TryAddNewYearEnent()
-    {
-        DateTime curDate = DateTime.Now;
-        if (curDate.Year > cachedYear)
-        {
-            newYearEventTriggeredOnce = false;
-            cachedYear = curDate.Year;
-        }
-
-        if (!newYearEventTriggeredOnce)
-        {
-            if (curDate.Month == 1 && curDate.Day <= 3)
-            {
-                Map map = Find.AnyPlayerHomeMap;
-                if (map is not null && ModUtility.OAFaction is not null && ModUtility.OAFaction.PlayerRelationKind == FactionRelationKind.Ally)
-                {
-                    IncidentParms parms = new()
-                    {
-                        target = map,
-                        faction = ModUtility.OAFaction,
-                    };
-                    OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_NewYearEvent, 2500, parms);
-                }
-            }
-        }
-    }
-
-    public override void ExposeData()
-    {
-        base.ExposeData();
-        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), -1);
-        Scribe_Deep.Look(ref interactHandler, nameof(interactHandler));
-        Scribe_Deep.Look(ref sdInteractHandler, nameof(sdInteractHandler));
-
-        Scribe_Values.Look(ref cachedYear, nameof(cachedYear), 2025);
-        Scribe_Values.Look(ref newYearEventTriggeredOnce, nameof(newYearEventTriggeredOnce), defaultValue: false);
     }
 }

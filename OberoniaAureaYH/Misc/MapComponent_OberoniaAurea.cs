@@ -6,12 +6,19 @@ using Verse;
 namespace OberoniaAurea;
 
 [StaticConstructorOnStartup]
-public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
+public class MapComponent_OberoniaAurea : MapComponent
 {
     public readonly List<CompCircuitRegulator> circuitRegulators = [];
 
-    protected int nextOAGeneCheckTick = -1;
-    protected int cachedOAGenePawnsCount;
+    private readonly int birthdayTickHash;
+    private int nextOAGeneCheckTick = -1;
+
+    private int cachedOAGenePawnsCount;
+
+    public MapComponent_OberoniaAurea(Map map) : base(map)
+    {
+        birthdayTickHash = Rand.Range(0, int.MaxValue).HashOffset();
+    }
 
     public int OAGenePawnsCount
     {
@@ -26,7 +33,38 @@ public class MapComponent_OberoniaAurea(Map map) : MapComponent(map)
         }
     }
 
-    protected static int PawnsCountWithOAGene(Map map)
+    public override void MapComponentTick()
+    {
+        base.MapComponentTick();
+        if (ModUtility.IsHashIntervalTick(birthdayTickHash, 60000))
+        {
+            InfoBirthdayOfColonists();
+        }
+    }
+
+    private void InfoBirthdayOfColonists()
+    {
+        if (!ModsConfig.IdeologyActive || !map.IsPlayerHome)
+            return;
+
+        Ideo primaryIdeo = Faction.OfPlayer.ideos?.PrimaryIdeo;
+        if (primaryIdeo is null)
+            return;
+
+        if (!primaryIdeo.HasPrecept(OARK_PreceptDefOf.OARK_Birthday_Appreciate) && !primaryIdeo.HasPrecept(OARK_PreceptDefOf.OARK_Birthday_Solemn))
+            return;
+
+        List<Pawn> birthdayColonists = map.mapPawns.FreeColonists.Where(p => p.IsColonistOnFirstBirthdayPerYear()).ToList();
+        if (birthdayColonists.NullOrEmpty())
+            return;
+
+        Messages.Message(
+            "OARK_Birthday_Message".Translate(GenLabel.ThingsLabel(birthdayColonists).Named("PawnsInfo")),
+            birthdayColonists,
+            MessageTypeDefOf.PositiveEvent);
+    }
+
+    private static int PawnsCountWithOAGene(Map map)
     {
         int validPawns = 0;
         List<Pawn> allHumans = map.mapPawns.AllHumanlikeSpawned;

@@ -55,7 +55,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int assistPoints = interactHandler.AssistPoints;
         int curAssistPointsCap = interactHandler.CurAssistPointsCap;
         float allianceDuration = interactHandler.AllianceDuration();
-        int assistStoppageCooldownTicksLeft = interactHandler.CooldownManager.GetCooldownTicksLeft("AssistStoppage");
+        int assistStoppageCooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("AssistStoppage");
 
         StringBuilder taggedStringInfo = new("OA_AssistWithTrouble".Translate());
         taggedStringInfo.AppendLine();

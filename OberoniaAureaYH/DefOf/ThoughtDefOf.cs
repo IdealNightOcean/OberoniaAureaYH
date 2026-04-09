@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 
 namespace OberoniaAurea;
 
@@ -10,16 +10,24 @@ public static class OARK_ThoughtDefOf
     [MayRequireIdeology]
     public static ThoughtDef OA_RK_ResponsibilityConstraints;
 
+    ///<summary>生日祝福</summary>
+    public static ThoughtDef OARK_BirthdayWishes;
+
     [MayRequireOdyssey]
-    public static ThoughtDef OARK_Thought_PirateShipExploded; //海盗飞船爆炸
+    ///<summary>海盗飞船爆炸</summary>
+    public static ThoughtDef OARK_Thought_PirateShipExploded;
     [MayRequireOdyssey]
-    public static ThoughtDef OARK_Thought_ScienceShipLaunch; //科学船发射
+    ///<summary>科学船发射</summary>
+    public static ThoughtDef OARK_Thought_ScienceShipLaunch;
     [MayRequireOdyssey]
-    public static ThoughtDef OARK_UnlockedFile_LoveLetter; // 重力研究协助：情书
+    ///<summary>重力研究协助：情书</summary>
+    public static ThoughtDef OARK_UnlockedFile_LoveLetter;
     [MayRequireOdyssey]
-    public static ThoughtDef OARK_UnlockedFile_DeletedFile; // 重力研究协助：删除的文件
+    ///<summary>重力研究协助：删除的文件</summary>
+    public static ThoughtDef OARK_UnlockedFile_DeletedFile;
     [MayRequireOdyssey]
-    public static ThoughtDef OARK_GraveResearchExchange; // 友好事件 - 研究交流
+    ///<summary>友好事件 - 研究交流</summary>
+    public static ThoughtDef OARK_GraveResearchExchange;
 
     static OARK_ThoughtDefOf()
     {

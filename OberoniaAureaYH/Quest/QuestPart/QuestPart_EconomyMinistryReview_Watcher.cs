@@ -62,7 +62,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
         base.PostQuestAdded();
         if (quest?.State == QuestState.Ongoing)
         {
-            OAInteractHandler.Instance.CooldownManager.RegisterRecord("EconomyReviewing", cdTicks: 0, removeWhenExpired: false);
+            ModUtility.CooldownManager.RegisterRecord("EconomyReviewing", cdTicks: 0, removeWhenExpired: false);
             ScienceDepartmentDialogUtility.ExtendMainNode -= MainNodeExtension;
             ScienceDepartmentDialogUtility.ExtendMainNode += MainNodeExtension;
         }
@@ -91,7 +91,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
 
         inquiriedIndex = null;
 
-        OAInteractHandler.Instance.CooldownManager.DeregisterRecord("EconomyReviewing");
+        ModUtility.CooldownManager.DeregisterRecord("EconomyReviewing");
         ScienceDepartmentDialogUtility.ExtendMainNode -= MainNodeExtension;
     }
 
@@ -220,7 +220,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
         {
             action = delegate
             {
-                OAInteractHandler.Instance.CooldownManager.RegisterRecord("AccountInquiry", cdTicks: 60000, removeWhenExpired: true);
+                ModUtility.CooldownManager.RegisterRecord("AccountInquiry", cdTicks: 60000, removeWhenExpired: true);
                 accountInquiryCount++;
             },
             linkLateBind = () => ScienceDepartmentDialogUtility.AccessScienceDepartmentNode(dialogCache)
