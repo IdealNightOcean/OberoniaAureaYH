@@ -9,10 +9,21 @@ public static class PawnUtility
 {
     public static bool IsOnBirthday(this Pawn pawn)
     {
-        if (pawn is null)
+        if (pawn is null || pawn.ageTracker is null)
             return false;
 
         return (float)pawn.ageTracker.AgeBiologicalTicks - pawn.ageTracker.AgeBiologicalYears * 3600000f <= 60000f;
+    }
+
+    public static bool IsColonistOnFirstBirthdayPerYear(this Pawn pawn)
+    {
+        if (pawn is null || pawn.ageTracker is null)
+            return false;
+
+        if (!pawn.Faction.IsPlayerSafe())
+            return false;
+
+        return SpecialGlobalEventManager.Instance.IsPawnOnFirstBirthdayPerYear(pawn, addIfMiss: true);
     }
 
     public static bool IsOberoniaAureaPawn(this Pawn pawn)

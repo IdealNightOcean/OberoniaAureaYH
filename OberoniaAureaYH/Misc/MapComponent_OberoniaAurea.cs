@@ -54,7 +54,7 @@ public class MapComponent_OberoniaAurea : MapComponent
         if (!primaryIdeo.HasPrecept(OARK_PreceptDefOf.OARK_Birthday_Appreciate) && !primaryIdeo.HasPrecept(OARK_PreceptDefOf.OARK_Birthday_Solemn))
             return;
 
-        List<Pawn> birthdayColonists = map.mapPawns.FreeColonists.Where(p => p.IsOnBirthday()).ToList();
+        List<Pawn> birthdayColonists = map.mapPawns.FreeColonists.Where(p => p.IsColonistOnFirstBirthdayPerYear()).ToList();
         if (birthdayColonists.NullOrEmpty())
             return;
 

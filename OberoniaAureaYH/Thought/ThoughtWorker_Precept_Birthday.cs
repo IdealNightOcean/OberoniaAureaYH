@@ -13,6 +13,10 @@ public class ThoughtWorker_Precept_Birthday : ThoughtWorker_Precept
         {
             return ThoughtState.Inactive;
         }
+        if (p.Faction.IsPlayerSafe() && !p.IsColonistOnFirstBirthdayPerYear())
+        {
+            return ThoughtState.Inactive;
+        }
         return base.CurrentStateInternal(p);
     }
 }

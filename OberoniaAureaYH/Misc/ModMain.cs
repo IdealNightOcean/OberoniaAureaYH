@@ -28,7 +28,7 @@ public class OberoniaAureaSettings : ModSettings
     private Vector2 scrollPosition;
     private float viewRectHeight;
 
-    public static bool BirthdayWishesShowMessage = false;
+    public static bool BirthdayWishesShowLetter = true;
 
     public void DoSettingsWindowContents(Rect inRect)
     {
@@ -44,7 +44,7 @@ public class OberoniaAureaSettings : ModSettings
         };
         listing_Rect.Begin(viewRect);
 
-        listing_Rect.CheckboxLabeled($"OARK_Setting_{nameof(BirthdayWishesShowMessage)}".Translate(), ref BirthdayWishesShowMessage);
+        listing_Rect.CheckboxLabeled($"OARK_Setting_{nameof(BirthdayWishesShowLetter)}".Translate(), ref BirthdayWishesShowLetter);
 
 
         listing_Rect.End();
@@ -59,7 +59,7 @@ public class OberoniaAureaSettings : ModSettings
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref BirthdayWishesShowMessage, nameof(BirthdayWishesShowMessage), defaultValue: false);
+        Scribe_Values.Look(ref BirthdayWishesShowLetter, nameof(BirthdayWishesShowLetter), defaultValue: true);
     }
 }
 

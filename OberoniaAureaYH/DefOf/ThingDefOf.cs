@@ -27,8 +27,6 @@ public static class OARK_ThingDefOf
     ///<summary>金鸢尾兰花环</summary>
     public static ThingDef OA_RK_New_Hat_A;
 
-    ///<summary>金鸢尾兰生日祭服</summary>
-    public static ThingDef OA_RK_New_Windbreaker_AA;
 
     [MayRequireOdyssey]
     ///<summary>科研部逆重数据信标</summary>

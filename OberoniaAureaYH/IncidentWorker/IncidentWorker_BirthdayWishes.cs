@@ -43,7 +43,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         }
         parms.target = map;
 
-        birthdayPawns = map.mapPawns.FreeColonists.Where(p => p.IsOnBirthday()).ToList();
+        birthdayPawns = map.mapPawns.FreeColonists.Where(p => p.IsColonistOnFirstBirthdayPerYear()).ToList();
         if (birthdayPawns.Count == 0)
         {
             return false;
@@ -69,8 +69,12 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         return true;
     }
 
-    private void BirthdayWishes(IncidentParms parms, List<Pawn> birthdayPawns)
+    private void BirthdayWishes(IncidentParms parms, List<Pawn> allBirthdayPawns)
     {
+        List<Pawn> birthdayPawns = allBirthdayPawns.Where(p => p.IsOberoniaAureaPawn()).ToList();
+        if (birthdayPawns.NullOrEmpty())
+            return;
+
         Map map = (Map)parms.target;
         int birthdayPawnsCount = birthdayPawns.Count;
         IntVec3 intVec = DropCellFinder.TradeDropSpot(map);
@@ -84,14 +88,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         gifts.AddRange(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.OA_RK_New_Hat_A, birthdayPawnsCount));
         OAFrame_DropPodUtility.DefaultDropThing(gifts, map, parms.faction, sendLetter: false);
 
-        if (OberoniaAureaSettings.BirthdayWishesShowMessage)
-        {
-            Messages.Message(
-                text: "OARK_LetterLabel_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo")),
-                lookTargets: birthdayPawns,
-                def: MessageTypeDefOf.PositiveEvent);
-        }
-        else
+        if (OberoniaAureaSettings.BirthdayWishesShowLetter)
         {
             Find.LetterStack.ReceiveLetter(
                 label: "OARK_LetterLabel_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo")),
@@ -99,6 +96,13 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
                 textLetterDef: LetterDefOf.PositiveEvent,
                 lookTargets: parms.gifts,
                 relatedFaction: parms.faction);
+        }
+        else
+        {
+            Messages.Message(
+                text: "OARK_LetterLabel_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo")),
+                lookTargets: birthdayPawns,
+                def: MessageTypeDefOf.PositiveEvent);
         }
     }
 
