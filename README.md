@@ -23,7 +23,7 @@ Steam创意工坊链接：
 
 ## 非商业用途许可条款（AGPL-3.0 适用）
 ### 协议文本与效力
-- AGPL-3.0 完整协议文本：[LICENSE-AGPL](sslocal://flow/file_open?url=LICENSE-AGPL&flow_extra=eyJsaW5rX3R5cGUiOiJjb2RlX2ludGVycHJldGVyIn0=)（项目根目录）
+- AGPL-3.0 完整协议文本：[LICENSE-AGPL](LICENSE)
 - 官方中文概要（非替代原文）：<https://www.gnu.org/licenses/agpl-3.0.zh-cn.html>
 - 免责声明：<https://www.gnu.org/licenses/agpl-3.0.html#disclaimer>
 
