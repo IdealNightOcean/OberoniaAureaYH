@@ -45,7 +45,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>..\..\..\RimWorldReference\OAFrame\1.6\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>..\..\OberoniaAurea_Frame\Release\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
