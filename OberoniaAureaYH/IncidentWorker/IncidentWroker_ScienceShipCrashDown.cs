@@ -41,7 +41,13 @@ public class IncidentWroker_ScienceShipCrashDown : IncidentWorker
         Thing scienceShip = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_CrashedScienceShip);
         scienceShip.TryGetComp<CompCrashedScienceShip>().InitCrashedScienceShip();
 
-        bool findLandPos = CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.ShipChunkIncoming, map, ThingDefOf.ShipChunkIncoming.terrainAffordanceNeeded, out IntVec3 downPos, minDistToEdge: 50, nearLoc: map.Center, nearLocMaxDist: 200);
+        bool findLandPos = CellFinderLoose.TryFindSkyfallerCell(skyfaller: ThingDefOf.ShipChunkIncoming,
+                                                                map: map,
+                                                                terrainAffordance: TerrainAffordanceDefOf.Medium,
+                                                                cell: out IntVec3 downPos,
+                                                                minDistToEdge: 50,
+                                                                nearLoc: map.Center,
+                                                                nearLocMaxDist: 200);
         downPos = findLandPos ? downPos : map.Center;
 
         Skyfaller crashShip = SkyfallerMaker.MakeSkyfaller(ThingDefOf.ShipChunkIncoming, scienceShip);
@@ -70,7 +76,14 @@ public class IncidentWroker_ScienceShipCrashDown : IncidentWorker
 
     private static void DropPop(IntVec3 centerCell, Map map)
     {
-        CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.DropPodIncoming, map, ThingDefOf.DropPodIncoming.terrainAffordanceNeeded, out IntVec3 downPos, minDistToEdge: 50, nearLoc: centerCell, nearLocMaxDist: 20);
+        CellFinderLoose.TryFindSkyfallerCell(
+            skyfaller: ThingDefOf.DropPodIncoming,
+            map: map,
+            terrainAffordance: ThingDefOf.DropPodIncoming.terrainAffordanceNeeded,
+            cell: out IntVec3 downPos,
+            minDistToEdge: 50,
+            nearLoc: centerCell,
+            nearLocMaxDist: 20);
         (ThingDef thingDef, IntRange countRange) = potentialThing.RandomElement();
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(thingDef, countRange.RandomInRange);
         downPos = downPos.IsValid ? downPos : map.Center;

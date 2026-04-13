@@ -6,10 +6,7 @@ namespace OberoniaAurea;
 
 internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
 {
-    protected override bool CanFireNowSub(IncidentParms parms)
-    {
-        return Find.AnyPlayerHomeMap is not null;
-    }
+    protected override bool CanFireNowSub(IncidentParms parms) => Find.AnyPlayerHomeMap is not null;
 
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
@@ -36,7 +33,14 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
                     HealthUtility.DamageUntilDowned(pawn);
                     crashShip.innerContainer.TryAddOrTransfer(pawn);
                 }
-                CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.ShipChunkIncoming, map, ThingDefOf.ShipChunk.terrainAffordanceNeeded, out IntVec3 pawnPos, minDistToEdge: 10, nearLoc: pos, nearLocMaxDist: 8);
+                CellFinderLoose.TryFindSkyfallerCell(
+                    skyfaller: ThingDefOf.ShipChunkIncoming,
+                    map: map,
+                    terrainAffordance: ThingDefOf.ShipChunk.terrainAffordanceNeeded,
+                    cell: out IntVec3 pawnPos,
+                    minDistToEdge: 10,
+                    nearLoc: pos,
+                    nearLocMaxDist: 8);
                 GenSpawn.Spawn(crashShip, pawnPos, map);
             }
         }
@@ -68,7 +72,14 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
         SkyfallerMaker.SpawnSkyfaller(ThingDefOf.ShipChunkIncoming, ThingDefOf.ShipChunk, firstChunkPos, map);
         for (int i = 0; i < count - 1; i++)
         {
-            if (CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.ShipChunkIncoming, map, ThingDefOf.ShipChunk.terrainAffordanceNeeded, out IntVec3 chunkPos, minDistToEdge: 10, nearLoc: firstChunkPos, nearLocMaxDist: 8))
+            if (CellFinderLoose.TryFindSkyfallerCell(
+                skyfaller: ThingDefOf.ShipChunkIncoming,
+                map: map,
+                terrainAffordance: ThingDefOf.ShipChunk.terrainAffordanceNeeded,
+                cell: out IntVec3 chunkPos,
+                minDistToEdge: 10,
+                nearLoc: firstChunkPos,
+                nearLocMaxDist: 8))
             {
                 SkyfallerMaker.SpawnSkyfaller(ThingDefOf.ShipChunkIncoming, ThingDefOf.ShipChunk, chunkPos, map);
             }
