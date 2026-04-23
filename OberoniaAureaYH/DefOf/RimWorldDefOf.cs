@@ -19,7 +19,7 @@ public static class OARK_RimWorldDefOf
     ///<summary>感知催化剂</summary>
     public static ThingDef SentienceCatalyst;
 
-    public static SoundDef Emp_Crack;
+    public static SoundDef RK_Sound_Emp_Crack;
 
     public static TraderKindDef Visitor_Outlander_Standard;
 

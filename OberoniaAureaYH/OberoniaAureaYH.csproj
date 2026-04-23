@@ -40,12 +40,12 @@
       <HintPath>..\..\..\RimWorldReference\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NewRatkin-Temp">
-      <HintPath>..\..\..\RimWorldReference\NewRatkin-Temp.dll</HintPath>
+    <Reference Include="NewRatkin">
+      <HintPath>E:\ProgramFiles\Steam\steamapps\workshop\content\294100\1578693166\1.6\Assemblies\NewRatkin.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OberoniaAurea_Frame">
-      <HintPath>..\..\..\RimWorldReference\OAFrame\1.6\OberoniaAurea_Frame.dll</HintPath>
+      <HintPath>..\..\OberoniaAurea_Frame\Release\OberoniaAurea_Frame.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
