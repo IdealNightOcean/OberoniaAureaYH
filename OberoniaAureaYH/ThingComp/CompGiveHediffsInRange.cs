@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -81,7 +81,7 @@ public class CompGiveHediffsInRange : ThingComp
             HediffComp_Disappears hediffComp_Disappears = hediff.TryGetComp<HediffComp_Disappears>();
             if (hediffComp_Disappears is null)
             {
-                Log.Error("[OARK] HediffComp_GiveHediffsInRange has a hediff in props which does not have a HediffComp_Disappears");
+                Log.Error($"[OARK] {nameof(HediffComp_GiveHediffsInRange)} 的 props 中包含一个没有 {nameof(HediffComp_Disappears)} 组件的 Hediff。");
             }
             else
             {

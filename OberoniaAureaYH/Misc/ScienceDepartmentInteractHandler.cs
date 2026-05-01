@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.QuestGen;
 using UnityEngine;
@@ -167,7 +167,7 @@ public class ScienceDepartmentInteractHandler : IExposable
     {
         if (active && pawn is null)
         {
-            Log.Error("[OARK] Try active gravResearchAssistLendPawn with a null pawn.");
+            Log.Error($"[OARK] 尝试使用空 pawn 设置并激活 {nameof(gravResearchAssistLendPawn)}。");
             return;
         }
 

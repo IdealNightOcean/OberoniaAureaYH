@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -157,7 +157,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
             }
             catch (Exception ex)
             {
-                Log.Error($"[OARK] {ex}");
+                Log.Error($"[OARK] {nameof(ResearchSummit_MysteriousTrader)} 在完成研究项目时发生异常：\n" + ex);
             }
         }
 

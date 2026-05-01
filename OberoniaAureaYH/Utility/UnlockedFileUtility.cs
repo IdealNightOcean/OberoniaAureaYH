@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,7 +138,7 @@ public static class UnlockedFileUtility
         Map map = Find.AnyPlayerHomeMap;
         if (map is null)
         {
-            Log.Error("[OARK] OARK_UnlockedFile_EncryptedFile: No player home map found.");
+            Log.Error("[OARK] OARK_UnlockedFile_EncryptedFile：未找到玩家基地地图。");
             return;
         }
 

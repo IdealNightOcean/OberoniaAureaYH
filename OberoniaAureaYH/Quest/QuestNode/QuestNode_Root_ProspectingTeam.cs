@@ -64,7 +64,12 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
         Quest quest = QuestGen.quest;
 
         string specialRewardSignal = QuestGen.GenerateNewSignal("Lodger_GiveSpecialReward");
-        quest.Delay(questParameter.questDurationTicks, inner: null, inSignalEnable: lodgerArrivalSignal, outSignalComplete: specialRewardSignal);
+        quest.Delay(delayTicks: questParameter.questDurationTicks,
+            inner: null,
+            inSignalEnable: lodgerArrivalSignal,
+            outSignalComplete: specialRewardSignal,
+            debugLabel: "DeepDrillRewardDelay");
+
         QuestPart_ProspectingTeamReward questPart_ProspectingTeamReward = new()
         {
             insSignal = specialRewardSignal,

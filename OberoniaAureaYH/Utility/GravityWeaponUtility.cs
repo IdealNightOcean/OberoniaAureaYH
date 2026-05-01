@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -77,7 +77,7 @@ public static class GravityWeaponUtility
     {
         if (modEx_DE is null)
         {
-            Log.Error("[OARK] Tried to cause displacement at" + ctrPosition.ToString() + ", But got a null DisplacedExplosionExtension.");
+            Log.Error($"[OARK] 尝试在位置 {ctrPosition} 引发位移效果，但获取到了空的{nameof(DisplacementExplosionExtension)}。");
             return;
         }
 

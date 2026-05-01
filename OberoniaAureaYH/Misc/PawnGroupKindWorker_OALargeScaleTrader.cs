@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,30 +16,30 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         {
             if (errorOnZeroResults)
             {
-                Log.Error(string.Concat("[OARK] Cannot generate trader caravan for ", parms.faction, "."));
+                Log.Error($"[OARK] 无法为派系 {parms.faction} 生成贸易商队。");
             }
             return;
         }
         if (!parms.faction.def.caravanTraderKinds.Any())
         {
-            Log.Error(string.Concat("[OARK] Cannot generate trader caravan for ", parms.faction, " because it has no trader kinds."));
+            Log.Error($"[OARK] 无法为派系 {parms.faction} 生成贸易商队，因为该派系没有交易类型。");
             return;
         }
         PawnGenOption pawnGenOption = groupMaker.traders.FirstOrDefault(p => !p.kind.trader);
         if (pawnGenOption is not null)
         {
-            Log.Error(string.Concat("[OARK] Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption.kind.LabelCap + ") who is not a trader but is in a traders list.");
+            Log.Error($"[OARK] 无法为派系 {parms.faction} 生成到达的贸易商队，因为存在角色类型 ({pawnGenOption.kind.LabelCap}) 不是商人但在商人列表中。");
             return;
         }
         PawnGenOption pawnGenOption2 = groupMaker.carriers.FirstOrDefault(p => !p.kind.RaceProps.packAnimal);
         if (pawnGenOption2 is not null)
         {
-            Log.Error(string.Concat("[OARK] Cannot generate arriving trader caravan for ", parms.faction, " because there is a pawn kind (") + pawnGenOption2.kind.LabelCap + ") who is not a carrier but is in a carriers list.");
+            Log.Error($"[OARK] 无法为派系 {parms.faction} 生成到达的贸易商队，因为存在角色类型 ({pawnGenOption2.kind.LabelCap}) 不是驮兽但在驮兽列表中。");
             return;
         }
         if (parms.seed.HasValue)
         {
-            Log.Warning("[OARK] Deterministic seed not implemented for this pawn group kind worker. The result will be random anyway.");
+            Log.Warning("[OARK] 此角色组类型尚未实现确定性种子。结果将是随机的。");
         }
         TraderKindDef traderKindDef = (parms.traderKind ?? parms.faction.def.caravanTraderKinds.RandomElementByWeight(traderDef => traderDef.CalculatedCommonality));
         Pawn pawn = GenerateTrader(parms, groupMaker, traderKindDef);

@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -35,7 +35,7 @@ public class Verb_TargetCellAid : Verb_CastBase
         }
         else
         {
-            Log.Error(string.Concat("[OARK] Could not send aid to map ", map, " from faction ", oaFaction));
+            Log.Error($"[OARK] 无法从派系 {oaFaction} 向地图 {map} 派遣援助。");
             return false;
         }
     }

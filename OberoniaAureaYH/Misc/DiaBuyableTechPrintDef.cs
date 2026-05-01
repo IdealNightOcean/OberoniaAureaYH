@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -24,11 +24,11 @@ public class DiaBuyableTechPrintDef : Def
         base.ResolveReferences();
         if (researchProject is null)
         {
-            Log.Error($"[OARK] {defName} has no tech research project.");
+            Log.Error($"[OARK] {defName} 没有设置研究项目。");
         }
         else if (TechPrintDef is null)
         {
-            Log.Error($"[OARK] Research Project {researchProject.label} has no tech print.");
+            Log.Error($"[OARK] 研究项目 {researchProject.label} 没有科研蓝图。");
         }
 
         if (price < 0)

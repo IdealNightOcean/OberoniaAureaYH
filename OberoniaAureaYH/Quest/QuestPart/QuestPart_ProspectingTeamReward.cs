@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -39,7 +40,14 @@ public class QuestPart_ProspectingTeamReward : QuestPart
             if (mapParent?.HasMap ?? false)
             {
                 RemoveInvalidPawn();
-                GiveSpecialReward(mapParent.Map, faction, leader ?? pawns?.RandomElementWithFallback(null), quest);
+                try
+                {
+                    GiveSpecialReward(mapParent.Map, faction, leader ?? pawns?.RandomElementWithFallback(null), quest);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("[OARK] 在给予玩家勘探队特殊奖励时出现异常：\n" + ex);
+                }
             }
         }
         else if (signal.tag == inSignalRemovePawn)
@@ -68,11 +76,11 @@ public class QuestPart_ProspectingTeamReward : QuestPart
 
     private void RemoveInvalidPawn()
     {
-        if (leader is not null && leader.Dead)
+        if (leader.DestroyedOrNull() || leader.Dead)
         {
             leader = null;
         }
-        pawns?.RemoveAll(p => p is null || p.Dead);
+        pawns?.RemoveAll(p => p.DestroyedOrNull() || p.Dead);
     }
 
     private static void GiveSpecialReward(Map map, Faction faction, Pawn leader, Quest quest = null)
@@ -96,7 +104,7 @@ public class QuestPart_ProspectingTeamReward : QuestPart
         }
         if (!centerCell.IsValid && !CellFinderLoose.TryFindRandomNotEdgeCellWith(10, c => CanScatterAt(c, map), map, out centerCell))
         {
-            Log.Error("[OARK] Could not find a center cell for deep scanning lump generation!");
+            Log.Error("[OARK] 无法找到用于生成深层扫描矿脉的中心位置。");
         }
         ThingDef thingDef = ThingDefOf.Uranium;
         int numCells = Mathf.CeilToInt(thingDef.deepLumpSizeRange.RandomInRange);

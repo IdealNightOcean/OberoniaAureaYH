@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
         {
             if (errorOnZeroResults)
             {
-                Log.Error(string.Concat("[OARK] Cannot generate pawns for ", parms.faction, " with ", parms.points, ". Defaulting to a single random cheap group."));
+                Log.Error($"[OARK] 无法为派系 {parms.faction} 使用点数 {parms.points} 生成角色。将使用随机生成组。");
             }
             return;
         }

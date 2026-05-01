@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.QuestGen;
 using System;
@@ -610,7 +610,7 @@ public static class ScienceDepartmentDialogUtility
         }
         catch (Exception ex)
         {
-            Log.Error("[OARK] An error occurred while processing the salutation GrammarRequest: " + ex);
+            Log.Error("[OARK] 处理科研部问候语文法请求时发生异常：\n" + ex);
             grammarRequest = backupRequest;
         }
         return GenText.CapitalizeAsTitle(GrammarResolver.Resolve("r_text", grammarRequest));
@@ -670,7 +670,7 @@ public static class ScienceDepartmentDialogUtility
         }
         catch (Exception ex)
         {
-            Log.Error("[OARK] An error occurred while processing the progress GrammarRequest: " + ex);
+            Log.Error("[OARK] 处理科研部进度文法请求时发生异常：\n" + ex);
             grammarRequest = backupRequest;
         }
 

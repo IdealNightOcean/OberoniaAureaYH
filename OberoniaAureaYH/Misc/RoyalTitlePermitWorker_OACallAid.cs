@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +117,7 @@ public class RoyalTitlePermitWorker_OACallAid : RoyalTitlePermitWorker_Targeted
         }
         else
         {
-            Log.Error(string.Concat("[OARK] Could not send aid to map ", map, " from faction ", faction));
+            Log.Error($"[OARK] 无法从派系 {faction} 向地图 {map} 派遣援助。");
         }
     }
     protected bool CallNormalAid(Map map, IntVec3 spawnPos, Faction faction, float biocodeChance = 1f)

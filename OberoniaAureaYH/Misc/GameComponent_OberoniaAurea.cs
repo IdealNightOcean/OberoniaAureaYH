@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -74,14 +74,13 @@ public class GameComponent_OberoniaAurea : GameComponent
     private void EnsureComponentsInit()
     {
         cooldownManager ??= new();
-
         try
         {
             interactHandler ??= new OAInteractHandler();
         }
         catch (System.Exception ex)
         {
-            Log.Error($"[OARK] An exception occurred during initializing {nameof(OAInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)}. \nException: \n{ex}");
+            Log.Error($"[OARK] 在 {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)} 中初始化 {nameof(OAInteractHandler)} 时发生异常\n{ex}");
             OAInteractHandler.ClearStaticCache();
             interactHandler = new OAInteractHandler();
         }
@@ -92,7 +91,7 @@ public class GameComponent_OberoniaAurea : GameComponent
         }
         catch (System.Exception ex)
         {
-            Log.Error($"[OARK] An exception occurred during initializing {nameof(SpecialGlobalEventManager)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)}. \nException: \n{ex}");
+            Log.Error($"[OARK] 在 {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)} 中初始化 {nameof(SpecialGlobalEventManager)} 时发生异常：\n{ex}");
             SpecialGlobalEventManager.ClearStaticCache();
             specialGlobalEventManager = new SpecialGlobalEventManager();
         }
@@ -105,7 +104,7 @@ public class GameComponent_OberoniaAurea : GameComponent
             }
             catch (System.Exception ex)
             {
-                Log.Error($"[OARK] An exception occurred during initializing {nameof(ScienceDepartmentInteractHandler)} in {nameof(GameComponent_OberoniaAurea)}.{nameof(GameStart)}. \nException: \n{ex}");
+                Log.Error($"[OARK] 在 {nameof(GameComponent_OberoniaAurea)}.{nameof(GameStart)} 中初始化 {nameof(ScienceDepartmentInteractHandler)} 时发生异常：\n{ex}");
                 ScienceDepartmentInteractHandler.ClearStaticCache();
                 sdInteractHandler = new ScienceDepartmentInteractHandler();
             }

@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame;
 using RimWorld;
 using System;
 using Verse;
@@ -35,7 +35,7 @@ public class CrashedGravship : MapParent_Enterable
         }
         catch (Exception ex)
         {
-            Log.Error($"[OARK] Exception occurred in {nameof(PostMapGenerate)}: {ex}");
+            Log.Error($"[OARK] 在 {nameof(PostMapGenerate)} 中发生异常：\n{ex}");
         }
     }
 }
