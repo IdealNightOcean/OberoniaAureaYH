@@ -107,7 +107,8 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
 
         maxSkillPawn ??= associatedFixedCaravan.PawnsListForReading.RandomElement();
 
-        List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, associatedFixedCaravan.PawnsListForReading.Count * 3);
+        int humanCount = associatedFixedCaravan.PawnsListForReading.Where(p => p.RaceProps.Humanlike).Count();
+        List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, humanCount * 3);
         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, rewards);
 
         LaunchShip();
