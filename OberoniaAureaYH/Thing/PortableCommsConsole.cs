@@ -86,7 +86,7 @@ public class PortableCommsConsole : Apparel
     {
         if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Talking))
         {
-            return new FloatMenuOption("CannotUseReason".Translate("IncapableOfCapacity".Translate(PawnCapacityDefOf.Talking.label, pawn.Named("PAWN"))), null);
+            return new FloatMenuOption("CannotUseReason".Translate("IncapableOfCapacity".Translate(PawnCapacityDefOf.Talking.label, pawn.Named(KeyLibrary_NamedArgument.PAWN))), null);
         }
         return null;
     }

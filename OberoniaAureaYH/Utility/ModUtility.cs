@@ -58,8 +58,6 @@ public static class ModUtility
         OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
-
-
     internal static void Notify_GameStart()
     {
         oaFactionCache = Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);

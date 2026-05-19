@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea.Temp;
 
+[Obsolete]
 public class CompProperties_ForceColor : CompProperties
 {
     public Color color = Color.white;
@@ -12,6 +14,7 @@ public class CompProperties_ForceColor : CompProperties
     }
 }
 
+[Obsolete]
 public class CompForceColor : ThingComp
 {
     public CompProperties_ForceColor Props => (CompProperties_ForceColor)props;

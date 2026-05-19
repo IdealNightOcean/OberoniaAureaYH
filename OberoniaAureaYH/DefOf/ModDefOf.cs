@@ -38,8 +38,8 @@ public static class OARK_ModDefOf
     [MayRequireOdyssey]
     public static JobDef OARK_Job_Hack;
 
-    [MayRequireIdeology]
     ///<summary>和谐团体</summary>
+    [MayRequireIdeology]
     public static MemeDef OA_RK_meme_Friendly;
 
     public static StorytellerDef Begonia_Oberonia_Aurea;

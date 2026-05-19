@@ -110,11 +110,11 @@ public class SpecialGlobalEventManager : IExposable
         Pawn leader = parms.faction.leader;
         if (curDate.Day == 1)
         {
-            parms.customLetterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named("FACTION"), parms.faction.LeaderTitle.Named("TITLE"), leader.Named("LEADER"), map.Parent.Named("MAP"));
+            parms.customLetterText = "OARatkin_Letter_NewYearEvent".Translate(parms.faction.Named(KeyLibrary_NamedArgument.FACTION), parms.faction.LeaderTitle.Named("TITLE"), leader.Named("LEADER"), map.Parent.Named("MAP"));
         }
         else
         {
-            parms.customLetterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named("FACTION"), parms.faction.LeaderTitle.Named("TITLE"), leader.Named("LEADER"), map.Parent.Named("MAP"));
+            parms.customLetterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named(KeyLibrary_NamedArgument.FACTION), parms.faction.LeaderTitle.Named("TITLE"), leader.Named("LEADER"), map.Parent.Named("MAP"));
         }
 
         OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_SpecialGlobalEvent_GiftLetter, 2500, parms);
@@ -145,7 +145,7 @@ public class SpecialGlobalEventManager : IExposable
 
             customLetterDef = LetterDefOf.PositiveEvent,
             customLetterLabel = "OARK_LetterLabel_AprilFoolsEvent".Translate(),
-            customLetterText = "OARK_LetterText_AprilFoolsEvent".Translate(oaFaction.Named("FACTION"), oaFaction.LeaderTitle.Named("TITLE"), oaFaction.leader.Named("LEADER"), map.Parent.Named("MAP")),
+            customLetterText = "OARK_LetterText_AprilFoolsEvent".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), oaFaction.LeaderTitle.Named("TITLE"), oaFaction.leader.Named("LEADER"), map.Parent.Named("MAP")),
             gifts = gifts,
         };
 

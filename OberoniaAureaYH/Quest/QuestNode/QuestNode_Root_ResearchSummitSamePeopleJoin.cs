@@ -96,7 +96,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
     private void SendLetter(Quest quest, Pawn pawn)
     {
         TaggedString title = "OA_LetterLabelResearchSummitSamePeopleJoin".Translate();
-        TaggedString letterText = "OA_LetterResearchSummitSamePeopleJoin".Translate(pawn.Named("PAWN")).AdjustedFor(pawn);
+        TaggedString letterText = "OA_LetterResearchSummitSamePeopleJoin".Translate(pawn.Named(KeyLibrary_NamedArgument.PAWN)).AdjustedFor(pawn);
         PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref letterText, ref title, pawn);
         ChoiceLetter_AcceptJoinerViewInfo choiceLetter_AcceptJoinerViewInfo = (ChoiceLetter_AcceptJoinerViewInfo)LetterMaker.MakeLetter(title, letterText, OARK_LetterDefOf.OA_RK_AcceptJoinerViewInfo);
         choiceLetter_AcceptJoinerViewInfo.signalAccept = acceptSignal;

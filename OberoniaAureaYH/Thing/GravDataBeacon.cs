@@ -28,14 +28,14 @@ public class GravDataBeacon : Building
         ScienceDepartmentInteractHandler.Instance.AddGravTechPoints(1000, byPlayer: true);
         ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(150);
 
-        QuestUtility.SendQuestTargetSignals(questTags, TakenEffectSignal, this.Named("SUBJECT"));
-        Find.SignalManager.SendSignal(new Signal(TakenEffectSignal, new SignalArgs(this.Named("SUBJECT")), global: true));
+        QuestUtility.SendQuestTargetSignals(questTags, TakenEffectSignal, this.Named(KeyLibrary_NamedArgument.SUBJECT));
+        Find.SignalManager.SendSignal(new Signal(TakenEffectSignal, new SignalArgs(this.Named(KeyLibrary_NamedArgument.SUBJECT)), global: true));
 
-        ModUtility.CooldownManager.RegisterRecord("GravDataBeacon", cdTicks: 5 * 60000, removeWhenExpired: false);
+        ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.GravDataBeacon, cdTicks: 5 * 60000, removeWhenExpired: false);
 
-        if (!ModUtility.CooldownManager.IsInCooldown("SDFriendlyEvent"))
+        if (!ModUtility.CooldownManager.IsInCooldown(KeyLibrary_CDRecord.SDFriendlyEvent))
         {
-            ModUtility.CooldownManager.RegisterRecord("SDFriendlyEvent", cdTicks: 10 * 60000, removeWhenExpired: true);
+            ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.SDFriendlyEvent, cdTicks: 10 * 60000, removeWhenExpired: true);
             IncidentParms parms = new()
             {
                 target = Find.World
@@ -116,7 +116,7 @@ public class GravDataBeacon : Building
             return false;
         }
 
-        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("GravDataBeacon");
+        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.GravDataBeacon);
         if (cooldownTicksLeft > 0)
         {
             return resultOnly ? false : "WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod());

@@ -13,9 +13,9 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
 {
-    private static readonly CachedTexture quizIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Quiz");
-    private static readonly CachedTexture inquiryIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Inquiry");
-    private static readonly CachedTexture pryIcon = new CachedTexture("UI/OARK_ScienceShipLaunch_Pry");
+    private static readonly CachedTexture quizIcon = new("UI/OARK_ScienceShipLaunch_Quiz");
+    private static readonly CachedTexture inquiryIcon = new("UI/OARK_ScienceShipLaunch_Inquiry");
+    private static readonly CachedTexture pryIcon = new("UI/OARK_ScienceShipLaunch_Pry");
 
     private string shipName;
     private ScienceShipRecord? scienceShip;

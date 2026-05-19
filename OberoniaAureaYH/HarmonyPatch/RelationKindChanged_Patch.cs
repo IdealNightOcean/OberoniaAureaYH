@@ -6,7 +6,7 @@ namespace OberoniaAurea;
 
 //派系关系改变Patch - 记录金鸢尾兰结盟时刻
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(Faction), "Notify_RelationKindChanged")]
+[HarmonyPatch(typeof(Faction), nameof(Faction.Notify_RelationKindChanged))]
 public static class Notify_RelationKindChanged_Patch
 {
     [HarmonyPostfix]

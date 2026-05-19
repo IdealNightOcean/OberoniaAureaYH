@@ -62,7 +62,7 @@ public class SettlementDipComp : WorldObjectComp
         {
             defaultLabel = "OA_CommandDipAction".Translate(),
             defaultDesc = "OA_CommandDipActionDesc".Translate(),
-            icon = IconUtility.OADipIcon,
+            icon = IconLibrary.OADipIcon,
             action = delegate
             {
                 GizmoFloat_DipAction(caravan);
@@ -223,7 +223,7 @@ public static class DeepExchangeUtility
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
-        TaggedString text = "OA_LetterResearchDeepExchange".Translate(settlement.Named("SETTLEMENT"));
+        TaggedString text = "OA_LetterResearchDeepExchange".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT));
         tmpPossibleOutcomes.Clear();
         if (Rand.Chance(QuestProbability))
         {
@@ -240,7 +240,7 @@ public static class DeepExchangeUtility
                     slate.Set("settlement", settlement);
                 }
                 OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, questScript, slate, forced: true);
-                text += "\n\n" + "OA_LetterResearchDeepExchangeAdditional".Translate(settlement.Named("SETTLEMENT"), quest.name);
+                text += "\n\n" + "OA_LetterResearchDeepExchangeAdditional".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT), quest.name);
             }
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelDeepExchange".Translate(), text, LetterDefOf.PositiveEvent, caravan, settlement.Faction);

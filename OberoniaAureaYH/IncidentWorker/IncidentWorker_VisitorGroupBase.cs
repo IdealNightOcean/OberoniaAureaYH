@@ -113,9 +113,9 @@ public abstract class IncidentWorker_VisitorGroupBase : IncidentWorker_NeutralGr
         bool traderExists = trader is not null;
         if (pawns.Count == 1)
         {
-            taggedString = (traderExists ? ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0])) : ((TaggedString)""));
+            taggedString = (traderExists ? ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named(KeyLibrary_NamedArgument.PAWN)).AdjustedFor(pawns[0])) : ((TaggedString)""));
             letterLabel = "LetterLabelSingleVisitorArrives".Translate();
-            letterText = "SingleVisitorArrives".Translate(pawns[0].story.Title, parms.faction.NameColored, pawns[0].Name.ToStringFull, taggedString, (TaggedString)"", pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
+            letterText = "SingleVisitorArrives".Translate(pawns[0].story.Title, parms.faction.NameColored, pawns[0].Name.ToStringFull, taggedString, (TaggedString)"", pawns[0].Named(KeyLibrary_NamedArgument.PAWN)).AdjustedFor(pawns[0]);
         }
         else
         {

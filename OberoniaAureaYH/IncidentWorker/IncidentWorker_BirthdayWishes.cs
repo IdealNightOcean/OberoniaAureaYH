@@ -92,7 +92,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         {
             Find.LetterStack.ReceiveLetter(
                 label: "OARK_LetterLabel_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo")),
-                text: "OARK_LetterText_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo"), parms.faction.Named("Faction")),
+                text: "OARK_LetterText_OABirthdayWishes".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo"), parms.faction.Named(KeyLibrary_NamedArgument.FACTION)),
                 textLetterDef: LetterDefOf.PositiveEvent,
                 lookTargets: parms.gifts,
                 relatedFaction: parms.faction);
@@ -114,7 +114,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
             return;
         }
         */
-        if (ModUtility.CooldownManager.IsInCooldown("SDBirthdayVisit"))
+        if (ModUtility.CooldownManager.IsInCooldown(KeyLibrary_CDRecord.SDBirthdayVisit))
         {
             return;
         }
@@ -123,10 +123,10 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         {
             Find.LetterStack.ReceiveLetter(
                 label: "OARK_LetterLabel_OABirthdayVisit".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo")),
-                text: "OARK_LetterText_OABirthdayVisit".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo"), parms.faction.Named("Faction")),
+                text: "OARK_LetterText_OABirthdayVisit".Translate(GenLabel.ThingsLabel(birthdayPawns).Named("PawnsInfo"), parms.faction.Named(KeyLibrary_NamedArgument.FACTION)),
                 textLetterDef: LetterDefOf.PositiveEvent);
 
-            ModUtility.CooldownManager.RegisterRecord("SDBirthdayVisit", cdTicks: 10 * 60000);
+            ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.SDBirthdayVisit, cdTicks: 10 * 60000);
         }
         else
         {
@@ -139,12 +139,12 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
             if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_SDBirthdayVisit, slate))
             {
                 Log.Message("Generated birthday visit quest.");
-                ModUtility.CooldownManager.RegisterRecord("SDBirthdayVisit", cdTicks: 35 * 60000);
+                ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.SDBirthdayVisit, cdTicks: 35 * 60000);
             }
             else
             {
                 Log.Message("Failed to generate birthday visit quest.");
-                ModUtility.CooldownManager.RegisterRecord("SDBirthdayVisit", cdTicks: 5 * 60000);
+                ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.SDBirthdayVisit, cdTicks: 5 * 60000);
             }
         }
     }

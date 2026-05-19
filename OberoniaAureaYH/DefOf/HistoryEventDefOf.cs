@@ -7,6 +7,8 @@ public static class OARK_HistoryEventDefOf
 {
     public static HistoryEventDef OARK_ProspectingTeam;
 
+    public static HistoryEventDef OARK_PeaceTalksNormal;
+
     public static HistoryEventDef OA_ResearchSummit;
     public static HistoryEventDef OA_AttackResearcherCamp;
 

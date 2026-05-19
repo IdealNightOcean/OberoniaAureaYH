@@ -43,7 +43,7 @@ public class DevWin_OAInteractHandler : Window
         listing_Rect.Label("自然贡献点上限: 40");
         listing_Rect.Label("最大贡献点上限: 300");
         listing_Rect.Gap(3f);
-        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("AssistStoppage");
+        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.AssistStoppage);
         if (cooldownTicksLeft > 0)
         {
             listing_Rect.Label($"贡献点自然增长停止: {cooldownTicksLeft.ToStringTicksToPeriod()}");

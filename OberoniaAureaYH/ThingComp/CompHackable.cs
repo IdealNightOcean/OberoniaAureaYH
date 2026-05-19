@@ -63,10 +63,10 @@ public class CompHackable : ThingComp
         isHacked = true;
         isHackable = false;
 
-        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", parent.Named("SUBJECT"), hackPawn.Named("HACKER"));
+        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackCompleted", parent.Named(KeyLibrary_NamedArgument.SUBJECT), hackPawn.Named("HACKER"));
         if (SendMapParentQuestTagSignal)
         {
-            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named("SUBJECT"), hackPawn.Named("HACKER"));
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named(KeyLibrary_NamedArgument.SUBJECT), hackPawn.Named("HACKER"));
         }
         if (Props.destoryOnHackComplete)
         {
@@ -78,10 +78,10 @@ public class CompHackable : ThingComp
     {
         isHackable = false;
         isHackForceEnded = true;
-        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackForceEnded", parent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(parent.questTags, "HackForceEnded", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         if (SendMapParentQuestTagSignal)
         {
-            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackForceEnded", parent.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackForceEnded", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         }
     }
 

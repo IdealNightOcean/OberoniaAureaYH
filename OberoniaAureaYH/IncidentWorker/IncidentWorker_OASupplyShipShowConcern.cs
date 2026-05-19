@@ -40,7 +40,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(rawBerriesDef, count);
         IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
         SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
-                           baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count),
+                           baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION), count),
                            baseLetterDef: LetterDefOf.PositiveEvent,
                            parms: parms,
                            lookTargets: new TargetInfo(dropCell, map));

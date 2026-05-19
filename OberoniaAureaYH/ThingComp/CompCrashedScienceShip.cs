@@ -206,7 +206,7 @@ public class CompCrashedScienceShip : CompHackable
     public override void PostSpawnSetup(bool respawningAfterLoad)
     {
         base.PostSpawnSetup(respawningAfterLoad);
-        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "CrashShipSpawned", parent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "CrashShipSpawned", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         if (!respawningAfterLoad)
         {
             shipGameCondition = (GameCondition_CrashedScienceShip)GameConditionMaker.MakeCondition(Props.shipGameCondition, duration: 600000);
@@ -230,7 +230,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         if (!dataUploaded)
         {
-            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DeSpawnedBeforeDataUpload", parent.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DeSpawnedBeforeDataUpload", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         }
         shipGameCondition?.End();
         shipGameCondition = null;
@@ -241,7 +241,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         if (!dataUploaded)
         {
-            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestoryedBeforeDataUpload", parent.Named("SUBJECT"));
+            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestoryedBeforeDataUpload", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         }
         shipGameCondition?.End();
         shipGameCondition = null;
@@ -737,7 +737,7 @@ public class CompCrashedScienceShip : CompHackable
     private void FinishDataUpload()
     {
         dataUploaded = true;
-        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DataUploaded", parent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DataUploaded", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_DataUploaded".Translate(), ModUtility.OAFaction));
         if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TravelRK)
         {

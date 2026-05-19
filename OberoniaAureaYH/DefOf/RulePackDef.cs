@@ -21,6 +21,11 @@ public static class OARK_RulePackDef
     [MayRequireOdyssey]
     public static RulePackDef OARK_RulePack_ReferendaryHackText;
 
+    /// <summary>
+    /// 多发会谈 - 每个派系修正Rule
+    /// </summary>
+    public static RulePackDef OARK_MultiPartyTalks_BaselineText;
+
     static OARK_RulePackDef()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OARK_RulePackDef));

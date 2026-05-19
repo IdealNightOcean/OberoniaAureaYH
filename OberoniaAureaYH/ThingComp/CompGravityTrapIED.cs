@@ -40,7 +40,7 @@ public class CompGravityTrapIED : CompDisplacementExplosive
             {
                 defaultLabel = "OARK_Command_TriggerStartWick".Translate(),
                 defaultDesc = "OARK_Command_TriggerStartWickDesc".Translate(),
-                icon = IconUtility.FlashIcon,
+                icon = IconLibrary.FlashIcon,
                 action = delegate { StartWick(parent); },
             };
 

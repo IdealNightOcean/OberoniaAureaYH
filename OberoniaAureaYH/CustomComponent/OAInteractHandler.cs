@@ -47,7 +47,7 @@ public class OAInteractHandler : IExposable
 
     private void DailyAssistPointChange()
     {
-        bool assistPointsStoppage = ModUtility.CooldownManager.IsInCooldown("AssistStoppage");
+        bool assistPointsStoppage = ModUtility.CooldownManager.IsInCooldown(KeyLibrary_CDRecord.AssistStoppage);
         bool overCap = assistPoints > CurAssistPointsCap;
         AdjustAssistPoints(InteractUtility.GetDailyAssistPointChange(assistPointsStoppage, overCap), showMessage: false);
     }

@@ -1,5 +1,4 @@
-﻿using LudeonTK;
-using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -11,9 +10,10 @@ using Verse;
 
 namespace OberoniaAurea;
 
-//大地图事件点：科研峰会
-[StaticConstructorOnStartup]
-public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
+/// <summary>
+/// 大地图事件点：科研峰会
+/// </summary>
+public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
 {
     private const float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
     private const float FlounderNeedSpeed = 1.75f; //小失败所需要的研究能力
@@ -30,10 +30,7 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
     private Settlement associateSettlement;
     public Settlement AssociateSettlement => associateSettlement;
 
-    public void SetAssociateSettlement(Settlement settlement)
-    {
-        associateSettlement = settlement;
-    }
+    public void SetAssociateSettlement(Settlement settlement) => associateSettlement = settlement;
 
     public override void Notify_CaravanArrived(Caravan caravan) //判定谈判结果
     {
@@ -46,15 +43,16 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         float researchSpeed = pawn.GetStatValue(StatDefOf.ResearchSpeed);
         MainOutcome(researchSpeed, caravan);
         EatChanwu(caravan);
-        AffectFactionGoodwill(Faction, participantFactions);
+        AffectFactionGoodwill(participantFactions);
         GetPossibleOutcomesI(researchSpeed, caravan);
         GetPossibleOutcomesII();
         GetPossibleOutcomesIII();
         pawn.skills?.Learn(SkillDefOf.Intellectual, 6000f, direct: true);
         Fair(Tile);
-        QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named(KeyLibrary_NamedArgument.SUBJECT));
         Destroy();
     }
+
     private void MainOutcome(float researchSpeed, Caravan caravan)
     {
         if (researchSpeed > TriumphNeedSpeed)
@@ -82,7 +80,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             Outcome_Disaster(caravan);
         }
     }
-    private static void EatChanwu(Caravan caravan) //补满饥饿，获得吃花糕心情
+
+    /// <summary>
+    /// 补满饥饿，获得吃花糕心情
+    /// </summary>
+    private static void EatChanwu(Caravan caravan)
     {
         if (caravan is null)
         {
@@ -101,7 +103,11 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             }
         }
     }
-    private static void Fair(PlanetTile parentTile) //集市
+
+    /// <summary>
+    /// 集市
+    /// </summary>
+    private static void Fair(PlanetTile parentTile)
     {
         if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
@@ -192,14 +198,21 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }, 25f));
         tmpPossibleOutcomesIII.RandomElementByWeight(x => x.Second).First();
     }
-    private static void SamePeople(Faction faction) //同道中人
+
+    /// <summary>
+    /// 事件 - 同道中人
+    /// </summary>
+    private static void SamePeople(Faction faction)
     {
         Slate slate = new();
         Map map = Find.AnyPlayerHomeMap;
         slate.Set("faction", faction);
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate, forced: false, target: map);
     }
-    private static void Bonus(Caravan caravan, Faction faction) //额外收获
+    /// <summary>
+    /// 额外收获
+    /// </summary>
+    private static void Bonus(Caravan caravan, Faction faction)
     {
         int num = new IntRange(12, 80).RandomInRange;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
@@ -217,7 +230,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Bonus".Translate(), "OA_LetterResearchSummit_Bonus".Translate(num, book.Named("BOOK")), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction) //研究员赠礼
+    /// <summary>
+    /// 研究员赠礼
+    /// </summary>
+    private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction)
     {
         Settlement settlement = worldObject as Settlement;
         List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
@@ -226,9 +242,12 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
+        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT)), LetterDefOf.PositiveEvent, caravan, faction);
     }
-    private static void ResearcherSite(PlanetTile parentTile) //落脚点
+    /// <summary>
+    /// 落脚点
+    /// </summary>
+    private static void ResearcherSite(PlanetTile parentTile)
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
         if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
@@ -243,14 +262,20 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         worldObjects.Add(camp);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherSite".Translate(), "OA_LetterResearchSummit_ResearcherSite".Translate(), LetterDefOf.PositiveEvent, camp);
     }
-    private static void ResearcherVisit() //无势力学者的访问
+    /// <summary>
+    /// 无（小）势力学者的访问
+    /// </summary>
+    private static void ResearcherVisit()
     {
         Slate slate = new();
         Map map = QuestGen_Get.GetMap();
         slate.Set("map", map);
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: map);
     }
-    private static void ResearcherPeacetalk(Faction faction) //敌对势力和平谈判
+    /// <summary>
+    /// 敌对势力和平谈判
+    /// </summary>
+    private static void ResearcherPeacetalk(Faction faction)
     {
         Slate slate = new();
         slate.Set("faction", faction);
@@ -261,7 +286,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
         }
     }
-    private static void ScholarGift(Caravan caravan) //学者赠礼
+    /// <summary>
+    /// 学者赠礼
+    /// </summary>
+    private static void ScholarGift(Caravan caravan)
     {
         int rewardValue = ScholarGiftValue.RandomInRange;
         RewardsGeneratorParams rewardsGeneratorParams = new()
@@ -277,7 +305,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         }
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ScholarGift".Translate(), "OA_LetterResearchSummit_ScholarGift".Translate(), LetterDefOf.PositiveEvent, caravan);
     }
-    private static void MysteriousTrader(PlanetTile parentTile) //神秘商人
+    /// <summary>
+    /// 神秘商人
+    /// </summary>
+    private static void MysteriousTrader(PlanetTile parentTile)
     {
         WorldObjectsHolder worldObjects = Find.WorldObjects;
         if (!TileFinder.TryFindPassableTileWithTraversalDistance(parentTile, 2, 3, out PlanetTile tile, t => !worldObjects.AnyWorldObjectAt(t)))
@@ -291,7 +322,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AcademicDispute(PlanetTile parentTile) //学术约架
+    /// <summary>
+    /// 学术约架
+    /// </summary>
+    private static void AcademicDispute(PlanetTile parentTile)
     {
         if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
@@ -304,7 +338,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void EccentricScholar(PlanetTile parentTile) //废品旁的学者
+    /// <summary>
+    /// 废品旁的学者
+    /// </summary>
+    private static void EccentricScholar(PlanetTile parentTile)
     {
         if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
@@ -318,7 +355,10 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_EccentricScholar".Translate(), "OA_LetterResearchSummit_EccentricScholar".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private static void AssistWork(PlanetTile tile) //协助者募集点
+    /// <summary>
+    /// 协助者募集点
+    /// </summary>
+    private static void AssistWork(PlanetTile tile)
     {
         ResearchSummit_AssistWork worldObject = (ResearchSummit_AssistWork)WorldObjectMaker.MakeWorldObject(OARK_WorldObjectDefOf.OA_ResearchSummit_AssistWork);
         worldObject.Tile = tile;
@@ -327,49 +367,82 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.WorldObjects.Add(worldObject);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AssistWork".Translate(), "OA_LetterResearchSummit_AssistWork".Translate(), LetterDefOf.PositiveEvent, worldObject);
     }
-    private void Outcome_Disaster(Caravan caravan) //大失败事件
+    /// <summary>
+    /// 结果 - 大失败
+    /// </summary>
+    private void Outcome_Disaster(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(1, 200);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
-    private void Outcome_Backfire(Caravan caravan) //失败事件
+    /// <summary>
+    /// 结果 - 失败
+    /// </summary>
+    private void Outcome_Backfire(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(2, 300);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
-    private void Outcome_Flounder(Caravan caravan) //小失败事件
+    /// <summary>
+    /// 结果 - 小失败
+    /// </summary>
+    private void Outcome_Flounder(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(3, 500);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
     }
-    private void Outcome_Normal(Caravan caravan) //中立事件
+    /// <summary>
+    /// 结果 - 普通
+    /// </summary>
+    private void Outcome_Normal(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(4, 800);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
-    private void Outcome_Success(Caravan caravan) //成功谈判的结果
+    /// <summary>
+    /// 结果 - 成功
+    /// </summary>
+    private void Outcome_Success(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(5, 1200);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
-    private void Outcome_Triumph(Caravan caravan) //大成功谈判的结果
+    /// <summary>
+    /// 结果 - 大成功
+    /// </summary>
+    private void Outcome_Triumph(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(6, 1500);
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
-    private static void AffectFactionGoodwill(Faction oaFaction, List<Faction> factions)
+    private static void AffectFactionGoodwill(IEnumerable<Faction> factions)
     {
+        Faction oaFaction = ModUtility.OAFaction;
+        Faction ofPlayer = Faction.OfPlayer;
         if (oaFaction is not null)
         {
-            Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
+            ofPlayer.TryAffectGoodwillWith(
+                other: oaFaction,
+                goodwillChange: 15,
+                canSendMessage: false,
+                canSendHostilityLetter: false,
+                reason: OARK_HistoryEventDefOf.OA_ResearchSummit);
         }
 
-        if (!factions.NullOrEmpty())
+        if (factions is not null)
         {
             foreach (Faction faction in factions)
             {
-                Faction.OfPlayer.TryAffectGoodwillWith(faction, 15, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
+                if (faction != oaFaction)
+                {
+                    ofPlayer.TryAffectGoodwillWith(
+                        other: faction,
+                        goodwillChange: 15,
+                        canSendMessage: false,
+                        canSendHostilityLetter: false,
+                        reason: OARK_HistoryEventDefOf.OA_ResearchSummit);
+                }
             }
         }
     }
@@ -411,29 +484,8 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         {
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendInNewLine("OA_ResearchSummitIntellectualXPGain".Translate(pawn.LabelShort, 6000, pawn.Named("PAWN")));
+            sb.AppendInNewLine("OA_ResearchSummitIntellectualXPGain".Translate(pawn.LabelShort, 6000, pawn.Named(KeyLibrary_NamedArgument.PAWN)));
         }
         return sb.ToString();
     }
-
-    [DebugOutput("Incidents", false)]
-    private static void ResearchSummitChances()
-    {
-        StringBuilder sb = new("[OARK]");
-        sb.AppendLine();
-        sb.AppendInNewLine("Disaster: " + 1f.ToStringPercent());
-        sb.AppendInNewLine("Backfire: " + 1.25f.ToStringPercent());
-        sb.AppendInNewLine("Flounder: " + 1.75f.ToStringPercent());
-        sb.AppendInNewLine("Normal: " + 2.4f.ToStringPercent());
-        sb.AppendInNewLine("Success: " + 3.0f.ToStringPercent());
-        sb.AppendInNewLine("Triumph: " + 4.0f.ToStringPercent());
-        Log.Message(sb.ToString());
-    }
-
-    public override void ExposeData()
-    {
-        base.ExposeData();
-        Scribe_References.Look(ref associateSettlement, "associateSettlement");
-    }
-
 }

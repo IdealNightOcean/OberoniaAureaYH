@@ -58,7 +58,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
     {
         if (trader is not null)
         {
-            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, Settlement.Named("SETTLEMENT")), trader, MessageTypeDefOf.NeutralEvent);
+            Messages.Message("OA_ResearchSummitTraveller_Arrival".Translate(parms.faction.NameColored, Settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT)), trader, MessageTypeDefOf.NeutralEvent);
         }
     }
 

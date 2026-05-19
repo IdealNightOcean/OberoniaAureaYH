@@ -55,7 +55,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int assistPoints = interactHandler.AssistPoints;
         int curAssistPointsCap = interactHandler.CurAssistPointsCap;
         float allianceDuration = interactHandler.AllianceDuration();
-        int assistStoppageCooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("AssistStoppage");
+        int assistStoppageCooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.AssistStoppage);
 
         StringBuilder taggedStringInfo = new("OA_AssistWithTrouble".Translate());
         taggedStringInfo.AppendLine();
@@ -187,7 +187,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             }
             else if (assistPoints < needAP)
             {
-                diaOption.Disable("OA_AlliancePointsNotEnough".Translate(needAP));
+                diaOption.Disable("OARK_AssistPointsNotEnough".Translate(needAP));
             }
             else
             {
@@ -208,7 +208,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         }
         else if (OAInteractHandler.Instance.AssistPoints < 55)
         {
-            diaOption.Disable("OA_AlliancePointsNotEnough".Translate(55));
+            diaOption.Disable("OARK_AssistPointsNotEnough".Translate(55));
         }
 
         else
@@ -247,7 +247,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         if (count > 0)
         {
             IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.MealSurvivalPack, count, map, faction);
-            Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
+            Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }
     private static void CallEmergencyMedicine(Map map, Faction faction)
@@ -258,20 +258,20 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
-        Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named("FACTION")), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
+        Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION)), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
     }
     private static void CallForSilver(Map map, Faction faction, int count = 2500)
     {
         if (count > 0)
         {
             IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, count, map, faction);
-            Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
+            Messages.Message("OA_SilverArrive".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }
     private static void CallForLongTermAssist(Map map, Faction faction, PawnKindDef pawnKind, int pawnCount)
     {
         StringBuilder letterStr = new();
-        letterStr.Append("OA_AssistPawnArrivalDetail".Translate(faction.Named("FACTION"), pawnCount, pawnKind.race.LabelCap));
+        letterStr.Append("OA_AssistPawnArrivalDetail".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION), pawnCount, pawnKind.race.LabelCap));
         letterStr.AppendLine();
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         List<Pawn> DropPawns = [];

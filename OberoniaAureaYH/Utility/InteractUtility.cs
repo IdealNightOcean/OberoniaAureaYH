@@ -64,7 +64,7 @@ public static class InteractUtility
         }
 
         Find.LetterStack.ReceiveLetter(upgradeLetter);
-        ModUtility.CooldownManager.RegisterRecord("GravTechStageUpgrade", cdTicks: 0, removeWhenExpired: false); //由于记录提升时间，非冷却
+        ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.GravTechStageUpgrade, cdTicks: 0, removeWhenExpired: false); //用于记录提升时间，非冷却
 
         static void GiveSpecialTechPrint(string defName, Letter letter)
         {

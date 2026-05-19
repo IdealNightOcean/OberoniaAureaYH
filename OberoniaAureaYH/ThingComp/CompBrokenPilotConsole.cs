@@ -96,7 +96,7 @@ public class CompBrokenPilotConsole : CompHackable
 
     public void AcceptOberoniaAureaRequest()
     {
-        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "AcceptOberoniaAureaRequest", parent.Named("SUBJECT"));
+        QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "AcceptOberoniaAureaRequest", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         acceptRequest = true;
         if (Rand.Chance(0.4f))
         {

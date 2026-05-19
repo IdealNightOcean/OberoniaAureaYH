@@ -37,7 +37,7 @@ public class Hediff_SailorAssistance : HediffWithComps
         {
             defaultLabel = "OARK_SailorAssistInvitation".Translate(),
             defaultDesc = "OARK_SailorAssistInvitationDesc".Translate(),
-            icon = IconUtility.OADipIcon,
+            icon = IconLibrary.OADipIcon,
             targetingParams = targetingParameters,
             action = delegate (LocalTargetInfo inviter) { Invitation(pawn, inviter); }
         };
@@ -47,7 +47,7 @@ public class Hediff_SailorAssistance : HediffWithComps
         }
         else if (OAInteractHandler.Instance.AssistPoints < 50)
         {
-            command_Invitation.Disable("OA_AlliancePointsNotEnough".Translate(50));
+            command_Invitation.Disable("OARK_AssistPointsNotEnough".Translate(50));
         }
         else if ((pawn.needs?.mood.CurLevelPercentage ?? 0f) < 0.8f)
         {

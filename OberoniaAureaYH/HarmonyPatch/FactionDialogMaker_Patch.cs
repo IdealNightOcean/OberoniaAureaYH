@@ -1,9 +1,9 @@
 ﻿using HarmonyLib;
 using OberoniaAurea_Frame;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -12,33 +12,25 @@ namespace OberoniaAurea;
 //通讯台界面Patch
 
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(FactionDialogMaker), "FactionDialogFor")]
+[HarmonyPatch(typeof(FactionDialogMaker), nameof(FactionDialogMaker.FactionDialogFor))]
 public static class FactionDialogFor_Patch
 {
-    private static int amountSendableSilver = -1;
     [HarmonyPostfix]
     public static void Postfix(ref DiaNode __result, Pawn negotiator, Faction faction)
     {
         if (!faction.IsOAFaction())
-        {
-
             return;
-        }
 
         if (negotiator.skills.GetSkill(SkillDefOf.Social).TotallyDisabled)
-        {
-
             return;
-        }
 
         FactionDialogCache dialogCache = new(negotiator, faction);
-        amountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
 
         List<DiaOption> opts =
         [
             CallForLargeScaleTrader(dialogCache),
-            SponsorOberoniaAurea(dialogCache),
-            BuyTechPrint(dialogCache)
+            SponsorOADialogMaker.SponsorOberoniaAurea(dialogCache),
+            BuyTechDialogMaker.BuyTechPrint(dialogCache)
         ];
 
         if (ModsConfig.OdysseyActive)
@@ -57,14 +49,14 @@ public static class FactionDialogFor_Patch
     {
         TaggedString taggedString = "OA_CallForLargeScaleTrade".Translate();
         DiaOption diaOption = new(taggedString);
-        if (!dialogCache.IsAlly)
+        if (dialogCache.PlayerRelationKind != FactionRelationKind.Ally)
         {
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
 
-        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("LargeScaleTrader");
-        if (dialogCache.AllianceDuration < 75)
+        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.LargeScaleTrader);
+        if (dialogCache.TotalAllianceDuration < 75)
         {
             diaOption.Disable("OA_AllianceDurationShort".Translate(75.ToString("F0")));
             return diaOption;
@@ -91,7 +83,7 @@ public static class FactionDialogFor_Patch
 
         void CallTrader()
         {
-            ModUtility.CooldownManager.RegisterRecord("LargeScaleTrader", cdTicks: 60 * 60000, removeWhenExpired: true);
+            ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.LargeScaleTrader, cdTicks: 60 * 60000, removeWhenExpired: true);
             TraderKindDef traderKind = DefDatabase<TraderKindDef>.GetNamed("OA_RK_Caravan_TraderGeneral_B");
             IncidentParms parms = new()
             {
@@ -105,204 +97,66 @@ public static class FactionDialogFor_Patch
         }
     }
 
-    /// <summary>
-    /// 赞助金鼠
-    /// </summary>
-    private static DiaOption SponsorOberoniaAurea(FactionDialogCache dialogCache)
-    {
-        TaggedString taggedString = "OA_SponsorOberoniaAurea".Translate();
-        DiaOption diaOption = new(taggedString);
-
-        if (ModUtility.CooldownManager.IsInCooldown("SponsorOA")) //冷却时不需要更多的帮助
-        {
-            string cdConfirmStr = "OA_SponsorThanksAgain".Translate(dialogCache.Faction.leader).CapitalizeFirst();
-            diaOption.link = new DiaNode(cdConfirmStr)
-            {
-                options = { FactionDialogUtility.OKToRoot(dialogCache.Faction, dialogCache.Negotiator) }
-            };
-            return diaOption;
-        }
-
-        int amountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
-        //以下为二级界面按钮
-        DiaNode diaNode = new(taggedString);
-        AddDiaOption(500);
-        AddDiaOption(1000);
-        AddDiaOption(2000);
-        AddDiaOption(5000);
-        AddDiaOption(10000);
-        AddDiaOption(20000);
-        //返回按钮
-        diaNode.options.Add(new DiaOption("GoBack".Translate())
-        {
-            linkLateBind = FactionDialogMaker.ResetToRoot(dialogCache.Faction, dialogCache.Negotiator)
-        });
-        diaOption.link = diaNode;
-        return diaOption;
-
-        void AddDiaOption(int needSilver)
-        {
-            DiaOption diaOption = new("OA_DoSponsorOberoniaAurea".Translate(needSilver));
-            if (amountSendableSilver < needSilver)
-            {
-                diaOption.Disable("NeedSilverLaunchable".Translate(needSilver));
-            }
-            else
-            {
-                diaOption.action = delegate
-                {
-                    DoSponsorOberoniaAurea(dialogCache, needSilver);
-                };
-                diaOption.linkLateBind = () => SponsorOberoniaAureaConfirmNode(dialogCache, needSilver);
-            }
-
-            diaNode.options.Add(diaOption);
-        }
-    }
-
-    private static void DoSponsorOberoniaAurea(FactionDialogCache dialogCache, int silverCount)
-    {
-        int gainAP = silverCount / 250;
-        int gainGTP = silverCount / 10;
-        int gainFavor = silverCount / 1000;
-
-        TradeUtility.LaunchSilver(dialogCache.Map, silverCount);
-        OAInteractHandler.Instance.AdjustAssistPoints(gainAP);
-
-        if (ModsConfig.OdysseyActive)
-        {
-            ScienceDepartmentInteractHandler.Instance?.AddGravTechPoints(gainGTP, byPlayer: true);
-        }
-
-        dialogCache.Negotiator.royalty?.GainFavor(dialogCache.Faction, gainFavor);
-        ModUtility.CooldownManager.RegisterRecord("SponsorOA", cdTicks: 30 * 60000, removeWhenExpired: true);
-    }
-
-    private static DiaNode SponsorOberoniaAureaConfirmNode(FactionDialogCache dialogCache, int silverCount)
-    {
-        int gainAP = silverCount / 250;
-        int gainGTP = silverCount / 10;
-        int gainFavor = silverCount / 1000;
-
-        StringBuilder confirmSb = new("OA_SponsorThanks".Translate(dialogCache.Faction.leader).CapitalizeFirst());
-        confirmSb.AppendLine();
-        confirmSb.AppendInNewLine("OARK_AssistPointsAdded".Translate(gainAP));
-        confirmSb.AppendInNewLine("OA_SponsorRoyaltyFavorGain".Translate(dialogCache.Negotiator.Named("NAME"), gainFavor));
-        if (ModsConfig.OdysseyActive)
-        {
-            confirmSb.AppendInNewLine("OARK_ScienceDepartment_GravTechPointsAdded".Translate(gainGTP));
-        }
-
-        return FactionDialogUtility.FinallyConfirmNode(confirmSb.ToString(),
-                                                       dialogCache.Faction,
-                                                       dialogCache.Negotiator);
-    }
 
     /// <summary>
-    /// 购买蓝图
+    /// 外交相关界面
     /// </summary>
-    private static DiaOption BuyTechPrint(FactionDialogCache dialogCache)
+    private static class DiplomacyDialogMaker
     {
-        TaggedString taggedString = "OA_BuyTechPrint".Translate();
-        DiaOption diaOption = new(taggedString);
-        if (!dialogCache.IsAlly)
+        private static DiaNode FactionSelectionNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
         {
-            diaOption.Disable("MustBeAlly".Translate());
-            return diaOption;
-        }
-        if (dialogCache.AllianceDuration < 45)
-        {
-            diaOption.Disable("OA_AllianceDurationShort".Translate(45.ToString("F0")));
-            return diaOption;
-        }
-        int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft("BuyTechPrint");
-        if (cooldownTicksLeft > 0)
-        {
-            diaOption.Disable("WaitTime".Translate(cooldownTicksLeft.ToStringTicksToPeriod()));
-            return diaOption;
-        }
+            string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
+            DiaNode diaNode = new("OARK_MultiPartyTalks_FactionSelectionNode".Translate(selFactionsNames.Named("FactionNames")).CapitalizeFirst());
+            Faction ofPlayer = Faction.OfPlayer;
+            Faction oaFaction = ModUtility.OAFaction;
 
-        diaOption.linkLateBind = () => BuyTechPrintNode(dialogCache);
-
-        return diaOption;
-    }
-    private static DiaNode BuyTechPrintNode(FactionDialogCache dialogCache)
-    {
-        DiaNode diaNode = new("OA_BuyTechPrintNode".Translate(dialogCache.Faction.leader).CapitalizeFirst());
-
-        int negotiatorTitle = dialogCache.Negotiator.GetCurrentTitleSeniorityIn(dialogCache.Faction);
-
-        IOrderedEnumerable<DiaBuyableTechPrintDef> allBuyableTechPrintDefs = DefDatabase<DiaBuyableTechPrintDef>.AllDefsListForReading.Where(d1 => !d1.onlyScienceDepartment).OrderBy(d2 => d2.price);
-        foreach (DiaBuyableTechPrintDef item in allBuyableTechPrintDefs)
-        {
-            AddDiaOption(item);
-        }
-
-        //返回按钮
-        diaNode.options.Add(new DiaOption("GoBack".Translate())
-        {
-            linkLateBind = FactionDialogMaker.ResetToRoot(dialogCache.Faction, dialogCache.Negotiator)
-        });
-
-        return diaNode;
-
-
-        void AddDiaOption(DiaBuyableTechPrintDef dbtpDef)
-        {
-            StringBuilder diaSb = new("OA_TechPrintChoice".Translate(dbtpDef.TechPrintDef.label, dbtpDef.price));
-            if (dbtpDef.NeedAllianceDuration)
+            foreach (Faction faction in Find.FactionManager.AllFactions)
             {
-                diaSb.AppendWithSeparator("OA_TechPrintNeedAllianceDuration".Translate(dbtpDef.allianceDuration), "丨");
-            }
-            if (dbtpDef.NeedRoyalTitle)
-            {
-                diaSb.AppendWithSeparator("OA_TechPrintNeedRoyalTitle".Translate(dbtpDef.royalTitleDef), "丨");
-            }
+                if (faction.Hidden || faction.temporary || faction.def.permanentEnemy || faction.IsPlayerSafe())
+                    continue;
+                if (faction == ofPlayer || faction == oaFaction)
+                    continue;
 
-            DiaOption diaOption = new(diaSb.ToString());
-            if (amountSendableSilver < dbtpDef.price)
-            {
-                diaOption.linkLateBind = () => DeniedTechPrintDiaOption("NeedSilverLaunchable".Translate(dbtpDef.price), dialogCache);
-            }
-            else if (dbtpDef.NeedAllianceDuration && dbtpDef.allianceDuration > dialogCache.AllianceDuration)
-            {
-                diaOption.linkLateBind = () => DeniedTechPrintDiaOption("OA_AllianceDurationShort".Translate(dbtpDef.allianceDuration.ToString("F0")), dialogCache);
-            }
-            else if (dbtpDef.NeedRoyalTitle && dbtpDef.royalTitleDef.seniority > negotiatorTitle)
-            {
-                diaOption.linkLateBind = () => DeniedTechPrintDiaOption("OA_BuyTechPrintDeniedDueTitle".Translate(dialogCache.Negotiator.Named("NEGOTIATOR"), dbtpDef.royalTitleDef.GetLabelCapFor(dialogCache.Negotiator).Named("TITLE"), dialogCache.Faction.Named("FACTION")),
-                                                                        dialogCache);
-            }
-            else
-            {
-                diaOption.action = delegate
+
+                DiaOption diaOption = new(faction.NameColored.ToString())
                 {
-                    GetTechPrint(dialogCache.Map, dialogCache.Faction, dbtpDef.TechPrintDef, dbtpDef.price);
-                    ModUtility.CooldownManager.RegisterRecord("BuyTechPrint", cdTicks: 30 * 60000, removeWhenExpired: true);
+                    linkLateBind = () => FactionSelectionNode(dialogCache, selFactions)
                 };
-                diaOption.linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(text: "OA_TechPrintChoiceConfirm".Translate(dialogCache.Faction.leader).CapitalizeFirst(),
-                                                                                       faction: dialogCache.Faction,
-                                                                                       negotiator: dialogCache.Negotiator);
+                if (selFactions.Contains(faction))
+                {
+                    diaOption.action = () => selFactions.Remove(faction);
+                }
+                else
+                {
+                    diaOption.action = () => selFactions.Add(faction);
+                    if (selFactions.Count >= 5)
+                    {
+                        diaOption.Disable("");
+                    }
+                }
+
+                diaNode.options.Add(diaOption);
             }
 
-            diaNode.options.Add(diaOption);
+            if (selFactions.Count >= 3)
+            {
+                DiaOption confirmOption = new("Confirm".Translate())
+                {
+
+                };
+                diaNode.options.Add(confirmOption);
+            }
+
+            return diaNode;
         }
-    }
 
-    private static void GetTechPrint(Map map, Faction faction, ThingDef tDef, int price)
-    {
-        TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, price, map, null);
-        IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(tDef, map, faction);
-        Messages.Message("OA_TechPrintArrive".Translate(faction.Named("FACTION"), tDef.label), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
-    }
-
-    private static DiaNode DeniedTechPrintDiaOption(string denStr, FactionDialogCache dialogCache)
-    {
-        DiaNode diaNode = new(denStr);
-        diaNode.options.Add(new DiaOption("GoBack".Translate())
+        private static DiaNode FactionConfirmNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
         {
-            linkLateBind = () => BuyTechPrintNode(dialogCache)
-        });
-        return diaNode;
+            string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
+            DiaNode diaNode = new("OARK_MultiPartyTalks_FactionConfirmNode".Translate(selFactionsNames.Named("FactionNames")).CapitalizeFirst());
+
+            throw new NotImplementedException();
+
+        }
     }
 }
