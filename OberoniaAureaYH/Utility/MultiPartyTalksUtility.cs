@@ -54,19 +54,20 @@ public static class MultiPartyTalksUtility
 
         float delta = Mathf.Clamp((b - a) / a * 0.4f, -0.25f, 0.25f);
 
-        float t1 = 0.60f + delta;
+        float t1 = 0.6f + delta;
         float t2 = 0.85f + delta;
         float t3 = 1.15f + delta;
-        float t4 = 1.60f + delta;
+        float t4 = 1.6f + delta;
 
         float lowerBound = 0.5f * a;
         float upperBound = 1.5f * a;
+        float range = upperBound - lowerBound;
 
-        criticalSuccessProb = Mathf.Max(0f, Mathf.Min(upperBound, t1 * bUsed) - lowerBound) / a;
-        successProb = Mathf.Max(0f, Mathf.Min(upperBound, t2 * bUsed) - Mathf.Max(lowerBound, t1 * bUsed)) / a;
-        normalProb = Mathf.Max(0f, Mathf.Min(upperBound, t3 * bUsed) - Mathf.Max(lowerBound, t2 * bUsed)) / a;
-        failureProb = Mathf.Max(0f, Mathf.Min(upperBound, t4 * bUsed) - Mathf.Max(lowerBound, t3 * bUsed)) / a;
-        criticalFailureProb = Mathf.Max(0f, upperBound - Mathf.Max(lowerBound, t4 * bUsed)) / a;
+        criticalSuccessProb = Mathf.Max(0f, Mathf.Min(upperBound, t1 * bUsed) - lowerBound) / range;
+        successProb = Mathf.Max(0f, Mathf.Min(upperBound, t2 * bUsed) - Mathf.Max(lowerBound, t1 * bUsed)) / range;
+        normalProb = Mathf.Max(0f, Mathf.Min(upperBound, t3 * bUsed) - Mathf.Max(lowerBound, t2 * bUsed)) / range;
+        failureProb = Mathf.Max(0f, Mathf.Min(upperBound, t4 * bUsed) - Mathf.Max(lowerBound, t3 * bUsed)) / range;
+        criticalFailureProb = Mathf.Max(0f, upperBound - Mathf.Max(lowerBound, t4 * bUsed)) / range;
     }
 
     /// <summary>
@@ -76,13 +77,16 @@ public static class MultiPartyTalksUtility
     {
         explanation = string.Empty;
         StringBuilder expSB = resultOnly ? null : new StringBuilder(512);
-        float abilityBaseline = 0.5f;
+        float abilityBaseline = 1f;
 
         Faction oaFaction = ModUtility.OAFaction;
 
         int ratkinFactionCount = 0;
         foreach (Faction faction in participantFactions)
         {
+            if (faction == oaFaction)
+                continue;
+
             if (faction.IsRatkinFaction())
             {
                 ratkinFactionCount++;
@@ -92,14 +96,17 @@ public static class MultiPartyTalksUtility
 
         if (ratkinFactionCount > 0 && !resultOnly)
         {
-            float ratkinBonus = ratkinFactionCount * 0.05f;
-            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_RatkinFactions".Translate(ratkinFactionCount, ratkinBonus.ToStringPercentSigned("0.##").Colorize(Color.green)));
+            float ratkinBonus = -ratkinFactionCount * 0.05f;
+            abilityBaseline += ratkinBonus;
+            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_RatkinFactions".Translate(ratkinFactionCount, ratkinBonus.ToStringPercentSigned("0.##").Colorize(Color.green))
+                                                                           .Resolve());
         }
 
         abilityBaseline -= 0.5f;
         if (!resultOnly)
         {
-            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_OABase".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), (-0.5f).ToStringPercentSigned("0.##").Colorize(Color.green)));
+            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_OABase".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), (-0.5f).ToStringPercentSigned("0.##").Colorize(Color.green))
+                                                                   .Resolve());
         }
         float allianceDurationModify = CalculateOATotalAllianceDurationModify();
         if (allianceDurationModify != 0f)
@@ -107,7 +114,8 @@ public static class MultiPartyTalksUtility
             abilityBaseline += allianceDurationModify;
             if (!resultOnly)
             {
-                expSB.AppendLine("OARK_MultiPartyTalks_Baseline_AllianceDuration".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), allianceDurationModify.ToStringPercentSigned("0.##").Colorize(Color.green)));
+                expSB.AppendLine("OARK_MultiPartyTalks_Baseline_AllianceDuration".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), allianceDurationModify.ToStringPercentSigned("0.##").Colorize(Color.green))
+                                                                                 .Resolve());
             }
         }
 
@@ -115,7 +123,8 @@ public static class MultiPartyTalksUtility
 
         if (!resultOnly)
         {
-            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_Final".Translate(abilityBaseline.ToStringPercentSigned("0.##")));
+            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_Final".Translate(abilityBaseline.ToStringPercentSigned("0.##").Colorize(Color.yellow))
+                                                                  .Resolve());
             explanation = expSB.ToString();
         }
 
@@ -171,6 +180,8 @@ public static class MultiPartyTalksUtility
 
     private static readonly (string, float)[] MemeModifiesArr =
     [
+        ("OAGene_TerritorialHegemony", 0.15f),
+        ("OA_RK_meme_Friendly", -0.1f),
         ("Rancher", -0.05f),
         ("Loyalist", 0.05f),
         ("Guilty", -0.05f),

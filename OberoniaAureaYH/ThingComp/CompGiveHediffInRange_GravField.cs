@@ -7,6 +7,10 @@ using Verse.Sound;
 
 namespace OberoniaAurea;
 
+/// <summary>
+/// 给予Hediff的重力场，进入范围内的Pawn会持续获得Hediff，且每隔一段时间会有一次视觉和声音效果。
+/// </summary>
+/// <remarks>可以消耗大量电能来释放重力场压制，压制期间进入范围内的Pawn会额外获得一个抑制Hediff。</remarks>
 public class CompGiveHediffInRange_GravField : CompGiveHediffInRange_Building
 {
     private int suppressTickLeft;

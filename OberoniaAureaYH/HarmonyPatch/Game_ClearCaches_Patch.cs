@@ -12,9 +12,7 @@ public static class Game_ClearCaches_Patch
     {
         ModUtility.ClearStaticCache();
 
-        OAInteractHandler.ClearStaticCache();
-        ScienceDepartmentInteractHandler.ClearStaticCache();
-        SpecialGlobalEventManager.ClearStaticCache();
+        GameComponent_OberoniaAurea.ClearStaticCache();
 
         ScienceDepartmentDialogUtility.ClearStaticCache();
         ThoughtWorker_Precept_Snow.ClearStaticCache();

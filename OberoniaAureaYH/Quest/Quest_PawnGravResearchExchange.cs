@@ -53,6 +53,6 @@ public class QuestPart_PawnGravResearchExchange : QuestPart
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref inSignalComplete, "inSignalComplete");
+        Scribe_Values.Look(ref inSignalComplete, nameof(inSignalComplete));
     }
 }

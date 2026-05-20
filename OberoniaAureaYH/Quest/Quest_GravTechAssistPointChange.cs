@@ -86,7 +86,7 @@ public class QuestPart_GravTechAssistPointChange : QuestPart
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref inSignalTrigger, "inSignalTrigger");
-        Scribe_Values.Look(ref change, "change", 0);
+        Scribe_Values.Look(ref inSignalTrigger, nameof(inSignalTrigger));
+        Scribe_Values.Look(ref change, nameof(change), 0);
     }
 }

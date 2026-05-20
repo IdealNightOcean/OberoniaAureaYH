@@ -44,7 +44,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Deep.Look(ref innerTrader, "innerTrader");
+        Scribe_Deep.Look(ref innerTrader, nameof(innerTrader));
     }
 
 }

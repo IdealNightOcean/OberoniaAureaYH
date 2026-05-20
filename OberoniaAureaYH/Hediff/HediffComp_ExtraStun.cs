@@ -54,6 +54,6 @@ public class HediffComp_ExtraStun : HediffComp
     }
     public override void CompExposeData()
     {
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
+        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), 0);
     }
 }

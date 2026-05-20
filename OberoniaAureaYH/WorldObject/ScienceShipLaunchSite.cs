@@ -34,17 +34,17 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Deep.Look(ref scienceShip, "scienceShip");
+        Scribe_Deep.Look(ref scienceShip, nameof(scienceShip));
 
-        Scribe_Values.Look(ref shipName, "shipName");
-        Scribe_Values.Look(ref shipLaunched, "shipLaunched", defaultValue: false);
+        Scribe_Values.Look(ref shipName, nameof(shipName));
+        Scribe_Values.Look(ref shipLaunched, nameof(shipLaunched), defaultValue: false);
 
-        Scribe_Values.Look(ref blockInteraction, "blockInteraction", defaultValue: false);
+        Scribe_Values.Look(ref blockInteraction, nameof(blockInteraction), defaultValue: false);
 
-        Scribe_Values.Look(ref quizCount, "quizCount", 0);
-        Scribe_Values.Look(ref quizDialogOpen, "quizDialogOpen", defaultValue: false);
+        Scribe_Values.Look(ref quizCount, nameof(quizCount), 0);
+        Scribe_Values.Look(ref quizDialogOpen, nameof(quizDialogOpen), defaultValue: false);
 
-        Scribe_Values.Look(ref nextCanInteractTick, "nextCanInteractTick", 0);
+        Scribe_Values.Look(ref nextCanInteractTick, nameof(nextCanInteractTick), 0);
 
     }
 

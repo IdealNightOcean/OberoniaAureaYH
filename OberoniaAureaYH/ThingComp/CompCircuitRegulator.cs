@@ -173,10 +173,10 @@ public class CompCircuitRegulator : CompPowerTransmitter
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
-        Scribe_Values.Look(ref repairmentEnabled, "repairmentEnabled", defaultValue: true);
-        Scribe_Values.Look(ref targetCircuitStability, "targetCircuitStability", 0.4f);
-        Scribe_Values.Look(ref curCircuitStability, "curCircuitStability", 1f);
+        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), 0);
+        Scribe_Values.Look(ref repairmentEnabled, nameof(repairmentEnabled), defaultValue: true);
+        Scribe_Values.Look(ref targetCircuitStability, nameof(targetCircuitStability), 0.4f);
+        Scribe_Values.Look(ref curCircuitStability, nameof(curCircuitStability), 1f);
     }
 
     public static float CurrentPowerExport(PowerNet powerNet)

@@ -47,8 +47,8 @@ public class CompOpticalResearchFacility : CompFacility
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
-        Scribe_Values.Look(ref cachedGlow, "cachedGlow", 0);
+        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), 0);
+        Scribe_Values.Look(ref cachedGlow, nameof(cachedGlow), 0);
     }
 
 }

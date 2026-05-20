@@ -283,9 +283,9 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref allTicksRemaining, "allTicksRemaining", 25000);
-        Scribe_Values.Look(ref cycleRemaining, "cycleRemaining", 5);
-        Scribe_Values.Look(ref workPoints, "workPoints", 0);
-        Scribe_Values.Look(ref lastWorkTick, "lastWorkTick", -1);
+        Scribe_Values.Look(ref allTicksRemaining, nameof(allTicksRemaining), 25000);
+        Scribe_Values.Look(ref cycleRemaining, nameof(cycleRemaining), 5);
+        Scribe_Values.Look(ref workPoints, nameof(workPoints), 0);
+        Scribe_Values.Look(ref lastWorkTick, nameof(lastWorkTick), -1);
     }
 }

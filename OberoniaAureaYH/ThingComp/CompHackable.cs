@@ -185,8 +185,8 @@ public class CompHackable : ThingComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref isHacked, "isHacked", defaultValue: false);
-        Scribe_Values.Look(ref isHackable, "isHackable", defaultValue: true);
-        Scribe_Values.Look(ref hackPoint, "hackPoint", 0f);
+        Scribe_Values.Look(ref isHacked, nameof(isHacked), defaultValue: false);
+        Scribe_Values.Look(ref isHackable, nameof(isHackable), defaultValue: true);
+        Scribe_Values.Look(ref hackPoint, nameof(hackPoint), 0f);
     }
 }

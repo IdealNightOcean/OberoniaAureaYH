@@ -27,7 +27,9 @@ public class CompProperties_ExtremelyHiTechResearchFacility : CompProperties_Fac
 }
 
 
-[StaticConstructorOnStartup]
+/// <summary>
+/// 高科技研究设施组件，在进行高科技研究时提供更大的研究加成，但在其他研究时提供较小的加成。
+/// </summary>
 public class CompExtremelyHiTechResearchFacility : CompFacility
 {
     public new CompProperties_ExtremelyHiTechResearchFacility Props => (CompProperties_ExtremelyHiTechResearchFacility)props;

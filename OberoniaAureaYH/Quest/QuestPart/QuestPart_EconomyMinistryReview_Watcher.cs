@@ -32,24 +32,24 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref recordTag, "recordTag");
-        Scribe_Values.Look(ref inSignaRecordDecode, "inSignaRecordDecode");
-        Scribe_Values.Look(ref inSiganlSettle, "inSiganlSettle");
-        Scribe_Values.Look(ref settled, "settled", defaultValue: false);
+        Scribe_Values.Look(ref recordTag, nameof(recordTag));
+        Scribe_Values.Look(ref inSignaRecordDecode, nameof(inSignaRecordDecode));
+        Scribe_Values.Look(ref inSiganlSettle, nameof(inSiganlSettle));
+        Scribe_Values.Look(ref settled, nameof(settled), defaultValue: false);
 
-        Scribe_Values.Look(ref outSignalSettled, "outSignalSettled");
+        Scribe_Values.Look(ref outSignalSettled, nameof(outSignalSettled));
 
-        Scribe_References.Look(ref map, "map");
-        Scribe_References.Look(ref referendary, "referendary");
+        Scribe_References.Look(ref map, nameof(map));
+        Scribe_References.Look(ref referendary, nameof(referendary));
 
-        Scribe_Values.Look(ref decodeCount, "decodeCount", 0);
-        Scribe_Values.Look(ref playerDecodeCount, "playerDecodeCount", 0);
-        Scribe_Values.Look(ref referendaryDecodeCount, "referendaryDecodeCount", 0);
-        Scribe_Values.Look(ref accountInquiryCount, "accountInquiryCount", 0);
-        Scribe_Values.Look(ref dropCount, "dropCount", 0);
-        Scribe_Values.Look(ref lastDropTick, "lastDropTick", 0);
+        Scribe_Values.Look(ref decodeCount, nameof(decodeCount), 0);
+        Scribe_Values.Look(ref playerDecodeCount, nameof(playerDecodeCount), 0);
+        Scribe_Values.Look(ref referendaryDecodeCount, nameof(referendaryDecodeCount), 0);
+        Scribe_Values.Look(ref accountInquiryCount, nameof(accountInquiryCount), 0);
+        Scribe_Values.Look(ref dropCount, nameof(dropCount), 0);
+        Scribe_Values.Look(ref lastDropTick, nameof(lastDropTick), 0);
 
-        Scribe_Collections.Look(ref inquiriedIndex, "inquiriedIndex", LookMode.Value);
+        Scribe_Collections.Look(ref inquiriedIndex, nameof(inquiriedIndex), LookMode.Value);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit && quest?.State == QuestState.Ongoing)
         {

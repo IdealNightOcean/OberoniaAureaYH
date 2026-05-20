@@ -8,6 +8,8 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public static class ModUtility
 {
+    public static bool GodMode => DebugSettings.godMode && Prefs.DevMode;
+
     private static Faction oaFactionCache;
     public static Faction OAFaction => oaFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
 

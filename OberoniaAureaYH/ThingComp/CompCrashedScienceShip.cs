@@ -80,29 +80,29 @@ public class CompCrashedScienceShip : CompHackable
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Deep.Look(ref shipRecord, "shipRecord");
+        Scribe_Deep.Look(ref shipRecord, nameof(shipRecord));
 
-        Scribe_Values.Look(ref signalStrength, "signalStrength", 1);
-        Scribe_Values.Look(ref ticksToNextRaid, "ticksToNextRaid", 0);
+        Scribe_Values.Look(ref signalStrength, nameof(signalStrength), 1);
+        Scribe_Values.Look(ref ticksToNextRaid, nameof(ticksToNextRaid), 0);
 
-        Scribe_Values.Look(ref extaRaidRemaining, "extaRaidRemaining", 0);
-        Scribe_Values.Look(ref ticksToNextExtaRaid, "ticksToNextExtaRaid", 0);
+        Scribe_Values.Look(ref extaRaidRemaining, nameof(extaRaidRemaining), 0);
+        Scribe_Values.Look(ref ticksToNextExtaRaid, nameof(ticksToNextExtaRaid), 0);
 
-        Scribe_Values.Look(ref mainGravIndex, "mainGravIndex", 1);
-        Scribe_Values.Look(ref subGravIndex, "subGravIndex", 1);
+        Scribe_Values.Look(ref mainGravIndex, nameof(mainGravIndex), 1);
+        Scribe_Values.Look(ref subGravIndex, nameof(subGravIndex), 1);
 
-        Scribe_Values.Look(ref gravityAdjuestType, "gravityAdjuestType", 0);
+        Scribe_Values.Look(ref gravityAdjuestType, nameof(gravityAdjuestType), 0);
 
-        Scribe_Values.Look(ref hyperthermiaLeft, "hyperthermiaLeft", -1);
-        Scribe_Values.Look(ref hyperthermiaReduceRate, "hyperthermiaReduceRate", 1f);
+        Scribe_Values.Look(ref hyperthermiaLeft, nameof(hyperthermiaLeft), -1);
+        Scribe_Values.Look(ref hyperthermiaReduceRate, nameof(hyperthermiaReduceRate), 1f);
 
-        Scribe_Values.Look(ref quizResearcher, "quizResearcher", defaultValue: false);
+        Scribe_Values.Look(ref quizResearcher, nameof(quizResearcher), defaultValue: false);
 
-        Scribe_Values.Look(ref allTroubleResolved, "allTroubleResolved", defaultValue: false);
-        Scribe_Values.Look(ref ticksToUpload, "ticksToUpload", 15000);
-        Scribe_Values.Look(ref dataUploaded, "dataUploaded", defaultValue: false);
+        Scribe_Values.Look(ref allTroubleResolved, nameof(allTroubleResolved), defaultValue: false);
+        Scribe_Values.Look(ref ticksToUpload, nameof(ticksToUpload), 15000);
+        Scribe_Values.Look(ref dataUploaded, nameof(dataUploaded), defaultValue: false);
 
-        Scribe_References.Look(ref shipGameCondition, "shipGameCondition");
+        Scribe_References.Look(ref shipGameCondition, nameof(shipGameCondition));
     }
 
     public void InitCrashedScienceShip()
@@ -445,7 +445,7 @@ public class CompCrashedScienceShip : CompHackable
             }
         }
 
-        if (Prefs.DevMode)
+        if (ModUtility.GodMode)
         {
             sb.AppendInNewLine("--------");
             sb.AppendInNewLine($"mainGravIndex:{mainGravIndex}, subGravIndex:{subGravIndex}");

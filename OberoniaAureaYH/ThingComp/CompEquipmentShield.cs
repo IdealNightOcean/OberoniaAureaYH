@@ -71,10 +71,10 @@ public class CompEquipmentShield : ThingComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref energy, "energy", 0f);
-        Scribe_Values.Look(ref ticksToReset, "ticksToReset", -1);
-        Scribe_Values.Look(ref lastKeepDisplayTick, "lastKeepDisplayTick", 0);
-        Scribe_References.Look(ref pawnOwner, "pawnOwner");
+        Scribe_Values.Look(ref energy, nameof(energy), 0f);
+        Scribe_Values.Look(ref ticksToReset, nameof(ticksToReset), -1);
+        Scribe_Values.Look(ref lastKeepDisplayTick, nameof(lastKeepDisplayTick), 0);
+        Scribe_References.Look(ref pawnOwner, nameof(pawnOwner));
     }
 
     public override void Notify_Equipped(Pawn pawn)

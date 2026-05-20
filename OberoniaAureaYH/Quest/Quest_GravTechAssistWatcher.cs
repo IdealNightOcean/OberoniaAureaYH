@@ -117,10 +117,10 @@ public class QuestPart_GravTechAssistWatcher : QuestPartActivable
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref enabled, "enabled", defaultValue: false);
-        Scribe_Values.Look(ref ticksLeft, "ticksLeft", 0);
-        Scribe_Values.Look(ref dailyGTP, "dailyGTP", 0);
-        Scribe_Values.Look(ref TotalGTP, "totalGTP", 0);
-        Scribe_Values.Look(ref ExternalGTAP, "externalGTAP", 0);
+        Scribe_Values.Look(ref enabled, nameof(enabled), defaultValue: false);
+        Scribe_Values.Look(ref ticksLeft, nameof(ticksLeft), 0);
+        Scribe_Values.Look(ref dailyGTP, nameof(dailyGTP), 0);
+        Scribe_Values.Look(ref TotalGTP, nameof(TotalGTP), 0);
+        Scribe_Values.Look(ref ExternalGTAP, nameof(ExternalGTAP), 0);
     }
 }

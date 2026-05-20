@@ -21,6 +21,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
     private int nextTopicForceTriggeredTick;
 
     private float baselineNegotiationAbility = 0.75f;
+    private float testPawnNegotiationAbility = 1f;
     private string OutcomePropExplanation { get; set; } = string.Empty;
 
     public override void ExposeData()
@@ -71,15 +72,22 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
 
     public override string GetInspectString()
     {
-        StringBuilder sb = new(base.GetInspectString());
+        StringBuilder sb = new(64);
+        sb.AppendLine(base.GetInspectString());
+        sb.Append("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
 
-        sb.AppendLine("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
-
-        if (!string.IsNullOrEmpty(OutcomePropExplanation))
+        if (ModUtility.GodMode)
         {
-            sb.AppendLine(OutcomePropExplanation);
+            sb.AppendLine();
+            sb.AppendLine("————————");
+            sb.AppendLine("DEV: ");
+            sb.AppendLine($"谈判能力基准需求：{baselineNegotiationAbility.ToStringPercent()}");
+            sb.AppendLine($"测试谈判能力：{baselineNegotiationAbility.ToStringPercent()}");
+            if (!string.IsNullOrEmpty(OutcomePropExplanation))
+            {
+                sb.Append(OutcomePropExplanation);
+            }
         }
-
         return sb.ToString();
     }
 
@@ -146,29 +154,86 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         RefreshOutcomePropsExplanation();
     }
 
+    public override IEnumerable<Gizmo> GetGizmos()
+    {
+        foreach (Gizmo gizmo in base.GetGizmos())
+            yield return gizmo;
+
+        if (!DebugSettings.ShowDevGizmos)
+            yield break;
+
+        yield return new Command_Action
+        {
+            defaultLabel = "baseline +10%",
+            action = () =>
+            {
+                baselineNegotiationAbility += 0.1f;
+                RefreshOutcomePropsExplanation();
+            }
+        };
+        yield return new Command_Action
+        {
+            defaultLabel = "baseline -10%",
+            action = () =>
+            {
+                baselineNegotiationAbility -= 0.1f;
+                RefreshOutcomePropsExplanation();
+            }
+        };
+        yield return new Command_Action
+        {
+            defaultLabel = "testAbility +10%",
+            action = () =>
+            {
+                testPawnNegotiationAbility += 0.1f;
+                RefreshOutcomePropsExplanation();
+            }
+        };
+        yield return new Command_Action
+        {
+            defaultLabel = "testAbility -10%",
+            action = () =>
+            {
+                testPawnNegotiationAbility -= 0.1f;
+                RefreshOutcomePropsExplanation();
+            }
+        };
+    }
+
     private void RefreshOutcomePropsExplanation()
     {
-        if (associatedFixedCaravan is null)
-        {
-            OutcomePropExplanation = string.Empty;
-            return;
-        }
-
-        float pawnNegotiationAbility = OAFrame_PawnUtility.GetMaxStatOfPawns(associatedFixedCaravan.PawnsListForReading, StatDefOf.NegotiationAbility);
+        StringBuilder textBuilder = new(64);
         float usedBaseline = baselineNegotiationAbility;
-        if (this.Faction.leader is not null && associatedFixedCaravan.PawnsListForReading.Contains(this.Faction.leader))
-        {
-            usedBaseline *= 0.95f;
-        }
-        MultiPartyTalksUtility.CalculateOutcomeProbCommon(usedBaseline, pawnNegotiationAbility, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb);
 
-        OutcomePropExplanation = "OARK_MultiPartyTalks_OutcomePropExplanation".Translate(
+        MultiPartyTalksUtility.CalculateOutcomeProbCommon(usedBaseline, testPawnNegotiationAbility, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb);
+        textBuilder.AppendLine($"测试概率分布：根据 {nameof(testPawnNegotiationAbility)} 计算");
+        textBuilder.Append("OARK_MultiPartyTalks_OutcomePropExplanation".Translate(
             criticalSuccessProb.ToStringPercent("0.##").Named("CriticalSuccessProb"),
             successProb.ToStringPercent("0.##").Named("SuccessProb"),
             normalProb.ToStringPercent("0.##").Named("NormalProb"),
             failureProb.ToStringPercent("0.##").Named("FailureProb"),
-            criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb"));
+            criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb")));
 
+        if (associatedFixedCaravan is not null)
+        {
+            float pawnNegotiationAbility = OAFrame_PawnUtility.GetMaxStatOfPawns(associatedFixedCaravan.PawnsListForReading, StatDefOf.NegotiationAbility);
+            if (this.Faction.leader is not null && associatedFixedCaravan.PawnsListForReading.Contains(this.Faction.leader))
+            {
+                usedBaseline *= 0.95f;
+            }
+
+            MultiPartyTalksUtility.CalculateOutcomeProbCommon(usedBaseline, pawnNegotiationAbility, out criticalSuccessProb, out successProb, out normalProb, out failureProb, out criticalFailureProb);
+            textBuilder.AppendLine();
+            textBuilder.AppendLine("远行队实际概率分布：");
+            textBuilder.Append("OARK_MultiPartyTalks_OutcomePropExplanation".Translate(
+                                    criticalSuccessProb.ToStringPercent("0.##").Named("CriticalSuccessProb"),
+                                    successProb.ToStringPercent("0.##").Named("SuccessProb"),
+                                    normalProb.ToStringPercent("0.##").Named("NormalProb"),
+                                    failureProb.ToStringPercent("0.##").Named("FailureProb"),
+                                    criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb")));
+        }
+
+        OutcomePropExplanation = textBuilder.ToString();
     }
 
     private void TriggerTopics()

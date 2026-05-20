@@ -74,6 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomComponent\ExtraSiteTrader.cs" />
+    <Compile Include="CustomComponent\ExtraSiteTraderManager.cs" />
     <Compile Include="CustomComponent\MultiPartyTalksRewardData.cs" />
     <Compile Include="DataLibrary\KeyLibrary_CDRecord.cs" />
     <Compile Include="DefModExtension\OberoniaAureaBackstoryFlag.cs" />
@@ -292,10 +294,10 @@
     <Compile Include="WorldObject\MapGenerate\GenStep_OABasicGenStep.cs" />
     <Compile Include="WorldObject\MapGenerate\SymbolResolver_ResearcherCamp.cs" />
     <Compile Include="WorldObject\ResearchSummit_AcademicDispute.cs" />
+    <Compile Include="WorldObject\WorldObjectComp_ExtraSiteTrader.cs" />
     <Compile Include="WorldObject\WorldObject_MultiPartyTalks.cs" />
     <Compile Include="WorldObject\WorldObject_ResearchSummit.cs" />
     <Compile Include="WorldObject\WorldObject_DiplomaticOffices.cs" />
-    <Compile Include="WorldObject\WorldObject_MultiPartyTalksOld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\..\RimWorldReference\1.5\Assembly-CSharp.dll" />

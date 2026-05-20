@@ -19,12 +19,12 @@ public class QuestPart_ProspectingTeamReward : QuestPart
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref insSignal, "insSignal");
-        Scribe_Values.Look(ref inSignalRemovePawn, "inSignalRemovePawn");
-        Scribe_References.Look(ref leader, "leader");
-        Scribe_Collections.Look(ref pawns, "pawns", LookMode.Reference);
-        Scribe_References.Look(ref mapParent, "mapParent");
-        Scribe_References.Look(ref faction, "faction");
+        Scribe_Values.Look(ref insSignal, nameof(insSignal));
+        Scribe_Values.Look(ref inSignalRemovePawn, nameof(inSignalRemovePawn));
+        Scribe_References.Look(ref leader, nameof(leader));
+        Scribe_Collections.Look(ref pawns, nameof(pawns), LookMode.Reference);
+        Scribe_References.Look(ref mapParent, nameof(mapParent));
+        Scribe_References.Look(ref faction, nameof(faction));
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {

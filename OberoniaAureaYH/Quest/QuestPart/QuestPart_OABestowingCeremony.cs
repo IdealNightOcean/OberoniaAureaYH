@@ -4,7 +4,9 @@ using Verse.AI.Group;
 
 namespace OberoniaAurea;
 
-//授勋官不携带启灵神经会报错，因此仪式开始时当场生成一个（一开始不携带，否则玩家会坑害授勋官）
+/// <summary>
+/// 授勋官不携带启灵神经会报错，因此仪式开始时当场生成一个（一开始不携带，否则玩家会坑害授勋官）
+/// </summary>
 public class QuestPart_OABestowingCeremony : QuestPart_BestowingCeremony
 {
     protected override Lord MakeLord()

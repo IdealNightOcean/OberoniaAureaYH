@@ -14,6 +14,9 @@ public class CompProperties_GravityTrapIED : CompProperties_DisplacementExplosiv
     }
 }
 
+/// <summary>
+/// 重力陷阱，触发后会将附近的Pawn拉向炸弹中心
+/// </summary>
 public class CompGravityTrapIED : CompDisplacementExplosive
 {
     private new CompProperties_GravityTrapIED Props => (CompProperties_GravityTrapIED)props;

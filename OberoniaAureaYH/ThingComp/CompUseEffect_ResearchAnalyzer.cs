@@ -3,7 +3,9 @@ using Verse;
 
 namespace OberoniaAurea;
 
-//科研分析仪：立刻增加当前研究指定研究点数
+/// <summary>
+/// 科研分析仪CompProperties：立刻增加当前研究指定研究点数
+/// </summary>
 public class CompProperties_UseEffect_ResearchAnalyzer : CompProperties_UseEffect
 {
     public float researchAmount = 1000f;
@@ -13,6 +15,10 @@ public class CompProperties_UseEffect_ResearchAnalyzer : CompProperties_UseEffec
         compClass = typeof(CompUseEffect_ResearchAnalyzer);
     }
 }
+
+/// <summary>
+/// 科研分析仪Comp：立刻增加当前研究指定研究点数
+/// </summary>
 public class CompUseEffect_ResearchAnalyzer : CompUseEffect
 {
     public CompProperties_UseEffect_ResearchAnalyzer Props => (CompProperties_UseEffect_ResearchAnalyzer)props;

@@ -3,6 +3,7 @@ using RimWorld.QuestGen;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
+using Verse.Grammar;
 
 namespace OberoniaAurea;
 
@@ -22,6 +23,9 @@ public class QuestNode_MultiPartyTalksDescMaker : QuestNode
 
         slate.Set("totalTopics", factions.Count - 1);
         MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(factions, resultOnly: false, out string explanation);
-        slate.Set("baselineExplanation", explanation);
+        //slate.Set("baselineExplanation", explanation);
+
+        Rule_String explanationRule = new("baselineExplanation", explanation);
+        QuestGen.AddQuestDescriptionRules([explanationRule]);
     }
 }

@@ -49,6 +49,6 @@ public class CompEMPInstExplosion : ThingComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref disabled, "disabled", defaultValue: false);
+        Scribe_Values.Look(ref disabled, nameof(disabled), defaultValue: false);
     }
 }

@@ -42,9 +42,9 @@ public class CompUseEffect_UnlockedFile_EncryptedFile : CompUseEffect
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_References.Look(ref pawn, "pawn");
-        Scribe_Values.Look(ref fileType, "fileType", DocumentType.TechDesign);
-        Scribe_Values.Look(ref expiredTick, "expiredTick", 0);
+        Scribe_References.Look(ref pawn, nameof(pawn));
+        Scribe_Values.Look(ref fileType, nameof(fileType), DocumentType.TechDesign);
+        Scribe_Values.Look(ref expiredTick, nameof(expiredTick), 0);
     }
 
     private static DocumentType GetRandomDocumentType()

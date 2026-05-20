@@ -181,6 +181,6 @@ public class CompChargedExplosion : ThingComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref chargeProgress, "chargeProgress", 0);
+        Scribe_Values.Look(ref chargeProgress, nameof(chargeProgress), 0);
     }
 }

@@ -16,8 +16,7 @@ internal static class BuyTechDialogMaker
     /// </summary>
     internal static DiaOption BuyTechPrint(FactionDialogCache dialogCache)
     {
-        TaggedString taggedString = "OA_BuyTechPrint".Translate();
-        DiaOption diaOption = new(taggedString);
+        DiaOption diaOption = new("OA_BuyTechPrint".Translate());
         if (dialogCache.PlayerRelationKind != FactionRelationKind.Ally)
         {
             diaOption.Disable("MustBeAlly".Translate());
@@ -53,10 +52,7 @@ internal static class BuyTechDialogMaker
         }
 
         //返回按钮
-        diaNode.options.Add(new DiaOption("GoBack".Translate())
-        {
-            linkLateBind = FactionDialogMaker.ResetToRoot(dialogCache.Faction, dialogCache.Negotiator)
-        });
+        diaNode.AddDefaultGoBackOption(linkLateBind: FactionDialogMaker.ResetToRoot(dialogCache.Faction, dialogCache.Negotiator));
 
         return diaNode;
 
@@ -113,10 +109,7 @@ internal static class BuyTechDialogMaker
     private static DiaNode DeniedTechPrintDiaOption(string denStr, FactionDialogCache dialogCache)
     {
         DiaNode diaNode = new(denStr);
-        diaNode.options.Add(new DiaOption("GoBack".Translate())
-        {
-            linkLateBind = () => BuyTechPrintNode(dialogCache)
-        });
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => BuyTechPrintNode(dialogCache));
         return diaNode;
     }
 }

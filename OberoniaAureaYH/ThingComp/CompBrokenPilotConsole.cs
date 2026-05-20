@@ -8,6 +8,9 @@ using Verse;
 
 namespace OberoniaAurea;
 
+/// <summary>
+/// 损坏的非常控制台Comp
+/// </summary>
 public class CompBrokenPilotConsole : CompHackable
 {
     private static readonly int[] hackPointBoundary = [0, 60, 300, 540, 600];

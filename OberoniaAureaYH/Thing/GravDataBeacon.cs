@@ -106,7 +106,7 @@ public class GravDataBeacon : Building
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref isActive, "isActive", defaultValue: false);
+        Scribe_Values.Look(ref isActive, nameof(isActive), defaultValue: false);
     }
 
     private static AcceptanceReport CanActivateNow(bool resultOnly)

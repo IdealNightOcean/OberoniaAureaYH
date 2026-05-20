@@ -50,7 +50,10 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
         }
     }
 
-    public static bool HealthyPawn(Pawn pawn) //判断一个Pawn是否健康
+    /// <summary>
+    /// 判断一个Pawn是否健康
+    /// </summary>
+    public static bool HealthyPawn(Pawn pawn)
     {
         if (pawn.Destroyed || pawn.InMentalState)
         {
@@ -88,9 +91,9 @@ public class QuestPart_WoundedTravelerCanLeaveNow : QuestPartActivable
     {
         base.ExposeData();
 
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 2500);
-        Scribe_Values.Look(ref outSignal, "outSignal");
-        Scribe_Collections.Look(ref pawns, "pawns", LookMode.Reference);
+        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), 2500);
+        Scribe_Values.Look(ref outSignal, nameof(outSignal));
+        Scribe_Collections.Look(ref pawns, nameof(pawns), LookMode.Reference);
 
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {

@@ -198,9 +198,9 @@ public class SettlementDipComp : WorldObjectComp
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref lastDiplomacyTick, "lastDiplomacyTick", -1);
-        Scribe_Values.Look(ref curNegotiatingTeamLevel, "curNegotiatingTeamLevel");
-        Scribe_Deep.Look(ref diplomaticSummitHandler, "diplomaticSummitHandler", ctorArgs: Settlement);
+        Scribe_Values.Look(ref lastDiplomacyTick, nameof(lastDiplomacyTick), -1);
+        Scribe_Values.Look(ref curNegotiatingTeamLevel, nameof(curNegotiatingTeamLevel));
+        Scribe_Deep.Look(ref diplomaticSummitHandler, nameof(diplomaticSummitHandler), ctorArgs: Settlement);
     }
 
 }
