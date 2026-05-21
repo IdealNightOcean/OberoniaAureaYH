@@ -29,7 +29,7 @@ public class ResearchSummit_Fair : WorldObject_InteractiveBase
 
     public override void Destroy()
     {
-        innerTrader?.Destory();
+        innerTrader?.Destroy();
         base.Destroy();
     }
 

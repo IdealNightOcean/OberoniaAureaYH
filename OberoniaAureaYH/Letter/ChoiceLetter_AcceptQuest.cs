@@ -52,6 +52,6 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Defs.Look(ref questScriptDef, "questScriptDef");
+        Scribe_Defs.Look(ref questScriptDef, nameof(questScriptDef));
     }
 }

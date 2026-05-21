@@ -78,4 +78,16 @@ public static class KeyLibrary_CDRecord
     /// 逆重科技阶段提升
     /// </summary>
     public const string GravTechStageUpgrade = "GravTechStageUpgrade";
+
+    /// <summary>
+    /// 请求举行多方会谈
+    /// </summary>
+    public const string RequestMultiPartyTalks = "RequestMultiPartyTalks";
+
+
+    /// <summary>
+    /// 请求刷新额外定居点商人
+    /// </summary>
+    public const string RequestExtraSiteTrader = "RequestExtraSiteTrader";
+
 }

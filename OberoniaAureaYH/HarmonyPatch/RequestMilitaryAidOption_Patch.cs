@@ -38,7 +38,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         }
         else if (faction.PlayerGoodwill < 50)
         {
-            diaOption.Disable("NeedGoodwill".Translate(50.ToString("F0")));
+            diaOption.Disable("NeedGoodwill".Translate(50));
         }
         else
         {

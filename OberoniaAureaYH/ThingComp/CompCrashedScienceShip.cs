@@ -241,7 +241,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         if (!dataUploaded)
         {
-            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestoryedBeforeDataUpload", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
+            QuestUtility.SendQuestTargetSignals(previousMap.Parent.questTags, "DestroyedBeforeDataUpload", parent.Named(KeyLibrary_NamedArgument.SUBJECT));
         }
         shipGameCondition?.End();
         shipGameCondition = null;

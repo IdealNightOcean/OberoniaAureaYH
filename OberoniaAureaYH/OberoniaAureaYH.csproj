@@ -99,6 +99,8 @@
     <Compile Include="IncidentWorker\IncidentWorker_VisitorGroupBase.cs" />
     <Compile Include="JobAndWork\JobDriver_TalkWithProspectingLeader.cs" />
     <Compile Include="Letter\ChoiceLetter_EMReview.cs" />
+    <Compile Include="Letter\ChoiceLetter_ExtraSiteTrader.cs" />
+    <Compile Include="Letter\ChoiceLetter_MultiPartyTalks.cs" />
     <Compile Include="Misc\Gizmo_EquipmentEnergyShieldStatus.cs" />
     <Compile Include="Misc\GameCondition_CrashedScienceShip.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ScienceDepartmentAnnualInteraction.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Quest\QuestNode\QuestNode_Root_ProspectingTeam.cs" />
     <Compile Include="Quest\QuestPart\QuestPart_ProspectingTeamReward.cs" />
     <Compile Include="Temp\CompProperties_ForceColor.cs" />
+    <Compile Include="ThingComp\CompIntelligenceDraft.cs" />
     <Compile Include="ThingComp\CompSDAccountingRecord.cs" />
     <Compile Include="ThingComp\CompGiveHediffInRange_GravField.cs" />
     <Compile Include="Thought\ThoughtWorker_Precept_Birthday.cs" />

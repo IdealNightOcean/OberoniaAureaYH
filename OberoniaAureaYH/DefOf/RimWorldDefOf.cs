@@ -6,17 +6,31 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_RimWorldDefOf
 {
-    ///<summary>合成纤维</summary>
+    ///<summary>
+    ///合成纤维
+    ///</summary>
     public static ThingDef Synthread;
-    ///<summary>护盾核心</summary>
+
+    ///<summary>
+    ///护盾核心
+    ///</summary>
     public static ThingDef BroadshieldCore;
-    ///<summary>虚空电池</summary>
+
+    ///<summary>
+    ///虚空电池
+    ///</summary>
     public static ThingDef VanometricPowerCell;
+
+    ///<summary>
+    ///死眠扩容血清
+    ///</summary>
     [MayRequireBiotech]
-    ///<summary>死眠扩容血清</summary>
     public static ThingDef DeathrestCapacitySerum;
+
+    ///<summary>
+    ///感知催化剂
+    ///</summary>
     [MayRequireOdyssey]
-    ///<summary>感知催化剂</summary>
     public static ThingDef SentienceCatalyst;
 
     public static SoundDef RK_Sound_Emp_Crack;
@@ -24,14 +38,22 @@ public static class OARK_RimWorldDefOf
     public static TraderKindDef Visitor_Outlander_Standard;
 
     public static WeatherDef SnowHard;
+
     public static WeatherDef SnowGentle;
 
     public static QuestScriptDef OpportunitySite_PeaceTalks;
+
+
+    ///<summary>
+    ///任务 - 远古军械库
+    ///</summary>
     [MayRequireOdyssey]
-    ///<summary>任务-远古军械库</summary>
     public static QuestScriptDef Opportunity_AncientStructureGarrison;
+
+    ///<summary>
+    ///任务 - 阿尔法敲击兽
+    ///</summary>
     [MayRequireOdyssey]
-    ///<summary>任务-阿尔法敲击兽</summary>
     public static QuestScriptDef OpportunitySite_AlphaThrumbo_Giver;
 
     public static TraitDef NaturalMood;

@@ -7,13 +7,25 @@ namespace OberoniaAurea;
 public class FactionDialogCache
 {
     public Pawn Negotiator { get; }
+    public bool NegotiatorSocialEnabled { get; }
     public Faction Faction { get; }
     public Map Map { get; }
 
     public FactionRelationKind PlayerRelationKind => Faction.PlayerRelationKind;
     public float TotalAllianceDuration { get; } = -1f;
 
-    public int AmountSendableSilver { get; set; } = -1;
+    private int? amountSendableSilver;
+    public int AmountSendableSilver
+    {
+        get
+        {
+            if (!amountSendableSilver.HasValue)
+            {
+                amountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(this.Map);
+            }
+            return amountSendableSilver.Value;
+        }
+    }
 
     public FactionDialogCache(Pawn negotiator, Faction faction)
     {
@@ -21,7 +33,12 @@ public class FactionDialogCache
         Faction = faction;
         Map = negotiator.MapHeld;
 
-        AmountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(this.Map);
+        NegotiatorSocialEnabled = !negotiator.skills.GetSkill(SkillDefOf.Social).TotallyDisabled;
         TotalAllianceDuration = OAInteractHandler.Instance.AllianceDuration();
+    }
+
+    private void MarkAmountSendableSilverDirty()
+    {
+        amountSendableSilver = int.MinValue;
     }
 }

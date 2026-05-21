@@ -7,14 +7,26 @@ namespace OberoniaAurea;
 
 public class ExtraSiteTrader : IExposable
 {
+    public const int DefaultExpiredDays = 20;
+
     private WorldObject parent;
     public WorldObject Parent => parent;
+
+    private int expiredDays = DefaultExpiredDays;
+    public int ExpiredDays => expiredDays;
+
+    private Faction fixedTraderFaction;
+    public Faction FixedTraderFaction => fixedTraderFaction;
+
+    private TraderKindDef fixedTraderKind;
+    public TraderKindDef FixedTraderKind => fixedTraderKind;
+
 
     private Faction traderFaction;
     public Faction TraderFaction => traderFaction;
 
-    private SiteTrader siteTrader;
-    public SiteTrader SiteTrader => siteTrader;
+    private TraderKindDef traderKind;
+    public TraderKindDef TraderKind => traderKind;
 
     private int daysToExpired;
     public int DaysToExpired
@@ -22,50 +34,68 @@ public class ExtraSiteTrader : IExposable
         get => daysToExpired;
         set => daysToExpired = value;
     }
+    public bool IsActive => daysToExpired > 0 && traderFaction is not null && traderKind is not null;
+
+    private SiteTrader siteTrader;
+    public SiteTrader SiteTrader => IsActive ? (siteTrader ??= new SiteTrader(traderKind, parent, traderFaction)) : null;
 
     public ExtraSiteTrader() { }
-    public ExtraSiteTrader(WorldObject parent)
+    public ExtraSiteTrader(WorldObject parent, int expiredDays = DefaultExpiredDays, Faction fixedFaction = null, TraderKindDef fixedKind = null)
     {
         this.parent = parent;
-    }
-
-    public static ExtraSiteTrader CreateExtraSiteTrader(WorldObject parent, Faction traderFaction = null, TraderKindDef traderKind = null, int daysToExpired = -2)
-    {
-        ExtraSiteTrader extraSiteTrader = new(parent);
-        traderFaction ??= OAFrame_FactionUtility.RandomAvailableFactionOf(FactionValidationParams.DefaultFaction, f => !f.def.caravanTraderKinds.NullOrEmpty());
-        if (traderKind is null)
-        {
-            traderFaction.def.caravanTraderKinds.TryRandomElementByWeight(t => TraderKindCommonality(t, traderFaction), out traderKind);
-            traderKind ??= traderFaction.def.caravanTraderKinds.RandomElement();
-        }
-
-        extraSiteTrader.InitTrader(traderFaction, traderKind);
-        return extraSiteTrader;
+        this.expiredDays = expiredDays;
+        this.fixedTraderFaction = fixedFaction;
+        this.fixedTraderKind = fixedKind;
     }
 
     public void ExposeData()
     {
         Scribe_References.Look(ref parent, nameof(parent));
+
+        Scribe_References.Look(ref fixedTraderFaction, nameof(fixedTraderFaction));
+        Scribe_Defs.Look(ref fixedTraderKind, nameof(fixedTraderKind));
         Scribe_References.Look(ref traderFaction, nameof(traderFaction));
-        Scribe_Values.Look(ref daysToExpired, nameof(daysToExpired));
+        Scribe_Defs.Look(ref traderKind, nameof(traderKind));
+
+        Scribe_Values.Look(ref expiredDays, nameof(expiredDays), DefaultExpiredDays);
+        Scribe_Values.Look(ref daysToExpired, nameof(daysToExpired), DefaultExpiredDays);
+
         Scribe_Deep.Look(ref siteTrader, nameof(siteTrader));
     }
 
-    public void InitTrader(Faction faction, TraderKindDef traderKind, int daysToExpired = -2)
+    public void ClearTraderMeta()
     {
-        Clear();
-
-        traderFaction = faction;
-        siteTrader = new SiteTrader(traderKind, parent, traderFaction);
-        DaysToExpired = daysToExpired;
+        siteTrader?.Destroy();
+        siteTrader = null;
+        traderFaction = null;
+        traderKind = null;
+        daysToExpired = -1;
     }
 
-    public void Clear()
+    public void RefreshTraderMeta()
     {
-        traderFaction = null;
-        siteTrader?.Destory();
-        siteTrader = null;
-        DaysToExpired = -1;
+        ClearTraderMeta();
+
+        if (fixedTraderFaction is not null)
+        {
+            traderFaction = fixedTraderFaction;
+        }
+        else
+        {
+            traderFaction = OAFrame_FactionUtility.RandomAvailableFactionOf(FactionValidationParams.DefaultFaction, f => !f.def.caravanTraderKinds.NullOrEmpty());
+        }
+
+        if (fixedTraderKind is not null)
+        {
+            traderKind = fixedTraderKind;
+        }
+        else
+        {
+            traderFaction.def.caravanTraderKinds.TryRandomElementByWeight(t => TraderKindCommonality(t, traderFaction), out traderKind);
+            traderKind ??= traderFaction.def.caravanTraderKinds.RandomElement();
+        }
+
+        daysToExpired = expiredDays;
     }
 
     public void RefreshTrader() => siteTrader?.RefreshThings();

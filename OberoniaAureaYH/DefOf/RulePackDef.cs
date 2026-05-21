@@ -6,6 +6,11 @@ namespace OberoniaAurea;
 [DefOf]
 public static class OARK_RulePackDef
 {
+    /// <summary>
+    /// 多发会谈 - 每个派系修正Rule
+    /// </summary>
+    public static RulePackDef OARK_MultiPartyTalks_BaselineText;
+
     [MayRequireOdyssey]
     public static RulePackDef OARK_RulePack_ScienceShipName;
     [MayRequireOdyssey]
@@ -20,11 +25,6 @@ public static class OARK_RulePackDef
     public static RulePackDef OARK_RulePack_AccountInquiryText;
     [MayRequireOdyssey]
     public static RulePackDef OARK_RulePack_ReferendaryHackText;
-
-    /// <summary>
-    /// 多发会谈 - 每个派系修正Rule
-    /// </summary>
-    public static RulePackDef OARK_MultiPartyTalks_BaselineText;
 
     static OARK_RulePackDef()
     {

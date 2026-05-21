@@ -24,7 +24,7 @@ internal static class BuyTechDialogMaker
         }
         if (dialogCache.TotalAllianceDuration < 45)
         {
-            diaOption.Disable("OA_AllianceDurationShort".Translate(45.ToString("F0")));
+            diaOption.Disable("OA_AllianceDurationShort".Translate(45));
             return diaOption;
         }
         int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.BuyTechPrint);

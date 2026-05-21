@@ -21,12 +21,14 @@ public class ExtraSiteTraderManager : IExposable
     }
     public static void ClearStaticCache() => Instance = null;
 
+
+
     public void ExposeData()
     {
         Scribe_Collections.Look(ref extraSiteTraders, nameof(extraSiteTraders), LookMode.Deep);
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            extraSiteTraders.RemoveAll(t => t.Parent is null || t.SiteTrader is null || t.DaysToExpired <= 0);
+            extraSiteTraders.RemoveAll(t => t.Parent is null);
 
             extraSiteTradersDict = new(extraSiteTraders.Count);
             foreach (ExtraSiteTrader extraSiteTrader in extraSiteTraders)
@@ -36,14 +38,13 @@ public class ExtraSiteTraderManager : IExposable
         }
     }
 
-    public void ExtraSiteTradersTickDay()
+    internal void TickDay()
     {
-        for (int i = extraSiteTraders.Count - 1; i >= 0; i--)
+        foreach (ExtraSiteTrader siteTrader in extraSiteTraders)
         {
-            ExtraSiteTrader extraSiteTrader = extraSiteTraders[i];
-            if (extraSiteTrader is null || extraSiteTrader.SiteTrader is null || (--extraSiteTrader.DaysToExpired) <= 0)
+            if ((--siteTrader.DaysToExpired) <= 0)
             {
-                DeregisterExtraSiteTraderDirect(extraSiteTrader);
+                siteTrader.RefreshTraderMeta();
             }
         }
     }
@@ -79,6 +80,6 @@ public class ExtraSiteTraderManager : IExposable
     {
         extraSiteTraders.Remove(extraSiteTrader);
         extraSiteTradersDict.Remove(extraSiteTrader.Parent);
-        extraSiteTrader?.Clear();
+        extraSiteTrader?.ClearTraderMeta();
     }
 }

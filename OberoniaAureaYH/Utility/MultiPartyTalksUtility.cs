@@ -18,28 +18,24 @@ public static class MultiPartyTalksUtility
     /// <param name="b">交互能力</param>
     public static InteractionOutcome DetermineOutcomeCommon(float a, float b)
     {
-        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb);
+        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out _);
 
         float rand = Random.value;
         if (rand < criticalSuccessProb)
-        {
             return InteractionOutcome.CriticalSuccess;
-        }
+
         rand -= criticalSuccessProb;
         if (rand < successProb)
-        {
             return InteractionOutcome.Success;
-        }
+
         rand -= successProb;
         if (rand < normalProb)
-        {
             return InteractionOutcome.Normal;
-        }
+
         rand -= normalProb;
         if (rand < failureProb)
-        {
             return InteractionOutcome.Failure;
-        }
+
         return InteractionOutcome.CriticalFailure;
     }
 
@@ -165,13 +161,13 @@ public static class MultiPartyTalksUtility
                 grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_BaselineText);
 
                 grammarRequest.Rules.AddRange(GrammarUtility.RulesForFaction(KeyLibrary_NamedArgument.FACTION, f));
-                grammarRequest.Rules.Add(new Rule_String("techAndMemeModify", techAndMemeModify.ToStringPercentSigned("0.##").Colorize(techAndMemeModify < 0f ? Color.green : ColorLibrary.RedReadable)));
-                grammarRequest.Rules.Add(new Rule_String("relationModify", relationModify.ToStringPercentSigned("0.##").Colorize(relationModify < 0f ? Color.green : ColorLibrary.RedReadable)));
-                grammarRequest.Rules.Add(new Rule_String("permanentEnemyModify", permanentEnemyModify.ToStringPercentSigned("0.##").Colorize(permanentEnemyModify < 0f ? Color.green : ColorLibrary.RedReadable)));
+                grammarRequest.Rules.Add(new Rule_String(nameof(techAndMemeModify), techAndMemeModify.ToStringPercentSigned("0.##").Colorize(techAndMemeModify < 0f ? Color.green : ColorLibrary.RedReadable)));
+                grammarRequest.Rules.Add(new Rule_String(nameof(relationModify), relationModify.ToStringPercentSigned("0.##").Colorize(relationModify < 0f ? Color.green : ColorLibrary.RedReadable)));
+                grammarRequest.Rules.Add(new Rule_String(nameof(permanentEnemyModify), permanentEnemyModify.ToStringPercentSigned("0.##").Colorize(permanentEnemyModify < 0f ? Color.green : ColorLibrary.RedReadable)));
 
-                grammarRequest.Constants.Add("techAndMemeModify", techAndMemeModify.ToString("0.###"));
-                grammarRequest.Constants.Add("relationModify", relationModify.ToString("0.###"));
-                grammarRequest.Constants.Add("permanentEnemyModify", permanentEnemyModify.ToString("0.###"));
+                grammarRequest.Constants.Add(nameof(techAndMemeModify), techAndMemeModify.ToString("0.###"));
+                grammarRequest.Constants.Add(nameof(relationModify), relationModify.ToString("0.###"));
+                grammarRequest.Constants.Add(nameof(permanentEnemyModify), permanentEnemyModify.ToString("0.###"));
                 expSB.AppendLine(GrammarResolver.Resolve("r_text", grammarRequest));
             }
         }
@@ -180,13 +176,15 @@ public static class MultiPartyTalksUtility
 
     private static readonly (string, float)[] MemeModifiesArr =
     [
-        ("OAGene_TerritorialHegemony", 0.15f),
-        ("OA_RK_meme_Friendly", -0.1f),
-        ("Rancher", -0.05f),
-        ("Loyalist", 0.05f),
-        ("Guilty", -0.05f),
-        ("Raider", 0.20f),
-        ("PainIsVirtue", -0.05f)
+        ("OAGene_TerritorialHegemony", 0.15f), //OA - 领地霸权
+        ("OA_RK_meme_Friendly", -0.1f), //OA - 和谐团体
+        ("HAR_Xenophilia", -0.05f), //外星人 - 异族亲和
+        ("HAR_Xenophobia", 0.1f), //外星人 - 异族摈斥
+        ("Rancher", -0.05f), //大牧场主
+        ("Loyalist", 0.05f), //赤胆忠心
+        ("Guilty", -0.05f), //原罪主义
+        ("Raider", 0.20f), //劫掠成性
+        ("PainIsVirtue", -0.05f) //苦痛美德
     ];
 
     private static float GetMemeModifier(Faction faction)
