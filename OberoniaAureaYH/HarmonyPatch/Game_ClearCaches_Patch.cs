@@ -4,7 +4,7 @@ using Verse;
 namespace OberoniaAurea;
 
 [StaticConstructorOnStartup]
-[HarmonyPatch(typeof(Game), "ClearCaches")]
+[HarmonyPatch(typeof(Game), nameof(Game.ClearCaches))]
 public static class Game_ClearCaches_Patch
 {
     [HarmonyPostfix]

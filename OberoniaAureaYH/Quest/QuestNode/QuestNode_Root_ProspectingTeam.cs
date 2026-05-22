@@ -12,8 +12,8 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
 
     protected override bool TestRunInt(Slate slate)
     {
-        Faction faction = ModUtility.OAFaction;
-        if (faction is null || faction.HostileTo(Faction.OfPlayer))
+        Faction oaFaction = ModUtility.OAFaction;
+        if (oaFaction is null || oaFaction.HostileTo(Faction.OfPlayer))
         {
             return false;
         }
@@ -37,7 +37,7 @@ public class QuestNode_Root_ProspectingTeam : QuestNode_Root_RefugeeBase
             LodgerCount = 4,
             ChildCount = 0,
 
-            goodwillSuccess = 12,
+            goodwillSuccess = Faction.OfPlayer.def == OARK_ModDefOf.OA_RK_PlayerFaction ? 100 : 50,
             goodwillFailure = -12,
             rewardValueRange = new FloatRange(300f, 500f) * Find.Storyteller.difficulty.EffectiveQuestRewardValueFactor,
             questDurationTicks = 60000

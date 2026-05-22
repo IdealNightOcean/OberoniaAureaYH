@@ -17,14 +17,14 @@ public class QuestNode_GetOberoniaAureaFaction : QuestNode
     protected override void RunInt()
     {
         Slate slate = QuestGen.slate;
-        Faction faction = ModUtility.OAFaction;
-        if (ValidFaction(faction, slate))
+        Faction oaFaction = ModUtility.OAFaction;
+        if (ValidFaction(oaFaction, slate))
         {
-            slate.Set(storeAs.GetValue(slate), faction);
-            if (!faction.Hidden)
+            slate.Set(storeAs.GetValue(slate), oaFaction);
+            if (!oaFaction.Hidden)
             {
                 QuestPart_InvolvedFactions questPart_InvolvedFactions = new();
-                questPart_InvolvedFactions.factions.Add(faction);
+                questPart_InvolvedFactions.factions.Add(oaFaction);
                 QuestGen.quest.AddPart(questPart_InvolvedFactions);
             }
         }

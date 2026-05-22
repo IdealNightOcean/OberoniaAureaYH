@@ -8,6 +8,11 @@ public static class OARK_LetterDefOf
 {
     public static LetterDef OA_RK_AcceptJoinerViewInfo;
 
+    /// <summary>
+    /// 多方会谈 - 议题
+    /// </summary>
+    public static LetterDef OARK_MultiPartyTalksTopic;
+
     [MayRequireOdyssey]
     public static LetterDef OARK_BrokenPilotConsoleLetter;
 

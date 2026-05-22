@@ -74,8 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomComponent\ExtraSiteTrader.cs" />
-    <Compile Include="CustomComponent\ExtraSiteTraderManager.cs" />
+    <Compile Include="CustomComponent\ExtraSiteGuest.cs" />
     <Compile Include="CustomComponent\MultiPartyTalksRewardData.cs" />
     <Compile Include="DataLibrary\KeyLibrary_CDRecord.cs" />
     <Compile Include="DefModExtension\OberoniaAureaBackstoryFlag.cs" />
@@ -90,6 +89,7 @@
     <Compile Include="FactionDialogMaker\BuyTechDialogMaker.cs" />
     <Compile Include="FactionDialogMaker\DiplomacyDialogMaker.cs" />
     <Compile Include="FactionDialogMaker\SponsorOADialogMaker.cs" />
+    <Compile Include="HarmonyPatch\Settlement_ArrivalAction_Patch.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_BirthdayWishes.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_EconomyMinistryReview_Outcome.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ProspectingTeam.cs" />
@@ -99,8 +99,8 @@
     <Compile Include="IncidentWorker\IncidentWorker_VisitorGroupBase.cs" />
     <Compile Include="JobAndWork\JobDriver_TalkWithProspectingLeader.cs" />
     <Compile Include="Letter\ChoiceLetter_EMReview.cs" />
-    <Compile Include="Letter\ChoiceLetter_ExtraSiteTrader.cs" />
-    <Compile Include="Letter\ChoiceLetter_MultiPartyTalks.cs" />
+    <Compile Include="Letter\ChoiceLetter_ExtraSiteGuest.cs" />
+    <Compile Include="Letter\ChoiceLetter_MultiPartyTalksTopic.cs" />
     <Compile Include="Misc\Gizmo_EquipmentEnergyShieldStatus.cs" />
     <Compile Include="Misc\GameCondition_CrashedScienceShip.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ScienceDepartmentAnnualInteraction.cs" />
@@ -239,6 +239,8 @@
     <Compile Include="Utility\ModUtility.cs" />
     <Compile Include="Verb\Verb_CastTargetEffectFriendly.cs" />
     <Compile Include="Verb\Verb_SummonEMP.cs" />
+    <Compile Include="WorldObject\ArrivalAction\CaravanArrivalAction_InteractWithGuest.cs" />
+    <Compile Include="WorldObject\ArrivalAction\TransportersArrivalAction_InteractWithGuest.cs" />
     <Compile Include="WorldObject\FixedCaravan_ScienceShipLaunch.cs" />
     <Compile Include="WorldObject\MapGenerate\SketchResolver_CrashedGravship.cs" />
     <Compile Include="WorldObject\MapGenerate\GenStep_CrashedGravship.cs" />
@@ -297,7 +299,7 @@
     <Compile Include="WorldObject\MapGenerate\GenStep_OABasicGenStep.cs" />
     <Compile Include="WorldObject\MapGenerate\SymbolResolver_ResearcherCamp.cs" />
     <Compile Include="WorldObject\ResearchSummit_AcademicDispute.cs" />
-    <Compile Include="WorldObject\WorldObjectComp_ExtraSiteTrader.cs" />
+    <Compile Include="WorldObject\WorldObjectComp_ExtraGuest.cs" />
     <Compile Include="WorldObject\WorldObject_MultiPartyTalks.cs" />
     <Compile Include="WorldObject\WorldObject_ResearchSummit.cs" />
     <Compile Include="WorldObject\WorldObject_DiplomaticOffices.cs" />

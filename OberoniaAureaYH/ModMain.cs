@@ -30,6 +30,9 @@ public class OberoniaAureaSettings : ModSettings
 
     public static bool BirthdayWishesShowLetter = true;
 
+    public static int ExtraSiteTraderExpiredDays = 20;
+    [Unsaved] private static string ExtraSiteTraderExpiredDaysStr = string.Empty;
+
     public void DoSettingsWindowContents(Rect inRect)
     {
         Rect outRect = new(inRect.x, inRect.y, inRect.width * 0.6f, inRect.height);
@@ -45,7 +48,9 @@ public class OberoniaAureaSettings : ModSettings
         listing_Rect.Begin(viewRect);
 
         listing_Rect.CheckboxLabeled($"OARK_Setting_{nameof(BirthdayWishesShowLetter)}".Translate(), ref BirthdayWishesShowLetter);
-
+        listing_Rect.Label($"OARK_Setting_{nameof(ExtraSiteTraderExpiredDays)}".Translate());
+        if (string.IsNullOrEmpty(ExtraSiteTraderExpiredDaysStr)) ExtraSiteTraderExpiredDaysStr = ExtraSiteTraderExpiredDays.ToStringCached();
+        listing_Rect.IntEntry(ref ExtraSiteTraderExpiredDays, ref ExtraSiteTraderExpiredDaysStr);
 
         listing_Rect.End();
         if (Event.current.type == EventType.Layout)
@@ -60,6 +65,7 @@ public class OberoniaAureaSettings : ModSettings
     {
         base.ExposeData();
         Scribe_Values.Look(ref BirthdayWishesShowLetter, nameof(BirthdayWishesShowLetter), defaultValue: true);
+        Scribe_Values.Look(ref ExtraSiteTraderExpiredDays, nameof(ExtraSiteTraderExpiredDays), 20);
     }
 }
 

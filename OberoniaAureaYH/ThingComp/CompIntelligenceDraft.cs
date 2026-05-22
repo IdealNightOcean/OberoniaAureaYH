@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 
 namespace OberoniaAurea;
 
@@ -13,13 +14,12 @@ public class CompIntelligenceDraft : CompHackable
         }
 
         float rand = Rand.Value;
-        if (rand < 0.028f)
+        if (rand <= 0.3f)
         {
-
-        }
-        else if (rand <= 0.3f)
-        {
-
+            bool isTopSecret = rand < 0.02f;
+            float pawnAbility = hackPawn.GetStatValue(StatDefOf.ReadingSpeed);
+            float baselineAbility = (isTopSecret ? 2.5f : 1.5f) * Rand.Range(0.5f, 1.5f);
+            InteractionOutcome outcome = MultiPartyTalksUtility.DetermineOutcomeCommon(baselineAbility, pawnAbility);
         }
 
         if (parent.stackCount <= 1)
@@ -27,6 +27,4 @@ public class CompIntelligenceDraft : CompHackable
             base.FinishHack(hackPawn);
         }
     }
-
-
 }

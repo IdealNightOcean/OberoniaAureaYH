@@ -2,6 +2,7 @@
 
 public static class KeyLibrary_NamedArgument
 {
+    public const string DEF = "DEF";
     public const string PAWN = "PAWN";
     public const string FACTION = "FACTION";
     public const string SUBJECT = "SUBJECT";

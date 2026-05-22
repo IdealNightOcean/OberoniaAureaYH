@@ -16,7 +16,8 @@ public class QuestNode_Root_SDBirthdayVisit : QuestNode_Root_RefugeeBase
         questParameter = new QuestParameter()
         {
             allowBadThought = false,
-            allowLeave = false,
+            allowAssaultColony = false,
+            allowJoinOffer = false,
 
             LodgerCount = Rand.RangeInclusive(2, 3),
             ChildCount = 0,

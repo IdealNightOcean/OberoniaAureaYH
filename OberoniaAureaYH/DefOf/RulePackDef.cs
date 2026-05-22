@@ -7,9 +7,19 @@ namespace OberoniaAurea;
 public static class OARK_RulePackDef
 {
     /// <summary>
-    /// 多发会谈 - 每个派系修正Rule
+    /// 多方会谈 - 每个派系的修正明细
     /// </summary>
     public static RulePackDef OARK_MultiPartyTalks_BaselineText;
+
+    /// <summary>
+    /// 多方会谈 - 议题详情文本
+    /// </summary>
+    public static RulePackDef OARK_MultiPartyTalks_TopicInfo;
+
+    /// <summary>
+    /// 多方会谈 - 议题的每通用奖励明细
+    /// </summary>
+    public static RulePackDef OARK_MultiPartyTalks_TopicOutcome;
 
     [MayRequireOdyssey]
     public static RulePackDef OARK_RulePack_ScienceShipName;

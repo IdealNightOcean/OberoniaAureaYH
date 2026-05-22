@@ -17,6 +17,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
 
     public int TotalTopics => participantFactions.Count - 1;
     private int triggeredTopics;
+    public int TriggeredTopics => triggeredTopics;
     private int settledTopics;
     private int nextTopicForceTriggeredTick;
 
@@ -240,13 +241,22 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
 
     private void TriggerTopics()
     {
+        triggeredTopics++;
+        nextTopicForceTriggeredTick = Find.TickManager.TicksGame + 30 * 2500;
+
         bool seriousTopic = Rand.Chance(0.3f);
         float topicNegotiationAbility = seriousTopic ? Rand.Range(1.15f, 1.35f) : Rand.Range(0.75f, 1f);
         List<Faction> topicFactions = participantFactions.TakeRandomElements(2).ToList();
 
-        triggeredTopics++;
-        nextTopicForceTriggeredTick = Find.TickManager.TicksGame + 30 * 2500;
-        throw new NotImplementedException();
+        ChoiceLetter_MultiPartyTalksTopic letter = (ChoiceLetter_MultiPartyTalksTopic)LetterMaker.MakeLetter(
+            label: "OARK_MultiPartyTalks_NewTopic".Translate(),
+            text: string.Empty,
+            def: OARK_LetterDefOf.OARK_MultiPartyTalksTopic,
+            relatedFaction: this.Faction,
+            quest: this.AssociatedQuest);
+        letter.InitMultiPartyTalksLetter(this, topicNegotiationAbility, seriousTopic, topicFactions);
+        letter.StartTimeout(3 * 2500);
+        Find.LetterStack.ReceiveLetter(letter);
     }
 
     private void ApplyOutcome(InteractionOutcome outcomeType, FixedCaravan fixedCaravan = null)

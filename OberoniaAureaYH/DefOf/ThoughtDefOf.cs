@@ -16,6 +16,11 @@ public static class OARK_ThoughtDefOf
     ///</summary>
     public static ThoughtDef OARK_BirthdayWishes;
 
+    /// <summary>
+    /// 公款旅游
+    /// </summary>
+    public static ThoughtDef OARK_TravelAtPublicCost;
+
     ///<summary>
     ///海盗飞船爆炸
     ///</summary>

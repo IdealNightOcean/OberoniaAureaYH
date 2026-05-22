@@ -16,7 +16,6 @@ public class GameComponent_OberoniaAurea : GameComponent
     private OAInteractHandler interactHandler;
     private ScienceDepartmentInteractHandler sdInteractHandler;
     private SpecialGlobalEventManager specialGlobalEventManager;
-    private ExtraSiteTraderManager extraSiteTraderManager;
 
     public GameComponent_OberoniaAurea(Game game)
     {
@@ -32,7 +31,6 @@ public class GameComponent_OberoniaAurea : GameComponent
         OAInteractHandler.ClearStaticCache();
         ScienceDepartmentInteractHandler.ClearStaticCache();
         SpecialGlobalEventManager.ClearStaticCache();
-        ExtraSiteTraderManager.ClearStaticCache();
     }
 
     public override void ExposeData()
@@ -43,7 +41,6 @@ public class GameComponent_OberoniaAurea : GameComponent
         Scribe_Deep.Look(ref interactHandler, nameof(interactHandler));
         Scribe_Deep.Look(ref sdInteractHandler, nameof(sdInteractHandler));
         Scribe_Deep.Look(ref specialGlobalEventManager, nameof(specialGlobalEventManager));
-        Scribe_Deep.Look(ref extraSiteTraderManager, nameof(extraSiteTraderManager));
     }
 
     public override void StartedNewGame() => GameStart();
@@ -66,9 +63,8 @@ public class GameComponent_OberoniaAurea : GameComponent
     private void GameStart()
     {
         EnsureComponentsInit();
-
-        ModUtility.Notify_GameStart();
         specialGlobalEventManager.Notify_GameStart();
+        WorldObjectComp_ExtraGuest.Notify_GameStart();
 
         if (!ModsConfig.IsActive("OARK.OberoniaAurea.Framework") && !ModsConfig.IsActive("OARK.OberoniaAurea.Framework_Steam"))
         {
@@ -117,17 +113,6 @@ public class GameComponent_OberoniaAurea : GameComponent
                 ScienceDepartmentInteractHandler.ClearStaticCache();
                 sdInteractHandler = new ScienceDepartmentInteractHandler();
             }
-        }
-
-        try
-        {
-            extraSiteTraderManager ??= new ExtraSiteTraderManager();
-        }
-        catch (System.Exception ex)
-        {
-            Log.Error($"[OARK] 在 {nameof(GameComponent_OberoniaAurea)}.{nameof(EnsureComponentsInit)} 中初始化 {nameof(ExtraSiteTraderManager)} 时发生异常：\n{ex}");
-            ExtraSiteTraderManager.ClearStaticCache();
-            extraSiteTraderManager = new ExtraSiteTraderManager();
         }
     }
 }

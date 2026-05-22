@@ -14,7 +14,9 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     public WorldObject_MultiPartyTalks talksSite;
     private float topicNegotiationAbility = 1f;
     private bool isSeriousTopic;
-    private List<Faction> topicFactions = [];
+    private List<Faction> topicFactions;
+
+    public override bool CanDismissWithRightClick => false;
 
     public override void ExposeData()
     {
@@ -30,16 +32,67 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         this.talksSite = talksSite;
         this.topicNegotiationAbility = topicNegotiationAbility;
         this.isSeriousTopic = isSeriousTopic;
+        topicFactions ??= [];
         topicFactions.AddRange(factions);
+        this.Text = TopicInfoText();
     }
-
 
     public override IEnumerable<DiaOption> Choices
     {
         get
         {
-            throw new System.NotImplementedException();
+            if (talksSite is null || !talksSite.IsWorking || talksSite.Destroyed)
+            {
+                yield return Option_Close;
+                yield break;
+            }
+
+            yield return Option_DeepStatement;
+            yield return Option_ShallowStatement;
+            yield return Option_Ingore;
+
+            yield return Option_Postpone;
         }
+    }
+
+    private DiaOption Option_DeepStatement => new("OARK_MultiPartyTalksTopic_DeepStatement".Translate())
+    {
+        action = delegate
+        {
+            Statement(isDeepStatement: true);
+            talksSite?.OnTopicSettled();
+            Find.LetterStack.RemoveLetter(this);
+        },
+        resolveTree = true
+    };
+
+    private DiaOption Option_ShallowStatement => new("OARK_MultiPartyTalksTopic_ShallowStatement".Translate())
+    {
+        action = delegate
+        {
+            Statement(isDeepStatement: false);
+            talksSite?.OnTopicSettled();
+            Find.LetterStack.RemoveLetter(this);
+        },
+        resolveTree = true
+    };
+
+    private DiaOption Option_Ingore => new("OARK_MultiPartyTalksTopic_Ingore".Translate())
+    {
+        action = delegate
+        {
+            Ingore();
+            talksSite?.OnTopicSettled();
+            Find.LetterStack.RemoveLetter(this);
+        },
+        resolveTree = true
+    };
+
+    public override void Removed()
+    {
+        base.Removed();
+        talksSite = null;
+        topicFactions = null;
     }
 
     private bool IsSuccessfulTopic()
@@ -54,64 +107,96 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         return outcome >= InteractionOutcome.Normal;
     }
 
-    private void DeepStatement()
+    private void Ingore()
     {
-        TopicRewardData rewardData = new(isDeepStatement: true)
-        {
-            IsSuccessful = IsSuccessfulTopic(),
-            NegotiatorXP = 2000,
-            IntelligenceDraftCount = 25 + Mathf.Min(75, Mathf.CeilToInt(talksSite.BaselineNegotiationAbility / 0.1f) * (isSeriousTopic ? 2 : 1))
-        };
-
-        if (rewardData.IsSuccessful)
-        {
-            rewardData.BaselineAdjust = -Rand.Range(0.05f, 0.1f);
-            rewardData.AssintPoints = isSeriousTopic ? 10 : 5;
-            rewardData.RoyalFavor = isSeriousTopic ? 5 : 2;
-
-            rewardData.OrganizerGoodwill = 10;
-            rewardData.TopicFactionsGoodwill = 10;
-            rewardData.OtherFactionsGoodwill = Rand.Bool ? 0 : 5;
-        }
-        else
-        {
-            rewardData.BaselineAdjust = 0.05f;
-            rewardData.OrganizerGoodwill = -10;
-            rewardData.TopicFactionsGoodwill = -10;
-            rewardData.OtherFactionsGoodwill = Rand.Bool ? 0 : -5;
-        }
-
-        ApplyCommonReward(rewardData);
-
         StringBuilder textBuilder = new(256);
-        textBuilder.AppendLine(RewardDataText(rewardData));
+        if (talksSite?.AssociatedFixedCaravan is not null)
+        {
+            (Pawn negotiator, _) = OAFrame_PawnUtility.GetMaxStatPawn(talksSite.AssociatedFixedCaravan.PawnsListForReading, StatDefOf.NegotiationAbility);
+
+            if (negotiator?.needs?.mood is not null)
+            {
+                negotiator.needs.mood.thoughts.memories.TryGainMemory(OARK_ThoughtDefOf.OARK_TravelAtPublicCost);
+                textBuilder.AppendLine("OARK_MultiPartyTalksTopic_IngoreOutcome".Translate(negotiator.Named(KeyLibrary_NamedArgument.PAWN)));
+            }
+        }
+
+        Dialog_NodeTreeWithFactionInfo confirmNodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(textBuilder.ToString(), talksSite?.Faction);
+        Find.WindowStack.Add(confirmNodeTree);
+
+        textBuilder.Insert(0, "\n");
+        textBuilder.Insert(0, this.Text);
+        this.Text = textBuilder.ToTaggedString();
     }
 
-    private void ShallowStatement()
+    private void Statement(bool isDeepStatement)
     {
-        TopicRewardData rewardData = new(isDeepStatement: false)
+        TopicRewardData rewardData = new();
+        bool isSuccessful = IsSuccessfulTopic();
+        if (isDeepStatement)
         {
-            IsSuccessful = IsSuccessfulTopic(),
-            NegotiatorXP = 1000,
-            IntelligenceDraftCount = 10 + Mathf.Min(75, Mathf.CeilToInt(talksSite.BaselineNegotiationAbility / 0.15f) * (isSeriousTopic ? 2 : 1))
-        };
+            rewardData.NegotiatorXP = 2000;
+            rewardData.IntelligenceDraftCount = 25 + Mathf.Min(75, Mathf.CeilToInt(talksSite.BaselineNegotiationAbility / 0.1f) * (isSeriousTopic ? 2 : 1));
 
-        if (rewardData.IsSuccessful)
-        {
-            rewardData.BaselineAdjust = -0.05f;
+            if (isSuccessful)
+            {
+                rewardData.BaselineAdjust = -Rand.Range(0.05f, 0.1f);
+                rewardData.AssintPoints = isSeriousTopic ? 10 : 5;
+                rewardData.RoyalFavor = isSeriousTopic ? 5 : 2;
 
-            rewardData.OrganizerGoodwill = 5;
-            rewardData.TopicFactionsGoodwill = 5;
+                rewardData.OrganizerGoodwill = 10;
+                rewardData.TopicFactionsGoodwill = 10;
+                rewardData.OtherFactionsGoodwill = Rand.Bool ? 0 : 5;
+            }
+            else
+            {
+                rewardData.BaselineAdjust = 0.05f;
+                rewardData.OrganizerGoodwill = -10;
+                rewardData.TopicFactionsGoodwill = -10;
+                rewardData.OtherFactionsGoodwill = Rand.Bool ? 0 : -5;
+            }
         }
         else
         {
-            rewardData.TopicFactionsGoodwill = -5;
+            rewardData.NegotiatorXP = 1000;
+            rewardData.IntelligenceDraftCount = 10 + Mathf.Min(75, Mathf.CeilToInt(talksSite.BaselineNegotiationAbility / 0.15f) * (isSeriousTopic ? 2 : 1));
+
+            if (isSuccessful)
+            {
+                rewardData.BaselineAdjust = -0.05f;
+
+                rewardData.OrganizerGoodwill = 5;
+                rewardData.TopicFactionsGoodwill = 5;
+            }
+            else
+            {
+                rewardData.TopicFactionsGoodwill = -5;
+            }
         }
 
         ApplyCommonReward(rewardData);
 
         StringBuilder textBuilder = new(256);
         textBuilder.AppendLine(RewardDataText(rewardData));
+
+
+
+        Dialog_NodeTreeWithFactionInfo confirmNodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(textBuilder.ToString(), talksSite?.Faction);
+        Find.WindowStack.Add(confirmNodeTree);
+
+        textBuilder.Insert(0, "\n");
+        textBuilder.Insert(0, this.Text);
+        this.Text = textBuilder.ToTaggedString();
+    }
+
+    private void DeepStatementEvent(bool isSuccessful, StringBuilder textBuilder)
+    {
+
+    }
+
+    private void ShallowStatementEvent(bool isSuccessful, StringBuilder textBuilder)
+    {
+
     }
 
     private void ApplyCommonReward(TopicRewardData rewardData)
@@ -184,7 +269,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     private string RewardDataText(TopicRewardData rewardData)
     {
         GrammarRequest grammarRequest = new();
-        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_BaselineText);
+        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_TopicOutcome);
 
         grammarRequest.Rules.AddRange(GrammarUtility.RulesForFaction(KeyLibrary_NamedArgument.FACTION, talksSite.Faction));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.BaselineAdjust), OAFrame_TextUtility.ColoredPercentString(rewardData.BaselineAdjust, reverse: true)));
@@ -208,12 +293,22 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         return GrammarResolver.Resolve("r_text", grammarRequest);
     }
 
-
-
-    private struct TopicRewardData(bool isDeepStatement)
+    private string TopicInfoText()
     {
-        public bool IsDeepStatement { get; private set; } = isDeepStatement;
-        public bool IsSuccessful { get; set; }
+        GrammarRequest grammarRequest = new();
+        grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_TopicInfo);
+
+        grammarRequest.Rules.Add(new Rule_String("TopicFactionsName", string.Join(", ", topicFactions.Select(f => f.NameColored))));
+
+        grammarRequest.Constants.Add(nameof(talksSite.TotalTopics), talksSite.TotalTopics.ToString());
+        grammarRequest.Constants.Add(nameof(talksSite.TriggeredTopics), talksSite.TriggeredTopics.ToString());
+        grammarRequest.Constants.Add(nameof(isSeriousTopic), isSeriousTopic.ToString());
+
+        return GrammarResolver.Resolve("r_text", grammarRequest);
+    }
+
+    private struct TopicRewardData
+    {
         public float BaselineAdjust { get; set; }
         public int AssintPoints { get; set; }
         public int RoyalFavor { get; set; }
@@ -223,5 +318,4 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         public int OtherFactionsGoodwill { get; set; }
         public int NegotiatorXP { get; set; }
     }
-
 }
