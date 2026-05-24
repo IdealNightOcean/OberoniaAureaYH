@@ -40,6 +40,11 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         }
     }
 
+    public void AdjustBaselineNegotiationAbility(float change)
+    {
+        baselineNegotiationAbility += change;
+        RefreshOutcomePropsExplanation();
+    }
     public void SetBaselineNegotiationAbility(float newbaseline)
     {
         baselineNegotiationAbility = baselineNegotiationAbility = Mathf.Max(0f, newbaseline);
@@ -79,7 +84,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         sb.AppendLine(base.GetInspectString());
         sb.Append("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
 
-        if (ModUtility.GodMode)
+        if (OAFrame_MiscUtility.GodMode)
         {
             sb.AppendLine();
             sb.AppendLine("————————");

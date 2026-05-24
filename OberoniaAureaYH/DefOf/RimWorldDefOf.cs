@@ -7,6 +7,11 @@ namespace OberoniaAurea;
 public static class OARK_RimWorldDefOf
 {
     ///<summary>
+    ///莓果
+    ///</summary>
+    public static ThingDef RawBerries;
+
+    ///<summary>
     ///合成纤维
     ///</summary>
     public static ThingDef Synthread;

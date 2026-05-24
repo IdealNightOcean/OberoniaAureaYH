@@ -445,7 +445,7 @@ public class CompCrashedScienceShip : CompHackable
             }
         }
 
-        if (ModUtility.GodMode)
+        if (OAFrame_MiscUtility.GodMode)
         {
             sb.AppendInNewLine("--------");
             sb.AppendInNewLine($"mainGravIndex:{mainGravIndex}, subGravIndex:{subGravIndex}");

@@ -205,7 +205,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         Faction oaFaction = ModUtility.OAFaction;
 
         if (rewardData.BaselineAdjust != 0f)
-            talksSite.SetBaselineNegotiationAbility(talksSite.BaselineNegotiationAbility + rewardData.BaselineAdjust);
+            talksSite.AdjustBaselineNegotiationAbility(rewardData.BaselineAdjust);
 
 
         if (rewardData.OrganizerGoodwill != 0)

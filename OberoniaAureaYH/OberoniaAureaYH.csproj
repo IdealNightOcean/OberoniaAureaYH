@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -86,6 +86,19 @@
     <Compile Include="CustomComponent\CustomEnum\EconomyMinistryReviewOutcome.cs" />
     <Compile Include="CustomComponent\CustomEnum\NegotiatingTeamLevel.cs" />
     <Compile Include="CustomComponent\CustomEnum\SettlementDipVisitType.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventDef.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorThought.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorSkill.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_TalksBaseline.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_Things.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_ThingsQuality.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_FieldTripForage.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorHediff.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorIdeoCertainty.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorRandomInspiration.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_Direct.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_MultiOptions.cs" />
     <Compile Include="FactionDialogMaker\BuyTechDialogMaker.cs" />
     <Compile Include="FactionDialogMaker\DiplomacyDialogMaker.cs" />
     <Compile Include="FactionDialogMaker\SponsorOADialogMaker.cs" />
@@ -101,6 +114,7 @@
     <Compile Include="Letter\ChoiceLetter_EMReview.cs" />
     <Compile Include="Letter\ChoiceLetter_ExtraSiteGuest.cs" />
     <Compile Include="Letter\ChoiceLetter_MultiPartyTalksTopic.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker.cs" />
     <Compile Include="Misc\Gizmo_EquipmentEnergyShieldStatus.cs" />
     <Compile Include="Misc\GameCondition_CrashedScienceShip.cs" />
     <Compile Include="IncidentWorker\IncidentWorker_ScienceDepartmentAnnualInteraction.cs" />

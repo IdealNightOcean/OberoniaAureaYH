@@ -1,6 +1,5 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
-using System;
 using System.Runtime.CompilerServices;
 using Verse;
 
@@ -9,9 +8,6 @@ namespace OberoniaAurea;
 [StaticConstructorOnStartup]
 public static class ModUtility
 {
-    [Obsolete("应该换用框架的OAFrame_MiscUtility.GodMode")]
-    public static bool GodMode => DebugSettings.godMode && Prefs.DevMode;
-
     private static Faction oaFactionCache;
     public static Faction OAFaction => oaFactionCache ??= Find.FactionManager.FirstFactionOfDef(OARK_ModDefOf.OA_RK_Faction);
 
