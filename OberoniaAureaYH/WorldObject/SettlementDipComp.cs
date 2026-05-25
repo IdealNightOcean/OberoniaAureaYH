@@ -10,13 +10,9 @@ namespace OberoniaAurea;
 
 public class WorldObjectCompProperties_SettlementDipComp : WorldObjectCompProperties
 {
-    public WorldObjectCompProperties_SettlementDipComp()
-    {
-        compClass = typeof(SettlementDipComp);
-    }
+    public WorldObjectCompProperties_SettlementDipComp() => compClass = typeof(SettlementDipComp);
 }
 
-[StaticConstructorOnStartup]
 public class SettlementDipComp : WorldObjectComp
 {
     private int diplomacyCoolingDays = 30;

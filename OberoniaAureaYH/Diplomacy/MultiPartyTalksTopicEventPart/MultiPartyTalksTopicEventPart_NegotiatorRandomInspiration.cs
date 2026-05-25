@@ -4,11 +4,9 @@ using Verse;
 
 namespace OberoniaAurea;
 
-using static MultiPartyTalksTopicEventWorker;
-
 public class MultiPartyTalksTopicEventPart_NegotiatorRandomInspiration : MultiPartyTalksTopicEventPart
 {
-    public override void ApplyEventOutcome(EventData eventData, StringBuilder resultBuilder)
+    public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
         if (eventData.Negotiator is null)
             return;

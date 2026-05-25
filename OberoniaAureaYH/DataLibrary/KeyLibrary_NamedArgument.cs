@@ -12,5 +12,9 @@ public static class KeyLibrary_NamedArgument
     public const string Change = "Change";
     public const string FactionNames = "FactionNames";
     public const string Goodwill = "Goodwill";
+    public const string ThingsLabel = "ThingsLabel";
     public const string Value = "Value";
+
+    public const string TopicFactionsName = "TopicFactionsName";
+
 }

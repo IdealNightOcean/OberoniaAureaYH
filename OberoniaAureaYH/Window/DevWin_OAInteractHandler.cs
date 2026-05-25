@@ -34,8 +34,9 @@ public class DevWin_OAInteractHandler : Window
         listing_Rect.Begin(viewRect);
 
         listing_Rect.Label($"当前联盟开始Tick: {interactHandler.CurAllianceInitTick}");
-        listing_Rect.Label($"当前联盟持续时间 (Day): {allianceDuration:F2}");
-        listing_Rect.Label($"前联盟持续时间 (Day): {interactHandler.OldAllianceDuration:F2}");
+        listing_Rect.Label($"当前联盟持续时间 (Day): {allianceDuration:0.##}");
+        listing_Rect.Label($"前联盟持续时间 (Day): {interactHandler.OldAllianceDuration:0.##}");
+        listing_Rect.Label($"利益谈判难度修正系数: {interactHandler.DiplomaticSummitFactor.ToStringPercent("0.##")}");
         listing_Rect.Gap(6f);
         listing_Rect.Label($"贡献点: {interactHandler.AssistPoints}");
         listing_Rect.Label($"当前贡献点上限: {curAssistPointsCap}");

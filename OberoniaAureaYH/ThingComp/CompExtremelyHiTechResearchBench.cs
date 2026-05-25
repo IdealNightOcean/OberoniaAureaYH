@@ -1,5 +1,4 @@
 using RimWorld;
-using System.Linq;
 using Verse;
 
 namespace OberoniaAurea;
@@ -11,14 +10,6 @@ public class CompProperties_ExtremelyHiTechResearchFacility : CompProperties_Fac
     public float hiTechResearchOffect;
 
     public int checkInterval = 250;
-    public void AdjustStatOffsets(bool hiTechResearch)
-    {
-        StatModifier researchSpeedFactor = statOffsets.Where(s => s.stat == StatDefOf.ResearchSpeedFactor).First();
-        if (researchSpeedFactor is not null)
-        {
-            researchSpeedFactor.value = hiTechResearch ? hiTechResearchOffect : normalTechResearchOffect;
-        }
-    }
 
     public CompProperties_ExtremelyHiTechResearchFacility()
     {
@@ -27,9 +18,7 @@ public class CompProperties_ExtremelyHiTechResearchFacility : CompProperties_Fac
 }
 
 
-/// <summary>
-/// 高科技研究设施组件，在进行高科技研究时提供更大的研究加成，但在其他研究时提供较小的加成。
-/// </summary>
+[StaticConstructorOnStartup]
 public class CompExtremelyHiTechResearchFacility : CompFacility
 {
     public new CompProperties_ExtremelyHiTechResearchFacility Props => (CompProperties_ExtremelyHiTechResearchFacility)props;
@@ -52,20 +41,40 @@ public class CompExtremelyHiTechResearchFacility : CompFacility
         }
     }
 
-    public override void CompTick()
+    public override void CompTickInterval(int delta)
     {
-
-        base.CompTick();
-        ticksRemaining--;
-        if (ticksRemaining < 0)
+        base.CompTickInterval(delta);
+        if ((ticksRemaining -= delta) < 0)
         {
-            Props.AdjustStatOffsets(HiTechResearch);
+            AdjustStatOffsets(HiTechResearch);
             ticksRemaining = Props.checkInterval;
         }
     }
+
+    public void AdjustStatOffsets(bool hiTechResearch)
+    {
+        if (Props.statOffsets.NullOrEmpty())
+            return;
+
+        StatModifier researchSpeedModifier = null;
+        foreach (StatModifier mofifier in Props.statOffsets)
+        {
+            if (mofifier.stat == StatDefOf.ResearchSpeedFactor)
+            {
+                researchSpeedModifier = mofifier;
+                break;
+            }
+        }
+
+        if (researchSpeedModifier is not null)
+        {
+            researchSpeedModifier.value = hiTechResearch ? Props.hiTechResearchOffect : Props.normalTechResearchOffect;
+        }
+    }
+
     public override void PostExposeData()
     {
         base.PostExposeData();
-        Scribe_Values.Look(ref ticksRemaining, "ticksRemaining", 0);
+        Scribe_Values.Look(ref ticksRemaining, nameof(ticksRemaining), 0);
     }
 }

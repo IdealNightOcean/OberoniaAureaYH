@@ -2,6 +2,6 @@
 
 public class MultiPartyTalksTopicEventWorker_MultiOptions : MultiPartyTalksTopicEventWorker
 {
-    protected override void ApplyEventOutcome(EventData eventData)
+    protected override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData)
     { }
 }

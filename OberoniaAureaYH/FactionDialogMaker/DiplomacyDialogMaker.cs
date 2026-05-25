@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,14 @@ internal static class DiplomacyDialogMaker
     /// 请求多方会谈的冷却时间（Tick）
     /// </summary>
     private const int CooldownTicks_MultiPartyTalks = 30 * 60000;
+    /// <summary>
+    /// 要求访客派系延迟事件（天）
+    /// </summary>
+    private const int NextGusetDelayDays = 3;
+    /// <summary>
+    /// 邀请与金鼠敌对派系额外花费的支援点数
+    /// </summary>
+    private const int ExtraAssistPointsCostForOAHostileGuest = 5;
 
 
     /// <summary>
@@ -69,15 +78,120 @@ internal static class DiplomacyDialogMaker
 
 
 
-    private static DiaOption ExtraSiteTrader(FactionDialogCache dialogCache)
+    private static DiaOption ExtraSiteTraderOpt(FactionDialogCache dialogCache)
     {
         throw new NotImplementedException();
     }
 
-    private static DiaNode ExtraSiteTraderNode(FactionDialogCache dialogCache)
+    private static DiaNode ExtraSiteTrader_SettlementSelectNode(FactionDialogCache dialogCache)
     {
+        DiaNode diaNode = new("OARK_ExtraSiteTrader_SettlementSelectNode".Translate());
+        PlanetTile mapTile = dialogCache.Map.Tile;
+        PlanetLayerDef mapLayerDef = mapTile.LayerDef;
+        List<Settlement> potentialSettlements = Find.WorldObjects.Settlements.Where(s => s.Faction == dialogCache.Faction && s.Tile.LayerDef == mapLayerDef)
+                                                                             .OrderBy(s => Find.WorldGrid.ApproxDistanceInTiles(s.Tile, mapTile))
+                                                                             .Take(5)
+                                                                             .ToList();
 
+        foreach (Settlement settlement in potentialSettlements)
+        {
+            WorldObjectComp_ExtraGuest guestComp = settlement.GetComponent<WorldObjectComp_ExtraGuest>();
+            if (guestComp is null || guestComp.ExtraSiteGuest is null)
+                continue;
+
+            DiaOption diaOption = new(settlement.LabelCap)
+            {
+                linkLateBind = () => ExtraSiteTrader_FactionSelectNode(dialogCache, settlement)
+            };
+
+            if (guestComp.ExtraSiteGuest.NextGuestFaction is not null)
+            {
+                diaOption.Disable("");
+            }
+        }
+
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => DiplomacyNode(dialogCache));
         throw new NotImplementedException();
+    }
+
+    private static DiaNode ExtraSiteTrader_FactionSelectNode(FactionDialogCache dialogCache, Settlement settlement)
+    {
+        DiaNode diaNode = new("OARK_ExtraSiteTrader_FactionSelectNode".Translate());
+        Faction oaFaction = ModUtility.OAFaction;
+        int assistPoints = OAInteractHandler.Instance.AssistPoints;
+        foreach ((Faction faction, DiaOption diaOption) in FactionSelectionOptions(dialogCache: dialogCache,
+                                                                                  linkLateBind: f => ExtraSiteTrader_TraderKindSelectNode(dialogCache, settlement, f)))
+        {
+            if (faction.HostileTo(oaFaction) && assistPoints < ExtraAssistPointsCostForOAHostileGuest)
+            {
+
+            }
+            diaNode.options.Add(diaOption);
+        }
+
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => ExtraSiteTrader_SettlementSelectNode(dialogCache));
+
+        return diaNode;
+    }
+
+    private static DiaNode ExtraSiteTrader_TraderKindSelectNode(FactionDialogCache dialogCache, Settlement settlement, Faction selFaction)
+    {
+        DiaNode diaNode = new("OARK_ExtraSiteTrader_TraderKindSelectNode".Translate());
+        if (!selFaction.def.caravanTraderKinds.NullOrEmpty())
+        {
+            foreach (TraderKindDef traderKind in selFaction.def.caravanTraderKinds)
+            {
+                DiaOption diaOption = new(traderKind.label)
+                {
+                    linkLateBind = () => ExtraSiteTrader_SelectConfirmNode(dialogCache, settlement, selFaction, traderKind)
+                };
+                diaNode.options.Add(diaOption);
+            }
+        }
+
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => ExtraSiteTrader_FactionSelectNode(dialogCache, settlement));
+        return diaNode;
+    }
+
+    private static DiaNode ExtraSiteTrader_SelectConfirmNode(FactionDialogCache dialogCache, Settlement settlement, Faction selFaction, TraderKindDef traderKind)
+    {
+        DiaNode diaNode = new("OARK_ExtraSiteTrader_SelectConfirmNode".Translate(
+            settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT),
+            selFaction.Named(KeyLibrary_NamedArgument.FACTION),
+            traderKind.Named(KeyLibrary_NamedArgument.DEF),
+            NextGusetDelayDays.Named(KeyLibrary_NamedArgument.Value)));
+
+        DiaOption confirmOpt = new("Confirm".Translate())
+        {
+            action = delegate
+            {
+                WorldObjectComp_ExtraGuest guestComp = settlement.GetComponent<WorldObjectComp_ExtraGuest>();
+                if (guestComp is null || guestComp.ExtraSiteGuest is null || guestComp.ExtraSiteGuest.NextGuestFaction is not null)
+                    return;
+
+                guestComp.ExtraSiteGuest.SetNextTraderMeta(selFaction, traderKind, NextGusetDelayDays);
+                if (selFaction.HostileTo(ModUtility.OAFaction))
+                {
+                    OAInteractHandler.Instance.AdjustAssistPoints(-ExtraAssistPointsCostForOAHostileGuest);
+                }
+            },
+            linkLateBind = () => ExtraSiteTrader_ConfirmNode(dialogCache, settlement, selFaction, traderKind)
+        };
+
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => ExtraSiteTrader_TraderKindSelectNode(dialogCache, settlement, selFaction));
+        return diaNode;
+    }
+
+    private static DiaNode ExtraSiteTrader_ConfirmNode(FactionDialogCache dialogCache, Settlement settlement, Faction selFaction, TraderKindDef traderKind)
+    {
+        DiaNode diaNode = new("OARK_ExtraSiteTrader_ConfirmNode".Translate(
+            settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT),
+            selFaction.Named(KeyLibrary_NamedArgument.FACTION),
+            traderKind.Named(KeyLibrary_NamedArgument.DEF),
+            NextGusetDelayDays.Named(KeyLibrary_NamedArgument.Value)));
+
+        diaNode.options.Add(FactionDialogUtility.OKToRoot(dialogCache.Faction, dialogCache.Negotiator));
+        return diaNode;
     }
 
 
@@ -91,7 +205,7 @@ internal static class DiplomacyDialogMaker
         DiaOption diaOption = FactionDialogUtility.DiaOptionWithCooldown(
             text: "OARK_DiplomacyOpt_MultiPartyTalks".Translate(),
             key: KeyLibrary_CDRecord.RequestMultiPartyTalks,
-            linkLateBind: () => FactionSelectionNode_MultiPartyTalks(dialogCache, []));
+            linkLateBind: () => MultiPartyTalks_FactionSelectNode(dialogCache, []));
 
         if (dialogCache.Faction.PlayerGoodwill < GoodwillThresholdForMultiPartyTalks)
         {
@@ -103,24 +217,26 @@ internal static class DiplomacyDialogMaker
     /// <summary>
     /// 多发会谈的派系选择界面，允许玩家选择3-5个派系参与会谈，提供每个派系的基本信息和与玩家的关系概况，并在确认界面展示综合谈判能力评估和相关说明
     /// </summary>
-    private static DiaNode FactionSelectionNode_MultiPartyTalks(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
+    private static DiaNode MultiPartyTalks_FactionSelectNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
     {
         string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
         DiaNode diaNode = new("OARK_MultiPartyTalks_FactionSelectionNode".Translate(selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst());
         Faction ofPlayer = Faction.OfPlayer;
         Faction oaFaction = ModUtility.OAFaction;
 
-        diaNode.options.AddRange(FactionSelectionOptions(
-            dialogCache: dialogCache,
-            selFactions: selFactions,
-            linkLateBind: () => FactionSelectionNode_MultiPartyTalks(dialogCache, selFactions),
-            maxSelections: 5));
+        foreach ((Faction faction, DiaOption diaOption) in MultiFactionSelectionOptions(dialogCache: dialogCache,
+                                                                                        selFactions: selFactions,
+                                                                                        linkLateBind: () => MultiPartyTalks_FactionSelectNode(dialogCache, selFactions),
+                                                                                        maxSelections: 5))
+        {
+            diaNode.options.Add(diaOption);
+        }
 
         if (selFactions.Count >= 3)
         {
             DiaOption confirmOption = new("Confirm".Translate())
             {
-                linkLateBind = () => FactionConfirmNode_MultiPartyTalks(dialogCache, selFactions)
+                linkLateBind = () => MultiPartyTalks_FactionConfirmNode(dialogCache, selFactions)
             };
             diaNode.options.Add(confirmOption);
         }
@@ -133,7 +249,7 @@ internal static class DiplomacyDialogMaker
     /// <summary>
     /// 多方会谈派系确认界面，在玩家选择3-5个派系后，展示所选派系的综合谈判能力评估和相关说明，帮助玩家做出是否继续进行会谈的决策，并提供返回修改选择的选项
     /// </summary>
-    private static DiaNode FactionConfirmNode_MultiPartyTalks(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
+    private static DiaNode MultiPartyTalks_FactionConfirmNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
     {
         string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
         StringBuilder nodeTextBuilder = new(128);
@@ -142,7 +258,7 @@ internal static class DiplomacyDialogMaker
             dialogCache.Faction.Named(KeyLibrary_NamedArgument.FACTION),
             selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst().Resolve());
 
-        float baselineNegotiationAbility = MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(participantFactions: selFactions, resultOnly: false, explanation: out string explanation);
+        float baselineNegotiationAbility = DiplomacyUtility.CalculateMultiPartyTalksBaselineNegotiationAbility(participantFactions: selFactions, resultOnly: false, explanation: out string explanation);
         if (baselineNegotiationAbility < 2f)
         {
             nodeTextBuilder.AppendLine();
@@ -176,7 +292,7 @@ internal static class DiplomacyDialogMaker
                     }
                 }
             },
-            linkLateBind = () => ConfirmNode_MultiPartyTalks(dialogCache, selFactions)
+            linkLateBind = () => MultiPartyTalks_ConfirmNode(dialogCache, selFactions)
         };
 
         if (baselineNegotiationAbility < 2f && OAInteractHandler.Instance.AssistPoints < ExtraAssistPointsCostForUnnecessaryMultiPartyTalks)
@@ -185,7 +301,7 @@ internal static class DiplomacyDialogMaker
         }
         diaNode.options.Add(confirmOpt);
 
-        diaNode.AddDefaultGoBackOption(linkLateBind: () => FactionSelectionNode_MultiPartyTalks(dialogCache, selFactions));
+        diaNode.AddDefaultGoBackOption(linkLateBind: () => MultiPartyTalks_FactionSelectNode(dialogCache, selFactions));
 
         return diaNode;
     }
@@ -193,7 +309,7 @@ internal static class DiplomacyDialogMaker
     /// <summary>
     /// 多方会谈最终确认界面，在玩家确认继续进行会谈后，展示最终的综合谈判能力评估结果和相关说明，并提供一个选项返回主界面
     /// </summary>
-    private static DiaNode ConfirmNode_MultiPartyTalks(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
+    private static DiaNode MultiPartyTalks_ConfirmNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
     {
         string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
         DiaNode diaNode = new("OARK_MultiPartyTalks_ConfirmNode".Translate(dialogCache.Faction.Named(KeyLibrary_NamedArgument.FACTION), selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst());
@@ -203,9 +319,28 @@ internal static class DiplomacyDialogMaker
     }
 
 
+    private static IEnumerable<(Faction faction, DiaOption diaOption)> FactionSelectionOptions(FactionDialogCache dialogCache, Func<Faction, DiaNode> linkLateBind)
+    {
+        Faction ofPlayer = Faction.OfPlayer;
+        Faction oaFaction = ModUtility.OAFaction;
 
+        foreach (Faction faction in Find.FactionManager.AllFactions)
+        {
+            if (faction.Hidden || faction.temporary || faction.def.permanentEnemy || faction.IsPlayerSafe())
+                continue;
+            if (faction == ofPlayer || faction == oaFaction)
+                continue;
 
-    private static IEnumerable<DiaOption> FactionSelectionOptions(FactionDialogCache dialogCache, HashSet<Faction> selFactions, Func<DiaNode> linkLateBind, int maxSelections = int.MaxValue)
+            DiaOption diaOption = new(faction.Name)
+            {
+                linkLateBind = () => linkLateBind(faction)
+            };
+
+            yield return (faction, diaOption);
+        }
+    }
+
+    private static IEnumerable<(Faction faction, DiaOption diaOption)> MultiFactionSelectionOptions(FactionDialogCache dialogCache, HashSet<Faction> selFactions, Func<DiaNode> linkLateBind, int maxSelections = int.MaxValue)
     {
         Faction ofPlayer = Faction.OfPlayer;
         Faction oaFaction = ModUtility.OAFaction;
@@ -237,7 +372,7 @@ internal static class DiplomacyDialogMaker
                     diaOption.Disable("OARK_ReachMax".Translate(maxSelections.Named(KeyLibrary_NamedArgument.Value)));
                 }
             }
-            yield return diaOption;
+            yield return (faction, diaOption);
         }
     }
 }

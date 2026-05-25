@@ -13,8 +13,20 @@ public class OAInteractHandler : IExposable
 
     public static OAInteractHandler Instance { get; private set; }
 
-    public int CurAllianceInitTick = -1; //本次结盟的起始时刻
-    private float oldAllianceDuration; //记录旧结盟时间
+    private int curAllianceInitTick = -1;
+    /// <summary>
+    /// 本次结盟的起始时刻
+    /// </summary>
+    public int CurAllianceInitTick
+    {
+        get => curAllianceInitTick;
+        set => curAllianceInitTick = value;
+    }
+
+    private float oldAllianceDuration;
+    /// <summary>
+    /// 记录旧结盟时间
+    /// </summary>
     public float OldAllianceDuration
     {
         get { return oldAllianceDuration; }
@@ -23,6 +35,16 @@ public class OAInteractHandler : IExposable
 
     private int assistPoints;
     public int AssistPoints => assistPoints;
+
+    private float diplomaticSummitFactor = 0f;
+    /// <summary>
+    /// 利益谈判难度修正系数
+    /// </summary>
+    public float DiplomaticSummitFactor
+    {
+        get => diplomaticSummitFactor;
+        set => diplomaticSummitFactor = Mathf.Max(0f, value);
+    }
 
     public int CurAssistPointsCap => InteractUtility.GetCurAssistPointsCap(AllianceDuration());
 
@@ -34,9 +56,28 @@ public class OAInteractHandler : IExposable
     public static void ClearStaticCache() => Instance = null;
     public static void OpenDevWindow() => Find.WindowStack.Add(new DevWin_OAInteractHandler());
 
+    public void ExposeData()
+    {
+        Scribe_Values.Look(ref curAllianceInitTick, nameof(curAllianceInitTick), defaultValue: -1);
+        Scribe_Values.Look(ref oldAllianceDuration, nameof(oldAllianceDuration), defaultValue: 0f);
+        Scribe_Values.Look(ref diplomaticSummitFactor, nameof(diplomaticSummitFactor), defaultValue: 1f);
+
+        Scribe_Values.Look(ref assistPoints, nameof(assistPoints), defaultValue: 0);
+    }
+
     internal void TickDay()
     {
         DailyAssistPointChange();
+        if (ModUtility.OAFaction.PlayerRelationKind == FactionRelationKind.Ally)
+        {
+            DiplomaticSummitFactor -= 0.005f;
+        }
+    }
+
+    public void OnDiplomaticSummitTriggered()
+    {
+        DiplomaticSummitFactor = Mathf.Max(diplomaticSummitFactor, 1f);
+        DiplomaticSummitFactor += 0.2f;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,13 +115,5 @@ public class OAInteractHandler : IExposable
                 Messages.Message("OARK_AssistPointsReduced".Translate(-trueChange), MessageTypeDefOf.NeutralEvent);
             }
         }
-    }
-
-    public void ExposeData()
-    {
-        Scribe_Values.Look(ref CurAllianceInitTick, "curAllianceInitTick", -1);
-        Scribe_Values.Look(ref oldAllianceDuration, "oldAllianceDuration", 0f);
-
-        Scribe_Values.Look(ref assistPoints, "assistPoints", 0);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace OberoniaAurea;
 
-using static MultiPartyTalksTopicEventWorker;
-
 public abstract class MultiPartyTalksTopicEventPart
 {
-    public abstract void ApplyEventOutcome(EventData eventData, StringBuilder resultBuilder);
+    public abstract void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder);
 }

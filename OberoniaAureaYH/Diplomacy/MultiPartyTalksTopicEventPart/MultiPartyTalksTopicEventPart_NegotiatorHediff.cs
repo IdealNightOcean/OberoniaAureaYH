@@ -4,14 +4,12 @@ using Verse;
 
 namespace OberoniaAurea;
 
-using static MultiPartyTalksTopicEventWorker;
-
 public class MultiPartyTalksTopicEventPart_NegotiatorHediff : MultiPartyTalksTopicEventPart
 {
     public HediffDef hediff;
     public float severity = 1f;
 
-    public override void ApplyEventOutcome(EventData eventData, StringBuilder resultBuilder)
+    public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
         if (hediff is null || eventData.Negotiator is null)
             return;

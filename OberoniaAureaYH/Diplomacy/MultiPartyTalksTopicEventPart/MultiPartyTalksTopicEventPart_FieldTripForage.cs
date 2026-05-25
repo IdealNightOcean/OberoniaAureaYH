@@ -5,17 +5,14 @@ using Verse;
 
 namespace OberoniaAurea;
 
-using static MultiPartyTalksTopicEventWorker;
-
 public class MultiPartyTalksTopicEventPart_FieldTripForage : MultiPartyTalksTopicEventPart
 {
     public int foodCountPerPawn = 100;
 
-    public override void ApplyEventOutcome(EventData eventData, StringBuilder resultBuilder)
+    public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
         if (eventData.TalksSite?.AssociatedFixedCaravan is null)
             return;
-
 
         int totalCount = foodCountPerPawn * eventData.TalksSite.AssociatedFixedCaravan.PawnsCount;
 

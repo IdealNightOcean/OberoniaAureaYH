@@ -9,14 +9,16 @@ public class MultiPartyTalksTopicEventDef : Def
     [Flags]
     public enum EventType
     {
+        None = 0,
+
         Normal = 1,
         Serious = 2,
+        EasterEgg = 4,
 
-        Succeeded = 4,
-        Failed = 8,
+        Succeeded = 8,
+        Failed = 16,
 
-
-        All = Normal | Serious | Succeeded | Failed
+        AllCommon = Normal | Serious | Succeeded | Failed,
     }
 
     public Type workerClass = typeof(MultiPartyTalksTopicEventWorker);
@@ -27,7 +29,7 @@ public class MultiPartyTalksTopicEventDef : Def
     [MustTranslate]
     public string confirmText = string.Empty;
 
-    public EventType eventType = EventType.All;
+    public EventType eventType = EventType.AllCommon;
 
     public List<MultiPartyTalksTopicEventPart> parts;
 }

@@ -4,13 +4,11 @@ using Verse;
 
 namespace OberoniaAurea;
 
-using static MultiPartyTalksTopicEventWorker;
-
 public class MultiPartyTalksTopicEventPart_NegotiatorThought : MultiPartyTalksTopicEventPart
 {
     public ThoughtDef thought;
 
-    public override void ApplyEventOutcome(EventData eventData, StringBuilder resultBuilder)
+    public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
         if (thought is null || eventData.Negotiator is null)
             return;

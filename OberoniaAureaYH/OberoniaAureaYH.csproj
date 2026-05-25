@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomComponent\ExtraSiteGuest.cs" />
-    <Compile Include="CustomComponent\MultiPartyTalksRewardData.cs" />
+    <Compile Include="CustomComponent\DiplomacyRewardData.cs" />
     <Compile Include="DataLibrary\KeyLibrary_CDRecord.cs" />
     <Compile Include="DefModExtension\OberoniaAureaBackstoryFlag.cs" />
     <Compile Include="DefModExtension\MemeTraitOpinionExtension.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="CustomComponent\CustomEnum\EconomyMinistryReviewOutcome.cs" />
     <Compile Include="CustomComponent\CustomEnum\NegotiatingTeamLevel.cs" />
     <Compile Include="CustomComponent\CustomEnum\SettlementDipVisitType.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventData.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventDef.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorThought.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart.cs" />
@@ -97,6 +98,9 @@
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorHediff.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorIdeoCertainty.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorRandomInspiration.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_OADirect.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_FieldTripForage.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_RatkinOriginDiscussion.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_Direct.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_MultiOptions.cs" />
     <Compile Include="FactionDialogMaker\BuyTechDialogMaker.cs" />
@@ -161,7 +165,7 @@
     <Compile Include="ThingComp\CompGiveHediffInRange_GravField.cs" />
     <Compile Include="Thought\ThoughtWorker_Precept_Birthday.cs" />
     <Compile Include="DataLibrary\KeyLibrary_NamedArgument.cs" />
-    <Compile Include="Utility\MultiPartyTalksUtility.cs" />
+    <Compile Include="Utility\DiplomacyUtility.cs" />
     <Compile Include="Utility\PawnUtility.cs" />
     <Compile Include="Window\DevWin_OAInteractHandler.cs" />
     <Compile Include="Window\DevWin_SDInteractHandler.cs" />
@@ -258,7 +262,7 @@
     <Compile Include="WorldObject\FixedCaravan_ScienceShipLaunch.cs" />
     <Compile Include="WorldObject\MapGenerate\SketchResolver_CrashedGravship.cs" />
     <Compile Include="WorldObject\MapGenerate\GenStep_CrashedGravship.cs" />
-    <Compile Include="WorldObject\DiplomaticSummitHandler.cs" />
+    <Compile Include="Diplomacy\DiplomaticSummitHandler.cs" />
     <Compile Include="WorldObject\CrashedGravship.cs" />
     <Compile Include="WorldObject\ScienceShipLaunchSite.cs" />
     <Compile Include="WorldObject\ResearchSummit_EccentricScholar.cs" />

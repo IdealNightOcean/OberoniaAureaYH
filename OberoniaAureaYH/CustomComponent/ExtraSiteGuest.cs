@@ -20,7 +20,10 @@ public class ExtraSiteGuest : IExposable
     public TraderKindDef TraderKind => traderKind;
 
     private Faction nextGuestFaction;
+    public Faction NextGuestFaction => nextGuestFaction;
+
     private TraderKindDef nextTraderKind;
+    public TraderKindDef NextTraderKind => nextTraderKind;
 
     private int daysToExpired;
     public int DaysToExpired

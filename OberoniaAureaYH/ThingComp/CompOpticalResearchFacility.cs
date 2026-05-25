@@ -19,27 +19,14 @@ public class CompOpticalResearchFacility : CompFacility
     public new CompProperties_OpticalResearchFacility Props => (CompProperties_OpticalResearchFacility)props;
     protected float cachedGlow;
     protected int ticksRemaining;
-    public override bool CanBeActive
+    public override bool CanBeActive => cachedGlow >= Props.needGlowLevel && base.CanBeActive;
+
+    public override void CompTickInterval(int delta)
     {
-        get
+        base.CompTickInterval(delta);
+        if ((ticksRemaining -= delta) < 0)
         {
-            if (!base.CanBeActive)
-            {
-                return false;
-            }
-            else
-            {
-                return cachedGlow >= Props.needGlowLevel;
-            }
-        }
-    }
-    public override void CompTick()
-    {
-        base.CompTick();
-        ticksRemaining--;
-        if (ticksRemaining < 0)
-        {
-            cachedGlow = parent.Map.glowGrid.GroundGlowAt(parent.Position);
+            cachedGlow = parent.Map?.glowGrid.GroundGlowAt(parent.Position) ?? 0f;
             ticksRemaining = Props.checkInterval;
         }
     }

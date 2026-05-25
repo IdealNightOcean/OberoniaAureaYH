@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,7 +60,15 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     {
         action = delegate
         {
-            Statement(isDeepStatement: true);
+            try
+            {
+                Statement(isDeepStatement: true);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[OARK] 在多方会谈议题标题出现异常：\n{ex}");
+            }
+
             talksSite?.OnTopicSettled();
             Find.LetterStack.RemoveLetter(this);
         },
@@ -70,7 +79,14 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     {
         action = delegate
         {
-            Statement(isDeepStatement: false);
+            try
+            {
+                Statement(isDeepStatement: false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[OARK] 在多方会谈议题标题出现异常：\n{ex}");
+            }
             talksSite?.OnTopicSettled();
             Find.LetterStack.RemoveLetter(this);
         },
@@ -81,7 +97,15 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     {
         action = delegate
         {
-            Ingore();
+            try
+            {
+                Ingore();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[OARK] 在多方会谈议题标题出现异常：\n{ex}");
+            }
+
             talksSite?.OnTopicSettled();
             Find.LetterStack.RemoveLetter(this);
         },
@@ -103,7 +127,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         {
             usedBaseline *= 0.95f;
         }
-        InteractionOutcome outcome = MultiPartyTalksUtility.DetermineOutcomeCommon(usedBaseline, pawnNegotiationAbility);
+        InteractionOutcome outcome = DiplomacyUtility.DetermineOutcomeCommon(usedBaseline, pawnNegotiationAbility);
         return outcome >= InteractionOutcome.Normal;
     }
 
@@ -127,6 +151,11 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         textBuilder.Insert(0, "\n");
         textBuilder.Insert(0, this.Text);
         this.Text = textBuilder.ToTaggedString();
+
+        if (Rand.Chance(0.6f))
+        {
+            ExtraTopicEvent(isDeepStatement: false, isSuccessful: false, easterEggAvailable: true);
+        }
     }
 
     private void Statement(bool isDeepStatement)
@@ -179,24 +208,34 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         StringBuilder textBuilder = new(256);
         textBuilder.AppendLine(RewardDataText(rewardData));
 
-
-
         Dialog_NodeTreeWithFactionInfo confirmNodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(textBuilder.ToString(), talksSite?.Faction);
         Find.WindowStack.Add(confirmNodeTree);
 
         textBuilder.Insert(0, "\n");
         textBuilder.Insert(0, this.Text);
         this.Text = textBuilder.ToTaggedString();
+
+        if (Rand.Chance(0.4f))
+        {
+            ExtraTopicEvent(isDeepStatement, isSuccessful, easterEggAvailable: false);
+        }
     }
 
-    private void DeepStatementEvent(bool isSuccessful, StringBuilder textBuilder)
+    private void ExtraTopicEvent(bool isDeepStatement, bool isSuccessful, bool easterEggAvailable)
     {
+        MultiPartyTalksTopicEventDef.EventType eventType = MultiPartyTalksTopicEventDef.EventType.Normal;
+        eventType |= (isDeepStatement ? MultiPartyTalksTopicEventDef.EventType.Serious : MultiPartyTalksTopicEventDef.EventType.Normal);
+        eventType |= (isSuccessful ? MultiPartyTalksTopicEventDef.EventType.Succeeded : MultiPartyTalksTopicEventDef.EventType.Failed);
 
-    }
+        (Pawn negotiator, _) = OAFrame_PawnUtility.GetMaxStatPawn(talksSite.AssociatedFixedCaravan.PawnsListForReading, StatDefOf.NegotiationAbility);
 
-    private void ShallowStatementEvent(bool isSuccessful, StringBuilder textBuilder)
-    {
+        MultiPartyTalksTopicEventData eventData = new(this.talksSite, this.topicFactions, negotiator);
 
+        MultiPartyTalksTopicEventDef eventDef = DefDatabase<MultiPartyTalksTopicEventDef>.AllDefsListForReading.Where(d => ((d.eventType & eventType) != 0) && (d.Worker?.CanTriggerEvent(eventData) ?? false)).RandomElementWithFallback();
+        if (eventDef is null)
+            return;
+
+        eventDef.Worker.TryTriggerEvent(eventData);
     }
 
     private void ApplyCommonReward(TopicRewardData rewardData)
@@ -279,7 +318,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OrganizerGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OrganizerGoodwill)));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.TopicFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.TopicFactionsGoodwill)));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OtherFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OtherFactionsGoodwill)));
-        grammarRequest.Rules.Add(new Rule_String("TopicFactionsName", string.Join(", ", topicFactions.Select(f => f.NameColored))));
+        grammarRequest.Rules.Add(new Rule_String(KeyLibrary_NamedArgument.TopicFactionsName, string.Join(", ", topicFactions.Select(f => f.NameColored))));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.NegotiatorXP), rewardData.NegotiatorXP.ToString()));
 
         grammarRequest.Constants.Add(nameof(rewardData.BaselineAdjust), rewardData.BaselineAdjust.ToString("0.###"));
@@ -298,7 +337,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         GrammarRequest grammarRequest = new();
         grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_TopicInfo);
 
-        grammarRequest.Rules.Add(new Rule_String("TopicFactionsName", string.Join(", ", topicFactions.Select(f => f.NameColored))));
+        grammarRequest.Rules.Add(new Rule_String(KeyLibrary_NamedArgument.TopicFactionsName, string.Join(", ", topicFactions.Select(f => f.NameColored))));
 
         grammarRequest.Constants.Add(nameof(talksSite.TotalTopics), talksSite.TotalTopics.ToString());
         grammarRequest.Constants.Add(nameof(talksSite.TriggeredTopics), talksSite.TriggeredTopics.ToString());

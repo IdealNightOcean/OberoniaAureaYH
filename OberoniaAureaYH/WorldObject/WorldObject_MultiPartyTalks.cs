@@ -1,7 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +11,6 @@ namespace OberoniaAurea;
 
 public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanBase
 {
-    public const float LeaderOffset = 0.05f;
-    private static readonly List<(Action, float)> tmpPossibleOutcomes = [];
-
     public int TotalTopics => participantFactions.Count - 1;
     private int triggeredTopics;
     public int TriggeredTopics => triggeredTopics;
@@ -62,7 +58,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             }
             else
             {
-                InteractionOutcome outcomeType = MultiPartyTalksUtility.DetermineOutcomeCommon(baselineNegotiationAbility, Rand.Range(0.8f, 1.2f));
+                InteractionOutcome outcomeType = DiplomacyUtility.DetermineOutcomeCommon(baselineNegotiationAbility, Rand.Range(0.8f, 1.2f));
                 ApplyOutcome(outcomeType);
                 QuestUtility.SendQuestTargetSignals(questTags, "Resolved", this.Named(KeyLibrary_NamedArgument.SUBJECT));
             }
@@ -74,7 +70,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         base.PostAdd();
         nextTopicForceTriggeredTick = Find.TickManager.TicksGame + 30 * 2500;
         participantFactions.Add(this.Faction);
-        float initBaseline = MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(participantFactions, resultOnly: true, out _);
+        float initBaseline = DiplomacyUtility.CalculateMultiPartyTalksBaselineNegotiationAbility(participantFactions, resultOnly: true, out _);
         SetBaselineNegotiationAbility(initBaseline);
     }
 
@@ -147,7 +143,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             {
                 usedBaseline *= 0.95f;
             }
-            InteractionOutcome outcomeType = MultiPartyTalksUtility.DetermineOutcomeCommon(usedBaseline, pawnNegotiationAbility);
+            InteractionOutcome outcomeType = DiplomacyUtility.DetermineOutcomeCommon(usedBaseline, pawnNegotiationAbility);
             ApplyOutcome(outcomeType, associatedFixedCaravan);
         }
         finally
@@ -206,6 +202,16 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                 RefreshOutcomePropsExplanation();
             }
         };
+        yield return new Command_Action
+        {
+            defaultLabel = "trigger topic",
+            action = TriggerTopics
+        };
+        yield return new Command_Action
+        {
+            defaultLabel = "settle topic",
+            action = OnTopicSettled
+        };
     }
 
     private void RefreshOutcomePropsExplanation()
@@ -213,14 +219,8 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         StringBuilder textBuilder = new(64);
         float usedBaseline = baselineNegotiationAbility;
 
-        MultiPartyTalksUtility.CalculateOutcomeProbCommon(usedBaseline, testPawnNegotiationAbility, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb);
         textBuilder.AppendLine($"测试概率分布：根据 {nameof(testPawnNegotiationAbility)} 计算");
-        textBuilder.Append("OARK_MultiPartyTalks_OutcomePropExplanation".Translate(
-            criticalSuccessProb.ToStringPercent("0.##").Named("CriticalSuccessProb"),
-            successProb.ToStringPercent("0.##").Named("SuccessProb"),
-            normalProb.ToStringPercent("0.##").Named("NormalProb"),
-            failureProb.ToStringPercent("0.##").Named("FailureProb"),
-            criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb")));
+        textBuilder.Append(DiplomacyUtility.OutcomeProbabilityInfo(usedBaseline, testPawnNegotiationAbility));
 
         if (associatedFixedCaravan is not null)
         {
@@ -230,15 +230,9 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                 usedBaseline *= 0.95f;
             }
 
-            MultiPartyTalksUtility.CalculateOutcomeProbCommon(usedBaseline, pawnNegotiationAbility, out criticalSuccessProb, out successProb, out normalProb, out failureProb, out criticalFailureProb);
             textBuilder.AppendLine();
             textBuilder.AppendLine("远行队实际概率分布：");
-            textBuilder.Append("OARK_MultiPartyTalks_OutcomePropExplanation".Translate(
-                                    criticalSuccessProb.ToStringPercent("0.##").Named("CriticalSuccessProb"),
-                                    successProb.ToStringPercent("0.##").Named("SuccessProb"),
-                                    normalProb.ToStringPercent("0.##").Named("NormalProb"),
-                                    failureProb.ToStringPercent("0.##").Named("FailureProb"),
-                                    criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb")));
+            textBuilder.Append(DiplomacyUtility.OutcomeProbabilityInfo(usedBaseline, testPawnNegotiationAbility));
         }
 
         OutcomePropExplanation = textBuilder.ToString();
@@ -266,7 +260,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
 
     private void ApplyOutcome(InteractionOutcome outcomeType, FixedCaravan fixedCaravan = null)
     {
-        MultiPartyTalksRewardData rewardDate = new();
+        DiplomacyRewardData rewardDate = new();
         SetCommonRewardData(rewardDate, outcomeType);
 
         StringBuilder outcomeBuilder = new(128);
@@ -289,20 +283,20 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                 OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OrganizerFactionGoodwill, KeyLibrary_NamedArgument.Goodwill)));
         }
 
-        if (rewardDate.FactionGoodwill != 0)
+        if (rewardDate.OtherFactionGoodwill != 0)
         {
             foreach (Faction faction in participantFactions)
             {
                 ofPlayer.TryAffectGoodwillWith(
                     other: faction,
-                    goodwillChange: rewardDate.FactionGoodwill,
+                    goodwillChange: rewardDate.OtherFactionGoodwill,
                     canSendMessage: false,
                     canSendHostilityLetter: false,
                     reason: rewardDate.HistoryEvent);
             }
             outcomeBuilder.AppendLine(" ".Translate(
                 organizerFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.FactionGoodwill, KeyLibrary_NamedArgument.Goodwill)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Goodwill)));
         }
 
         if (rewardDate.AssistPoints != 0)
@@ -310,7 +304,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             OAInteractHandler.Instance.AdjustAssistPoints(rewardDate.AssistPoints);
             outcomeBuilder.AppendLine("OARK_MultiPartyTalks_AssistPoints".Translate(
                 organizerFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.FactionGoodwill, KeyLibrary_NamedArgument.Value)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Value)));
         }
 
         Pawn negotiator = null;
@@ -386,7 +380,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             relatedFaction: organizerFaction);
     }
 
-    private void SetCommonRewardData(MultiPartyTalksRewardData rewardDate, InteractionOutcome outcomeType)
+    private void SetCommonRewardData(DiplomacyRewardData rewardDate, InteractionOutcome outcomeType)
     {
         switch (outcomeType)
         {
@@ -395,7 +389,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.LetterDef = LetterDefOf.NegativeEvent;
                     rewardDate.HistoryEvent = HistoryEventDefOf.PeaceTalksDisaster;
                     rewardDate.OrganizerFactionGoodwill = -50;
-                    rewardDate.FactionGoodwill = -40;
+                    rewardDate.OtherFactionGoodwill = -40;
                     break;
                 }
             case InteractionOutcome.Failure:
@@ -403,7 +397,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.LetterDef = LetterDefOf.NegativeEvent;
                     rewardDate.HistoryEvent = HistoryEventDefOf.PeaceTalksBackfire;
                     rewardDate.OrganizerFactionGoodwill = -20;
-                    rewardDate.FactionGoodwill = -20;
+                    rewardDate.OtherFactionGoodwill = -20;
                     break;
                 }
             case InteractionOutcome.Normal:
@@ -411,7 +405,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.LetterDef = LetterDefOf.NeutralEvent;
                     rewardDate.HistoryEvent = OARK_HistoryEventDefOf.OARK_PeaceTalksNormal;
                     rewardDate.OrganizerFactionGoodwill = 5;
-                    rewardDate.FactionGoodwill = 5;
+                    rewardDate.OtherFactionGoodwill = 5;
                     break;
                 }
             case InteractionOutcome.Success:
@@ -419,7 +413,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.LetterDef = LetterDefOf.PositiveEvent;
                     rewardDate.HistoryEvent = HistoryEventDefOf.PeaceTalksSuccess;
                     rewardDate.OrganizerFactionGoodwill = 30;
-                    rewardDate.FactionGoodwill = 20;
+                    rewardDate.OtherFactionGoodwill = 20;
                     rewardDate.AssistPoints = Mathf.CeilToInt(baselineNegotiationAbility / 0.16f);
                     rewardDate.RoyalFavor = Mathf.CeilToInt(baselineNegotiationAbility / 0.4f);
                     break;
@@ -429,7 +423,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.LetterDef = LetterDefOf.PositiveEvent;
                     rewardDate.HistoryEvent = HistoryEventDefOf.PeaceTalksTriumph;
                     rewardDate.OrganizerFactionGoodwill = 60;
-                    rewardDate.FactionGoodwill = 40;
+                    rewardDate.OtherFactionGoodwill = 40;
                     rewardDate.AssistPoints = Mathf.CeilToInt(baselineNegotiationAbility / 0.08f);
                     rewardDate.RoyalFavor = Mathf.CeilToInt(baselineNegotiationAbility / 0.2f);
 

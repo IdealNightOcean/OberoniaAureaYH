@@ -19,7 +19,7 @@ public class CompIntelligenceDraft : CompHackable
             bool isTopSecret = rand < 0.02f;
             float pawnAbility = hackPawn.GetStatValue(StatDefOf.ReadingSpeed);
             float baselineAbility = (isTopSecret ? 2.5f : 1.5f) * Rand.Range(0.5f, 1.5f);
-            InteractionOutcome outcome = MultiPartyTalksUtility.DetermineOutcomeCommon(baselineAbility, pawnAbility);
+            InteractionOutcome outcome = DiplomacyUtility.DetermineOutcomeCommon(baselineAbility, pawnAbility);
         }
 
         if (parent.stackCount <= 1)

@@ -5,7 +5,7 @@ namespace OberoniaAurea;
 
 public class MultiPartyTalksTopicEventWorker_Direct : MultiPartyTalksTopicEventWorker
 {
-    protected override void ApplyEventOutcome(EventData eventData)
+    protected override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder resultBuilder = new(128);
         ResolveEventConfirmText(eventData, resultBuilder);

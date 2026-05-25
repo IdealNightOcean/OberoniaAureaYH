@@ -1,7 +1,6 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Verse;
 
@@ -20,7 +19,7 @@ public abstract class MultiPartyTalksTopicEventWorker
 
     protected DiaOption Option_Close => new("Close".Translate()) { resolveTree = true };
 
-    protected DiaOption Option_Confirm(EventData eventData)
+    protected DiaOption Option_Confirm(MultiPartyTalksTopicEventData eventData)
     {
         return new DiaOption("Confirm")
         {
@@ -29,57 +28,25 @@ public abstract class MultiPartyTalksTopicEventWorker
         };
     }
 
-    protected virtual IEnumerable<DiaOption> Choices(EventData eventData)
+    protected virtual IEnumerable<DiaOption> Choices(MultiPartyTalksTopicEventData eventData)
     {
-
         yield return Option_Confirm(eventData);
     }
 
-    public virtual DiaNode EventRootNode(WorldObject_MultiPartyTalks talksSite,
-                                         List<Faction> topicFactions,
-                                         Pawn negotiator)
+    public virtual bool CanTriggerEvent(MultiPartyTalksTopicEventData eventData) => true;
+    public virtual bool TryTriggerEvent(MultiPartyTalksTopicEventData eventData)
     {
-        EventData eventData = new(talksSite, topicFactions, negotiator);
         TaggedString rootText = ResolveEventRootNodeText(eventData);
         DiaNode rootNode = new(rootText);
 
         rootNode.options.AddRange(Choices(eventData));
-        return rootNode;
+        Find.WindowStack.Add(new Dialog_NodeTree(rootNode));
+        return true;
     }
 
-    protected abstract void ApplyEventOutcome(EventData eventData);
+    protected abstract void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData);
 
-    protected virtual TaggedString ResolveEventRootNodeText(EventData eventData) => eventData.Formatted(Def.description);
-    protected virtual void ResolveEventConfirmText(EventData eventData, StringBuilder resultBuilder)
-    {
-        resultBuilder.AppendLine(eventData.Formatted(Def.confirmText));
-    }
+    protected virtual TaggedString ResolveEventRootNodeText(MultiPartyTalksTopicEventData eventData) => eventData.Formatted(Def.description);
 
-
-
-    public class EventData
-    {
-        public WorldObject_MultiPartyTalks TalksSite { get; private set; }
-        public List<Faction> TopicFactions { get; private set; }
-        public string TopicFactionsName { get; }
-        public Pawn Negotiator { get; private set; }
-
-        public EventData(WorldObject_MultiPartyTalks talksSite,
-                         List<Faction> topicFactions,
-                         Pawn negotiator)
-        {
-            TalksSite = talksSite;
-            TopicFactions = topicFactions;
-            Negotiator = negotiator;
-
-            TopicFactionsName = string.Join(", ", topicFactions.Select(f => f.NameColored));
-        }
-
-        public string Formatted(string oriString)
-        {
-            return oriString.Formatted(TalksSite.Named("TalkSite"),
-                                        TopicFactionsName.Named("TopicFactionsName"),
-                                        Negotiator.Named("NEGOTIATOR"));
-        }
-    }
+    protected virtual void ResolveEventConfirmText(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder) => resultBuilder.AppendLine(eventData.Formatted(Def.confirmText));
 }
