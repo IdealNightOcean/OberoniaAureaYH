@@ -13,7 +13,7 @@ namespace OberoniaAurea;
 
 //大地图事件点：科研峰会
 [StaticConstructorOnStartup]
-public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
+public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
 {
     private const float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
     private const float FlounderNeedSpeed = 1.75f; //小失败所需要的研究能力
@@ -358,14 +358,14 @@ public class WorldObject_ResearchSummit : WorldObject_WithMutiFactions
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
     }
 
-    private static void AffectFactionGoodwill(Faction oaFaction, List<Faction> factions)
+    private static void AffectFactionGoodwill(Faction oaFaction, IEnumerable<Faction> factions)
     {
         if (oaFaction is not null)
         {
             Faction.OfPlayer.TryAffectGoodwillWith(oaFaction, 15, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_ResearchSummit);
         }
 
-        if (!factions.NullOrEmpty())
+        if (factions is not null)
         {
             foreach (Faction faction in factions)
             {

@@ -10,7 +10,7 @@ using Verse;
 
 namespace OberoniaAurea;
 
-public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
+public class WorldObject_MultiPartyTalks : WorldObject_InteractiveBase
 {
     private static readonly SimpleCurve BadOutcomeChanceFactorByNegotiationAbility =
     [
@@ -137,7 +137,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_WithMutiFactions
         }
         return num;
     }
-    private string GetLetterText(string baseText, Caravan caravan, int goodWill, int oAGoodWill, List<Faction> factions = null, int royalFavorGained = 0)
+    private string GetLetterText(string baseText, Caravan caravan, int goodWill, int oAGoodWill, IEnumerable<Faction> factions = null, int royalFavorGained = 0)
     {
         TaggedString text = baseText;
         text += "\n\n" + "OA_GoodWillChange".Translate(Faction.NameColored, oAGoodWill);

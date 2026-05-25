@@ -10,7 +10,7 @@ namespace OberoniaAurea;
 
 //大地图事件点：外交斡旋
 [StaticConstructorOnStartup]
-public class WorldObject_DiplomaticOffices : WorldObject_WithMutiFactions
+public class WorldObject_DiplomaticOffices : WorldObject_InteractiveBase
 {
     private Faction ParticipantFaction => participantFactions.FirstOrFallback(null);
 

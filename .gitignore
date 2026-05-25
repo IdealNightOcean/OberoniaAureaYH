@@ -366,3 +366,5 @@ FodyWeavers.xsd
 *.zip
 *.rar
 *.7z
+
+**/docs/
