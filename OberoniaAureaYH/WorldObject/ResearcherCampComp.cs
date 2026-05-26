@@ -9,10 +9,7 @@ namespace OberoniaAurea;
 
 public class WorldObjectCompProperties_ResearcherCamp : WorldObjectCompProperties
 {
-    public WorldObjectCompProperties_ResearcherCamp()
-    {
-        compClass = typeof(ResearcherCampComp);
-    }
+    public WorldObjectCompProperties_ResearcherCamp() => compClass = typeof(ResearcherCampComp);
 }
 
 public class ResearcherCampComp : WorldObjectComp
@@ -134,12 +131,12 @@ public class CaravanArrivalAction_RobResearcherCamp : CaravanArrivalAction
     }
     private static void Robbery(Caravan caravan, WorldObject worldObject)
     {
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, SilverNum);
-        foreach (Thing thing in things)
-        {
-            CaravanInventoryUtility.GiveThing(caravan, thing);
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelRobResearcherCamp".Translate(), "OA_LetterRobResearcherCamp".Translate(SilverNum), LetterDefOf.PositiveEvent, caravan);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, SilverNum);
+        OAFrame_CaravanUtility.GiveThings(caravan, things);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelRobResearcherCamp".Translate(),
+                                       text: "OA_LetterRobResearcherCamp".Translate(SilverNum),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan);
         worldObject.Destroy();
     }
 

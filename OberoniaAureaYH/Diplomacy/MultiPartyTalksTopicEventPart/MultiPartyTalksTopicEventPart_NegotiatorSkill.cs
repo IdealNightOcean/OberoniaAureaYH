@@ -15,9 +15,9 @@ public class MultiPartyTalksTopicEventPart_NegotiatorSkill : MultiPartyTalksTopi
             return;
 
         eventData.Negotiator.skills?.Learn(skill, xpGain);
-        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_NegotiatorSkill".Translate(
-            skill.Named(KeyLibrary_NamedArgument.DEF),
-            xpGain.Named(KeyLibrary_NamedArgument.Value),
+        resultBuilder.AppendLine("PeaceTalksSocialXPGain".Translate(
+            eventData.Negotiator.LabelShort,
+            xpGain.ToString("0.##"),
             eventData.Negotiator.Named(KeyLibrary_NamedArgument.PAWN)));
     }
 }

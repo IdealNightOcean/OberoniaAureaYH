@@ -223,15 +223,19 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
 
     private void ExtraTopicEvent(bool isDeepStatement, bool isSuccessful, bool easterEggAvailable)
     {
-        MultiPartyTalksTopicEventDef.EventType eventType = MultiPartyTalksTopicEventDef.EventType.Normal;
+        MultiPartyTalksTopicEventDef.EventType eventType = MultiPartyTalksTopicEventDef.EventType.None;
         eventType |= (isDeepStatement ? MultiPartyTalksTopicEventDef.EventType.Serious : MultiPartyTalksTopicEventDef.EventType.Normal);
-        eventType |= (isSuccessful ? MultiPartyTalksTopicEventDef.EventType.Succeeded : MultiPartyTalksTopicEventDef.EventType.Failed);
+        if (easterEggAvailable)
+            eventType |= MultiPartyTalksTopicEventDef.EventType.EasterEgg;
 
         (Pawn negotiator, _) = OAFrame_PawnUtility.GetMaxStatPawn(talksSite.AssociatedFixedCaravan.PawnsListForReading, StatDefOf.NegotiationAbility);
 
         MultiPartyTalksTopicEventData eventData = new(this.talksSite, this.topicFactions, negotiator);
 
-        MultiPartyTalksTopicEventDef eventDef = DefDatabase<MultiPartyTalksTopicEventDef>.AllDefsListForReading.Where(d => ((d.eventType & eventType) != 0) && (d.Worker?.CanTriggerEvent(eventData) ?? false)).RandomElementWithFallback();
+        MultiPartyTalksTopicEventDef eventDef = DefDatabase<MultiPartyTalksTopicEventDef>.AllDefsListForReading
+            .Where(d => MultiPartyTalksUtility.CanTriggerTopicEvent(d, eventType, isSuccessful, eventData))
+            .RandomElementWithFallback();
+
         if (eventDef is null)
             return;
 
@@ -289,7 +293,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
 
         if (rewardData.IntelligenceDraftCount > 0)
         {
-            List<Thing> gifts = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.OARK_IntelligenceDraft, rewardData.IntelligenceDraftCount);
+            List<Thing> gifts = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.OARK_IntelligenceDraft, rewardData.IntelligenceDraftCount);
             OAFrame_FixedCaravanUtility.GiveThings(fixedCaravan, gifts);
         }
 

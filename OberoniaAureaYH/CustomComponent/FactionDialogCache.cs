@@ -34,11 +34,12 @@ public class FactionDialogCache
         Map = negotiator.MapHeld;
 
         NegotiatorSocialEnabled = !negotiator.skills.GetSkill(SkillDefOf.Social).TotallyDisabled;
-        TotalAllianceDuration = OAInteractHandler.Instance.AllianceDuration();
+
+        if (faction.def == OARK_ModDefOf.OA_RK_Faction)
+        {
+            TotalAllianceDuration = OAInteractHandler.Instance.AllianceDuration();
+        }
     }
 
-    private void MarkAmountSendableSilverDirty()
-    {
-        amountSendableSilver = int.MinValue;
-    }
+    private void MarkAmountSendableSilverDirty() => amountSendableSilver = null;
 }

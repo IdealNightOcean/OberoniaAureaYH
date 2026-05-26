@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -8,6 +9,7 @@ namespace OberoniaAurea;
 public class MultiPartyTalksTopicEventData
 {
     public WorldObject_MultiPartyTalks TalksSite { get; private set; }
+    public PlanetTile TalksSiteTileCached { get; private set; }
     public List<Faction> TopicFactions { get; private set; }
     public Faction PrimaryFaction { get; private set; }
     public string TopicFactionsName { get; }
@@ -18,6 +20,7 @@ public class MultiPartyTalksTopicEventData
                                          Pawn negotiator)
     {
         TalksSite = talksSite ?? throw new System.ArgumentNullException(nameof(talksSite));
+        TalksSiteTileCached = talksSite.Tile;
         TopicFactions = [.. topicFactions];
         if (TopicFactions.Count == 0) throw new System.ArgumentException($"{nameof(topicFactions)} is null or empty.");
 

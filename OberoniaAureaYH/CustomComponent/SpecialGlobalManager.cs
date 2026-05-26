@@ -86,7 +86,7 @@ public class SpecialGlobalEventManager : IExposable
         if (curDate.Month != 1 || curDate.Day > 3)
             return;
 
-        List<Thing> gifts = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
+        List<Thing> gifts = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
         gifts.Add(ThingMaker.MakeThing(OARK_ThingDefOf.OARatkin_ResearchAnalyzer));
         ThingDef garlandDef = DefDatabase<ThingDef>.GetNamed("OA_RK_New_Hat_A");
         Thing garland = ThingMaker.MakeThing(garlandDef);
@@ -128,7 +128,7 @@ public class SpecialGlobalEventManager : IExposable
         if (curDate.Month != 4 || curDate.Day > 3)
             return;
 
-        List<Thing> gifts = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 10);
+        List<Thing> gifts = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 10);
         gifts.Add(ThingMaker.MakeThing(OARK_ThingDefOf.OA_RK_New_Hat_A));
         ThingDef antigrainWarhead = DefDatabase<ThingDef>.GetNamed("Shell_AntigrainWarhead", errorOnFail: false);
         if (antigrainWarhead is not null)

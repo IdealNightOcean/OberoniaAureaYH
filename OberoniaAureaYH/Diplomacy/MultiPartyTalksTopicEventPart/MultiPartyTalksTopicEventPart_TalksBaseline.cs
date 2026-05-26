@@ -15,6 +15,6 @@ public class MultiPartyTalksTopicEventPart_TalksBaseline : MultiPartyTalksTopicE
             return;
 
         eventData.TalksSite.AdjustBaselineNegotiationAbility(change);
-        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(change, KeyLibrary_NamedArgument.Value, reverse: true)));
+        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(change, KeyLibrary_NamedArgument.Change, reverse: true)));
     }
 }

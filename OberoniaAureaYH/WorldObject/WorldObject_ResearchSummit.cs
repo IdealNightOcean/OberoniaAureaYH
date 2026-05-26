@@ -119,7 +119,10 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(150000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Fair".Translate(), "OA_LetterResearchSummit_Fair".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Fair".Translate(),
+                                       text: "OA_LetterResearchSummit_Fair".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: worldObject);
 
     }
     private void GetPossibleOutcomesI(float researchSpeed, Caravan caravan)
@@ -209,18 +212,16 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         slate.Set("faction", faction);
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate, forced: false, target: map);
     }
+
     /// <summary>
     /// 额外收获
     /// </summary>
     private static void Bonus(Caravan caravan, Faction faction)
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        OAFrame_CaravanUtility.GiveThings(caravan, things);
 
-        foreach (Thing thing in things)
-        {
-            CaravanInventoryUtility.GiveThing(caravan, thing);
-        }
         Thing book = ThingMaker.MakeThing(ThingDefOf.Novel);
         if (book is not null)
         {
@@ -228,22 +229,29 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
             comp.SetQuality(QualityCategory.Good, ArtGenerationContext.Outsider);
             CaravanInventoryUtility.GiveThing(caravan, book);
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Bonus".Translate(), "OA_LetterResearchSummit_Bonus".Translate(num, book.Named("BOOK")), LetterDefOf.PositiveEvent, caravan, faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Bonus".Translate(),
+                                       text: "OA_LetterResearchSummit_Bonus".Translate(num, book.Named("BOOK")),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: faction);
     }
+
     /// <summary>
     /// 研究员赠礼
     /// </summary>
     private static void ResearcherGift(Caravan caravan, WorldObject worldObject, Faction faction)
     {
         Settlement settlement = worldObject as Settlement;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
         things.Add(ThingMaker.MakeThing(OARK_ThingDefOf.Oberonia_Aurea_Tea));
-        foreach (Thing thing in things)
-        {
-            CaravanInventoryUtility.GiveThing(caravan, thing);
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT)), LetterDefOf.PositiveEvent, caravan, faction);
+        OAFrame_CaravanUtility.GiveThings(caravan, things);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_ResearcherGift".Translate(),
+                                       text: "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT)),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: faction);
     }
+
     /// <summary>
     /// 落脚点
     /// </summary>
@@ -260,8 +268,12 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = camp.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
         worldObjects.Add(camp);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherSite".Translate(), "OA_LetterResearchSummit_ResearcherSite".Translate(), LetterDefOf.PositiveEvent, camp);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_ResearcherSite".Translate(),
+                                       text: "OA_LetterResearchSummit_ResearcherSite".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: camp);
     }
+
     /// <summary>
     /// 无（小）势力学者的访问
     /// </summary>
@@ -272,6 +284,7 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         slate.Set("map", map);
         OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: map);
     }
+
     /// <summary>
     /// 敌对势力和平谈判
     /// </summary>
@@ -283,9 +296,14 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate, forced: false, target: Find.World))
         {
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
-            Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
+            Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(),
+                                           text: "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored),
+                                           textLetterDef: LetterDefOf.PositiveEvent,
+                                           lookTargets: peaceTalks,
+                                           relatedFaction: faction);
         }
     }
+
     /// <summary>
     /// 学者赠礼
     /// </summary>
@@ -299,12 +317,13 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         };
         Reward_Items reward = new();
         reward.InitFromValue(rewardValue, rewardsGeneratorParams, out _);
-        foreach (Thing item in reward.items)
-        {
-            CaravanInventoryUtility.GiveThing(caravan, item);
-        }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ScholarGift".Translate(), "OA_LetterResearchSummit_ScholarGift".Translate(), LetterDefOf.PositiveEvent, caravan);
+        OAFrame_CaravanUtility.GiveThings(caravan, reward.items);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_ScholarGift".Translate(),
+                                       text: "OA_LetterResearchSummit_ScholarGift".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan);
     }
+
     /// <summary>
     /// 神秘商人
     /// </summary>
@@ -320,8 +339,12 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(60000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_MysteriousTrader".Translate(), "OA_LetterResearchSummit_MysteriousTrader".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_MysteriousTrader".Translate(),
+                                       text: "OA_LetterResearchSummit_MysteriousTrader".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: worldObject);
     }
+
     /// <summary>
     /// 学术约架
     /// </summary>
@@ -336,8 +359,12 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AcademicDispute".Translate(), "OA_LetterResearchSummit_AcademicDispute".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_AcademicDispute".Translate(),
+                                       text: "OA_LetterResearchSummit_AcademicDispute".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: worldObject);
     }
+
     /// <summary>
     /// 废品旁的学者
     /// </summary>
@@ -353,8 +380,12 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(120000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_EccentricScholar".Translate(), "OA_LetterResearchSummit_EccentricScholar".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_EccentricScholar".Translate(),
+                                       text: "OA_LetterResearchSummit_EccentricScholar".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: worldObject);
     }
+
     /// <summary>
     /// 协助者募集点
     /// </summary>
@@ -365,55 +396,88 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         TimeoutComp timeComp = worldObject.GetComponent<TimeoutComp>();
         timeComp?.StartTimeout(180000);
         Find.WorldObjects.Add(worldObject);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_AssistWork".Translate(), "OA_LetterResearchSummit_AssistWork".Translate(), LetterDefOf.PositiveEvent, worldObject);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_AssistWork".Translate(),
+                                       text: "OA_LetterResearchSummit_AssistWork".Translate(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: worldObject);
     }
+
     /// <summary>
     /// 结果 - 大失败
     /// </summary>
     private void Outcome_Disaster(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(1, 200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Disaster".Translate(), GetLetterText("OA_LetterResearchSummit_Disaster".Translate(Faction.NameColored), caravan, 200, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Disaster".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Disaster".Translate(Faction.NameColored), caravan, 200, availableResearch),
+                                       textLetterDef: LetterDefOf.NeutralEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
+
     /// <summary>
     /// 结果 - 失败
     /// </summary>
     private void Outcome_Backfire(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(2, 300);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Backfire".Translate(), GetLetterText("OA_LetterResearchSummit_Backfire".Translate(Faction.NameColored), caravan, 300, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Backfire".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Backfire".Translate(Faction.NameColored), caravan, 300, availableResearch),
+                                       textLetterDef: LetterDefOf.NeutralEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
+
     /// <summary>
     /// 结果 - 小失败
     /// </summary>
     private void Outcome_Flounder(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(3, 500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Flounder".Translate(), GetLetterText("OA_LetterResearchSummit_Flounder".Translate(Faction.NameColored), caravan, 500, availableResearch), LetterDefOf.NeutralEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Flounder".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Flounder".Translate(Faction.NameColored), caravan, 500, availableResearch),
+                                       textLetterDef: LetterDefOf.NeutralEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
+
     /// <summary>
     /// 结果 - 普通
     /// </summary>
     private void Outcome_Normal(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(4, 800);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Normal".Translate(), GetLetterText("OA_LetterResearchSummit_Normal".Translate(Faction.NameColored), caravan, 800, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Normal".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Normal".Translate(Faction.NameColored), caravan, 800, availableResearch),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
+
     /// <summary>
     /// 结果 - 成功
     /// </summary>
     private void Outcome_Success(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(5, 1200);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Success".Translate(), GetLetterText("OA_LetterResearchSummit_Success".Translate(Faction.NameColored), caravan, 1200, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Success".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Success".Translate(Faction.NameColored), caravan, 1200, availableResearch),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
+
     /// <summary>
     /// 结果 - 大成功
     /// </summary>
     private void Outcome_Triumph(Caravan caravan)
     {
         List<ResearchProjectDef> availableResearch = AddResearchProgress(6, 1500);
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_Triumph".Translate(), GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch), LetterDefOf.PositiveEvent, caravan, Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelResearchSummit_Triumph".Translate(),
+                                       text: GetLetterText("OA_LetterResearchSummit_Triumph".Translate(Faction.NameColored), caravan, 1500, availableResearch),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: Faction);
     }
 
     private static void AffectFactionGoodwill(IEnumerable<Faction> factions)

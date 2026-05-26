@@ -1,4 +1,3 @@
-using OberoniaAurea_Frame;
 using RimWorld;
 using System.Text;
 using Verse;
@@ -11,7 +10,7 @@ public class MultiPartyTalksTopicEventPart_FieldTripForage : MultiPartyTalksTopi
 
     public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
-        if (eventData.TalksSite?.AssociatedFixedCaravan is null)
+        if (eventData.TalksSite is null)
             return;
 
         int totalCount = foodCountPerPawn * eventData.TalksSite.AssociatedFixedCaravan.PawnsCount;
@@ -21,7 +20,8 @@ public class MultiPartyTalksTopicEventPart_FieldTripForage : MultiPartyTalksTopi
 
         Thing foragedThing = ThingMaker.MakeThing(foragedThingDef);
         foragedThing.stackCount = totalCount;
-        OAFrame_FixedCaravanUtility.GiveThing(eventData.TalksSite.AssociatedFixedCaravan, foragedThing);
+
+        MultiPartyTalksUtility.TryGiveThingsToPlayer(eventData, [foragedThing]);
         resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_FieldTripForage".Translate(
             foragedThingDef.Named(KeyLibrary_NamedArgument.DEF),
             totalCount.Named(KeyLibrary_NamedArgument.Value)));

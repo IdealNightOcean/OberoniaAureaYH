@@ -15,10 +15,8 @@ public class MultiPartyTalksTopicEventDef : Def
         Serious = 2,
         EasterEgg = 4,
 
-        Succeeded = 8,
-        Failed = 16,
-
-        AllCommon = Normal | Serious | Succeeded | Failed,
+        NormalAndSerious = Normal | Serious,
+        All = Normal | Serious | EasterEgg,
     }
 
     public Type workerClass = typeof(MultiPartyTalksTopicEventWorker);
@@ -26,10 +24,10 @@ public class MultiPartyTalksTopicEventDef : Def
     protected MultiPartyTalksTopicEventWorker worker;
     public MultiPartyTalksTopicEventWorker Worker => worker ??= MultiPartyTalksTopicEventWorker.GenerateEventWorker(this);
 
-    [MustTranslate]
-    public string confirmText = string.Empty;
+    public EventType eventType = EventType.NormalAndSerious;
 
-    public EventType eventType = EventType.AllCommon;
+    public bool allowSucceedTopic = true;
+    public bool allowFailedTopic = true;
 
     public List<MultiPartyTalksTopicEventPart> parts;
 }

@@ -23,10 +23,9 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
         Scribe_Deep.Look(ref extraSiteGuest, nameof(extraSiteGuest));
     }
 
-
     public override string CompInspectStringExtra()
     {
-        if (extraSiteGuest is null || extraSiteGuest.GuestFaction is null)
+        if (extraSiteGuest is null || extraSiteGuest.IsActive)
             return null;
 
         return "OARK_Inspect_ExtraSiteGuestFaction".Translate(extraSiteGuest.GuestFaction.Named(KeyLibrary_NamedArgument.FACTION));
@@ -43,7 +42,7 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
             WorldObjectComp_ExtraGuest extraSiteTraderComp = settlement.GetComponent<WorldObjectComp_ExtraGuest>();
             if (extraSiteTraderComp is not null && extraSiteTraderComp.extraSiteGuest is null)
             {
-                extraSiteTraderComp.ActiveExtraSiteTrader();
+                extraSiteTraderComp.Active();
                 extraSiteTraderComp.extraSiteGuest?.RefreshTraderMeta();
             }
         }
@@ -60,11 +59,11 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
         }
     }
 
-    public void ActiveExtraSiteTrader() => extraSiteGuest ??= new(parent);
+    public void Active() => extraSiteGuest ??= new(parent);
 
-    public void DeactiveExtraSiteTrader()
+    public void Deactive()
     {
-        extraSiteGuest?.ClearTraderMeta();
+        extraSiteGuest?.ClearMeta();
         extraSiteGuest = null;
     }
 
@@ -73,12 +72,12 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
         foreach (Gizmo gizmo in base.GetCaravanGizmos(caravan))
             yield return gizmo;
 
-        if (extraSiteGuest is null || !extraSiteGuest.IsTraderActive)
+        if (extraSiteGuest is null || !extraSiteGuest.IsActive)
             yield break;
 
         Command_Action command_ExtraSiteTrader = new()
         {
-            defaultLabel = "OARK_CommandExtraSiteTrade".Translate(),
+            defaultLabel = "OARK_CommandExtraSiteGuest".Translate(extraSiteGuest.GuestFaction.Named(KeyLibrary_NamedArgument.FACTION)),
             defaultDesc = "CommandTradeDesc".Translate(),
             icon = TradeCommandTex.Texture,
             action = () => InteractWithGuest(caravan)
@@ -94,7 +93,7 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
 
     public override void PostDestroy()
     {
-        DeactiveExtraSiteTrader();
+        Deactive();
         base.PostDestroy();
     }
 }

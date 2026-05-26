@@ -8,21 +8,20 @@ namespace OberoniaAurea;
 
 public class MultiPartyTalksTopicEventPart_Things : MultiPartyTalksTopicEventPart
 {
-    public List<ThingDefCountClass> thingDefCountClasses;
+    public List<ThingMakeInfo> thingMakeInfoes;
 
     public override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData, StringBuilder resultBuilder)
     {
-        if (thingDefCountClasses.NullOrEmpty() || eventData.TalksSite?.AssociatedFixedCaravan is null)
+        if (thingMakeInfoes.NullOrEmpty() || eventData.TalksSite is null)
             return;
 
-        List<Thing> things = new(thingDefCountClasses.Count);
-        foreach (ThingDefCountClass thingDefCount in thingDefCountClasses)
+        List<Thing> things = new(thingMakeInfoes.Count);
+        foreach (ThingMakeInfo makeInfo in thingMakeInfoes)
         {
-            Thing t = ThingMaker.MakeThing(thingDefCount.thingDef);
-            t.stackCount = thingDefCount.count;
-            things.Add(t);
+            things.AddRange(OAFrame_ThingUtility.GenerateThingListSplitByStack(makeInfo));
         }
-        OAFrame_FixedCaravanUtility.GiveThings(eventData.TalksSite.AssociatedFixedCaravan, things);
-        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_Things".Translate(GenLabel.ThingsLabel(things).Named("ThingsLabel")));
+
+        MultiPartyTalksUtility.TryGiveThingsToPlayer(eventData, things);
+        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_Things".Translate(GenLabel.ThingsLabel(things).Named(KeyLibrary_NamedArgument.ThingsLabel)));
     }
 }

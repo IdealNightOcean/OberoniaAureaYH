@@ -101,13 +101,13 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
     private void FinishWork()
     {
         DiplomaticSummitUtility.ApplyEffect(negotiatingTeamLevel, associatedFixedCaravan, settlement, negotiant);
-        settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
+        settlementDipComp?.Notify_DiplomaticSummitEnd(interrupt: false);
     }
 
     public void PreConvertToCaravanByPlayer()
     {
         DiplomaticSummitUtility.Outcome_LeaveHalfway(settlement);
-        settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
+        settlementDipComp?.Notify_DiplomaticSummitEnd(interrupt: false);
         EndWork(interrupt: true, convertToCaravan: false);
     }
 
@@ -120,7 +120,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
             isWorking = false;
             if (interrupt)
             {
-                settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: false);
+                settlementDipComp?.Notify_DiplomaticSummitEnd(interrupt: false);
             }
             else
             {
@@ -148,7 +148,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
             {
                 OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
             }
-            settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: true);
+            settlementDipComp?.Notify_DiplomaticSummitEnd(interrupt: true);
             Reset();
         }
     }
@@ -228,7 +228,7 @@ public static class DiplomaticSummitUtility
         {
             case InteractionOutcome.CriticalSuccess:
                 {
-                    rewardData.Gifts.AddRange(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, 1500));
+                    rewardData.Gifts.AddRange(OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, 1500));
                     rewardData.OrganizerFactionGoodwill = 30;
                     rewardData.OrganizerFactionGoodwill = 60;
                     rewardData.HistoryEvent = OARK_HistoryEventDefOf.OA_DiplomaticSummit_Triumph;
@@ -289,9 +289,7 @@ public static class DiplomaticSummitUtility
         if (!rewardData.Gifts.NullOrEmpty())
         {
             OAInteractHandler.Instance.AdjustAssistPoints(rewardData.AssistPoints);
-            letterTextBuilder.AppendLine("OAFrame_GainThings".Translate(
-                faction.Named(KeyLibrary_NamedArgument.FACTION),
-                GenLabel.ThingsLabel(rewardData.Gifts).Named(KeyLibrary_NamedArgument.ThingsLabel)));
+            letterTextBuilder.AppendLine("OAFrame_GetThings".Translate(GenLabel.ThingsLabel(rewardData.Gifts).Named(KeyLibrary_NamedArgument.ThingsLabel)));
         }
         if (rewardData.NegotiatorXpGain != 0 && negotiator?.skills is not null)
         {

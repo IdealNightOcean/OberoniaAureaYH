@@ -22,7 +22,7 @@ public class QuestNode_MultiPartyTalksDescMaker : QuestNode
         factions.Add(ModUtility.OAFaction);
 
         slate.Set("totalTopics", factions.Count - 1);
-        DiplomacyUtility.CalculateMultiPartyTalksBaselineNegotiationAbility(factions, resultOnly: false, out string explanation);
+        MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(factions, resultOnly: false, out string explanation);
 
         Rule_String explanationRule = new("baselineExplanation", explanation);
         QuestGen.AddQuestDescriptionRules([explanationRule]);

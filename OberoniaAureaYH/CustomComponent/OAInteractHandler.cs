@@ -80,6 +80,9 @@ public class OAInteractHandler : IExposable
         DiplomaticSummitFactor += 0.2f;
     }
 
+    /// <summary>
+    /// 金鼠结盟时长（天）
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float AllianceDuration()
     {

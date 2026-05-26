@@ -1,7 +1,19 @@
-﻿namespace OberoniaAurea;
+﻿using System.Collections.Generic;
+using Verse;
 
-public class MultiPartyTalksTopicEventWorker_MultiOptions : MultiPartyTalksTopicEventWorker
+namespace OberoniaAurea;
+
+public abstract class MultiPartyTalksTopicEventWorker_MultiOptions : MultiPartyTalksTopicEventWorker
 {
-    protected override void ApplyEventOutcome(MultiPartyTalksTopicEventData eventData)
-    { }
+    protected abstract IEnumerable<DiaOption> Choices(MultiPartyTalksTopicEventData eventData);
+
+    public override bool TryTriggerEvent(MultiPartyTalksTopicEventData eventData)
+    {
+        DiaNode rootNode = new(ResolveEventRootNodeText(eventData));
+
+        rootNode.options.AddRange(Choices(eventData));
+
+        Find.WindowStack.Add(new Dialog_NodeTree(rootNode));
+        return true;
+    }
 }

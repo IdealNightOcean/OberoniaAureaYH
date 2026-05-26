@@ -51,6 +51,16 @@ public static class OARK_ThoughtDefOf
     [MayRequireOdyssey]
     public static ThoughtDef OARK_GraveResearchExchange;
 
+    /// <summary>
+    /// 摸鱼的宫廷部
+    /// </summary>
+    public static ThoughtDef OARK_CourtDepartmentJoy;
+
+    /// <summary>
+    /// 窃听被发现
+    /// </summary>
+    public static ThoughtDef OARK_WhisperCaught;
+
     static OARK_ThoughtDefOf()
     {
         DefOfHelper.EnsureInitializedInCtor(typeof(OARK_ThoughtDefOf));

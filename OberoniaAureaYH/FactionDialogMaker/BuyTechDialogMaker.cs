@@ -11,6 +11,8 @@ namespace OberoniaAurea;
 /// </summary>
 internal static class BuyTechDialogMaker
 {
+    private const int AllianceDurationNeed = 45;
+
     /// <summary>
     /// 购买蓝图
     /// </summary>
@@ -22,9 +24,9 @@ internal static class BuyTechDialogMaker
             diaOption.Disable("MustBeAlly".Translate());
             return diaOption;
         }
-        if (dialogCache.TotalAllianceDuration < 45)
+        if (dialogCache.TotalAllianceDuration < AllianceDurationNeed)
         {
-            diaOption.Disable("OA_AllianceDurationShort".Translate(45));
+            diaOption.Disable("OA_AllianceDurationShort".Translate(AllianceDurationNeed));
             return diaOption;
         }
         int cooldownTicksLeft = ModUtility.CooldownManager.GetCooldownTicksLeft(KeyLibrary_CDRecord.BuyTechPrint);

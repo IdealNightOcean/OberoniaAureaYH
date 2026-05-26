@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using RimWorld.Planet;
 using System.Runtime.CompilerServices;
 using Verse;
 
@@ -47,6 +48,17 @@ public static class ModUtility
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
         OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
+    }
+
+    public static Caravan GetPlayerCaravanOnTile(PlanetTile tile)
+    {
+        foreach (Caravan caravan in Find.WorldObjects.Caravans)
+        {
+            if (caravan.Faction.IsPlayerSafe() && caravan.Tile == tile)
+                return caravan;
+        }
+
+        return null;
     }
 
     internal static void ClearStaticCache()

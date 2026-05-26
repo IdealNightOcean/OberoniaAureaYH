@@ -54,6 +54,15 @@ public static class OARK_ThingDefOf
     ///</summary>
     public static ThingDef OARK_IntelligenceDraft;
 
+    ///<summary>
+    ///普通情报
+    ///</summary>
+    public static ThingDef OARK_IntelligenceNormal;
+
+    ///<summary>
+    ///绝密情报
+    ///</summary>
+    public static ThingDef OARK_IntelligenceSecret;
 
     ///<summary>
     ///科研部逆重数据信标

@@ -4,6 +4,7 @@ using RimWorld.Planet;
 using RimWorld.QuestGen;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Verse;
 
 namespace OberoniaAurea;
@@ -37,68 +38,72 @@ public class SettlementDipComp : WorldObjectComp
         }
     }
 
-    private static bool DiplomacyValid(WorldObject worldObject) //基地派系是否可用
+    public override void PostExposeData()
     {
-        Faction oaFaction = ModUtility.OAFaction;
-        return oaFaction is not null && worldObject.Faction == oaFaction;
+        base.PostExposeData();
+        Scribe_Values.Look(ref lastDiplomacyTick, nameof(lastDiplomacyTick), defaultValue: -1);
+        Scribe_Values.Look(ref curNegotiatingTeamLevel, nameof(curNegotiatingTeamLevel));
+        Scribe_Deep.Look(ref diplomaticSummitHandler, nameof(diplomaticSummitHandler), ctorArgs: Settlement);
     }
+
+    /// <summary>
+    /// 据点派系是否有效
+    /// </summary>
+    private static bool DiplomacyValid(WorldObject worldObject) => worldObject.Faction is not null && worldObject.Faction == ModUtility.OAFaction;
 
     public override void CompTick()
     {
         base.CompTick();
         diplomaticSummitHandler?.WorkTick();
     }
+
     public override IEnumerable<Gizmo> GetCaravanGizmos(Caravan caravan)
     {
         if (IsWorking || !DiplomacyValid(parent))
-        {
             yield break;
-        }
+
         Command_Action command_DipAction = new()
         {
             defaultLabel = "OA_CommandDipAction".Translate(),
             defaultDesc = "OA_CommandDipActionDesc".Translate(),
             icon = IconLibrary.OADipIcon,
-            action = delegate
-            {
-                GizmoFloat_DipAction(caravan);
-            }
+            action = () => GizmoFloat_DipAction(caravan)
         };
         AcceptanceReport acceptanceReport = CanVisitNow();
         if (!acceptanceReport.Accepted)
         {
-            command_DipAction.Disable(acceptanceReport.Reason.NullOrEmpty() ? null : acceptanceReport.Reason);
+            command_DipAction.Disable(string.IsNullOrEmpty(acceptanceReport.Reason) ? null : acceptanceReport.Reason);
         }
         yield return command_DipAction;
     }
-    protected virtual void GizmoFloat_DipAction(Caravan caravan) //远行队到达时的按钮行为：交互类型菜单
+
+    /// <summary>
+    /// 远行队到达时的按钮行为：交互类型菜单
+    /// </summary>
+    protected virtual void GizmoFloat_DipAction(Caravan caravan)
     {
         List<FloatMenuOption> list = [];
         string actionStr;
         foreach (SettlementDipVisitType visitType in Enum.GetValues(typeof(SettlementDipVisitType)))
         {
             if (visitType == SettlementDipVisitType.None)
-            {
                 continue;
-            }
-            actionStr = ("OA_Settlement" + visitType.ToString()).Translate(parent.Label);
+
+            actionStr = ($"OA_Settlement{visitType}".Translate(parent.Label));
             FloatMenuAcceptanceReport acceptanceReport = CanVisitNowByType(visitType);
             if (acceptanceReport)
             {
-                list.Add(new FloatMenuOption(actionStr, delegate
-                {
-                    Notify_CaravanArrived(caravan, visitType);
-                }));
+                list.Add(new FloatMenuOption(actionStr, action: () => Notify_CaravanArrived(caravan, visitType)));
             }
             else
             {
                 if (acceptanceReport.FailReason.NullOrEmpty())
                 {
-                    list.Add(new FloatMenuOption(actionStr, null));
+                    list.Add(new FloatMenuOption(actionStr, action: null));
                 }
                 else
                 {
-                    list.Add(new FloatMenuOption(actionStr + ": " + acceptanceReport.FailReason, null));
+                    list.Add(new FloatMenuOption(actionStr + ": " + acceptanceReport.FailReason, action: null));
                 }
             }
         }
@@ -124,19 +129,24 @@ public class SettlementDipComp : WorldObjectComp
             default: return;
         }
     }
-    private void DeepExchange(Caravan caravan, Pawn pawn) //触发深入交流
+
+    /// <summary>
+    /// 触发深入交流
+    /// </summary>
+    private void DeepExchange(Caravan caravan, Pawn pawn) //
     {
         DeepExchangeUtility.ApplyEffect(caravan, Settlement, pawn);
         diplomacyCoolingDays = 30;
         lastDiplomacyTick = Find.TickManager.TicksGame;
     }
 
-    protected void DiplomaticSummit(Caravan caravan, Pawn pawn) //触发外交争锋
+    /// <summary>
+    /// 触发外交争锋
+    /// </summary>
+    protected void DiplomaticSummit(Caravan caravan, Pawn pawn)
     {
         if (!caravan.IsExactTypeCaravan())
-        {
             return;
-        }
 
         diplomaticSummitHandler = new(Settlement);
         diplomaticSummitHandler.InitSummit(caravan, pawn);
@@ -149,9 +159,9 @@ public class SettlementDipComp : WorldObjectComp
         return curNegotiatingTeamLevel.Value;
     }
 
-    public void Notify_DiplomaticSummitEnd(bool cancel)
+    public void Notify_DiplomaticSummitEnd(bool interrupt)
     {
-        if (!cancel)
+        if (!interrupt)
         {
             curNegotiatingTeamLevel = null;
             lastDiplomacyTick = Find.TickManager.TicksGame;
@@ -163,16 +173,15 @@ public class SettlementDipComp : WorldObjectComp
     public AcceptanceReport CanVisitNow()
     {
         if (parent.Faction.PlayerRelationKind != FactionRelationKind.Ally)
-        {
             return "MustBeAlly".Translate();
-        }
+
         int remainingDiplomacyCoolingTicks = RemainingCoolingTicks;
         if (remainingDiplomacyCoolingTicks > 0)
-        {
             return "WaitTime".Translate(remainingDiplomacyCoolingTicks.ToStringTicksToPeriod());
-        }
+
         return true;
     }
+
     public FloatMenuAcceptanceReport CanVisitNowByType(SettlementDipVisitType SettlementDipVisitType)
     {
         switch (SettlementDipVisitType)
@@ -181,68 +190,79 @@ public class SettlementDipComp : WorldObjectComp
             case SettlementDipVisitType.DeepExchange: return true;
             case SettlementDipVisitType.DiplomaticSummit:
                 {
-                    if (OAInteractHandler.Instance.AllianceDuration() < 60)
-                    {
-                        return FloatMenuAcceptanceReport.WithFailReason("OA_AllianceDurationShort".Translate(60.ToString("F0")));
-                    }
-                    return true;
+                    if (OAInteractHandler.Instance.AllianceDuration() >= 60)
+                        return true;
+
+                    return FloatMenuAcceptanceReport.WithFailReason("OA_AllianceDurationShort".Translate(60.ToString("F0")));
                 }
             default: return false;
         }
     }
-
-    public override void PostExposeData()
-    {
-        base.PostExposeData();
-        Scribe_Values.Look(ref lastDiplomacyTick, nameof(lastDiplomacyTick), -1);
-        Scribe_Values.Look(ref curNegotiatingTeamLevel, nameof(curNegotiatingTeamLevel));
-        Scribe_Deep.Look(ref diplomaticSummitHandler, nameof(diplomaticSummitHandler), ctorArgs: Settlement);
-    }
-
 }
 
 public static class DeepExchangeUtility
 {
     private const float LearnIntellectualXP = 2000f;
     private const float QuestProbability = 0.5f;
-    private const int ChanwuNum = 10;
+    private const int FlowerCakeCount = 10;
+    private const int IntelligenceDraftCount = 10;
     private const int AddAssistPoints = 5;
 
     private static readonly List<(QuestScriptDef, float)> tmpPossibleOutcomes = [];
 
     public static void ApplyEffect(Caravan caravan, Settlement settlement, Pawn pawn)
     {
+        StringBuilder letterTextBuilder = new(128);
+        letterTextBuilder.AppendLine("OA_LetterResearchDeepExchange".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT)));
+
         OAInteractHandler.Instance.AdjustAssistPoints(AddAssistPoints);
-        pawn.skills?.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
-        foreach (Thing thing in things)
+        letterTextBuilder.AppendLine("OARK_AssistPointChange".Translate(
+            settlement.Faction.Named(KeyLibrary_NamedArgument.FACTION),
+            OAFrame_TextUtility.ColoredIntNamedArgument(AddAssistPoints, KeyLibrary_NamedArgument.Change)));
+
+        if (pawn?.skills is not null)
         {
-            CaravanInventoryUtility.GiveThing(caravan, thing);
+            pawn.skills.Learn(SkillDefOf.Intellectual, LearnIntellectualXP);
+            letterTextBuilder.AppendLine("PeaceTalksSocialXPGain".Translate(pawn.LabelShort, LearnIntellectualXP, pawn.Named(KeyLibrary_NamedArgument.PAWN)));
         }
-        TaggedString text = "OA_LetterResearchDeepExchange".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT));
+
+        List<Thing> gifts = [];
+        gifts.AddRange(OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, FlowerCakeCount));
+        gifts.AddRange(OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.OARK_IntelligenceDraft, IntelligenceDraftCount));
+
+        OAFrame_CaravanUtility.GiveThings(caravan, gifts);
+        letterTextBuilder.AppendLine("OAFrame_GetThings".Translate(GenLabel.ThingsLabel(gifts).Named(KeyLibrary_NamedArgument.ThingsLabel)));
+
         tmpPossibleOutcomes.Clear();
         if (Rand.Chance(QuestProbability))
         {
-            AddQuest(OARK_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f, Find.World);
-            AddQuest(OARK_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f, Find.World);
-            AddQuest(OARK_QuestScriptDefOf.OA_UrbanConstruction, 40f, Find.World, settlement);
-            AddQuest(OARK_QuestScriptDefOf.OA_FestivalOrders, 25f, QuestGen_Get.GetMap());
-            if (tmpPossibleOutcomes.Any())
+            AddQuest(OARK_QuestScriptDefOf.OA_OpportunitySite_MultiPartyTalks, 20f);
+            AddQuest(OARK_QuestScriptDefOf.OA_OpportunitySite_PunishmentExecutor, 15f);
+            AddQuest(OARK_QuestScriptDefOf.OA_UrbanConstruction, 40f, targetSettle: settlement);
+            AddQuest(OARK_QuestScriptDefOf.OA_FestivalOrders, 25f, target: QuestGen_Get.GetMap());
+            if (tmpPossibleOutcomes.Count > 0)
             {
-                Slate slate = new();
                 QuestScriptDef questScript = tmpPossibleOutcomes.RandomElementByWeight(q => q.Item2).Item1;
-                if (questScript == OARK_QuestScriptDefOf.OA_UrbanConstruction)
-                {
-                    slate.Set("settlement", settlement);
-                }
+                Slate slate = new();
+                slate.Set("settlement", settlement);
                 OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, questScript, slate, forced: true);
-                text += "\n\n" + "OA_LetterResearchDeepExchangeAdditional".Translate(settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT), quest.name);
+                letterTextBuilder.AppendLine();
+                letterTextBuilder.AppendLine();
+                letterTextBuilder.AppendLine("OA_LetterResearchDeepExchangeAdditional".Translate(
+                    settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT),
+                    quest.name));
             }
+            tmpPossibleOutcomes.Clear();
         }
-        Find.LetterStack.ReceiveLetter("OA_LetterLabelDeepExchange".Translate(), text, LetterDefOf.PositiveEvent, caravan, settlement.Faction);
+        Find.LetterStack.ReceiveLetter(label: "OA_LetterLabelDeepExchange".Translate(),
+                                       text: letterTextBuilder.ToTaggedString(),
+                                       textLetterDef: LetterDefOf.PositiveEvent,
+                                       lookTargets: caravan,
+                                       relatedFaction: settlement.Faction);
     }
-    private static void AddQuest(QuestScriptDef scriptDef, float chance, IIncidentTarget target, Settlement targetSettle = null)
+    private static void AddQuest(QuestScriptDef scriptDef, float chance, IIncidentTarget target = null, Settlement targetSettle = null)
     {
+        target ??= Find.World;
         Slate slate = new();
         if (targetSettle is not null)
         {

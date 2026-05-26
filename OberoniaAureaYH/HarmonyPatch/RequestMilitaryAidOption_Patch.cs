@@ -253,9 +253,9 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     private static void CallEmergencyMedicine(Map map, Faction faction)
     {
         List<List<Thing>> dropThings = [];
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
+        dropThings.Add(OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
+        dropThings.Add(OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
+        dropThings.Add(OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION)), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);

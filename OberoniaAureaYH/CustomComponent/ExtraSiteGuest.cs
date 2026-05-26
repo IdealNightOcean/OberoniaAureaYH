@@ -68,7 +68,7 @@ public class ExtraSiteGuest : IExposable
         Scribe_Deep.Look(ref siteTrader, nameof(siteTrader));
     }
 
-    public void ClearTraderMeta()
+    public void ClearMeta()
     {
         siteTrader?.Destroy();
         siteTrader = null;
@@ -90,7 +90,7 @@ public class ExtraSiteGuest : IExposable
 
     public void RefreshTraderMeta()
     {
-        ClearTraderMeta();
+        ClearMeta();
 
         if (nextGuestFaction is not null)
         {

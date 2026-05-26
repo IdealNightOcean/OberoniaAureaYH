@@ -16,29 +16,44 @@ public static class FactionDialogFor_Patch
     [HarmonyPostfix]
     public static void Postfix(ref DiaNode __result, Pawn negotiator, Faction faction)
     {
-        if (!faction.IsOAFaction())
-            return;
-
         if (negotiator.skills.GetSkill(SkillDefOf.Social).TotallyDisabled)
             return;
 
         FactionDialogCache dialogCache = new(negotiator, faction);
-
-        List<DiaOption> opts =
-        [
-            CallForLargeScaleTrader(dialogCache),
-            SponsorOADialogMaker.SponsorOberoniaAurea(dialogCache),
-            BuyTechDialogMaker.BuyTechPrint(dialogCache),
-            DiplomacyDialogMaker.Diplomacy(dialogCache)
-        ];
-
-        if (ModsConfig.OdysseyActive)
+        List<DiaOption> opts = [];
+        if (faction.IsOAFaction())
         {
-            opts.Add(ScienceDepartmentDialogUtility.AccessScienceDepartment(negotiator, faction));
+            opts.AddRange(OAFactionPatch(dialogCache));
         }
+
+        opts.AddRange(CommonFactionPatch(dialogCache));
+
+        if (opts.Count <= 0)
+            return;
 
         int index = Mathf.Max(0, __result.options.Count - 3);
         __result.options.InsertRange(index, opts);
+    }
+
+
+    private static IEnumerable<DiaOption> OAFactionPatch(FactionDialogCache dialogCache)
+    {
+        yield return CallForLargeScaleTrader(dialogCache);
+        yield return SponsorOADialogMaker.SponsorOberoniaAurea(dialogCache);
+        yield return BuyTechDialogMaker.BuyTechPrint(dialogCache);
+        yield return DiplomacyDialogMaker.Diplomacy(dialogCache);
+
+        if (ModsConfig.OdysseyActive)
+        {
+            yield return ScienceDepartmentDialogUtility.AccessScienceDepartment(dialogCache.Negotiator, dialogCache.Faction);
+        }
+    }
+
+    private static IEnumerable<DiaOption> CommonFactionPatch(FactionDialogCache dialogCache)
+    {
+        DiaOption intelligenceOpt = IntelligenceDialogMaker.IntelligenceOpt(dialogCache);
+        if (intelligenceOpt is not null)
+            yield return intelligenceOpt;
     }
 
     /// <summary>

@@ -35,7 +35,7 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         Map map = (Map)parms.target;
         Faction faction = parms.faction;
         int count = map.mapPawns.FreeColonistsSpawnedCount * 100;
-        List<Thing> dropThings = OAFrame_MiscUtility.TryGenerateThing(OARK_RimWorldDefOf.RawBerries, count);
+        List<Thing> dropThings = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_RimWorldDefOf.RawBerries, count);
         IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
         SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
                            baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named(KeyLibrary_NamedArgument.FACTION), count),

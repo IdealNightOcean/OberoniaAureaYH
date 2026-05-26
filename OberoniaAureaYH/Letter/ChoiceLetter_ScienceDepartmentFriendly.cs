@@ -128,9 +128,9 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            List<Thing> rewardsI = OAFrame_MiscUtility.TryGenerateThing(OARK_RimWorldDefOf.Synthread, 100);
-            List<Thing> rewardsII = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 40);
-            List<Thing> rewardsIII = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 5);
+            List<Thing> rewardsI = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_RimWorldDefOf.Synthread, 100);
+            List<Thing> rewardsII = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 40);
+            List<Thing> rewardsIII = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 5);
 
             IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [rewardsI, rewardsII, rewardsIII], forbid: false, allowFogged: false, faction: ModUtility.OAFaction);

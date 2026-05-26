@@ -23,6 +23,8 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
     public float BaselineNegotiationAbility => baselineNegotiationAbility;
     private string OutcomePropExplanation { get; set; } = string.Empty;
 
+    public override int TicksNeeded => 2500;
+
     public override void ExposeData()
     {
         base.ExposeData();
@@ -70,7 +72,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         base.PostAdd();
         nextTopicForceTriggeredTick = Find.TickManager.TicksGame + 30 * 2500;
         participantFactions.Add(this.Faction);
-        float initBaseline = DiplomacyUtility.CalculateMultiPartyTalksBaselineNegotiationAbility(participantFactions, resultOnly: true, out _);
+        float initBaseline = MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(participantFactions, resultOnly: true, out _);
         SetBaselineNegotiationAbility(initBaseline);
     }
 

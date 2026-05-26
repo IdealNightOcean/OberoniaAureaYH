@@ -84,8 +84,8 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
             return;
         }
 
-        List<Thing> gifts = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, birthdayPawnsCount * 5);
-        gifts.AddRange(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.OA_RK_New_Hat_A, birthdayPawnsCount));
+        List<Thing> gifts = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, birthdayPawnsCount * 5);
+        gifts.AddRange(OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.OA_RK_New_Hat_A, birthdayPawnsCount));
         OAFrame_DropPodUtility.DefaultDropThing(gifts, map, parms.faction, sendLetter: false);
 
         if (OberoniaAureaSettings.BirthdayWishesShowLetter)

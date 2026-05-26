@@ -108,7 +108,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
         maxSkillPawn ??= associatedFixedCaravan.PawnsListForReading.RandomElement();
 
         int humanCount = associatedFixedCaravan.PawnsListForReading.Where(p => p.RaceProps.Humanlike).Count();
-        List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, humanCount * 3);
+        List<Thing> rewards = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, humanCount * 3);
         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, rewards);
 
         LaunchShip();
@@ -258,7 +258,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
                         quizDialogOpen = false;
                         if (associatedFixedCaravan is not null)
                         {
-                            List<Thing> flowCakes = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
+                            List<Thing> flowCakes = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
                             OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
                             Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShipLaunch_Quiz6GainLabel".Translate(5),
                                                            text: "OARK_ScienceShipLaunch_Quiz6Gain".Translate(),

@@ -139,7 +139,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
 
         if (map is not null)
         {
-            List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
+            List<Thing> rewards = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
             Thing equipments = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment);
             equipments.stackCount = 2;
             rewards.Add(equipments);

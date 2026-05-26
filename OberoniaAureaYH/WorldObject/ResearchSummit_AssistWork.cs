@@ -173,7 +173,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
     private static void SupplyFood(FixedCaravan assistWorkCaravan) //给予当天的食物
     {
         ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(foodDef, assistWorkCaravan.PawnsCount);
         OAFrame_FixedCaravanUtility.GiveThings(assistWorkCaravan, things);
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
@@ -228,7 +228,7 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
         OAInteractHandler.Instance.AdjustAssistPoints(APpoints);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, silverNum);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, silverNum);
         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
         Find.LetterStack.ReceiveLetter(label.Translate(), letterText, letterDef, this, Faction);

@@ -31,8 +31,8 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
     {
         int componentCount = ComponentCountRange.RandomInRange;
         int steelCount = SteelCountRange.RandomInRange;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.ComponentIndustrial, componentCount);
-        things.AddRange(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Steel, steelCount));
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.ComponentIndustrial, componentCount);
+        things.AddRange(OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Steel, steelCount));
         OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
 
         foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
