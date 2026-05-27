@@ -214,7 +214,7 @@ public static class DiplomaticSummitUtility
 
         float negotiationAbility = negotiator.GetStatValue(StatDefOf.NegotiationAbility);
         InteractionOutcome outcome = DiplomacyUtility.DetermineOutcomeCommon(usedBaseline, negotiationAbility);
-        if (outcome == InteractionOutcome.Normal) outcome = InteractionOutcome.Success;
+        if (outcome == InteractionOutcome.Neutral) outcome = InteractionOutcome.Success;
 
         Faction faction = settlement.Faction;
 
@@ -235,7 +235,7 @@ public static class DiplomaticSummitUtility
                     rewardData.LetterDef = LetterDefOf.PositiveEvent;
                     break;
                 }
-            case InteractionOutcome.Normal or InteractionOutcome.Success:
+            case InteractionOutcome.Neutral or InteractionOutcome.Success:
                 {
                     rewardData.AssistPoints = 25;
                     rewardData.NegotiatorXpGain = 6000;

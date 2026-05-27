@@ -22,6 +22,6 @@ public class MultiPartyTalksTopicEventPart_Things : MultiPartyTalksTopicEventPar
         }
 
         MultiPartyTalksUtility.TryGiveThingsToPlayer(eventData, things);
-        resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_Things".Translate(GenLabel.ThingsLabel(things).Named(KeyLibrary_NamedArgument.ThingsLabel)));
-    }
+            resultBuilder.AppendLine("OAFrame_GetThings".Translate(GenLabel.ThingsLabel(things).Named(KeyLibrary_NamedArgument.ThingsLabel)));
+        }
 }

@@ -43,7 +43,18 @@ public class ExtraSiteGuest : IExposable
     public bool IsTraderActive => daysToExpired > 0 && guestFaction is not null && traderKind is not null;
 
     private SiteTrader siteTrader;
-    public SiteTrader SiteTrader => IsTraderActive ? (siteTrader ??= new SiteTrader(traderKind, parent, guestFaction)) : null;
+    public SiteTrader SiteTrader
+    {
+        get
+        {
+            if (!IsTraderActive)
+                return null;
+
+            siteTrader = new SiteTrader(traderKind, parent, guestFaction);
+            siteTrader?.RefreshThings();
+            return siteTrader;
+        }
+    }
 
     public ExtraSiteGuest() { }
     public ExtraSiteGuest(WorldObject parent)

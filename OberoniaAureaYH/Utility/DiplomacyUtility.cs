@@ -13,7 +13,7 @@ public static class DiplomacyUtility
     /// <param name="b">交互能力</param>
     public static InteractionOutcome DetermineOutcomeCommon(float a, float b)
     {
-        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out _);
+        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float neutralProb, out float failureProb, out _);
 
         float rand = Random.value;
         if (rand < criticalSuccessProb)
@@ -24,10 +24,10 @@ public static class DiplomacyUtility
             return InteractionOutcome.Success;
 
         rand -= successProb;
-        if (rand < normalProb)
-            return InteractionOutcome.Normal;
+        if (rand < neutralProb)
+            return InteractionOutcome.Neutral;
 
-        rand -= normalProb;
+        rand -= neutralProb;
         if (rand < failureProb)
             return InteractionOutcome.Failure;
 
@@ -36,11 +36,11 @@ public static class DiplomacyUtility
 
     public static TaggedString OutcomeProbabilityInfo(float a, float b)
     {
-        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb);
+        CalculateOutcomeProbCommon(a, b, out float criticalSuccessProb, out float successProb, out float neutralProb, out float failureProb, out float criticalFailureProb);
         return "OARK_InteractionOutcome_PropInfo".Translate(
             criticalSuccessProb.ToStringPercent("0.##").Named("CriticalSuccessProb"),
             successProb.ToStringPercent("0.##").Named("SuccessProb"),
-            normalProb.ToStringPercent("0.##").Named("NormalProb"),
+            neutralProb.ToStringPercent("0.##").Named("NeutralProb"),
             failureProb.ToStringPercent("0.##").Named("FailureProb"),
             criticalFailureProb.ToStringPercent("0.##").Named("CriticalFailureProb"));
     }
@@ -50,7 +50,7 @@ public static class DiplomacyUtility
     /// </summary>
     /// <param name="a">交互难度</param>
     /// <param name="b">交互能力</param>
-    public static void CalculateOutcomeProbCommon(float a, float b, out float criticalSuccessProb, out float successProb, out float normalProb, out float failureProb, out float criticalFailureProb)
+    public static void CalculateOutcomeProbCommon(float a, float b, out float criticalSuccessProb, out float successProb, out float neutralProb, out float failureProb, out float criticalFailureProb)
     {
         float bUsed = Mathf.Clamp(b, 0.5f * a, 2f * a);
 
@@ -67,7 +67,7 @@ public static class DiplomacyUtility
 
         criticalSuccessProb = Mathf.Max(0f, Mathf.Min(upperBound, t1 * bUsed) - lowerBound) / range;
         successProb = Mathf.Max(0f, Mathf.Min(upperBound, t2 * bUsed) - Mathf.Max(lowerBound, t1 * bUsed)) / range;
-        normalProb = Mathf.Max(0f, Mathf.Min(upperBound, t3 * bUsed) - Mathf.Max(lowerBound, t2 * bUsed)) / range;
+        neutralProb = Mathf.Max(0f, Mathf.Min(upperBound, t3 * bUsed) - Mathf.Max(lowerBound, t2 * bUsed)) / range;
         failureProb = Mathf.Max(0f, Mathf.Min(upperBound, t4 * bUsed) - Mathf.Max(lowerBound, t3 * bUsed)) / range;
         criticalFailureProb = Mathf.Max(0f, upperBound - Mathf.Max(lowerBound, t4 * bUsed)) / range;
     }

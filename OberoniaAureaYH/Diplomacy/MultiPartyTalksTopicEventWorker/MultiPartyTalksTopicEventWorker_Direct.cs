@@ -34,7 +34,6 @@ public class MultiPartyTalksTopicEventWorker_Direct : MultiPartyTalksTopicEventW
             }
         }
 
-        DiaNode resultNode = new(resultBuilder.ToTaggedString());
-        Find.WindowStack.Add(new Dialog_NodeTree(resultNode));
+        Find.WindowStack.Add(OAFrame_DiaUtility.ConfirmDiaNodeTree(resultBuilder.ToTaggedString()));
     }
 }

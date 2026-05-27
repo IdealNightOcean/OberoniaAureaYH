@@ -1,10 +1,8 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Verse;
 
 namespace OberoniaAurea;
@@ -32,7 +30,7 @@ public class MultiPartyTalksTopicEventWorker_HeavyRain : MultiPartyTalksTopicEve
         };
     }
 
-    private DiaNode FactionLateBind(Faction faction ,Pawn negotiator)
+    private DiaNode FactionLateBind(Faction faction, Pawn negotiator)
     {
         string nodeText;
         if (faction == ModUtility.OAFaction)
@@ -79,7 +77,7 @@ public class MultiPartyTalksTopicEventWorker_HeavyRain : MultiPartyTalksTopicEve
         }
 
         TaggedString nodeText;
-        if (patients.Count>0)
+        if (patients.Count > 0)
         {
             nodeText = "OARK_TopicEvent_HeavyRain_SelfWithPatients".Translate(GenLabel.ThingsLabel(patients).Named("PawnsLabel"));
         }

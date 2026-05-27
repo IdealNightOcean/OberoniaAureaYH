@@ -26,7 +26,7 @@ public class TransportersArrivalAction_InteractWithGuest : TransportersArrivalAc
         Pawn pawn = null;
         for (int i = 0; i < transporters.Count; i++)
         {
-            foreach (Thing item in (IEnumerable<Thing>)transporters[i].GetDirectlyHeldThings())
+            foreach (Thing item in transporters[i].GetDirectlyHeldThings())
             {
                 if (item is Pawn p)
                 {
@@ -77,7 +77,7 @@ public class TransportersArrivalAction_InteractWithGuest : TransportersArrivalAc
             {
                 directlyHeldThings = compTransporter.parent.GetCaravan().GetDirectlyHeldThings();
             }
-            foreach (Thing t in (IEnumerable<Thing>)directlyHeldThings)
+            foreach (Thing t in directlyHeldThings)
             {
                 if (t is not Pawn pawn)
                     continue;

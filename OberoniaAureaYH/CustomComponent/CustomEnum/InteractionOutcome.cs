@@ -7,7 +7,7 @@ public enum InteractionOutcome
     /// <summary>失败</summary>
     Failure,
     /// <summary>普通</summary>
-    Normal,
+    Neutral,
     /// <summary>成功</summary>
     Success,
     /// <summary>大成功</summary>

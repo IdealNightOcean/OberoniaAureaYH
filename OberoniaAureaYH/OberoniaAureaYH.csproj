@@ -99,6 +99,7 @@
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventPart\MultiPartyTalksTopicEventPart_NegotiatorRandomInspiration.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_FurtherDiscussion.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_FirstAid.cs" />
+    <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_HeavyRain.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_OADirect.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_FieldTripForage.cs" />
     <Compile Include="Diplomacy\MultiPartyTalksTopicEventWorker\MultiPartyTalksTopicEventWorker_RatkinOriginDiscussion.cs" />

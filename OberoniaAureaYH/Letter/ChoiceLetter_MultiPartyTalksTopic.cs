@@ -128,7 +128,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
             usedBaseline *= 0.95f;
         }
         InteractionOutcome outcome = DiplomacyUtility.DetermineOutcomeCommon(usedBaseline, pawnNegotiationAbility);
-        return outcome >= InteractionOutcome.Normal;
+        return outcome >= InteractionOutcome.Neutral;
     }
 
     private void Ingore()

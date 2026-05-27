@@ -127,7 +127,8 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         }
 
         ticksRemaining = 2500;
-        if (triggeredTopics < TotalTopics && (Find.TickManager.TicksGame > nextTopicForceTriggeredTick || Rand.Chance(0.04f)))
+        //if (triggeredTopics < TotalTopics && (Find.TickManager.TicksGame <= nextTopicForceTriggeredTick || Rand.Chance(0.04f)))
+        if (triggeredTopics < TotalTopics && (Find.TickManager.TicksGame <= nextTopicForceTriggeredTick))
         {
             TriggerTopics();
         }
@@ -402,7 +403,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
                     rewardDate.OtherFactionGoodwill = -20;
                     break;
                 }
-            case InteractionOutcome.Normal:
+            case InteractionOutcome.Neutral:
                 {
                     rewardDate.LetterDef = LetterDefOf.NeutralEvent;
                     rewardDate.HistoryEvent = OARK_HistoryEventDefOf.OARK_PeaceTalksNormal;

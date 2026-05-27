@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -39,13 +40,13 @@ internal static class IntelligenceDialogMaker
 
         DiaOption normalOpt = new(OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap)
         {
-            linkLateBind = () => NormalIntelligenceNode(dialogCache)
+            linkLateBind = () => Intelligence_NumberSelectNode(dialogCache, isSecret:false)
         };
         diaNode.options.Add(normalOpt);
 
         DiaOption secretOpt = new(OARK_ThingDefOf.OARK_IntelligenceSecret.LabelCap)
         {
-            linkLateBind = () => SecretIntelligenceNode(dialogCache)
+            linkLateBind = () => Intelligence_NumberSelectNode(dialogCache, isSecret: true)
         };
         diaNode.options.Add(secretOpt);
 
@@ -55,9 +56,12 @@ internal static class IntelligenceDialogMaker
         return diaNode;
     }
 
-    private static DiaNode NormalIntelligenceNode(FactionDialogCache dialogCache)
+    private static DiaNode Intelligence_NumberSelectNode(FactionDialogCache dialogCache,bool isSecret)
     {
-        DiaNode diaNode = new("OARK_CommsConsloe_NormalIntelligenceNode".Translate());
+        ThingDef intelligenceDef = isSecret ? OARK_ThingDefOf.OARK_IntelligenceSecret : OARK_ThingDefOf.OARK_IntelligenceNormal;
+        DiaNode diaNode = new("OARK_Intelligence_NumberSelectNode".Translate(intelligenceDef.Named(KeyLibrary_NamedArgument.DEF)));
+        float marketValue = intelligenceDef.GetStatValueAbstract(StatDefOf.MarketValue);
+
         AddCountOption(1);
         AddCountOption(5);
         AddCountOption(10);
@@ -71,46 +75,28 @@ internal static class IntelligenceDialogMaker
 
         void AddCountOption(int count)
         {
-            DiaOption diaOption = new($"{OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap} × {count}")
+            int silverGain = Mathf.CeilToInt(marketValue * count);
+            DiaOption diaOption = new($"{intelligenceDef.LabelCap} × {count}")
             {
-
-                linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("", dialogCache.Faction, dialogCache.Negotiator)
+                action = delegate
+                {
+                    dialogCache.Map.DestroyThingsOfDef(intelligenceDef, count);
+                    OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, silverGain, dialogCache.Map);
+                },
+                linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(
+                    "OARK_Intelligence_ConfirmNode".Translate(intelligenceDef.Named(KeyLibrary_NamedArgument.DEF),
+                    count.Named(KeyLibrary_NamedArgument.Count),
+                    silverGain.Named(KeyLibrary_NamedArgument.Value)),
+                dialogCache.Faction,
+                dialogCache.Negotiator)
             };
 
-            if (NormalIntelligenceCount < count)
-            {
-                diaOption.Disable("OAFrame_NeedCountOfThing".Translate(OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap, count));
-            }
+            if (isSecret && (SecretIntelligenceCount < count))
+                diaOption.Disable("OAFrame_NeedCountOfThing".Translate(intelligenceDef.LabelCap, count));
 
-            diaNode.options.Add(diaOption);
-        }
-    }
+            if (!isSecret && (NormalIntelligenceCount < count))
+                diaOption.Disable("OAFrame_NeedCountOfThing".Translate(intelligenceDef.LabelCap, count));
 
-    private static DiaNode SecretIntelligenceNode(FactionDialogCache dialogCache)
-    {
-        DiaNode diaNode = new("OARK_CommsConsloe_SecretIntelligenceNode".Translate());
-        AddCountOption(1);
-        AddCountOption(5);
-        AddCountOption(10);
-        AddCountOption(25);
-        AddCountOption(50);
-        AddCountOption(75);
-        AddCountOption(100);
-        AddCountOption(500);
-        diaNode.AddDefaultGoBackOption(linkLateBind: () => Intelligence_TypeNode(dialogCache));
-        return diaNode;
-
-        void AddCountOption(int count)
-        {
-            DiaOption diaOption = new($"{OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap} × {count}")
-            {
-
-                linkLateBind = () => FactionDialogUtility.FinallyConfirmNode("", dialogCache.Faction, dialogCache.Negotiator)
-            };
-            if (SecretIntelligenceCount < count)
-            {
-                diaOption.Disable("OAFrame_NeedCountOfThing".Translate(OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap, count));
-            }
             diaNode.options.Add(diaOption);
         }
     }

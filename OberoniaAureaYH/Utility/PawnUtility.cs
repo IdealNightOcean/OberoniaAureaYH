@@ -12,7 +12,7 @@ public static class PawnUtility
         if (pawn is null || pawn.ageTracker is null)
             return false;
 
-        return (float)pawn.ageTracker.AgeBiologicalTicks - pawn.ageTracker.AgeBiologicalYears * 3600000f <= 60000f;
+        return pawn.ageTracker.AgeBiologicalTicks - pawn.ageTracker.AgeBiologicalYears * 3600000f <= 60000f;
     }
 
     public static bool IsColonistOnFirstBirthdayPerYear(this Pawn pawn)
