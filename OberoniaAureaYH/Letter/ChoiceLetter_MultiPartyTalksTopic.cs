@@ -42,7 +42,7 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
     {
         get
         {
-            if (talksSite is null || !talksSite.IsWorking || talksSite.Destroyed)
+            if (talksSite is null || !talksSite.IsWorking || talksSite.Destroyed || ArchivedOnly)
             {
                 yield return Option_Close;
                 yield break;

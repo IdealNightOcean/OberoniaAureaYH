@@ -15,7 +15,7 @@ internal class ChoiceLetter_UnlockedFile_Peep : ChoiceLetter
     {
         get
         {
-            if (!ArchivedOnly && pawn is not null)
+            if (pawn is not null && !ArchivedOnly)
             {
                 yield return Option_Check;
             }

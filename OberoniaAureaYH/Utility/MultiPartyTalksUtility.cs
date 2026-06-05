@@ -49,22 +49,19 @@ public static class MultiPartyTalksUtility
 
 
     /// <summary>
-    /// 多发会谈任务谈判能力需求基线计算方法。基线值默认为1，参与派系的科技水平、意识形态、与玩家的关系等因素会对基线进行正负调整。
+    /// 多发会谈任务谈判能力需求基线计算方法。基线值默认为0，参与派系的科技水平、意识形态、与玩家的关系等因素会对基线进行正负调整。
     /// </summary>
     public static float CalculateBaselineNegotiationAbility(IEnumerable<Faction> participantFactions, bool resultOnly, out string explanation)
     {
         explanation = string.Empty;
         StringBuilder expSB = resultOnly ? null : new StringBuilder(512);
-        float abilityBaseline = 1f;
+        float abilityBaseline = 0f;
 
         Faction oaFaction = ModUtility.OAFaction;
 
         int ratkinFactionCount = 0;
         foreach (Faction faction in participantFactions)
         {
-            if (faction == oaFaction)
-                continue;
-
             if (faction.IsRatkinFaction())
             {
                 ratkinFactionCount++;
@@ -76,14 +73,16 @@ public static class MultiPartyTalksUtility
         {
             float ratkinBonus = -ratkinFactionCount * 0.05f;
             abilityBaseline += ratkinBonus;
-            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_RatkinFactions".Translate(ratkinFactionCount, ratkinBonus.ToStringPercentSigned("0.##").Colorize(Color.green))
+            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_RatkinFactions".Translate(ratkinFactionCount,
+                                                                                      OAFrame_TextUtility.ColoredPercentNamedArgument(ratkinBonus, KeyLibrary_NamedArgument.Change, reverse: true))
                                                                            .Resolve());
         }
 
         abilityBaseline -= 0.5f;
         if (!resultOnly)
         {
-            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_OABase".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), (-0.5f).ToStringPercentSigned("0.##").Colorize(Color.green))
+            expSB.AppendLine("OARK_MultiPartyTalks_Baseline_OABase".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION),
+                                                                              OAFrame_TextUtility.ColoredPercentNamedArgument(-0.5f, KeyLibrary_NamedArgument.Change, reverse: true))
                                                                    .Resolve());
         }
         float allianceDurationModify = CalculateOATotalAllianceDurationModify();
@@ -92,7 +91,8 @@ public static class MultiPartyTalksUtility
             abilityBaseline += allianceDurationModify;
             if (!resultOnly)
             {
-                expSB.AppendLine("OARK_MultiPartyTalks_Baseline_AllianceDuration".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION), allianceDurationModify.ToStringPercentSigned("0.##").Colorize(Color.green))
+                expSB.AppendLine("OARK_MultiPartyTalks_Baseline_AllianceDuration".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION),
+                                                                                            OAFrame_TextUtility.ColoredPercentNamedArgument(allianceDurationModify, KeyLibrary_NamedArgument.Change, reverse: true))
                                                                                  .Resolve());
             }
         }

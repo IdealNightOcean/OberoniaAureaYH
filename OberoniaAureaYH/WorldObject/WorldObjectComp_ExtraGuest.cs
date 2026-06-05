@@ -108,6 +108,8 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
 
                         nodeTextBuilder.AppendLine();
                         nodeTextBuilder.AppendLine("OAFrame_GetThings".Translate(GenLabel.ThingsLabel(gifts).Named(KeyLibrary_NamedArgument.ThingsLabel)));
+
+                        extraSiteGuest.FirstInteracted = false;
                     }
 
                     break;
@@ -126,6 +128,7 @@ public class WorldObjectComp_ExtraGuest : WorldObjectComp
         DiaNode diaNode = new(TaggedString.Empty);
         if (extraSiteGuest.IsTraderActive && extraSiteGuest.SiteTrader is not null)
         {
+            nodeTextBuilder.AppendLine();
             nodeTextBuilder.AppendLine("OARK_InteractWithGuest_TradeText".Translate(extraSiteGuest.TraderKind.Named(KeyLibrary_NamedArgument.DEF)));
 
             DiaOption tradeOpt = new("OARK_InteractWithGuest_TradeOpt".Translate(extraSiteGuest.TraderKind.Named(KeyLibrary_NamedArgument.DEF)))

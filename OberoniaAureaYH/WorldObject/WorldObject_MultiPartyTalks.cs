@@ -80,14 +80,14 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
     {
         StringBuilder sb = new(64);
         sb.AppendLine(base.GetInspectString());
-        sb.Append("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
+        sb.AppendLine("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
+        sb.Append("OARK_MultiPartyTalks_Baseline".Translate(baselineNegotiationAbility.ToStringPercent("0.##").Named(KeyLibrary_NamedArgument.Value)));
 
         if (OAFrame_MiscUtility.GodMode)
         {
             sb.AppendLine();
             sb.AppendLine("————————");
             sb.AppendLine("DEV: ");
-            sb.AppendLine($"谈判能力基准需求：{baselineNegotiationAbility.ToStringPercent()}");
             sb.AppendLine($"测试谈判能力：{baselineNegotiationAbility.ToStringPercent()}");
             if (!string.IsNullOrEmpty(OutcomePropExplanation))
             {

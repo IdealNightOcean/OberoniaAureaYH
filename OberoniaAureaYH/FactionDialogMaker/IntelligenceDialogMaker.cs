@@ -15,8 +15,8 @@ internal static class IntelligenceDialogMaker
     /// </summary>
     internal static DiaOption IntelligenceOpt(FactionDialogCache dialogCache)
     {
-        NormalIntelligenceCount = dialogCache.Map.GetCountOfThingDef(OARK_ThingDefOf.OARK_IntelligenceNormal);
-        SecretIntelligenceCount = dialogCache.Map.GetCountOfThingDef(OARK_ThingDefOf.OARK_IntelligenceSecret);
+        NormalIntelligenceCount = dialogCache.Map?.GetCountOfThingDef(OARK_ThingDefOf.OARK_IntelligenceNormal) ?? -1;
+        SecretIntelligenceCount = dialogCache.Map?.GetCountOfThingDef(OARK_ThingDefOf.OARK_IntelligenceSecret) ?? -1;
         if (NormalIntelligenceCount <= 0 && SecretIntelligenceCount <= 0)
         {
             return null;
@@ -36,11 +36,11 @@ internal static class IntelligenceDialogMaker
 
     private static DiaNode Intelligence_TypeNode(FactionDialogCache dialogCache)
     {
-        DiaNode diaNode = new("OARK_CommsConsloe_IntelligenceNode".Translate());
+        DiaNode diaNode = new("OARK_CommsConsloe_IntelligenceNode".Translate(dialogCache.Faction.leader.Named(KeyLibrary_NamedArgument.PAWN)));
 
         DiaOption normalOpt = new(OARK_ThingDefOf.OARK_IntelligenceNormal.LabelCap)
         {
-            linkLateBind = () => Intelligence_NumberSelectNode(dialogCache, isSecret:false)
+            linkLateBind = () => Intelligence_NumberSelectNode(dialogCache, isSecret: false)
         };
         diaNode.options.Add(normalOpt);
 
@@ -56,11 +56,13 @@ internal static class IntelligenceDialogMaker
         return diaNode;
     }
 
-    private static DiaNode Intelligence_NumberSelectNode(FactionDialogCache dialogCache,bool isSecret)
+    private static DiaNode Intelligence_NumberSelectNode(FactionDialogCache dialogCache, bool isSecret)
     {
         ThingDef intelligenceDef = isSecret ? OARK_ThingDefOf.OARK_IntelligenceSecret : OARK_ThingDefOf.OARK_IntelligenceNormal;
-        DiaNode diaNode = new("OARK_Intelligence_NumberSelectNode".Translate(intelligenceDef.Named(KeyLibrary_NamedArgument.DEF)));
-        float marketValue = intelligenceDef.GetStatValueAbstract(StatDefOf.MarketValue);
+        DiaNode diaNode = new("OARK_Intelligence_NumberSelectNode".Translate(
+            dialogCache.Faction.leader.Named(KeyLibrary_NamedArgument.PAWN),
+            intelligenceDef.Named(KeyLibrary_NamedArgument.DEF)));
+        float marketValue = intelligenceDef.GetStatValueAbstract(StatDefOf.MarketValue) * (isSecret ? 1.75f : 1.25f);
 
         AddCountOption(1);
         AddCountOption(5);
@@ -84,11 +86,13 @@ internal static class IntelligenceDialogMaker
                     OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, silverGain, dialogCache.Map);
                 },
                 linkLateBind = () => FactionDialogUtility.FinallyConfirmNode(
-                    "OARK_Intelligence_ConfirmNode".Translate(intelligenceDef.Named(KeyLibrary_NamedArgument.DEF),
-                    count.Named(KeyLibrary_NamedArgument.Count),
-                    silverGain.Named(KeyLibrary_NamedArgument.Value)),
-                dialogCache.Faction,
-                dialogCache.Negotiator)
+                    text: "OARK_Intelligence_ConfirmNode".Translate(
+                        dialogCache.Faction.leader.Named(KeyLibrary_NamedArgument.PAWN),
+                        intelligenceDef.Named(KeyLibrary_NamedArgument.DEF),
+                        count.Named(KeyLibrary_NamedArgument.Count),
+                        silverGain.Named(KeyLibrary_NamedArgument.Value)),
+                    faction: dialogCache.Faction,
+                    negotiator: dialogCache.Negotiator)
             };
 
             if (isSecret && (SecretIntelligenceCount < count))

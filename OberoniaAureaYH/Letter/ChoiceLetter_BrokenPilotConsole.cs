@@ -22,7 +22,7 @@ public class ChoiceLetter_BrokenPilotConsole : ChoiceLetter
     {
         get
         {
-            if (ArchivedOnly || quest is null || quest.State != QuestState.Ongoing)
+            if (quest is null || quest.State != QuestState.Ongoing || ArchivedOnly)
             {
                 yield return Option_Close;
                 yield break;

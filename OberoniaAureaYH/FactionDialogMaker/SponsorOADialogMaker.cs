@@ -92,7 +92,7 @@ internal static class SponsorOADialogMaker
         StringBuilder confirmSb = new("OA_SponsorThanks".Translate(dialogCache.Faction.leader).CapitalizeFirst());
         confirmSb.AppendLine();
         confirmSb.AppendInNewLine("OARK_AssistPointsAdded".Translate(gainAP));
-        confirmSb.AppendInNewLine("OA_SponsorRoyaltyFavorGain".Translate(dialogCache.Negotiator.Named("NAME"), gainFavor));
+        confirmSb.AppendInNewLine("OA_SponsorRoyaltyFavorGain".Translate(dialogCache.Negotiator.Named(KeyLibrary_NamedArgument.PAWN), gainFavor.Named(KeyLibrary_NamedArgument.Count)));
         if (ModsConfig.OdysseyActive)
         {
             confirmSb.AppendInNewLine("OARK_ScienceDepartment_GravTechPointsAdded".Translate(gainGTP));

@@ -14,9 +14,9 @@ public class CompIntelligenceDraft : CompHackable
         }
 
         float rand = Rand.Value;
-        if (rand <= 0.3f)
+        if (rand <= 0.03f)
         {
-            bool isSecret = rand < 0.02f;
+            bool isSecret = rand < 0.002f;
             float pawnAbility = hackPawn.GetStatValue(StatDefOf.ReadingSpeed);
             float baselineAbility = (isSecret ? 2.5f : 1.5f) * Rand.Range(0.5f, 1.5f);
             InteractionOutcome outcome = DiplomacyUtility.DetermineOutcomeCommon(baselineAbility, pawnAbility);
@@ -35,8 +35,8 @@ public class CompIntelligenceDraft : CompHackable
             else
             {
                 Messages.Message(
-                    text: "OARK_IntelligenceDraft_DecodeFailed".Translate(hackPawn.Named(KeyLibrary_NamedArgument.PAWN)), 
-                    lookTargets:hackPawn,
+                    text: "OARK_IntelligenceDraft_DecodeFailed".Translate(hackPawn.Named(KeyLibrary_NamedArgument.PAWN)),
+                    lookTargets: hackPawn,
                     def: MessageTypeDefOf.NegativeEvent,
                     historical: false);
             }

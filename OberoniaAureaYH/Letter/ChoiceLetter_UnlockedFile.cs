@@ -26,7 +26,7 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
     {
         get
         {
-            if (ArchivedOnly || pawn is null)
+            if (pawn is null || ArchivedOnly)
             {
                 yield return Option_Close;
                 yield break;

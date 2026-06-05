@@ -84,7 +84,6 @@ public static class KeyLibrary_CDRecord
     /// </summary>
     public const string RequestMultiPartyTalks = "RequestMultiPartyTalks";
 
-
     /// <summary>
     /// 请求刷新额外定居点商人
     /// </summary>

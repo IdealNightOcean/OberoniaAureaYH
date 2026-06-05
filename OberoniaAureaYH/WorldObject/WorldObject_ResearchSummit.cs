@@ -15,11 +15,26 @@ namespace OberoniaAurea;
 /// </summary>
 public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
 {
-    private const float BackfireNeedSpeed = 1.25f; //失败所需要的研究能力
-    private const float FlounderNeedSpeed = 1.75f; //小失败所需要的研究能力
-    private const float NormalNeedSpeed = 2.4f; //中立所需要的研究能力
-    private const float SuccessNeedSpeed = 3.0f; //成功所需要的研究能力
-    private const float TriumphNeedSpeed = 4.0f; //大成功所需要的研究能力
+    /// <summary>
+    /// 研究能力 - 失败
+    /// </summary>
+    private const float BackfireNeedSpeed = 1.25f;
+    /// <summary>
+    /// 研究能力 - 小失败
+    /// </summary>
+    private const float FlounderNeedSpeed = 1.75f;
+    /// <summary>
+    /// 研究能力 - 中立
+    /// </summary>
+    private const float NormalNeedSpeed = 2.4f;
+    /// <summary>
+    /// 研究能力 - 成功
+    /// </summary>
+    private const float SuccessNeedSpeed = 3.0f;
+    /// <summary>
+    /// 研究能力 - 大成功
+    /// </summary>
+    private const float TriumphNeedSpeed = 4.0f;
 
     private static readonly IntRange ScholarGiftValue = new(1000, 3000);
 

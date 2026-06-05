@@ -16,7 +16,7 @@ public class ChoiceLetter_ExtraSiteGuest : ChoiceLetter
     {
         get
         {
-            if (ExtraSiteGuest is null || !ExtraSiteGuest.IsActive)
+            if (ExtraSiteGuest is null || !ExtraSiteGuest.IsActive || ArchivedOnly)
             {
                 yield return Option_Close;
                 yield break;

@@ -39,6 +39,7 @@ internal static partial class DiplomacyDialogMaker
     {
         DiaNode diaNode = new("OARK_CommsConsloe_DiplomacyNode".Translate());
 
+        diaNode.options.Add(ExtraSiteGuest.ExtraSiteTraderOpt(dialogCache));
         diaNode.options.Add(MultiPartyTalks.MultiPartyTalksOpt(dialogCache));
 
         //返回按钮
@@ -109,7 +110,7 @@ internal static partial class DiplomacyDialogMaker
     /// <summary>
     /// 访客派系相关
     /// </summary>
-    protected static class ExtraSiteTrader
+    protected static class ExtraSiteGuest
     {
         /// <summary>
         /// 要求访客派系延迟事件（天）
@@ -125,7 +126,12 @@ internal static partial class DiplomacyDialogMaker
         /// </summary>
         internal static DiaOption ExtraSiteTraderOpt(FactionDialogCache dialogCache)
         {
-            throw new NotImplementedException();
+            DiaOption diaOption = FactionDialogUtility.DiaOptionWithCooldown(
+               text: "OARK_DiplomacyOpt_ExtraSiteTrader".Translate(),
+               key: KeyLibrary_CDRecord.RequestExtraSiteTrader,
+               linkLateBind: () => ExtraSiteTrader_SettlementSelectNode(dialogCache));
+
+            return diaOption;
         }
 
         private static DiaNode ExtraSiteTrader_SettlementSelectNode(FactionDialogCache dialogCache)
@@ -153,10 +159,11 @@ internal static partial class DiplomacyDialogMaker
                 {
                     diaOption.Disable("OARK_ExtraSiteTrader_AlreadyHasNextGuest".Translate());
                 }
+                diaNode.options.Add(diaOption);
             }
 
             diaNode.AddDefaultGoBackOption(linkLateBind: () => DiplomacyNode(dialogCache));
-            throw new NotImplementedException();
+            return diaNode;
         }
 
         private static DiaNode ExtraSiteTrader_FactionSelectNode(FactionDialogCache dialogCache, Settlement settlement)
@@ -233,6 +240,7 @@ internal static partial class DiplomacyDialogMaker
                 },
                 linkLateBind = () => ExtraSiteTrader_ConfirmNode(dialogCache, settlement, selFaction, traderKind)
             };
+            diaNode.options.Add(confirmOpt);
 
             diaNode.AddDefaultGoBackOption(linkLateBind: () => ExtraSiteTrader_TraderKindSelectNode(dialogCache, settlement, selFaction));
             return diaNode;
@@ -262,7 +270,7 @@ internal static partial class DiplomacyDialogMaker
         /// <summary>
         /// 多方会谈的最大参与派系数量
         /// </summary>
-        private const int MaxMultiPartyTalksParticipants = 5;
+        private const int MaxMultiPartyTalksParticipants = 6;
         /// <summary>
         /// 多方会谈最小参与派系数量
         /// </summary>
@@ -288,7 +296,7 @@ internal static partial class DiplomacyDialogMaker
             DiaOption diaOption = FactionDialogUtility.DiaOptionWithCooldown(
                 text: "OARK_DiplomacyOpt_MultiPartyTalks".Translate(),
                 key: KeyLibrary_CDRecord.RequestMultiPartyTalks,
-                linkLateBind: () => MultiPartyTalks_FactionSelectNode(dialogCache, []));
+                linkLateBind: () => MultiPartyTalks_FactionSelectNode(dialogCache, [dialogCache.Faction]));
 
             if (dialogCache.Faction.PlayerGoodwill < GoodwillThresholdForMultiPartyTalks)
             {
@@ -303,7 +311,9 @@ internal static partial class DiplomacyDialogMaker
         private static DiaNode MultiPartyTalks_FactionSelectNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
         {
             string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
-            DiaNode diaNode = new("OARK_MultiPartyTalks_FactionSelectionNode".Translate(selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst());
+            DiaNode diaNode = new("OARK_MultiPartyTalks_FactionSelectionNode".Translate(
+                dialogCache.Faction.leader.Named(KeyLibrary_NamedArgument.PAWN),
+                selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)));
             Faction ofPlayer = Faction.OfPlayer;
             Faction oaFaction = ModUtility.OAFaction;
 
@@ -338,7 +348,7 @@ internal static partial class DiplomacyDialogMaker
             nodeTextBuilder.AppendLine("OARK_MultiPartyTalks_FactionConfirmNode".Translate(
                 GoodwillThresholdForMultiPartyTalks.Named(KeyLibrary_NamedArgument.Goodwill),
                 dialogCache.Faction.Named(KeyLibrary_NamedArgument.FACTION),
-                selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst().Resolve());
+                selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).Resolve());
 
             float baselineNegotiationAbility = MultiPartyTalksUtility.CalculateBaselineNegotiationAbility(participantFactions: selFactions, resultOnly: false, explanation: out string explanation);
             if (baselineNegotiationAbility < 2f)
@@ -394,7 +404,10 @@ internal static partial class DiplomacyDialogMaker
         private static DiaNode MultiPartyTalks_ConfirmNode(FactionDialogCache dialogCache, HashSet<Faction> selFactions)
         {
             string selFactionsNames = string.Join(", ", selFactions.Select(f => f.NameColored));
-            DiaNode diaNode = new("OARK_MultiPartyTalks_ConfirmNode".Translate(dialogCache.Faction.Named(KeyLibrary_NamedArgument.FACTION), selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)).CapitalizeFirst());
+            DiaNode diaNode = new("OARK_MultiPartyTalks_ConfirmNode".Translate(
+                dialogCache.Faction.leader.Named(KeyLibrary_NamedArgument.PAWN),
+                dialogCache.Faction.Named(KeyLibrary_NamedArgument.FACTION),
+                selFactionsNames.Named(KeyLibrary_NamedArgument.FactionNames)));
             diaNode.options.Add(FactionDialogUtility.OKToRoot(dialogCache.Faction, dialogCache.Negotiator));
 
             return diaNode;

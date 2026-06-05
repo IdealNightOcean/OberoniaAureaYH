@@ -1,17 +1,20 @@
-﻿using RimWorld;
-using System.Linq;
+﻿using OberoniaAurea_Frame;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
 
 //外交斡旋确认
-public class IncidentWorker_OptionalDiplomaticOffices : IncidentWorker_GiveQuest
+public class IncidentWorker_OptionalDiplomaticOffices : OberoniaAurea_Frame.IncidentWorker_GiveQuest
 {
     public string letterText = "OA_OptionalDiplomaticOffices".Translate(ModUtility.OAFaction.NameColored, ModUtility.OAFaction.leader);
 
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
-        ChoiceLetter_OptionalQuest coiceLetter_OptionalQuest = (ChoiceLetter_OptionalQuest)LetterMaker.MakeLetter(def.letterLabel, letterText, def.letterDef, ModUtility.OAFaction);
+        ChoiceLetter_OptionalQuest coiceLetter_OptionalQuest = (ChoiceLetter_OptionalQuest)LetterMaker.MakeLetter(label: def.letterLabel,
+                                                                                                                  text: letterText,
+                                                                                                                  def: def.letterDef,
+                                                                                                                  relatedFaction: ModUtility.OAFaction);
         coiceLetter_OptionalQuest.questScriptDef = def.questScriptDef;
         coiceLetter_OptionalQuest.StartTimeout(30000);
         Find.LetterStack.ReceiveLetter(coiceLetter_OptionalQuest);
@@ -33,6 +36,10 @@ public class IncidentWorker_OptionalDiplomaticOffices : IncidentWorker_GiveQuest
             return false;
         }
 
-        return Find.FactionManager.AllFactionsVisible.Any(f => f != oaFaction && f.PlayerRelationKind == FactionRelationKind.Hostile && f.RelationKindWith(oaFaction) != FactionRelationKind.Hostile);
+
+        Faction otherFaction = OAFrame_FactionUtility.RandomAvailableFactionOf(validationParams: FactionValidationParams.HostileNormalFaction,
+                                                                               predicater: f => f != oaFaction && f.RelationKindWith(oaFaction) != FactionRelationKind.Hostile);
+
+        return otherFaction is not null;
     }
 }
