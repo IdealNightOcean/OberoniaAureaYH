@@ -315,13 +315,13 @@ public class ChoiceLetter_MultiPartyTalksTopic : ChoiceLetter
         grammarRequest.Includes.Add(OARK_RulePackDef.OARK_MultiPartyTalks_TopicOutcome);
 
         grammarRequest.Rules.AddRange(GrammarUtility.RulesForFaction(KeyLibrary_NamedArgument.FACTION, talksSite.Faction));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.BaselineAdjust), OAFrame_TextUtility.ColoredPercentString(rewardData.BaselineAdjust, reverse: true)));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.AssintPoints), OAFrame_TextUtility.ColoredIntString(rewardData.AssintPoints)));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.RoyalFavor), OAFrame_TextUtility.ColoredIntString(rewardData.RoyalFavor)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.BaselineAdjust), OAFrame_TextUtility.ColoredPercentString(rewardData.BaselineAdjust, includeSign: true, reverse: true)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.AssintPoints), OAFrame_TextUtility.ColoredIntString(rewardData.AssintPoints, includeSign: true)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.RoyalFavor), OAFrame_TextUtility.ColoredIntString(rewardData.RoyalFavor, includeSign: true)));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.IntelligenceDraftCount), rewardData.IntelligenceDraftCount.ToString()));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OrganizerGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OrganizerGoodwill)));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.TopicFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.TopicFactionsGoodwill)));
-        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OtherFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OtherFactionsGoodwill)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OrganizerGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OrganizerGoodwill, includeSign: true)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.TopicFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.TopicFactionsGoodwill, includeSign: true)));
+        grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.OtherFactionsGoodwill), OAFrame_TextUtility.ColoredIntString(rewardData.OtherFactionsGoodwill, includeSign: true)));
         grammarRequest.Rules.Add(new Rule_String(KeyLibrary_NamedArgument.TopicFactionsName, string.Join(", ", topicFactions.Select(f => f.NameColored))));
         grammarRequest.Rules.Add(new Rule_String(nameof(rewardData.NegotiatorXP), rewardData.NegotiatorXP.ToString()));
 

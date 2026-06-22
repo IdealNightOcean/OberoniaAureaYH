@@ -18,7 +18,7 @@ public class MultiPartyTalksTopicEventPart_NegotiatorIdeoCertainty : MultiPartyT
         {
             eventData.Negotiator.ideo.Reassure(certaintyChange);
             resultBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_NegotiatorIdeoCertainty".Translate(
-                OAFrame_TextUtility.ColoredPercentNamedArgument(certaintyChange, KeyLibrary_NamedArgument.Value),
+                OAFrame_TextUtility.ColoredPercentNamedArgument(certaintyChange, KeyLibrary_NamedArgument.Value, includeSign: true),
                 eventData.Negotiator.Named(KeyLibrary_NamedArgument.PAWN)));
         }
     }

@@ -283,7 +283,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
 
             outcomeBuilder.AppendLine("OARK_MultiPartyTalks_OrganizerFactionGoodwill".Translate(
                 organizerFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OrganizerFactionGoodwill, KeyLibrary_NamedArgument.Goodwill)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OrganizerFactionGoodwill, KeyLibrary_NamedArgument.Goodwill, includeSign: true)));
         }
 
         if (rewardDate.OtherFactionGoodwill != 0)
@@ -299,7 +299,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             }
             outcomeBuilder.AppendLine(" ".Translate(
                 organizerFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Goodwill)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Goodwill, includeSign: true)));
         }
 
         if (rewardDate.AssistPoints != 0)
@@ -307,7 +307,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             OAInteractHandler.Instance.AdjustAssistPoints(rewardDate.AssistPoints);
             outcomeBuilder.AppendLine("OARK_MultiPartyTalks_AssistPoints".Translate(
                 organizerFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Value)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardDate.OtherFactionGoodwill, KeyLibrary_NamedArgument.Value, includeSign: true)));
         }
 
         Pawn negotiator = null;

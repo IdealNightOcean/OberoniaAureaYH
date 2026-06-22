@@ -74,7 +74,7 @@ public static class MultiPartyTalksUtility
             float ratkinBonus = -ratkinFactionCount * 0.05f;
             abilityBaseline += ratkinBonus;
             expSB.AppendLine("OARK_MultiPartyTalks_Baseline_RatkinFactions".Translate(ratkinFactionCount,
-                                                                                      OAFrame_TextUtility.ColoredPercentNamedArgument(ratkinBonus, KeyLibrary_NamedArgument.Change, reverse: true))
+                                                                                      OAFrame_TextUtility.ColoredPercentNamedArgument(ratkinBonus, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true))
                                                                            .Resolve());
         }
 
@@ -82,7 +82,7 @@ public static class MultiPartyTalksUtility
         if (!resultOnly)
         {
             expSB.AppendLine("OARK_MultiPartyTalks_Baseline_OABase".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                                                                              OAFrame_TextUtility.ColoredPercentNamedArgument(-0.5f, KeyLibrary_NamedArgument.Change, reverse: true))
+                                                                              OAFrame_TextUtility.ColoredPercentNamedArgument(-0.5f, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true))
                                                                    .Resolve());
         }
         float allianceDurationModify = CalculateOATotalAllianceDurationModify();
@@ -92,7 +92,7 @@ public static class MultiPartyTalksUtility
             if (!resultOnly)
             {
                 expSB.AppendLine("OARK_MultiPartyTalks_Baseline_AllianceDuration".Translate(oaFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                                                                                            OAFrame_TextUtility.ColoredPercentNamedArgument(allianceDurationModify, KeyLibrary_NamedArgument.Change, reverse: true))
+                                                                                            OAFrame_TextUtility.ColoredPercentNamedArgument(allianceDurationModify, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true))
                                                                                  .Resolve());
             }
         }

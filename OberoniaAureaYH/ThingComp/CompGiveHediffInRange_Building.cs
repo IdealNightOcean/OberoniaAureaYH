@@ -29,7 +29,7 @@ public class CompGiveHediffInRange_Building : ThingComp
 
     public override void PostExposeData()
     {
-        Scribe_Values.Look(ref ticksToNextCheck, "ticksToNextCheck", 0);
+        Scribe_Values.Look(ref ticksToNextCheck, nameof(ticksToNextCheck), defaultValue: 0);
     }
 
     public override void PostSpawnSetup(bool respawningAfterLoad)

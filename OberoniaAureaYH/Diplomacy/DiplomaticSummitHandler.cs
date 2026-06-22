@@ -277,14 +277,14 @@ public static class DiplomaticSummitUtility
 
             letterTextBuilder.AppendLine("OAFrame_FactionGoodwillChange".Translate(
                 faction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardData.OrganizerFactionGoodwill, KeyLibrary_NamedArgument.Change)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardData.OrganizerFactionGoodwill, KeyLibrary_NamedArgument.Change, includeSign: true)));
         }
         if (rewardData.AssistPoints != 0)
         {
             OAInteractHandler.Instance.AdjustAssistPoints(rewardData.AssistPoints);
             letterTextBuilder.AppendLine("OARK_AssistPointChange".Translate(
                 faction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(rewardData.AssistPoints, KeyLibrary_NamedArgument.Change)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(rewardData.AssistPoints, KeyLibrary_NamedArgument.Change, includeSign: true)));
         }
         if (!rewardData.Gifts.NullOrEmpty())
         {
@@ -323,7 +323,7 @@ public static class DiplomaticSummitUtility
                                        text: "OARK_LetterDiplomaticSummit_LeaveHalfway".Translate(
                                            settlement.Named(KeyLibrary_NamedArgument.SETTLEMENT),
                                            faction.Named(KeyLibrary_NamedArgument.FACTION),
-                                           OAFrame_TextUtility.ColoredIntNamedArgument(LeaveHalfwayGoodwill, KeyLibrary_NamedArgument.Goodwill)),
+                                           OAFrame_TextUtility.ColoredIntNamedArgument(LeaveHalfwayGoodwill, KeyLibrary_NamedArgument.Goodwill, includeSign: true)),
                                        textLetterDef: LetterDefOf.NegativeEvent,
                                        lookTargets: settlement,
                                        relatedFaction: faction);

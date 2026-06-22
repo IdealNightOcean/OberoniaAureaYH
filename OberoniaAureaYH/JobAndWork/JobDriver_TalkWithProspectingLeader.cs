@@ -102,9 +102,9 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         }
 
         Find.LetterStack.ReceiveLetter(label: label,
-                                     text: text,
-                                     textLetterDef: LetterDefOf.NeutralEvent,
-                                     new LookTargets(pos, map),
-                                     relatedFaction: leader.Faction);
+                                       text: text,
+                                       textLetterDef: LetterDefOf.NeutralEvent,
+                                       lookTargets: new LookTargets(pos, map),
+                                       relatedFaction: leader.Faction);
     }
 }

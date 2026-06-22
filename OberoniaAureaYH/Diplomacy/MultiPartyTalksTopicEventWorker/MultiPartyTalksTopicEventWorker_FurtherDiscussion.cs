@@ -31,14 +31,14 @@ public class MultiPartyTalksTopicEventWorker_FurtherDiscussion : MultiPartyTalks
             nodeTextBuilder.AppendLine();
 
             eventData.TalksSite.AdjustBaselineNegotiationAbility(-0.05f);
-            nodeTextBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(-0.05f, KeyLibrary_NamedArgument.Change, reverse: true)));
+            nodeTextBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(-0.05f, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true)));
 
             Faction.OfPlayer.TryAffectGoodwillWith(other: eventData.PrimaryFaction,
                                       goodwillChange: SucceedGoodwill,
                                       reason: OARK_HistoryEventDefOf.OARK_DiplomacyInteraction);
             nodeTextBuilder.AppendLine("OAFrame_FactionGoodwillChange".Translate(
             eventData.PrimaryFaction.Named(KeyLibrary_NamedArgument.FACTION),
-            OAFrame_TextUtility.ColoredIntNamedArgument(SucceedGoodwill, KeyLibrary_NamedArgument.Change)));
+            OAFrame_TextUtility.ColoredIntNamedArgument(SucceedGoodwill, KeyLibrary_NamedArgument.Change, includeSign: true)));
 
         }
         else
@@ -49,7 +49,7 @@ public class MultiPartyTalksTopicEventWorker_FurtherDiscussion : MultiPartyTalks
             nodeTextBuilder.AppendLine();
 
             eventData.TalksSite.AdjustBaselineNegotiationAbility(0.05f);
-            nodeTextBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(0.05f, KeyLibrary_NamedArgument.Change, reverse: true)));
+            nodeTextBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(OAFrame_TextUtility.ColoredPercentNamedArgument(0.05f, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true)));
 
 
             Faction.OfPlayer.TryAffectGoodwillWith(other: eventData.PrimaryFaction,
@@ -57,7 +57,7 @@ public class MultiPartyTalksTopicEventWorker_FurtherDiscussion : MultiPartyTalks
                                                    reason: OARK_HistoryEventDefOf.OARK_DiplomacyInteraction);
             nodeTextBuilder.AppendLine("OAFrame_FactionGoodwillChange".Translate(
                 eventData.PrimaryFaction.Named(KeyLibrary_NamedArgument.FACTION),
-                OAFrame_TextUtility.ColoredIntNamedArgument(FailedGoodwill, KeyLibrary_NamedArgument.Change)));
+                OAFrame_TextUtility.ColoredIntNamedArgument(FailedGoodwill, KeyLibrary_NamedArgument.Change, includeSign: true)));
 
         }
 

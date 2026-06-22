@@ -218,7 +218,7 @@ public static class DeepExchangeUtility
         OAInteractHandler.Instance.AdjustAssistPoints(AddAssistPoints);
         letterTextBuilder.AppendLine("OARK_AssistPointChange".Translate(
             settlement.Faction.Named(KeyLibrary_NamedArgument.FACTION),
-            OAFrame_TextUtility.ColoredIntNamedArgument(AddAssistPoints, KeyLibrary_NamedArgument.Change)));
+            OAFrame_TextUtility.ColoredIntNamedArgument(AddAssistPoints, KeyLibrary_NamedArgument.Change, includeSign: true)));
 
         if (pawn?.skills is not null)
         {

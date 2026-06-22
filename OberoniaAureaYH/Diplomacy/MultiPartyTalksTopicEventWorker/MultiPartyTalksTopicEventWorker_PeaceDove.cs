@@ -52,7 +52,7 @@ public class MultiPartyTalksTopicEventWorker_PeaceDove : MultiPartyTalksTopicEve
 
             eventData.TalksSite.AdjustBaselineNegotiationAbility(0.05f);
             nodeTextBuilder.AppendLine("OARK_MultiPartyTalksTopicEventPart_TalksBaseline".Translate(
-                OAFrame_TextUtility.ColoredPercentNamedArgument(0.05f, KeyLibrary_NamedArgument.Change, reverse: true)));
+                OAFrame_TextUtility.ColoredPercentNamedArgument(0.05f, KeyLibrary_NamedArgument.Change, includeSign: true, reverse: true)));
         }
 
         return OAFrame_DiaUtility.ConfirmDiaNode(nodeTextBuilder.ToTaggedString());

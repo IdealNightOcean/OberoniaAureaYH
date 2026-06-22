@@ -31,7 +31,7 @@ public class MultiPartyTalksTopicEventWorker_NobleAndAttendant : MultiPartyTalks
             OAInteractHandler.Instance.AdjustAssistPoints(5);
             nodeTextBuilder.AppendLine("OARK_AssistPointChange".Translate(
                oaFaction.Named(KeyLibrary_NamedArgument.FACTION),
-               OAFrame_TextUtility.ColoredIntNamedArgument(5, KeyLibrary_NamedArgument.Change)));
+               OAFrame_TextUtility.ColoredIntNamedArgument(5, KeyLibrary_NamedArgument.Change, includeSign: true)));
 
             eventData.Negotiator.skills?.Learn(SkillDefOf.Intellectual, 1000f);
             nodeTextBuilder.AppendLine("OAFrame_PawnGetSkillXP".Translate(

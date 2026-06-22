@@ -58,7 +58,7 @@ public class MultiPartyTalksTopicEventWorker_HeavyRain : MultiPartyTalksTopicEve
 
         nodeTextBuilder.AppendLine("OAFrame_FactionGoodwillChange".Translate(
             faction.Named(KeyLibrary_NamedArgument.FACTION),
-            OAFrame_TextUtility.ColoredIntNamedArgument(10, KeyLibrary_NamedArgument.Change)));
+            OAFrame_TextUtility.ColoredIntNamedArgument(10, KeyLibrary_NamedArgument.Change, includeSign: true)));
 
         return OAFrame_DiaUtility.ConfirmDiaNode(nodeTextBuilder.ToTaggedString());
     }
