@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Planet;
+using System.Collections.Generic;
 using Verse;
 
 namespace OberoniaAurea;
@@ -23,7 +23,7 @@ public class CaravanArrivalAction_VisitDiplomaticOffices : CaravanArrivalAction
         this.diplomaticOffices = diplomaticOffices;
     }
 
-    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, int destinationTile)
+    public override FloatMenuAcceptanceReport StillValid(Caravan caravan, PlanetTile destinationTile)
     {
         FloatMenuAcceptanceReport floatMenuAcceptanceReport = base.StillValid(caravan, destinationTile);
         if (!floatMenuAcceptanceReport)

@@ -14,7 +14,7 @@ public class CompProperties_GiveTargeterHediff : CompProperties_UseEffect
 }
 
 /// <summary>
-/// 给予目标<see cref="Hediff">的<see cref="CompTargetEffect_GiveTargeterHediff">
+/// 给予目标<see cref="Hediff"/>的<see cref="CompTargetEffect_GiveTargeterHediff"/>
 /// </summary>
 public class CompTargetEffect_GiveTargeterHediff : CompTargetEffect
 {
