@@ -19,5 +19,4 @@ public abstract class MultiPartyTalksTopicEventWorker
 
     protected virtual TaggedString ResolveEventRootNodeText(MultiPartyTalksTopicEventData eventData) => eventData.Formatted(Def.description);
 
-
 }

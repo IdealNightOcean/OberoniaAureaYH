@@ -1,5 +1,6 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
+using System;
 using Verse;
 
 namespace OberoniaAurea;
@@ -8,7 +9,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
 {
     protected override bool CanFireNowSub(IncidentParms parms)
     {
-        if (!string.IsNullOrEmpty(parms.questTag) && SpecialGlobalEventManager.Instance.HasTriggeredSpecialEvents(parms.questTag))
+        if (!String.IsNullOrEmpty(parms.questTag) && SpecialGlobalEventManager.Instance.HasTriggeredSpecialEvents(parms.questTag))
             return false;
 
         return base.CanFireNowSub(parms);
@@ -16,7 +17,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
 
     protected bool ResolveParams(IncidentParms parms)
     {
-        if (!string.IsNullOrEmpty(parms.questTag) && SpecialGlobalEventManager.Instance.HasTriggeredSpecialEvents(parms.questTag))
+        if (!String.IsNullOrEmpty(parms.questTag) && SpecialGlobalEventManager.Instance.HasTriggeredSpecialEvents(parms.questTag))
             return false;
 
         Map map = (Map)parms.target ?? Find.AnyPlayerHomeMap;
@@ -34,7 +35,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
             parms.spawnCenter = intVec;
         }
 
-        if (!string.IsNullOrEmpty(parms.customLetterLabel))
+        if (!String.IsNullOrEmpty(parms.customLetterLabel))
         {
             parms.customLetterDef ??= LetterDefOf.NeutralEvent;
         }
@@ -53,7 +54,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
             OAFrame_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction, sendLetter: false);
         }
 
-        if (!string.IsNullOrEmpty(parms.customLetterLabel))
+        if (!String.IsNullOrEmpty(parms.customLetterLabel))
         {
             Find.LetterStack.ReceiveLetter(
                 label: parms.customLetterLabel,
@@ -63,7 +64,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
                 relatedFaction: parms.faction);
         }
 
-        if (!string.IsNullOrEmpty(parms.questTag))
+        if (!String.IsNullOrEmpty(parms.questTag))
             SpecialGlobalEventManager.Instance.MarkSpecialEventTriggered(parms.questTag);
 
         return true;

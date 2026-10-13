@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Verse;
 
 namespace OberoniaAurea;
@@ -49,7 +50,7 @@ public class OberoniaAureaSettings : ModSettings
 
         listing_Rect.CheckboxLabeled($"OARK_Setting_{nameof(BirthdayWishesShowLetter)}".Translate(), ref BirthdayWishesShowLetter);
         listing_Rect.Label($"OARK_Setting_{nameof(ExtraSiteTraderExpiredDays)}".Translate());
-        if (string.IsNullOrEmpty(ExtraSiteTraderExpiredDaysStr)) ExtraSiteTraderExpiredDaysStr = ExtraSiteTraderExpiredDays.ToStringCached();
+        if (String.IsNullOrEmpty(ExtraSiteTraderExpiredDaysStr)) ExtraSiteTraderExpiredDaysStr = ExtraSiteTraderExpiredDays.ToStringCached();
         listing_Rect.IntEntry(ref ExtraSiteTraderExpiredDays, ref ExtraSiteTraderExpiredDaysStr);
 
         listing_Rect.End();

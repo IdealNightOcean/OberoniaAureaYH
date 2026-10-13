@@ -72,7 +72,7 @@ public class SettlementDipComp : WorldObjectComp
         AcceptanceReport acceptanceReport = CanVisitNow();
         if (!acceptanceReport.Accepted)
         {
-            command_DipAction.Disable(string.IsNullOrEmpty(acceptanceReport.Reason) ? null : acceptanceReport.Reason);
+            command_DipAction.Disable(String.IsNullOrEmpty(acceptanceReport.Reason) ? null : acceptanceReport.Reason);
         }
         yield return command_DipAction;
     }

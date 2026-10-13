@@ -1,6 +1,7 @@
 ﻿using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.Planet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,7 +90,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
             sb.AppendLine("————————");
             sb.AppendLine("DEV: ");
             sb.AppendLine($"测试谈判能力：{baselineNegotiationAbility.ToStringPercent()}");
-            if (!string.IsNullOrEmpty(OutcomePropExplanation))
+            if (!String.IsNullOrEmpty(OutcomePropExplanation))
             {
                 sb.Append(OutcomePropExplanation);
             }
