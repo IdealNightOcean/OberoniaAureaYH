@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -11,7 +11,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
     protected string acceptSignal;
     protected string rejectSignal;
 
-    public Pawn GeneratePawn(Slate slate)
+    public static Pawn GeneratePawn(Slate slate)
     {
         slate.TryGet("faction", out Faction faction);
 

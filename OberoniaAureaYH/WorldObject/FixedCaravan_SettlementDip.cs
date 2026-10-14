@@ -1,5 +1,4 @@
 ﻿using OberoniaAurea_Frame;
-
 namespace OberoniaAurea;
 
 public class FixedCaravan_DiplomaticSummit : FixedCaravan

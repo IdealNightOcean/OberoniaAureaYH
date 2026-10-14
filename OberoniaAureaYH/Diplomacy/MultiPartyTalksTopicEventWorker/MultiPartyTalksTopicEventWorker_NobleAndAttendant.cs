@@ -1,4 +1,4 @@
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 
 using RimWorld;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ public class MultiPartyTalksTopicEventWorker_NobleAndAttendant : MultiPartyTalks
         yield return OAFrame_DiaUtility.DefaultIngnoreOption;
     }
 
-    private DiaNode AssistNode(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode AssistNode(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder nodeTextBuilder = new(64);
         Faction oaFaction = ModUtility.OAFaction;

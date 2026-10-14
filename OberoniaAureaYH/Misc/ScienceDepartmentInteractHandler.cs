@@ -1,4 +1,4 @@
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.QuestGen;
 using UnityEngine;
@@ -44,7 +44,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public ScienceDepartmentInteractHandler()
     {
-        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        OAFrame_GamePlayUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
     }
     public static void ClearStaticCache() => Instance = null;
@@ -229,7 +229,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         }
     }
 
-    private void TryTriggerGravInitQuest()
+    private static void TryTriggerGravInitQuest()
     {
         if (!CanTriggerGravInitQuest())
         {
@@ -254,7 +254,7 @@ public class ScienceDepartmentInteractHandler : IExposable
         }
     }
 
-    private void TryTriggerAnnualInteractionQuest()
+    private static void TryTriggerAnnualInteractionQuest()
     {
         if (!CanTriggerGravInitQuest())
         {
@@ -269,7 +269,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             forced = true
         };
 
-        if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
+        if (OAFrame_IncidentUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
             ModUtility.CooldownManager.RegisterRecord(KeyLibrary_CDRecord.SDAnnualInteraction, cdTicks: Rand.RangeInclusive(50, 70) * 60000, removeWhenExpired: false);
         }

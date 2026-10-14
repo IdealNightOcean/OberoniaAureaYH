@@ -13,7 +13,7 @@ public class QuestNode_Root_OABestowingCeremony : QuestNode
     protected const int DefenderGuardCount = 6;
     protected const int DefenderAssaultCount = 2;
 
-    protected bool TryGetCeremonyTarget(Slate slate, out Pawn pawn, out Faction bestowingFaction)
+    protected static bool TryGetCeremonyTarget(Slate slate, out Pawn pawn, out Faction bestowingFaction)
     {
         pawn = null;
 

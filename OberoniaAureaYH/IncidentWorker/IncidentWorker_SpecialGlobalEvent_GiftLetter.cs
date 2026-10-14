@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using Verse;
@@ -15,7 +15,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
         return base.CanFireNowSub(parms);
     }
 
-    protected bool ResolveParams(IncidentParms parms)
+    protected static bool ResolveParams(IncidentParms parms)
     {
         if (!String.IsNullOrEmpty(parms.questTag) && SpecialGlobalEventManager.Instance.HasTriggeredSpecialEvents(parms.questTag))
             return false;

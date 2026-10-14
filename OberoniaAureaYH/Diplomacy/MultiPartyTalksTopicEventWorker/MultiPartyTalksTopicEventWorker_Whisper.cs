@@ -1,4 +1,4 @@
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ public class MultiPartyTalksTopicEventWorker_Whisper : MultiPartyTalksTopicEvent
         yield return OAFrame_DiaUtility.DefaultIngnoreOption;
     }
 
-    private DiaNode EavesdropNode(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode EavesdropNode(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder nodeTextBuilder = new(64);
         float roll = Rand.Value;

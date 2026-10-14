@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -221,7 +221,7 @@ public class CompCrashedScienceShip : CompHackable
                     target = parent.MapHeld,
                     faction = ModUtility.OAFaction
                 };
-                OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_OASupport, 1200, parms);
+                OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_OASupport, 1200, parms);
             }
         }
     }
@@ -445,7 +445,7 @@ public class CompCrashedScienceShip : CompHackable
             }
         }
 
-        if (OAFrame_MiscUtility.GodMode)
+        if (OAFrame_GamePlayUtility.GodMode)
         {
             sb.AppendInNewLine("--------");
             sb.AppendInNewLine($"mainGravIndex:{mainGravIndex}, subGravIndex:{subGravIndex}");
@@ -552,7 +552,7 @@ public class CompCrashedScienceShip : CompHackable
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
             };
-            OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
+            OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
         }
 
         if (extaRaidRemaining > 0 && (ticksToNextExtaRaid -= delta) <= 0)
@@ -567,7 +567,7 @@ public class CompCrashedScienceShip : CompHackable
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
             };
-            OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
+            OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
 
             if (extaRaidRemaining == 0)
             {
@@ -746,7 +746,7 @@ public class CompCrashedScienceShip : CompHackable
                 target = Find.World,
                 points = 5000f
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_TravelRKReward, Rand.RangeInclusive(2, 3) * 60000, parms);
+            OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_TravelRKReward, Rand.RangeInclusive(2, 3) * 60000, parms);
         }
     }
 

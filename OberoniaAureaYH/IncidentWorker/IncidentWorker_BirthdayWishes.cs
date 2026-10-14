@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         return base.CanFireNowSub(parms);
     }
 
-    private bool ResolveParms(IncidentParms parms, out List<Pawn> birthdayPawns)
+    private static bool ResolveParms(IncidentParms parms, out List<Pawn> birthdayPawns)
     {
         birthdayPawns = null;
         if (!ModUtility.IsOAFactionAlly())
@@ -69,7 +69,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         return true;
     }
 
-    private void BirthdayWishes(IncidentParms parms, List<Pawn> allBirthdayPawns)
+    private static void BirthdayWishes(IncidentParms parms, List<Pawn> allBirthdayPawns)
     {
         List<Pawn> birthdayPawns = allBirthdayPawns.Where(p => p.IsOberoniaAureaPawn()).ToList();
         if (birthdayPawns.NullOrEmpty())
@@ -106,7 +106,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
         }
     }
 
-    private void TryBirthdayVisit(IncidentParms parms, List<Pawn> birthdayPawns)
+    private static void TryBirthdayVisit(IncidentParms parms, List<Pawn> birthdayPawns)
     {
         /*
         if (ScienceDepartmentInteractHandler.Instance.PlayerTechPoints < 5000)

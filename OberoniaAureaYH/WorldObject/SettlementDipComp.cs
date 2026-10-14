@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -182,7 +182,7 @@ public class SettlementDipComp : WorldObjectComp
         return true;
     }
 
-    public FloatMenuAcceptanceReport CanVisitNowByType(SettlementDipVisitType SettlementDipVisitType)
+    public static FloatMenuAcceptanceReport CanVisitNowByType(SettlementDipVisitType SettlementDipVisitType)
     {
         switch (SettlementDipVisitType)
         {

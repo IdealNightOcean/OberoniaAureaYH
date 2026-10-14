@@ -82,7 +82,7 @@ public class PortableCommsConsole : Apparel
         return true;
     }
 
-    private FloatMenuOption GetFailureReason(Pawn pawn)
+    private static FloatMenuOption GetFailureReason(Pawn pawn)
     {
         if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Talking))
         {

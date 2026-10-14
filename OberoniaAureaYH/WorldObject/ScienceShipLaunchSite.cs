@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -138,7 +139,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             target = Find.World,
             faction = ModUtility.OAFaction
         };
-        OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShipRecycle, Rand.RangeInclusive(20, 40) * 60000, parms);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShipRecycle, Rand.RangeInclusive(20, 40) * 60000, parms);
     }
 
     public override void Destroy()

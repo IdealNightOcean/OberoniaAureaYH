@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using Verse;
@@ -193,7 +193,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
             points = pointsGain
         };
 
-        OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_EconomyMinistryReview_Outcome, delayTicks: Rand.RangeInclusive(60000, 180000), parms, retryDurationTicks: 30000);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_EconomyMinistryReview_Outcome, delayTicks: Rand.RangeInclusive(60000, 180000), parms, retryDurationTicks: 30000);
     }
 
     private void MainNodeExtension(DiaNode mainNode, FactionDialogCache dialogCache)

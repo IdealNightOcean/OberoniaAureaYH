@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 
 using RimWorld;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ public class MultiPartyTalksTopicEventWorker_PeaceDove : MultiPartyTalksTopicEve
         };
     }
 
-    private DiaNode FeedNode(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode FeedNode(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder nodeTextBuilder = new(64);
         float roll = Rand.Value;
@@ -59,7 +59,7 @@ public class MultiPartyTalksTopicEventWorker_PeaceDove : MultiPartyTalksTopicEve
         return OAFrame_DiaUtility.ConfirmDiaNode(nodeTextBuilder.ToTaggedString());
     }
 
-    private DiaNode RoastNode(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode RoastNode(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder nodeTextBuilder = new(64);
         nodeTextBuilder.AppendLine("OARK_TopicEvent_PeaceDove_Roast_Result".Translate(eventData.Negotiator.Named(KeyLibrary_NamedArgument.PAWN)));

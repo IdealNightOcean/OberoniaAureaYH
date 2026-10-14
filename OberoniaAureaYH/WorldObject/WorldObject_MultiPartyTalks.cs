@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -84,7 +85,7 @@ public class WorldObject_MultiPartyTalks : WorldObject_InteractWithFixedCaravanB
         sb.AppendLine("OARK_MultiPartyTalks_Topics".Translate(TotalTopics.Named("TotalTopics"), triggeredTopics.Named("TriggeredTopics"), settledTopics.Named("SettledTopics")));
         sb.Append("OARK_MultiPartyTalks_Baseline".Translate(baselineNegotiationAbility.ToStringPercent("0.##").Named(KeyLibrary_NamedArgument.Value)));
 
-        if (OAFrame_MiscUtility.GodMode)
+        if (OAFrame_GamePlayUtility.GodMode)
         {
             sb.AppendLine();
             sb.AppendLine("————————");

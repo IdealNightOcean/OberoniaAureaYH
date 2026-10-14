@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System.Runtime.CompilerServices;
@@ -47,7 +48,7 @@ public static class ModUtility
             points = points,
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
-        OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
+        OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
     public static Caravan GetPlayerCaravanOnTile(PlanetTile tile)

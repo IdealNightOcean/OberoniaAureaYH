@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.QuestGen;
 using Verse;

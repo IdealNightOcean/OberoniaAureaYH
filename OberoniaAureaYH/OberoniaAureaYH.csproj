@@ -32,6 +32,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="docs\**" />
+    <EmbeddedResource Remove="docs\**" />
+    <None Remove="docs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>E:\ProgramFiles\Steam\steamapps\workshop\content\294100\2009463077\1.7\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>

@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -300,7 +300,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             traderKind = OARK_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
             forced = true
         };
-        OAFrame_MiscUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
     }
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)

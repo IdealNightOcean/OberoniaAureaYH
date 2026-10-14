@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using UnityEngine;
@@ -106,7 +106,7 @@ public static class FactionDialogFor_Patch
                 traderKind = traderKind,
                 forced = true
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_LargeScaleTraderArrival, 120000, parms, 12000);
+            OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_LargeScaleTraderArrival, 120000, parms, 12000);
             TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, 2000, dialogCache.Map, null);
         }
     }

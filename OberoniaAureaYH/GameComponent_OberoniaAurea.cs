@@ -1,5 +1,4 @@
 using OberoniaAurea_Frame;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -65,15 +64,6 @@ public class GameComponent_OberoniaAurea : GameComponent
         EnsureComponentsInit();
         specialGlobalEventManager.Notify_GameStart();
         WorldObjectComp_ExtraGuest.Notify_GameStart();
-
-        if (!ModsConfig.IsActive("OARK.OberoniaAurea.Framework") && !ModsConfig.IsActive("OARK.OberoniaAurea.Framework_Steam"))
-        {
-            Find.LetterStack.ReceiveLetter(
-                label: "OARO_LetterLabel_FrameMiss".Translate(),
-                text: "OARO_LetterText_FrameMiss".Translate(),
-                textLetterDef: LetterDefOf.NegativeEvent,
-                delayTicks: 300);
-        }
     }
 
     private void EnsureComponentsInit()

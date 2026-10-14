@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 
 using RimWorld;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ public class MultiPartyTalksTopicEventWorker_FirstAid : MultiPartyTalksTopicEven
     }
 
 
-    protected DiaNode TryAidNode(MultiPartyTalksTopicEventData eventData)
+    protected static DiaNode TryAidNode(MultiPartyTalksTopicEventData eventData)
     {
         (Pawn maxPawn, int maxSkill) = OAFrame_PawnUtility.GetMaxSkillLevelPawn(MultiPartyTalksUtility.GetCaravanPawns(eventData), SkillDefOf.Medicine); ;
         StringBuilder nodeTextBuilder = new(64);

@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using Verse;
 
 namespace OberoniaAurea;
@@ -23,13 +24,19 @@ public class Gene_ColdAdaptation : Gene
     private static void TryAddHediff(Pawn pawn)
     {
         if (!ModsConfig.BiotechActive)
-        {
             return;
-        }
+
         float ambientTemperature = pawn.AmbientTemperature;
         if (ambientTemperature < -15f)
         {
-            pawn.AdjustOrAddHediff(OARK_HediffDefOf.OA_RK_Hediff_ColdAdaptation, -1, 500);
+            HediffGiveParams hediffGiveParams = new()
+            {
+                HediffToGive = OARK_HediffDefOf.OA_RK_Hediff_ColdAdaptation,
+                AddSeverityIfExist = -1f,
+                OverrideDisappearTicks = 500
+            };
+
+            pawn.GetOrAddHediff(hediffGiveParams);
         }
     }
 }

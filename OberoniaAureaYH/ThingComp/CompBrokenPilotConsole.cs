@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ public class CompBrokenPilotConsole : CompHackable
                         points = Mathf.Max(300f, StorytellerUtility.DefaultThreatPointsNow(parent.MapHeld) * 2.5f),
                     };
 
-                    OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 2500, parms);
+                    OAFrame_IncidentUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 2500, parms);
 
                     Find.LetterStack.ReceiveLetter("OARK_LetterLabel_BrokenPilotAttack".Translate(), "OARK_Letter_BrokenPilotAttack".Translate(), LetterDefOf.ThreatSmall, parent, ModUtility.OAFaction);
                 }
@@ -108,7 +109,7 @@ public class CompBrokenPilotConsole : CompHackable
             {
                 target = Find.World
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_CrashedGravship_FollowUp, delayTicks, parms);
+            OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_CrashedGravship_FollowUp, delayTicks, parms);
         }
 
         if (!isHackForceEnded)

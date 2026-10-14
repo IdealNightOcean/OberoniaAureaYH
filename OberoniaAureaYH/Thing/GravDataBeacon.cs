@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using Verse;
@@ -40,7 +40,7 @@ public class GravDataBeacon : Building
             {
                 target = Find.World
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceDepartmentFriendly, Rand.RangeInclusive(8, 14) * 60000, parms);
+            OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceDepartmentFriendly, Rand.RangeInclusive(8, 14) * 60000, parms);
         }
 
         Map map = MapHeld;
@@ -52,7 +52,7 @@ public class GravDataBeacon : Building
             points = StorytellerUtility.DefaultThreatPointsNow(map),
             forced = true
         };
-        OAFrame_MiscUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 5000, raidParms);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(IncidentDefOf.RaidEnemy, 5000, raidParms);
 
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravDataBeaconLanded".Translate(),
                                        text: "OARK_Letter_GravDataBeaconLanded".Translate(),

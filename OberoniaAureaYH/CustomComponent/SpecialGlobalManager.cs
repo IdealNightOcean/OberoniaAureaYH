@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ public class SpecialGlobalEventManager : IExposable
 
     public SpecialGlobalEventManager()
     {
-        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        OAFrame_GamePlayUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
 
         birthdayTickHash = Rand.Range(0, 30000).HashOffset();
@@ -117,7 +117,7 @@ public class SpecialGlobalEventManager : IExposable
             parms.customLetterText = "OARatkin_Letter_NewYearEventLate".Translate(parms.faction.Named(KeyLibrary_NamedArgument.FACTION), parms.faction.LeaderTitle.Named("TITLE"), leader.Named("LEADER"), map.Parent.Named("MAP"));
         }
 
-        OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_SpecialGlobalEvent_GiftLetter, 2500, parms);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_SpecialGlobalEvent_GiftLetter, 2500, parms);
     }
 
     private void CheckAprilFoolsEvent(DateTime curDate, Map map)
@@ -149,10 +149,10 @@ public class SpecialGlobalEventManager : IExposable
             gifts = gifts,
         };
 
-        OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_SpecialGlobalEvent_GiftLetter, 2500, parms);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_SpecialGlobalEvent_GiftLetter, 2500, parms);
     }
 
-    private void CheckBirthdayWishes()
+    private static void CheckBirthdayWishes()
     {
         OARK_IncidentDefOf.OARK_BirthdayWishes.Worker.TryExecute(new IncidentParms()
         {

@@ -253,7 +253,7 @@ public class CompEquipmentShield : ThingComp
             Vector3 s = new(drawSize, 1f, drawSize);
             Matrix4x4 matrix = default;
             matrix.SetTRS(drawPos, Quaternion.AngleAxis(angle, Vector3.up), s);
-           // Graphics.DrawMesh(MeshPool.plane10, matrix, BubbleMat, 0);
+            // Graphics.DrawMesh(MeshPool.plane10, matrix, BubbleMat, 0);
         }
     }
 

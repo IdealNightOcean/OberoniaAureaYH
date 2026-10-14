@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -110,7 +110,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         return resultNode;
     }
 
-    private void Outcome_SD(Map map, Faction faction, int pointGain)
+    private static void Outcome_SD(Map map, Faction faction, int pointGain)
     {
         ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(pointGain);
 
@@ -122,7 +122,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         }
     }
 
-    private void Outcome_EM(Map map, Faction faction, int pointGain)
+    private static void Outcome_EM(Map map, Faction faction, int pointGain)
     {
         OAInteractHandler.Instance.AdjustAssistPoints(pointGain);
 
@@ -132,7 +132,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         }
     }
 
-    private void Outcome_WinWin(Map map, Faction faction, int apGain, int gtapGain)
+    private static void Outcome_WinWin(Map map, Faction faction, int apGain, int gtapGain)
     {
         OAInteractHandler.Instance.AdjustAssistPoints(apGain);
         ScienceDepartmentInteractHandler.Instance.AdjustGravTechAssistPoint(gtapGain);

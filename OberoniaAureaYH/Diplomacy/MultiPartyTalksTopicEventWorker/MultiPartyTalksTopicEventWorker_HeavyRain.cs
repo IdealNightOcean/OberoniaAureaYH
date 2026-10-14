@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 
 using RimWorld;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ public class MultiPartyTalksTopicEventWorker_HeavyRain : MultiPartyTalksTopicEve
         };
     }
 
-    private DiaNode FactionLateBind(Faction faction, Pawn negotiator)
+    private static DiaNode FactionLateBind(Faction faction, Pawn negotiator)
     {
         string nodeText;
         if (faction == ModUtility.OAFaction)
@@ -64,16 +64,15 @@ public class MultiPartyTalksTopicEventWorker_HeavyRain : MultiPartyTalksTopicEve
         return OAFrame_DiaUtility.ConfirmDiaNode(nodeTextBuilder.ToTaggedString());
     }
 
-    private DiaNode SelfLateBind(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode SelfLateBind(MultiPartyTalksTopicEventData eventData)
     {
         IEnumerable<Pawn> pawns = MultiPartyTalksUtility.GetCaravanPawns(eventData);
         List<Pawn> patients = [];
         foreach (Pawn p in pawns)
         {
-            float immunityGainSpeed = p.GetStatValue(StatDefOf.ImmunityGainSpeed);
-            if (immunityGainSpeed < 1.5f)
+            if (p.GetStatValue(StatDefOf.ImmunityGainSpeed) < 1.5f)
             {
-                p.AdjustOrAddHediff(HediffDefOf.FleshmassLung);
+                p.health?.GetOrAddHediff(HediffDefOf.FleshmassLung);
             }
         }
 

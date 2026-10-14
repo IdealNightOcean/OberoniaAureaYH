@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +20,7 @@ public class MultiPartyTalksTopicEventWorker_FurtherDiscussion : MultiPartyTalks
         yield return OAFrame_DiaUtility.DefaultIngnoreOption;
     }
 
-    private DiaNode DiscussionNode(MultiPartyTalksTopicEventData eventData)
+    private static DiaNode DiscussionNode(MultiPartyTalksTopicEventData eventData)
     {
         StringBuilder nodeTextBuilder = new(64);
         if (Rand.Chance(0.6f))

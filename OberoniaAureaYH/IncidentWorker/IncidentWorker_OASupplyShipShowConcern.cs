@@ -1,4 +1,4 @@
-﻿using OberoniaAurea_Frame;
+﻿using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using Verse;
@@ -8,7 +8,7 @@ namespace OberoniaAurea;
 //金鸢尾兰慰问
 public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
 {
-    protected bool TryResolveParmsGeneral(IncidentParms parms)
+    protected static bool TryResolveParmsGeneral(IncidentParms parms)
     {
         Map map = (Map)parms.target;
         map ??= Find.AnyPlayerHomeMap;

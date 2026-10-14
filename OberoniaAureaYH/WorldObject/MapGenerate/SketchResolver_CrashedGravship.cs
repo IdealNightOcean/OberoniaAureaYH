@@ -48,7 +48,7 @@ public class SketchResolver_CrashedGravship : SketchResolver
         }
     }
 
-    private void GenerateBaseStructure(Sketch sketch)
+    private static void GenerateBaseStructure(Sketch sketch)
     {
         for (int i = 0; i < BaseStructure.Length; i++)
         {

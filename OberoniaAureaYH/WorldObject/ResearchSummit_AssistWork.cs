@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -95,9 +96,9 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
     public override string FixedCaravanWorkDesc()
     {
         TaggedString timeLeft = "OA_FixedCaravanRSAssistWork_TimeLeft".Translate(allTicksRemaining.ToStringTicksToPeriod());
-        TaggedString workPoints = "OA_FixedCaravanRSAssistWork_workPoints".Translate(workPoints);
+        TaggedString workPointsStr = "OA_FixedCaravanRSAssistWork_workPoints".Translate(workPoints);
 
-        return string.Join(Environment.NewLine, timeLeft, workPoints);
+        return string.Join(Environment.NewLine, timeLeft, workPointsStr);
     }
 
     private void CheckWork()

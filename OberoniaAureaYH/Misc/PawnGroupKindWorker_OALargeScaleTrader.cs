@@ -1,4 +1,4 @@
-using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +57,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         GenerateGuards(parms, groupMaker, outPawns);
     }
 
-    protected void GenerateGuards(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, List<Pawn> outPawns)
+    protected static void GenerateGuards(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, List<Pawn> outPawns)
     {
         if (!groupMaker.guards.Any())
         {
@@ -79,7 +79,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     }
 
     //下面三个不重要，是因为泰南用了private才复制过来的
-    protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
+    protected static Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {
         PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight(p => p.selectionWeight).kind;
         PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
@@ -93,7 +93,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         parms.points -= pawn.kindDef.combatPower;
         return pawn;
     }
-    protected void GenerateCarriers(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, Pawn trader, List<Thing> wares, List<Pawn> outPawns)
+    protected static void GenerateCarriers(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, Pawn trader, List<Thing> wares, List<Pawn> outPawns)
     {
         List<Thing> list = wares.Where(t => t is not Pawn).ToList();
         int i = 0;
@@ -120,7 +120,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             list2.RandomElement().inventory.innerContainer.TryAdd(list[i]);
         }
     }
-    protected IEnumerable<Pawn> GetSlavesAndAnimalsFromWares(PawnGroupMakerParms parms, Pawn trader, List<Thing> wares)
+    protected static IEnumerable<Pawn> GetSlavesAndAnimalsFromWares(PawnGroupMakerParms parms, Pawn trader, List<Thing> wares)
     {
         for (int i = 0; i < wares.Count; i++)
         {
