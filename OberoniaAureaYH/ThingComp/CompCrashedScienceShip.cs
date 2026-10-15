@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -221,7 +220,7 @@ public class CompCrashedScienceShip : CompHackable
                     target = parent.MapHeld,
                     faction = ModUtility.OAFaction
                 };
-                OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_OASupport, 1200, parms);
+                OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_OASupport, 1200, parms);
             }
         }
     }
@@ -552,7 +551,7 @@ public class CompCrashedScienceShip : CompHackable
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
             };
-            OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
+            OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
         }
 
         if (extaRaidRemaining > 0 && (ticksToNextExtaRaid -= delta) <= 0)
@@ -567,11 +566,11 @@ public class CompCrashedScienceShip : CompHackable
                 raidArrivalMode = Rand.Bool ? PawnsArrivalModeDefOf.EdgeWalkIn : PawnsArrivalModeDefOf.EdgeDrop,
                 forced = true
             };
-            OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
+            OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidEnemy, parms, force: true);
 
             if (extaRaidRemaining == 0)
             {
-                Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_FinalExtaRaid".Translate()));
+                Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_ScienceShip_FinalExtaRaid".Translate()));
             }
         }
     }
@@ -702,16 +701,16 @@ public class CompCrashedScienceShip : CompHackable
         float chance = Rand.Value;
         if (chance < 0.4f)
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizSuccess".Translate(), ModUtility.OAFaction));
+            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizSuccess".Translate(), ModUtility.OAFaction));
             RemoveTrouble(ScienceShipRecord.TroubleType.InformationBase);
         }
         else if (chance < 0.9f)
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizFail".Translate(), ModUtility.OAFaction));
+            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizFail".Translate(), ModUtility.OAFaction));
         }
         else
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizEndlessWaiting".Translate(), ModUtility.OAFaction));
+            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_QuizEndlessWaiting".Translate(), ModUtility.OAFaction));
         }
     }
 
@@ -738,7 +737,7 @@ public class CompCrashedScienceShip : CompHackable
     {
         dataUploaded = true;
         QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "DataUploaded", parent.Named("SUBJECT"));
-        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_DataUploaded".Translate(), ModUtility.OAFaction));
+        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShip_DataUploaded".Translate(), ModUtility.OAFaction));
         if (shipRecord.TypeOfShip == ScienceShipRecord.ShipType.TravelRK)
         {
             IncidentParms parms = new()
@@ -746,7 +745,7 @@ public class CompCrashedScienceShip : CompHackable
                 target = Find.World,
                 points = 5000f
             };
-            OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_TravelRKReward, Rand.RangeInclusive(2, 3) * 60000, parms);
+            OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShip_TravelRKReward, Rand.RangeInclusive(2, 3) * 60000, parms);
         }
     }
 

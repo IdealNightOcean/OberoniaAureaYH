@@ -55,7 +55,7 @@ public static class ModUtility
             points = points,
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
-        OAFrame_MiscUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
+        OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
 

@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -59,7 +58,7 @@ public class DevWin_OAInteractHandler : Window
         listing_Rect.Gap(12f);
         if (listing_Rect.ButtonText("交互CD记录"))
         {
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(ModUtility.CooldownManager.GetCDRecordsDetailInfo()));
+            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(ModUtility.CooldownManager.GetCDRecordsDetailInfo()));
         }
 
         if (Event.current.type == EventType.Layout)

@@ -56,7 +56,7 @@ public class JobDriver_TalkWithProspectingLeader : JobDriver_TalkWithAtOnce
         pawns.Swap(0, index);
         Slate slate = new();
         slate.Set("pawns", pawns);
-        if (!OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, OARK_QuestScriptDefOf.OARK_ProspectingTeam, slate, forced: true))
+        if (!OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, OARK_QuestScriptDefOf.OARK_ProspectingTeam, slate, forced: true))
         {
             LordMaker.MakeNewLord(leader.Faction, new LordJob_ExitMapBest(), leader.MapHeld, pawns);
         }

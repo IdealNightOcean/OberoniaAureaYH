@@ -49,7 +49,7 @@ public class IncidentWorker_ProspectingTeam : IncidentWorker_VisitorGroupBase
         Faction oaFaction = ModUtility.OAFaction;
         for (int i = 0; i < 4; i++)
         {
-            PawnGenerationRequest genRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration, oaFaction, forceNew: true);
+            PawnGenerationRequest genRequest = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(OARK_PawnGenerateDefOf.OA_RK_Court_Member_Exploration, oaFaction, forceNew: true);
             Pawn pawn = PawnGenerator.GeneratePawn(genRequest);
             pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_ExplorationFatigue);
             pawns.Add(pawn);

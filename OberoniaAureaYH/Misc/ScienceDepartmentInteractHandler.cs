@@ -1,4 +1,3 @@
-using OberoniaAurea_Frame;
 using RimWorld;
 using RimWorld.QuestGen;
 using UnityEngine;
@@ -44,7 +43,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
     public ScienceDepartmentInteractHandler()
     {
-        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        OberoniaAurea_Frame.Utility.OAFrame_GamePlayUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
     }
     public static void ClearStaticCache() => Instance = null;
@@ -238,7 +237,7 @@ public class ScienceDepartmentInteractHandler : IExposable
 
         ModUtility.CooldownManager.RegisterRecord("GravInitQuestTrigger", cdTicks: 3 * 60000, removeWhenExpired: true);
 
-        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, new Slate(), forced: false);
+        OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_InitGravQuest, new Slate(), forced: false);
 
         static bool CanTriggerGravInitQuest()
         {
@@ -269,7 +268,7 @@ public class ScienceDepartmentInteractHandler : IExposable
             forced = true
         };
 
-        if (OAFrame_MiscUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
+        if (OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(OARK_IncidentDefOf.OARK_ScienceDepartmentAnnualInteraction, parms, force: true))
         {
             ModUtility.CooldownManager.RegisterRecord("SDAnnualInteraction", cdTicks: Rand.RangeInclusive(50, 70) * 60000, removeWhenExpired: false);
         }

@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,13 +89,13 @@ internal class ChoiceLetter_UnlockedFile : ChoiceLetter
                 DocumentType.EncryptedFile => "OARK_UnlockedFile_EncryptedFileRefuse".Translate(pawn),
                 _ => "OARK_UnlockedFile_NormalRefuse".Translate(pawn),
             };
-            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(diaText, ModUtility.OAFaction));
+            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(diaText, ModUtility.OAFaction));
         }
         else
         {
             Find.LetterStack.RemoveLetter(this);
 
-            Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+            Dialog_NodeTreeWithFactionInfo nodeTree = OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
                 text: "OARK_UnlockedFile_QuizAllow".Translate(),
                 faction: ModUtility.OAFaction,
                 acceptText: "OARK_Check".Translate(),

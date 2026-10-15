@@ -246,16 +246,16 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
         int count = Mathf.Min(pawnNum * preCount, maxCount);
         if (count > 0)
         {
-            IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.MealSurvivalPack, count, map, faction);
+            IntVec3 dropCell = OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.MealSurvivalPack, count, map, faction);
             Messages.Message("OA_MealSurvivalPackArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }
     private static void CallEmergencyMedicine(Map map, Faction faction)
     {
         List<List<Thing>> dropThings = [];
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
-        dropThings.Add(OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.MedicineIndustrial, 20));
+        dropThings.Add(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_F, 10));
+        dropThings.Add(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 10));
+        dropThings.Add(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.MedicineIndustrial, 20));
         IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
         DropPodUtility.DropThingGroupsNear(dropCell, map, dropThings, forbid: false, allowFogged: false, faction: faction);
         Messages.Message("OA_EmergencyMedicineArrive".Translate(faction.Named("FACTION")), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
@@ -264,7 +264,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
     {
         if (count > 0)
         {
-            IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, count, map, faction);
+            IntVec3 dropCell = OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, count, map, faction);
             Messages.Message("OA_SilverArrive".Translate(faction.Named("FACTION"), count), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
         }
     }
@@ -300,7 +300,7 @@ public static class RequestMilitaryAidOption_Patch //我们遇到了麻烦
             traderKind = OARK_PawnGenerateDefOf.OA_RK_Caravan_TributeCollector,
             forced = true
         };
-        OAFrame_MiscUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
+        OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(incidentDef, 120000, parms, 240000);
     }
 
     private static void CallForMilitaryDeployment(Map map, Faction faction)

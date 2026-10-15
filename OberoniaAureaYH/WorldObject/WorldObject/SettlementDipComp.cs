@@ -218,7 +218,7 @@ public static class DeepExchangeUtility
     {
         OAInteractHandler.Instance.AdjustAssistPoints(AddAssistPoints);
         pawn.skills?.Learn(SkillDefOf.Intellectual, LearnIntellectualXP, direct: true);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
+        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, ChanwuNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);
@@ -239,7 +239,7 @@ public static class DeepExchangeUtility
                 {
                     slate.Set("settlement", settlement);
                 }
-                OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, questScript, slate, forced: true);
+                OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out Quest quest, questScript, slate, forced: true);
                 text += "\n\n" + "OA_LetterResearchDeepExchangeAdditional".Translate(settlement.Named("SETTLEMENT"), quest.name);
             }
         }

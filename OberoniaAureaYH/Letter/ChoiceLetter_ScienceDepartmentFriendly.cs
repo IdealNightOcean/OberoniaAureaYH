@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -103,7 +102,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
 
     private void Result_I()
     {
-        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_GravResearchExchange, 1000f, forced: true);
+        OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_GravResearchExchange, 1000f, forced: true);
 
         Find.LetterStack.RemoveLetter(this);
         Find.LetterStack.ReceiveLetter(label: "OARK_LetterLabel_GravResearchExchange".Translate(),
@@ -118,7 +117,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            OAFrame_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 2, map, ModUtility.OAFaction);
+            OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.OARK_ComponentBox, 2, map, ModUtility.OAFaction);
         }
         Find.LetterStack.RemoveLetter(this);
     }
@@ -128,9 +127,9 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
         Map map = Find.AnyPlayerHomeMap;
         if (map is not null)
         {
-            List<Thing> rewardsI = OAFrame_MiscUtility.TryGenerateThing(OARK_RimWorldDefOf.Synthread, 100);
-            List<Thing> rewardsII = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 40);
-            List<Thing> rewardsIII = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 5);
+            List<Thing> rewardsI = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_RimWorldDefOf.Synthread, 100);
+            List<Thing> rewardsII = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 40);
+            List<Thing> rewardsIII = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_G, 5);
 
             IntVec3 dropCell = DropCellFinder.TradeDropSpot(map);
             DropPodUtility.DropThingGroupsNear(dropCell, map, [rewardsI, rewardsII, rewardsIII], forbid: false, allowFogged: false, faction: ModUtility.OAFaction);
@@ -162,7 +161,7 @@ internal class ChoiceLetter_ScienceDepartmentFriendly : ChoiceLetter
             ThingDef techPrintDef = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(p => p.techprintCount > 0 && !p.TechprintRequirementMet).Take(5)?.RandomElementWithFallback(null)?.Techprint;
             if (techPrintDef is not null)
             {
-                OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef, map, ModUtility.OAFaction);
+                OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(techPrintDef, map, ModUtility.OAFaction);
             }
         }
         Find.LetterStack.RemoveLetter(this);

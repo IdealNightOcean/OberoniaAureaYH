@@ -50,7 +50,7 @@ public class QuestNode_Root_SDBirthdayVisit : QuestNode_Root_RefugeeBase
 
     protected override void PawnArrival(string lodgerArrivalSignal)
     {
-        List<Thing> pawnsAndGifts = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, questParameter.pawns.Count * 10);
+        List<Thing> pawnsAndGifts = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, questParameter.pawns.Count * 10);
         pawnsAndGifts.AddRange(questParameter.pawns);
 
         QuestGen.quest.DropPods(mapParent: questParameter.map.Parent,

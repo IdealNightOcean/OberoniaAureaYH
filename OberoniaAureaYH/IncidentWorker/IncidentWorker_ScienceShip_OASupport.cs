@@ -35,11 +35,11 @@ public class IncidentWorker_ScienceShip_OASupport : IncidentWorker_DropThingsOnM
 
     protected override bool ResolveDropthings(IncidentParms parms)
     {
-        List<Thing> items = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Steel, 500);
+        List<Thing> items = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Steel, 500);
         ThingDef targeterBombardmentDef = DefDatabase<ThingDef>.GetNamedSilentFail("OrbitalTargeterBombardment");
         if (targeterBombardmentDef is not null)
         {
-            items.AddRange(OAFrame_MiscUtility.TryGenerateThing(targeterBombardmentDef, 2));
+            items.AddRange(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(targeterBombardmentDef, 2));
         }
         parms.gifts = items;
         return true;

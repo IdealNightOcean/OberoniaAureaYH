@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -28,7 +27,7 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
                 Skyfaller crashShip = SkyfallerMaker.MakeSkyfaller(ThingDefOf.ShuttleCrashing);
                 for (int i = 0; i < pawnCount; i++)
                 {
-                    PawnGenerationRequest generationRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Pirate, faction);
+                    PawnGenerationRequest generationRequest = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Pirate, faction);
                     Pawn pawn = PawnGenerator.GeneratePawn(generationRequest);
                     HealthUtility.DamageUntilDowned(pawn);
                     crashShip.innerContainer.TryAddOrTransfer(pawn);
@@ -45,7 +44,7 @@ internal class IncidentWorker_CrashedGravship_FollowUp : IncidentWorker
             }
         }
 
-        OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, 2000, map);
+        OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingOfDef(ThingDefOf.Silver, 2000, map);
 
         Find.FactionManager.OfTradersGuild?.TryAffectGoodwillWith(Faction.OfPlayer, 20, reason: OARK_HistoryEventDefOf.OARK_CrashedGravshipHelp);
         ModUtility.OAFaction?.TryAffectGoodwillWith(Faction.OfPlayer, 10, reason: OARK_HistoryEventDefOf.OARK_CrashedGravshipHelp);

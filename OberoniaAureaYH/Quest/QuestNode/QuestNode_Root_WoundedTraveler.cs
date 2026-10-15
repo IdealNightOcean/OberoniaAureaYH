@@ -62,7 +62,7 @@ public class QuestNode_Root_WoundedTraveler : QuestNode_Root_RefugeeBase
         if (CurPawnIndex++ == 1)
         {
             pawn.health.AddHediff(OARK_HediffDefOf.OARK_Hediff_SeriousInjury);
-            OAFrame_PawnUtility.TakeNonLethalDamage(pawn, Rand.RangeInclusive(2, 3), DamageDefOf.Blunt);
+            OberoniaAurea_Frame.Utility.OAFrame_PawnUtility.TakeNonLethalDamage(pawn, Rand.RangeInclusive(2, 3), DamageDefOf.Blunt);
         }
     }
 

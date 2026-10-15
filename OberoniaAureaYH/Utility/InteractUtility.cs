@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -81,7 +80,7 @@ public static class InteractUtility
             else
             {
                 Thing techPrint = ThingMaker.MakeThing(techPrintDef.TechPrintDef);
-                OAFrame_DropPodUtility.DefaultDropSingleThing(techPrint, map, ModUtility.OAFaction);
+                OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropSingleThing(techPrint, map, ModUtility.OAFaction);
                 letter.lookTargets = techPrint;
             }
         }

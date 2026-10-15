@@ -30,6 +30,6 @@ public class IncidentWorker_ScienceDepartmentAnnualInteraction : IncidentWorker
             questScriptDef = questScriptDef
         };
 
-        return OAFrame_MiscUtility.TryFireIncidentNow(OAFrameDefOf.OAFrame_GiveQuest, questIncidentParm);
+        return OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(OAFrameDefOf.OAFrame_GiveQuest, questIncidentParm);
     }
 }

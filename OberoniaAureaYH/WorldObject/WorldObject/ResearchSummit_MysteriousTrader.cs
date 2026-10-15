@@ -87,7 +87,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         {
             FinishProjectOnly(projectDef, doCompletionDialog: true);
         }
-        OAFrame_CaravanUtility.RemoveThingsOfDef(caravan, ThingDefOf.Silver, NeedSilver);
+        OberoniaAurea_Frame.Utility.OAFrame_CaravanUtility.RemoveThingsOfDef(caravan, ThingDefOf.Silver, NeedSilver);
     }
     private static bool ValidResearch(ResearchProjectDef projectDef)
     {

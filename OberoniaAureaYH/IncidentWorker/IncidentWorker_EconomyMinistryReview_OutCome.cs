@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System;
 using System.Collections.Generic;
 using Verse;
@@ -118,7 +117,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
         {
             Thing equipments = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment);
             equipments.stackCount = 2;
-            OAFrame_DropPodUtility.DefaultDropSingleThing(equipments, map, faction);
+            OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropSingleThing(equipments, map, faction);
         }
     }
 
@@ -128,7 +127,7 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
 
         if (map is not null)
         {
-            OAFrame_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20, map, faction);
+            OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingOfDef(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20, map, faction);
         }
     }
 
@@ -139,11 +138,11 @@ internal class IncidentWorker_EconomyMinistryReview_Outcome : IncidentWorker
 
         if (map is not null)
         {
-            List<Thing> rewards = OAFrame_MiscUtility.TryGenerateThing(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
+            List<Thing> rewards = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AC, 20);
             Thing equipments = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDCommunicationEquipment);
             equipments.stackCount = 2;
             rewards.Add(equipments);
-            OAFrame_DropPodUtility.DefaultDropThing(rewards, map, faction);
+            OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThing(rewards, map, faction);
         }
     }
 }

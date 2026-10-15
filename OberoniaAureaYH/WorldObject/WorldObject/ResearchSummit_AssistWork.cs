@@ -95,9 +95,9 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
     public override string FixedCaravanWorkDesc()
     {
         TaggedString timeLeft = "OA_FixedCaravanRSAssistWork_TimeLeft".Translate(allTicksRemaining.ToStringTicksToPeriod());
-        TaggedString workPoints = "OA_FixedCaravanRSAssistWork_workPoints".Translate(workPoints);
+        TaggedString workPointsStr = "OA_FixedCaravanRSAssistWork_workPoints".Translate(workPoints);
 
-        return string.Join(Environment.NewLine, timeLeft, workPoints);
+        return string.Join(Environment.NewLine, timeLeft, workPointsStr);
     }
 
     private void CheckWork()
@@ -173,8 +173,8 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
     private static void SupplyFood(FixedCaravan assistWorkCaravan) //给予当天的食物
     {
         ThingDef foodDef = Rand.Bool ? ThingDefOf.MealFine : OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB;
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(foodDef, assistWorkCaravan.PawnsCount);
-        OAFrame_FixedCaravanUtility.GiveThings(assistWorkCaravan, things);
+        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(foodDef, assistWorkCaravan.PawnsCount);
+        OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(assistWorkCaravan, things);
         foreach (Pawn pawn in assistWorkCaravan.PawnsListForReading)
         {
             Need_Food need_Food = pawn.needs?.food;
@@ -228,8 +228,8 @@ public class ResearchSummit_AssistWork : WorldObject_InteractWithFixedCaravanBas
         int silverNum = Mathf.Max(1, workPoints * 10);
         int APpoints = Mathf.Clamp(Mathf.FloorToInt(workPoints * 0.1f), 0, 10);
         OAInteractHandler.Instance.AdjustAssistPoints(APpoints);
-        List<Thing> things = OAFrame_MiscUtility.TryGenerateThing(ThingDefOf.Silver, silverNum);
-        OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
+        IEnumerable<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(ThingDefOf.Silver, silverNum);
+        OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
         string letterText = text.Translate() + "\n\n" + "OA_RSAssistWork_GetReward".Translate(silverNum, APpoints);
         Find.LetterStack.ReceiveLetter(label.Translate(), letterText, letterDef, this, Faction);
     }

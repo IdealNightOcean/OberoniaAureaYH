@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Verse;
@@ -28,7 +27,7 @@ public class OAInteractHandler : IExposable
 
     public OAInteractHandler()
     {
-        OAFrame_MiscUtility.ValidateSingleton(Instance, nameof(Instance));
+        OberoniaAurea_Frame.Utility.OAFrame_GamePlayUtility.ValidateSingleton(Instance, nameof(Instance));
         Instance = this;
     }
     public static void ClearStaticCache() => Instance = null;

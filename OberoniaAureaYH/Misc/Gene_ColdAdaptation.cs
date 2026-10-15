@@ -5,6 +5,11 @@ namespace OberoniaAurea;
 
 public class Gene_ColdAdaptation : Gene
 {
+    private static readonly HediffGiveParams hediffGiveParams = new()
+    {
+        OverrideDisappearTicks = 500
+    };
+
     private int tickRemaining;
     public override void Tick()
     {
@@ -29,7 +34,8 @@ public class Gene_ColdAdaptation : Gene
         float ambientTemperature = pawn.AmbientTemperature;
         if (ambientTemperature < -15f)
         {
-            pawn.AdjustOrAddHediff(OARK_HediffDefOf.OA_RK_Hediff_ColdAdaptation, -1, 500);
+            hediffGiveParams.HediffToGive = OARK_HediffDefOf.OA_RK_Hediff_ColdAdaptation;
+            pawn.GetOrAddHediff(hediffGiveParams);
         }
     }
 }

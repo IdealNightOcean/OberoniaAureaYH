@@ -1,5 +1,4 @@
-﻿using OberoniaAurea_Frame;
-using RimWorld;
+﻿using RimWorld;
 using System.Collections.Generic;
 using Verse;
 using Verse.Grammar;
@@ -147,7 +146,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
         Thing accountingRecord = ThingMaker.MakeThing(OARK_ThingDefOf.OARK_SDAccountingRecord);
         accountingRecord.TryGetComp<CompSDAccountingRecord>()?.SetReferendary(referendary);
         QuestUtility.AddQuestTag(accountingRecord, recordTag);
-        OAFrame_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, ModUtility.OAFaction);
+        OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropSingleThing(accountingRecord, map, ModUtility.OAFaction);
         dropCount++;
     }
 
@@ -193,7 +192,7 @@ internal sealed class QuestPart_EconomyMinistryReview_Watcher : QuestPartActivab
             points = pointsGain
         };
 
-        OAFrame_MiscUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_EconomyMinistryReview_Outcome, delayTicks: Rand.RangeInclusive(60000, 180000), parms, retryDurationTicks: 30000);
+        OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_EconomyMinistryReview_Outcome, delayTicks: Rand.RangeInclusive(60000, 180000), parms, retryDurationTicks: 30000);
     }
 
     private void MainNodeExtension(DiaNode mainNode, FactionDialogCache dialogCache)
