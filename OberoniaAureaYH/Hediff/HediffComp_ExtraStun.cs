@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -44,7 +45,7 @@ public class HediffComp_ExtraStun : HediffComp
         if (stunHandler.StunTicksLeft > 0)
         {
             int totalStunTicks = stunHandler.StunTicksLeft + extraStunTicks;
-            OberoniaAurea_Frame.Utility.OAFrame_ReflectionUtility.SetFieldValue(stunHandler, "stunTicksLeft", totalStunTicks);
+            OAFrame_ReflectionUtility.SetFieldValue(stunHandler, "stunTicksLeft", totalStunTicks);
         }
         else
         {

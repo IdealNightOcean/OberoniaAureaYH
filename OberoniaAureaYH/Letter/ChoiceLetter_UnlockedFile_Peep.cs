@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Verse;
 using static OberoniaAurea.UnlockedFileUtility;
-
 namespace OberoniaAurea;
 
 internal class ChoiceLetter_UnlockedFile_Peep : ChoiceLetter

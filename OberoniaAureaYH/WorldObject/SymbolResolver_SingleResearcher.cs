@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.BaseGen;
 using System.Linq;
 using Verse;
@@ -67,7 +68,7 @@ public class SymbolResolver_SingleResearcher : SymbolResolver
                         return;
                     }
                 }
-                request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pawnKindDef, result);
+                request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pawnKindDef, result);
                 request.Tile = map.Tile;
             }
             pawn = PawnGenerator.GeneratePawn(request);

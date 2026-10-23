@@ -1,3 +1,4 @@
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
             int num = (int)pgo.selectionWeight;
             for (int i = 0; i < num; i++)
             {
-                PawnGenerationRequest request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
+                PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
                 request.Tile = parms.tile;
                 request.FixedIdeo = parms.ideo;
                 request.Inhabitant = parms.inhabitants;
@@ -81,7 +82,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
     protected Pawn GenerateTrader(PawnGroupMakerParms parms, PawnGroupMaker groupMaker, TraderKindDef traderKind)
     {
         PawnKindDef traderPawnKind = groupMaker.traders.RandomElementByWeight(p => p.selectionWeight).kind;
-        PawnGenerationRequest request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
+        PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(traderPawnKind, parms.faction);
         request.Tile = parms.tile;
         request.FixedIdeo = parms.ideo;
         request.Inhabitant = parms.inhabitants;
@@ -101,7 +102,7 @@ public class PawnGroupKindWorker_OALargeScaleTrader : PawnGroupKindWorker_Trader
         List<Pawn> list2 = [];
         for (int j = 0; j < num; j++)
         {
-            PawnGenerationRequest request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(kind, parms.faction);
+            PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(kind, parms.faction);
             request.Tile = parms.tile;
             request.FixedIdeo = parms.ideo;
             request.Inhabitant = parms.inhabitants;

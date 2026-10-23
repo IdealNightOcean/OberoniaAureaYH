@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -43,7 +44,7 @@ public class IncidentWorker_DropThingsOnMap : IncidentWorker
         Map map = (Map)parms.target;
         if (ResolveDropthings(parms))
         {
-            parms.spawnCenter = OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction);
+            parms.spawnCenter = OAFrame_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction);
             PostThingDroped(parms);
             return true;
         }

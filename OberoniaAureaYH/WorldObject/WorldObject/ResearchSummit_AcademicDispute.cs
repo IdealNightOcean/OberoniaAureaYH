@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class ResearchSummit_AcademicDispute : WorldObject_InteractiveBase
             pawn.skills?.Learn(SkillDefOf.Melee, 1000f, direct: true);
         }
         int silverNum = SilverCounter.RandomInRange;
-        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, silverNum);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, silverNum);
         foreach (Thing thing in things)
         {
             CaravanInventoryUtility.GiveThing(caravan, thing);

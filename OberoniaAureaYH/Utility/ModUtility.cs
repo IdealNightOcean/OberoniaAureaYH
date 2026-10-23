@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Runtime.CompilerServices;
 using Verse;
@@ -55,7 +56,7 @@ public static class ModUtility
             points = points,
             raidArrivalMode = raidArrivalMode ?? PawnsArrivalModeDefOf.EdgeDrop
         };
-        OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
+        OAFrame_IncidentUtility.TryFireIncidentNow(IncidentDefOf.RaidFriendly, incidentParms, force: true);
     }
 
 

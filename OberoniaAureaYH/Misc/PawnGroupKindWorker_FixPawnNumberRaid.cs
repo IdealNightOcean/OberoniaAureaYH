@@ -1,3 +1,4 @@
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ public class PawnGroupKindWorker_FixPawnNumberRaid : PawnGroupKindWorker_Normal
 
         foreach (PawnGenOption pgo in groupMaker.options)
         {
-            PawnGenerationRequest request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
+            PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(pgo.kind, parms.faction);
             request.Tile = parms.tile;
             request.FixedIdeo = parms.ideo;
             request.MustBeCapableOfViolence = true;

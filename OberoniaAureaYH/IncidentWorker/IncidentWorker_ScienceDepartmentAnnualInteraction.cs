@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using Verse;
 
@@ -30,6 +31,6 @@ public class IncidentWorker_ScienceDepartmentAnnualInteraction : IncidentWorker
             questScriptDef = questScriptDef
         };
 
-        return OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.TryFireIncidentNow(OAFrameDefOf.OAFrame_GiveQuest, questIncidentParm);
+        return OAFrame_IncidentUtility.TryFireIncidentNow(OAFrameDefOf.OAFrame_GiveQuest, questIncidentParm);
     }
 }

@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using Verse;
@@ -42,13 +43,13 @@ internal class ChoiceLetter_EMReview : ChoiceLetter
         Find.LetterStack.RemoveLetter(this);
 
         Slate slate = new();
-        if (OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_EconomyMinistryReview, new Slate()))
+        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_EconomyMinistryReview, new Slate()))
         {
-            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptInfo".Translate(), ModUtility.OAFaction));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptInfo".Translate(), ModUtility.OAFaction));
         }
         else
         {
-            Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptFailInfo".Translate(), ModUtility.OAFaction));
+            Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_EMReviewAcceptFailInfo".Translate(), ModUtility.OAFaction));
         }
     }
 

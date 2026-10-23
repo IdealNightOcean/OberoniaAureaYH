@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,7 @@ public class IncidentWroker_ScienceShipCrashDown : IncidentWorker
             nearLoc: centerCell,
             nearLocMaxDist: 20);
         (ThingDef thingDef, IntRange countRange) = potentialThing.RandomElement();
-        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(thingDef, countRange.RandomInRange);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(thingDef, countRange.RandomInRange);
         downPos = downPos.IsValid ? downPos : map.Center;
         DropPodUtility.DropThingsNear(downPos, map, things, openDelay: 10);
     }

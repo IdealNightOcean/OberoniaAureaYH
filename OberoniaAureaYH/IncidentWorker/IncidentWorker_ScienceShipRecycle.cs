@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.QuestGen;
 using Verse;
 
@@ -30,7 +31,7 @@ public class IncidentWorker_ScienceShipRecycle : IncidentWorker
             questValid = false;
         }
 
-        questValid = questValid && OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, new Slate());
+        questValid = questValid && OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_ScienceShipRecycle, new Slate());
 
         if (!questValid)
         {

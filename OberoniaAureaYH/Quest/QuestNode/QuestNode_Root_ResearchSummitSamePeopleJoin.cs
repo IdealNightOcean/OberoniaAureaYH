@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
 using Verse;
@@ -14,7 +15,7 @@ public class QuestNode_Root_ResearchSummitSamePeopleJoin : QuestNode
     {
         slate.TryGet("faction", out Faction faction);
 
-        PawnGenerationRequest request = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction, forceNew: true);
+        PawnGenerationRequest request = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction, forceNew: true);
         request.ForceAddFreeWarmLayerIfNeeded = true;
         Pawn pawn = PawnGenerator.GeneratePawn(request);
 

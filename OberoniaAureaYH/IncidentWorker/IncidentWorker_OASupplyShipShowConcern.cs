@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using System.Collections.Generic;
 using Verse;
 
@@ -36,8 +37,8 @@ public class IncidentWorker_OASupplyShipShowConcern : IncidentWorker
         int count = map.mapPawns.FreeColonistsSpawnedCount * 100;
 
         ThingDef rawBerriesDef = DefDatabase<ThingDef>.GetNamed("RawBerries");
-        List<Thing> dropThings = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(rawBerriesDef, count);
-        IntVec3 dropCell = OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
+        List<Thing> dropThings = OAFrame_ThingUtility.GenerateThingListSplitByStack(rawBerriesDef, count);
+        IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropThingGroups([dropThings], map, faction);
         SendStandardLetter(baseLetterLabel: "OARatkin_LetterLabel_SupplyShipShowConcern".Translate(),
                            baseLetterText: "OARatkin_Letter_SupplyShipShowConcern".Translate(faction.Named("FACTION"), count),
                            baseLetterDef: LetterDefOf.PositiveEvent,

@@ -10,7 +10,7 @@
 		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<OutputPath>Release\</OutputPath>
+		<OutputPath>bin\Release\</OutputPath>
 	</PropertyGroup>
 
 	<!-- 定义Mod输出根路径，带[]特殊字符，单独放属性 -->
@@ -22,6 +22,7 @@
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>full</DebugType>
 		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 
@@ -60,7 +61,7 @@
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Waylith">
-		  <HintPath>..\..\..\..\..\ProgramFiles\Steam\steamapps\common\RimWorld\Waylith.dll</HintPath>
+		  <HintPath>E:\ProgramFiles\Steam\steamapps\common\RimWorld\Waylith.dll</HintPath>
 		  <Private>False</Private>
 		</Reference>
 	</ItemGroup>

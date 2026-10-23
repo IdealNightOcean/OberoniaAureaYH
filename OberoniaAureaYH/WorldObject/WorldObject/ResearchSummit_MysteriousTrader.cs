@@ -1,4 +1,5 @@
 using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 using static RimWorld.ResearchManager;
-
 namespace OberoniaAurea;
 
 public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
@@ -87,7 +87,7 @@ public class ResearchSummit_MysteriousTrader : WorldObject_InteractiveBase
         {
             FinishProjectOnly(projectDef, doCompletionDialog: true);
         }
-        OberoniaAurea_Frame.Utility.OAFrame_CaravanUtility.RemoveThingsOfDef(caravan, ThingDefOf.Silver, NeedSilver);
+        OAFrame_CaravanUtility.RemoveThingsOfDef(caravan, ThingDefOf.Silver, NeedSilver);
     }
     private static bool ValidResearch(ResearchProjectDef projectDef)
     {

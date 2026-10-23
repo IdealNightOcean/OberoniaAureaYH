@@ -1,5 +1,6 @@
 ﻿using LudeonTK;
 using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -103,7 +104,7 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
     }
     private static void Fair(PlanetTile parentTile) //集市
     {
-        if (!OberoniaAurea_Frame.Utility.OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -197,12 +198,12 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         Slate slate = new();
         Map map = Find.AnyPlayerHomeMap;
         slate.Set("faction", faction);
-        OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate, forced: false, target: map);
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearchSummitSamePeopleJoin, slate, forced: false, target: map);
     }
     private static void Bonus(Caravan caravan, Faction faction) //额外收获
     {
         int num = new IntRange(12, 80).RandomInRange;
-        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, num);
 
         foreach (Thing thing in things)
         {
@@ -221,8 +222,8 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
     {
         Settlement settlement = worldObject as Settlement;
 
-        IEnumerable<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
-        OberoniaAurea_Frame.Utility.OAFrame_CaravanUtility.GiveThings(caravan, things);
+        IEnumerable<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 10);
+        OAFrame_CaravanUtility.GiveThings(caravan, things);
         CaravanInventoryUtility.GiveThing(caravan, ThingMaker.MakeThing(OARK_ThingDefOf.Oberonia_Aurea_Tea));
         Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherGift".Translate(), "OA_LetterResearchSummit_ResearcherGift".Translate(settlement.Named("SETTLEMENT")), LetterDefOf.PositiveEvent, caravan, faction);
     }
@@ -246,14 +247,14 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
         Slate slate = new();
         Map map = QuestGen_Get.GetMap();
         slate.Set("map", map);
-        OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: map);
+        OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OA_ResearcherVisit, slate, forced: false, target: map);
     }
     private static void ResearcherPeacetalk(Faction faction) //敌对势力和平谈判
     {
         Slate slate = new();
         slate.Set("faction", faction);
 
-        if (OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate, forced: false, target: Find.World))
+        if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_RimWorldDefOf.OpportunitySite_PeaceTalks, slate, forced: false, target: Find.World))
         {
             PeaceTalks peaceTalks = slate.Get<PeaceTalks>("peaceTalks");
             Find.LetterStack.ReceiveLetter("OA_LetterLabelResearchSummit_ResearcherPeacetalk".Translate(), "OA_LetterResearchSummit_ResearcherPeacetalk".Translate(faction.NameColored), LetterDefOf.PositiveEvent, peaceTalks, faction);
@@ -291,7 +292,7 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
     }
     private static void AcademicDispute(PlanetTile parentTile) //学术约架
     {
-        if (!OberoniaAurea_Frame.Utility.OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }
@@ -304,7 +305,7 @@ public class WorldObject_ResearchSummit : WorldObject_InteractiveBase
     }
     private static void EccentricScholar(PlanetTile parentTile) //废品旁的学者
     {
-        if (!OberoniaAurea_Frame.Utility.OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
+        if (!OAFrame_TileFinderUtility.GetAvailableNeighborTile(parentTile, out PlanetTile tile) && !TileFinder.TryFindNewSiteTile(out tile))
         {
             tile = parentTile;
         }

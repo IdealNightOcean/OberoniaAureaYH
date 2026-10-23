@@ -12,7 +12,7 @@ public class CompProperties_Hackable : CompProperties
     public JobDef hackJob;
     public float maxHackPoint = 600;
     public int intellectualSkillPrerequisite = 0;
-    public bool destoryOnHackComplete = false;
+    public bool destroyOnHackComplete = false;
 
     public CompProperties_Hackable()
     {
@@ -68,7 +68,7 @@ public class CompHackable : ThingComp
         {
             QuestUtility.SendQuestTargetSignals(MapParentQuestTag, "HackCompleted", parent.Named("SUBJECT"), hackPawn.Named("HACKER"));
         }
-        if (Props.destoryOnHackComplete)
+        if (Props.destroyOnHackComplete)
         {
             parent.Kill();
         }

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ public static class FactionDialogFor_Patch
         }
 
         FactionDialogCache dialogCache = new(negotiator, faction);
-        amountSendableSilver = OberoniaAurea_Frame.Utility.OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
+        amountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
 
         List<DiaOption> opts =
         [
@@ -74,7 +75,7 @@ public static class FactionDialogFor_Patch
             return diaOption;
         }
 
-        if (OberoniaAurea_Frame.Utility.OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map) < 2000)
+        if (OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map) < 2000)
         {
             diaOption.Disable("NeedSilverLaunchable".Translate(2000));
             return diaOption;
@@ -99,7 +100,7 @@ public static class FactionDialogFor_Patch
                 traderKind = traderKind,
                 forced = true
             };
-            OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_LargeScaleTraderArrival, 120000, parms, 12000);
+            OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_LargeScaleTraderArrival, 120000, parms, 12000);
             TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, 2000, dialogCache.Map, null);
         }
     }
@@ -122,7 +123,7 @@ public static class FactionDialogFor_Patch
             return diaOption;
         }
 
-        int amountSendableSilver = OberoniaAurea_Frame.Utility.OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
+        int amountSendableSilver = OAFrame_MapUtility.AmountSendableSilver(dialogCache.Map);
         //以下为二级界面按钮
         DiaNode diaNode = new(taggedString);
         AddDiaOption(500);
@@ -291,7 +292,7 @@ public static class FactionDialogFor_Patch
     private static void GetTechPrint(Map map, Faction faction, ThingDef tDef, int price)
     {
         TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, price, map, null);
-        IntVec3 dropCell = OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(tDef, map, faction);
+        IntVec3 dropCell = OAFrame_DropPodUtility.DefaultDropSingleThingOfDef(tDef, map, faction);
         Messages.Message("OA_TechPrintArrive".Translate(faction.Named("FACTION"), tDef.label), new LookTargets(dropCell, map), MessageTypeDefOf.PositiveEvent);
     }
 

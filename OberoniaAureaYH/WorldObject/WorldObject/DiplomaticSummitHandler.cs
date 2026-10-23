@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -64,7 +65,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
 
     private void TryStartSummit(Caravan caravan)
     {
-        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OARK_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit, settlement);
+        associatedFixedCaravan = (FixedCaravan_DiplomaticSummit)OAFrame_FixedCaravanUtility.CreateFixedCaravan(caravan, OARK_WorldObjectDefOf.OA_FixedCaravan_DiplomaticSummit, settlement);
 
         if (associatedFixedCaravan is null)
         {
@@ -117,7 +118,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
 
         if (convertToCaravan && associatedFixedCaravan is not null)
         {
-            OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
+            OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
         }
 
         Reset();
@@ -133,7 +134,7 @@ public class DiplomaticSummitHandler(Settlement settlement) : IExposable, IFixed
         {
             if (associatedFixedCaravan is not null)
             {
-                OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
+                OAFrame_FixedCaravanUtility.ConvertToCaravan(associatedFixedCaravan);
             }
             settlementDipComp?.Notify_DiplomaticSummitEnd(cancel: true);
             Reset();
@@ -265,8 +266,8 @@ public static class DiplomaticSummitUtility
     private static void Outcome_Triumph(FixedCaravan fixedCaravan, Settlement settlement, Pawn pawn)
     {
         Faction faction = settlement.Faction;
-        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, 1500);
-        OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(fixedCaravan, things);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Silver, 1500);
+        OAFrame_FixedCaravanUtility.GiveThings(fixedCaravan, things);
         Faction.OfPlayer.TryAffectGoodwillWith(faction, TriumphGoodwill, canSendMessage: false, canSendHostilityLetter: false, OARK_HistoryEventDefOf.OA_DiplomaticSummit_Triumph);
         OAInteractHandler.Instance.AdjustAssistPoints(TriumphAssistPoints);
         TaggedString text = "OA_LetterDiplomaticSummit_Triumph".Translate(settlement.Named("SETTLEMENT"), faction.NameColored, TriumphGoodwill, TriumphAssistPoints, 1500);

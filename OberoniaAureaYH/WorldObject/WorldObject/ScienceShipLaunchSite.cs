@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using RimWorld.QuestGen;
@@ -108,12 +109,12 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
         maxSkillPawn ??= associatedFixedCaravan.PawnsListForReading.RandomElement();
 
         int humanCount = associatedFixedCaravan.PawnsListForReading.Where(p => p.RaceProps.Humanlike).Count();
-        List<Thing> rewards = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, humanCount * 3);
-        OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, rewards);
+        List<Thing> rewards = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, humanCount * 3);
+        OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, rewards);
 
         LaunchShip();
 
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(GetShipLaunchText(maxSkillPawn, maxLevel), ModUtility.OAFaction));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(GetShipLaunchText(maxSkillPawn, maxLevel), ModUtility.OAFaction));
 
         Destroy();
     }
@@ -121,7 +122,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
     protected override void InterruptWork()
     {
         LaunchShip();
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShipLaunch_Interrupt".Translate(), ModUtility.OAFaction));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo("OARK_ScienceShipLaunch_Interrupt".Translate(), ModUtility.OAFaction));
         Destroy();
     }
 
@@ -138,7 +139,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             target = Find.World,
             faction = ModUtility.OAFaction
         };
-        OberoniaAurea_Frame.Utility.OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShipRecycle, Rand.RangeInclusive(20, 40) * 60000, parms);
+        OAFrame_IncidentUtility.AddNewQueuedIncident(OARK_IncidentDefOf.OARK_ScienceShipRecycle, Rand.RangeInclusive(20, 40) * 60000, parms);
     }
 
     public override void Destroy()
@@ -249,7 +250,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             {
                 sendLetter = false;
                 quizDialogOpen = true;
-                Dialog_NodeTreeWithFactionInfo nodeTree = OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+                Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
                     text: "OARK_ScienceShipLaunch_Quiz6Special".Translate(),
                     faction: Faction,
                     acceptText: "OARK_ScienceShipLaunch_FlowCake".Translate(),
@@ -258,8 +259,8 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
                         quizDialogOpen = false;
                         if (associatedFixedCaravan is not null)
                         {
-                            IEnumerable<Thing> flowCakes = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
-                            OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
+                            IEnumerable<Thing> flowCakes = OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, 5 * associatedFixedCaravan.PawnsCount);
+                            OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, flowCakes);
                             Find.LetterStack.ReceiveLetter(label: "OARK_ScienceShipLaunch_Quiz6GainLabel".Translate(5),
                                                            text: "OARK_ScienceShipLaunch_Quiz6Gain".Translate(),
                                                            textLetterDef: LetterDefOf.PositiveEvent,
@@ -365,7 +366,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
         PlanetTile tile = Tile;
         PlanetLayer tileLayer = tile.Layer;
         int nearSettleCount = Find.WorldObjects.Settlements.Where(s => !s.Faction.IsPlayerSafe() && s.Tile.Layer == tileLayer && Find.WorldGrid.ApproxDistanceInTiles(tile, s.Tile) <= 25f).Count();
-        (Pawn maxSocialPawn, int maxSocialSkill) = OberoniaAurea_Frame.Utility.OAFrame_PawnUtility.GetMaxSkillLevelPawn(associatedFixedCaravan.PawnsListForReading, SkillDefOf.Social);
+        (Pawn maxSocialPawn, int maxSocialSkill) = OAFrame_PawnUtility.GetMaxSkillLevelPawn(associatedFixedCaravan.PawnsListForReading, SkillDefOf.Social);
         float chance = 0.05f + nearSettleCount * 0.025f + maxSocialSkill * 0.01f;
 
         sb.AppendLine();
@@ -375,7 +376,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
         sb.AppendLine("OARK_ScienceShipLaunch_PryRewardChance_Settlement".Translate(nearSettleCount, (nearSettleCount * 0.025f).ToStringPercent()));
         sb.AppendLine("OARK_ScienceShipLaunch_PryRewardChance_Skill".Translate(maxSocialSkill, (maxSocialSkill * 0.01f).ToStringPercent()));
 
-        Dialog_NodeTreeWithFactionInfo nodeTree = OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
             text: sb.ToString(),
             faction: Faction,
             acceptAction: delegate { PryResult(questScriptDef, chance); });
@@ -392,7 +393,7 @@ public class ScienceShipLaunchSite : WorldObject_InteractWithFixedCaravanBase
             Slate slate = new();
             slate.Set("points", Rand.Range(3000f, 5000f));
             slate.Set("discoveryMethod", "OARK_QuestDiscoveredFromFaction".Translate(Faction?.Name));
-            questTriggered = OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, questScriptDef, slate, forced: true);
+            questTriggered = OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, questScriptDef, slate, forced: true);
         }
 
         TaggedString letterText;

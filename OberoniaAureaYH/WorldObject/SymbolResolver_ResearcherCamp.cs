@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.BaseGen;
 using Verse;
 using Verse.AI.Group;
@@ -22,7 +23,7 @@ public class SymbolResolver_ResearcherCamp : SymbolResolver_WorkSite
         TraverseParms traverseParms = TraverseParms.For(TraverseMode.PassDoors);
         ResolveParams resolveParams1 = rp;
 
-        PawnGenerationRequest pawnRequest = OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction);
+        PawnGenerationRequest pawnRequest = OAFrame_PawnGenerateUtility.CommonPawnGenerationRequest(PawnKindDefOf.Villager, faction);
         pawnRequest.Tile = map.Tile;
 
         resolveParams1.rect = rp.rect;

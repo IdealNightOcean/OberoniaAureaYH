@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.QuestGen;
 using Verse;
@@ -19,7 +20,7 @@ public static class GenerateBestowingCeremonyQuest_Patch
             Slate slate = new();
             slate.Set("titleHolder", pawn);
             slate.Set("bestowingFaction", faction);
-            return !OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(quest: out _,
+            return !OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(quest: out _,
                                                                           scriptDef: OARK_QuestScriptDefOf.OA_BestowingCeremony,
                                                                           slate: slate,
                                                                           forced: false,

@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ public class IncidentWorker_ResearchSummitTraveller : IncidentWorker_VisitorGrou
             return null;
         }
 
-        return OberoniaAurea_Frame.Utility.OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
+        return OAFrame_PawnGenerateUtility.GeneratePawns(groupMakerParms, groupMaker, warnOnZeroResults: false).ToList();
     }
 
     protected override void PostTraderResolved(IncidentParms parms, List<Pawn> pawns, Pawn trader)

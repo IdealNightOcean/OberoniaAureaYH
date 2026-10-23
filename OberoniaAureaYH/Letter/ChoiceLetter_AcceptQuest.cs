@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using Verse;
@@ -23,7 +24,7 @@ public class ChoiceLetter_OptionalQuest : ChoiceLetter
             {
                 action = delegate
                 {
-                    OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out quest, questScriptDef, new Slate(), forced: true);
+                    OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out quest, questScriptDef, new Slate(), forced: true);
                     Find.LetterStack.RemoveLetter(this);
                 },
                 resolveTree = true

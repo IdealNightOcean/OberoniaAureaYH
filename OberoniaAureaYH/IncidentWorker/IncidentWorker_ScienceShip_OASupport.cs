@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +36,11 @@ public class IncidentWorker_ScienceShip_OASupport : IncidentWorker_DropThingsOnM
 
     protected override bool ResolveDropthings(IncidentParms parms)
     {
-        List<Thing> items = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Steel, 500);
+        List<Thing> items = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.Steel, 500);
         ThingDef targeterBombardmentDef = DefDatabase<ThingDef>.GetNamedSilentFail("OrbitalTargeterBombardment");
         if (targeterBombardmentDef is not null)
         {
-            items.AddRange(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(targeterBombardmentDef, 2));
+            items.AddRange(OAFrame_ThingUtility.GenerateThingsSplitByStack(targeterBombardmentDef, 2));
         }
         parms.gifts = items;
         return true;

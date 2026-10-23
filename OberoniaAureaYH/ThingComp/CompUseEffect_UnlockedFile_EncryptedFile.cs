@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 using static OberoniaAurea.UnlockedFileUtility;
-
 namespace OberoniaAurea;
 
 public class CompUseEffect_UnlockedFile_EncryptedFile : CompUseEffect

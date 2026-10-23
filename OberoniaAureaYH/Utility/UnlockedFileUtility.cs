@@ -1,3 +1,4 @@
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ public static class UnlockedFileUtility
             sb.AppendInNewLine("OAFrame_ResearchFinished".Translate());
             sb.AppendInNewLine(projectDef.LabelCap);
         }
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
     }
 
     private static void Result_TechDraft(Pawn pawn, bool isDelay)
@@ -89,13 +90,13 @@ public static class UnlockedFileUtility
                 }
             }
         }
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
     }
 
     private static void Result_LoveLetter(Pawn pawn, bool isDelay)
     {
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(OARK_ThoughtDefOf.OARK_UnlockedFile_LoveLetter);
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(isDelay ? "OARK_UnlockedFile_LoveLetterDelay".Translate(pawn)
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(isDelay ? "OARK_UnlockedFile_LoveLetterDelay".Translate(pawn)
                                                                                   : "OARK_UnlockedFile_LoveLetter".Translate(pawn)));
     }
 
@@ -120,20 +121,20 @@ public static class UnlockedFileUtility
             sb.AppendLine();
             sb.AppendInNewLine("OAFrame_PawnGainSkillXp".Translate(pawn, SkillDefOf.Cooking.LabelCap, -300));
         }
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(sb.ToString()));
     }
 
     private static void Result_DeletedFile(Pawn pawn, bool isDelay)
     {
         pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(OARK_ThoughtDefOf.OARK_UnlockedFile_DeletedFile);
 
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(isDelay ? "OARK_UnlockedFile_DeletedFileDelay".Translate(pawn)
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree(isDelay ? "OARK_UnlockedFile_DeletedFileDelay".Translate(pawn)
                                                                                   : "OARK_UnlockedFile_DeletedFile".Translate(pawn)));
     }
 
     private static void Result_EncryptedFile(Pawn pawn)
     {
-        Find.WindowStack.Add(OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_UnlockedFile_EncryptedFile".Translate(pawn)));
+        Find.WindowStack.Add(OAFrame_DiaUtility.DefaultConfirmDiaNodeTree("OARK_UnlockedFile_EncryptedFile".Translate(pawn)));
         Map map = Find.AnyPlayerHomeMap;
         if (map is null)
         {

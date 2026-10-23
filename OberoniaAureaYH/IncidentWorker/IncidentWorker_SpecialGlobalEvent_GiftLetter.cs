@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using Verse;
 
 namespace OberoniaAurea;
@@ -49,7 +50,7 @@ internal class IncidentWorker_SpecialGlobalEvent_GiftLetter : IncidentWorker
         Map map = (Map)parms.target;
         if (!parms.gifts.NullOrEmpty())
         {
-            OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction, sendLetter: false);
+            OAFrame_DropPodUtility.DefaultDropThing(parms.gifts, map, parms.faction, sendLetter: false);
         }
 
         if (!string.IsNullOrEmpty(parms.customLetterLabel))

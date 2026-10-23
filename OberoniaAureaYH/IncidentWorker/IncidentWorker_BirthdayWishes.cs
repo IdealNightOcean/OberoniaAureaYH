@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using OberoniaAurea_Frame.Utility;
+using RimWorld;
 using RimWorld.QuestGen;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,9 +84,9 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
             return;
         }
 
-        List<Thing> gifts = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, birthdayPawnsCount * 5);
-        gifts.AddRange(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.OA_RK_New_Hat_A, birthdayPawnsCount));
-        OberoniaAurea_Frame.Utility.OAFrame_DropPodUtility.DefaultDropThing(gifts, map, parms.faction, sendLetter: false);
+        List<Thing> gifts = OAFrame_ThingUtility.GenerateThingListSplitByStack(OARK_ThingDefOf.Oberonia_Aurea_Chanwu_AB, birthdayPawnsCount * 5);
+        gifts.AddRange(OAFrame_ThingUtility.GenerateThingsSplitByStack(OARK_ThingDefOf.OA_RK_New_Hat_A, birthdayPawnsCount));
+        OAFrame_DropPodUtility.DefaultDropThing(gifts, map, parms.faction, sendLetter: false);
 
         if (OberoniaAureaSettings.BirthdayWishesShowLetter)
         {
@@ -135,7 +136,7 @@ public class IncidentWorker_BirthdayWishes : IncidentWorker
             slate.Set("faction", parms.faction);
             slate.Set("birthdayPawns", birthdayPawns);
 
-            if (OberoniaAurea_Frame.Utility.OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_SDBirthdayVisit, slate))
+            if (OAFrame_QuestUtility.TryGenerateQuestAndMakeAvailable(out _, OARK_QuestScriptDefOf.OARK_SDBirthdayVisit, slate))
             {
                 Log.Message("Generated birthday visit quest.");
                 ModUtility.CooldownManager.RegisterRecord("SDBirthdayVisit", cdTicks: 35 * 60000);

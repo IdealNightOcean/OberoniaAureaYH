@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OberoniaAurea_Frame.Utility;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Verse;
@@ -22,7 +23,7 @@ public static class ResearchUtility
 
     public static Dictionary<ResearchProjectDef, float> GetProjectProgress()
     {
-        return OberoniaAurea_Frame.Utility.OAFrame_ReflectionUtility.GetFieldValue<Dictionary<ResearchProjectDef, float>>(Find.ResearchManager, "progress", null);
+        return OAFrame_ReflectionUtility.GetFieldValue<Dictionary<ResearchProjectDef, float>>(Find.ResearchManager, "progress", null);
     }
 
     public static void SetProjectProgress(Dictionary<ResearchProjectDef, float> progress)
@@ -31,11 +32,11 @@ public static class ResearchUtility
         {
             return;
         }
-        OberoniaAurea_Frame.Utility.OAFrame_ReflectionUtility.SetFieldValue(Find.ResearchManager, "progress", progress);
+        OAFrame_ReflectionUtility.SetFieldValue(Find.ResearchManager, "progress", progress);
     }
     public static Dictionary<ResearchProjectDef, float> GetAnomalyKnowledges()
     {
-        return OberoniaAurea_Frame.Utility.OAFrame_ReflectionUtility.GetFieldValue<Dictionary<ResearchProjectDef, float>>(Find.ResearchManager, "anomalyKnowledge", null);
+        return OAFrame_ReflectionUtility.GetFieldValue<Dictionary<ResearchProjectDef, float>>(Find.ResearchManager, "anomalyKnowledge", null);
     }
     public static void SetAnomalyKnowledges(Dictionary<ResearchProjectDef, float> anomalyKnowledge)
     {
@@ -43,6 +44,6 @@ public static class ResearchUtility
         {
             return;
         }
-        OberoniaAurea_Frame.Utility.OAFrame_ReflectionUtility.SetFieldValue(Find.ResearchManager, "anomalyKnowledge", anomalyKnowledge);
+        OAFrame_ReflectionUtility.SetFieldValue(Find.ResearchManager, "anomalyKnowledge", anomalyKnowledge);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OberoniaAurea_Frame;
+using OberoniaAurea_Frame.Utility;
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
 
     public override bool StartWork(Caravan caravan)
     {
-        Dialog_NodeTreeWithFactionInfo nodeTree = OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.ConfirmDiaNodeTreeWithFactionInfo(
             text: "OA_ResearchSummit_EccentricScholarText".Translate(),
             faction: Faction,
             acceptText: "OA_ResearchSummit_EccentricScholarConfirm".Translate(TicksNeeded.ToStringTicksToPeriod(shortForm: true)),
@@ -31,9 +32,9 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
     {
         int componentCount = ComponentCountRange.RandomInRange;
         int steelCount = SteelCountRange.RandomInRange;
-        List<Thing> things = OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.ComponentIndustrial, componentCount);
-        things.AddRange(OberoniaAurea_Frame.Utility.OAFrame_ThingUtility.GenerateThingsSplitByStack(ThingDefOf.Steel, steelCount));
-        OberoniaAurea_Frame.Utility.OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
+        List<Thing> things = OAFrame_ThingUtility.GenerateThingListSplitByStack(ThingDefOf.ComponentIndustrial, componentCount);
+        things.AddRange(OAFrame_ThingUtility.GenerateThingsSplitByStack(ThingDefOf.Steel, steelCount));
+        OAFrame_FixedCaravanUtility.GiveThings(associatedFixedCaravan, things);
 
         foreach (Pawn pawn in associatedFixedCaravan.PawnsListForReading)
         {
@@ -42,7 +43,7 @@ public class ResearchSummit_EccentricScholar : WorldObject_InteractWithFixedCara
 
         string ideoPawnsPlural = Faction.OfPlayer.ideos?.PrimaryIdeo?.MemberNamePlural;
         string pawnsPlural = ideoPawnsPlural.NullOrEmpty() ? Faction.OfPlayer.def.pawnsPlural : ideoPawnsPlural;
-        Dialog_NodeTreeWithFactionInfo nodeTree = OberoniaAurea_Frame.Utility.OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
+        Dialog_NodeTreeWithFactionInfo nodeTree = OAFrame_DiaUtility.DefaultConfirmDiaNodeTreeWithFactionInfo(
             text: "OA_ResearchSummit_EccentricScholarFinish".Translate(pawnsPlural, componentCount, steelCount, 1000),
             faction: Faction);
         Find.WindowStack.Add(nodeTree);
